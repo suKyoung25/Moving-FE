@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import profileUploaderIcon from "@/assets/images/profileUploaderIcon.svg";
 
 interface InputFieldProps {
   isImage?: string; //이미지input인지
@@ -28,7 +29,12 @@ function InputField({
     return (
       <div className="text-[20px] leading-[32px] flex flex-col gap-4">
         <div className="font-semibold ">{text}</div>
-        <Image src="" alt="비어있는 프로필 이미지" />
+        <Image
+          src={profileUploaderIcon}
+          width={160}
+          height={160}
+          alt="비어있는 프로필 이미지"
+        />
       </div>
     );
   }
@@ -62,7 +68,10 @@ function InputField({
 
         <div className="flex gap-[12px]">
           {serviceTypes.map((type) => (
-            <button className="flex justify-center px-[20px] py-[10px] rounded-[100px] bg-[var(--color-bg-200)] border border-[var(--color-gray-100)] font-normal text-[18px] leading-[26px]">
+            <button
+              key={type}
+              className="flex justify-center px-[20px] py-[10px] rounded-[100px] bg-[var(--color-bg-200)] border border-[var(--color-gray-100)] font-normal text-[18px] leading-[26px]"
+            >
               {type}
             </button>
           ))}
@@ -99,9 +108,13 @@ function InputField({
           {text}
           <span className="text-[var(--color-primary-blue-300)]"> *</span>
         </div>
-        <div className="grid grid-cols-5 gap-x-[14px] gap-y-[18px]">
+
+        <div className="grid grid-cols-5 gap-x-[14px] gap-y-[18px] w-[430px]">
           {regions.map((region) => (
-            <button className="flex justify-center px-[20px] py-[10px] rounded-[100px] bg-[var(--color-bg-200)] border border-[var(--color-gray-100)] font-normal text-[18px] leading-[26px]">
+            <button
+              key={region}
+              className="flex justify-center px-[20px] py-[10px] rounded-[100px] bg-[var(--color-bg-200)] border border-[var(--color-gray-100)] font-normal text-[18px] leading-[26px]"
+            >
               {region}
             </button>
           ))}
