@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import solidBoxIcon from "@/assets/images/solidBoxIcon.svg";
 import solidHomeIcon from "@/assets/images/solidHomeIcon.svg";
 import solidCompanyIcon from "@/assets/images/solidCompanyIcon.svg";
@@ -8,7 +8,7 @@ type ChipType = "SMALL" | "HOME" | "OFFICE" | "DESIGNATED" | "PENDING";
 
 const CHIP_CONFIG: Record<
   ChipType,
-  { label: string; bg: string; text: string; icon?: any }
+  { label: string; bg: string; text: string; icon?: StaticImageData }
 > = {
   SMALL: {
     label: "소형이사",

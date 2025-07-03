@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 import profile from "@/assets/images/profileUploaderIcon.svg";
