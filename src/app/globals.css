@@ -16,6 +16,7 @@
   --color-black-300: #373737; /* hsl(0, 0, 22) */
   --color-black-400: #1f1f1f; /* hsl(0, 0, 12) */
   --color-black-500: #040404; /* hsl(0, 0, 2) */
+  --color-bg-black: #141414; /* hsl(0, 0, 8) */
 
   /* === Grayscale === */
   --color-gray-50: #000000; /* hsl(0, 0, 100) */
