@@ -27,8 +27,8 @@ function InputField({
   //프로필 이미지 input인 경우
   if (isImage === "selected") {
     return (
-      <div className="text-[20px] leading-[32px] flex flex-col gap-4">
-        <div className="font-semibold ">{text}</div>
+      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+        <div>{text}</div>
         <Image
           src={profileUploaderIcon}
           width={160}
@@ -42,13 +42,13 @@ function InputField({
   //상세 설명 input인 경우
   if (isTextArea === "selected") {
     return (
-      <div className="text-[20px] leading-[32px] flex flex-col gap-4">
-        <div className="font-semibold ">
+      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+        <div>
           {text}
-          <span className="text-[var(--color-primary-blue-300)]"> *</span>
+          <span className="text-blue-300"> *</span>
         </div>
         <textarea
-          className={`${width} ${height} text-[var(--color-gray-300)] rounded-2xl pl-[14px] pt-[14px] bg-[var(--color-bg-200)]`}
+          className={`${width} ${height} text-gray-300 rounded-2xl pl-3.5 pt-3.5 bg-bg-200`}
           placeholder={placeholder}
         />
       </div>
@@ -60,17 +60,17 @@ function InputField({
 
   if (isServiceType === "selected") {
     return (
-      <div className="text-[20px] leading-[32px] flex flex-col gap-4">
-        <div className="font-semibold ">
+      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+        <div>
           {text}
-          <span className="text-[var(--color-primary-blue-300)]"> *</span>
+          <span className="text-blue-300"> *</span>
         </div>
 
-        <div className="flex gap-[12px]">
+        <div className="flex gap-3">
           {serviceTypes.map((type) => (
             <button
               key={type}
-              className="flex justify-center px-[20px] py-[10px] rounded-[100px] bg-[var(--color-bg-200)] border border-[var(--color-gray-100)] font-normal text-[18px] leading-[26px]"
+              className="flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-16-regular leading-[26px]"
             >
               {type}
             </button>
@@ -103,17 +103,17 @@ function InputField({
 
   if (isArea === "selected") {
     return (
-      <div className="text-[20px] leading-[32px] flex flex-col gap-4">
-        <div className="font-semibold ">
+      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+        <div>
           {text}
-          <span className="text-[var(--color-primary-blue-300)]"> *</span>
+          <span className="text-blue-300"> *</span>
         </div>
 
-        <div className="grid grid-cols-5 gap-x-[14px] gap-y-[18px] w-[430px]">
+        <div className="grid grid-cols-5 gap-x-3.5 gap-y-4.5 w-[430px]">
           {regions.map((region) => (
             <button
               key={region}
-              className="flex justify-center px-[20px] py-[10px] rounded-[100px] bg-[var(--color-bg-200)] border border-[var(--color-gray-100)] font-normal text-[18px] leading-[26px]"
+              className="flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-18-regular leading-7"
             >
               {region}
             </button>
@@ -125,14 +125,14 @@ function InputField({
 
   //그외 일반적인 input인 경우 (별명, 경력, 한 줄 소개)
   return (
-    <div className="text-[20px] leading-[32px] flex flex-col gap-4">
-      <div className="font-semibold ">
+    <div className="leading-[32px] flex flex-col gap-4">
+      <div className="text-20-semibold">
         {text}
-        <span className="text-[var(--color-primary-blue-300)]"> *</span>
+        <span className="text-blue-300"> *</span>
       </div>
       <input
         type="text"
-        className={`${width} ${height} text-[var(--color-gray-300)] rounded-2xl pl-[14px] bg-[var(--color-bg-200)]`}
+        className={`${width} ${height} text-gray-300 rounded-2xl pl-3.5 bg-bg-200`}
         placeholder={placeholder}
       />
     </div>
