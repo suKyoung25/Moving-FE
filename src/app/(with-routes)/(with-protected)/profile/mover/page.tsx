@@ -17,11 +17,11 @@ function MoverProfilePage() {
     career: "",
     onelineIntroduction: "",
     detailDescription: "",
-    serviceType: "",
+    serviceType: [] as string[],
     area: "",
   });
 
-  const handleFormChange = (name: string, value: string) => {
+  const handleFormChange = (name: string, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -118,7 +118,7 @@ function MoverProfilePage() {
           <InputField
             name="serviceType"
             value={formData.serviceType}
-            onChange={(val) => handleFormChange("serviceType", val)}
+            onChange={(val) => handleFormChange("serviceType", val as string[])}
             text="제공 서비스"
             isServiceType="selected"
             error={fieldErrors?.serviceType?._errors?.[0]}

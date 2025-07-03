@@ -14,8 +14,8 @@ interface InputFieldProps {
   placeholder?: string;
   height?: string;
   error?: string;
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: string | string[];
+  onChange?: (value: string | string[]) => void;
 }
 
 //이미지input / textArea / 제공 서비스 / 지역선택    각 형식을 [isprops] === "selected"를 통해 분기처리
@@ -79,6 +79,16 @@ function InputField({
   //제공 서비스 input인 경우 (소형이사, 가정이사, 사무실이사)
   const serviceTypes = ["소형이사", "가정이사", "사무실이사"];
   if (isServiceType === "selected") {
+    // value가 배열인지 보장
+    const selectedValues = Array.isArray(value) ? value : [];
+
+    const handleToggle = (type: string) => {
+      const updated = selectedValues.includes(type)
+        ? selectedValues.filter((item) => item !== type) // 한번 더 누르면 선택 해제
+        : [...selectedValues, type]; // 선택 추가
+
+      onChange?.(updated);
+    };
     return (
       <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
         <div>
@@ -91,7 +101,7 @@ function InputField({
             <button
               key={type}
               type="button"
-              onClick={() => onChange?.(type)}
+              onClick={() => handleToggle(type)}
               className="flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-16-regular leading-[26px]"
             >
               {type}
@@ -124,6 +134,16 @@ function InputField({
       "부산",
       "제주",
     ];
+    // value가 배열인지 보장
+    const selectedValues = Array.isArray(value) ? value : [];
+
+    const handleToggle = (type: string) => {
+      const updated = selectedValues.includes(type)
+        ? selectedValues.filter((item) => item !== type) // 한번 더 누르면 선택 해제
+        : [...selectedValues, type]; // 선택 추가
+
+      onChange?.(updated);
+    };
 
     return (
       <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
@@ -136,7 +156,7 @@ function InputField({
             <button
               key={region}
               type="button"
-              onClick={() => onChange?.(region)}
+              onClick={() => handleToggle(region)}
               className="flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-18-regular leading-7"
             >
               {region}
