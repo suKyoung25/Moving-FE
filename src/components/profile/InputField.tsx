@@ -1,15 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import profileUploaderIcon from "@/assets/images/profileUploaderIcon.svg";
 
 interface InputFieldProps {
+  name?: string;
   isImage?: string; //이미지input인지
   isTextArea?: string; //textArea인지
   isServiceType?: string; //제공 서비스인지
   isArea?: string; //서비스 가능 지역인지
   text: string;
   placeholder?: string;
-  width?: string;
   height?: string;
 }
 
@@ -21,13 +23,12 @@ function InputField({
   isArea,
   text,
   placeholder,
-  width,
   height,
 }: InputFieldProps) {
   //프로필 이미지 input인 경우
   if (isImage === "selected") {
     return (
-      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
         <div>{text}</div>
         <Image
           src={profileUploaderIcon}
@@ -42,13 +43,13 @@ function InputField({
   //상세 설명 input인 경우
   if (isTextArea === "selected") {
     return (
-      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
         <div>
           {text}
           <span className="text-blue-300"> *</span>
         </div>
         <textarea
-          className={`${width} ${height} text-gray-300 rounded-2xl pl-3.5 pt-3.5 bg-bg-200`}
+          className={`w-full ${height} text-gray-300 rounded-2xl pl-3.5 pt-3.5 bg-bg-200`}
           placeholder={placeholder}
         />
       </div>
@@ -60,7 +61,7 @@ function InputField({
 
   if (isServiceType === "selected") {
     return (
-      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
         <div>
           {text}
           <span className="text-blue-300"> *</span>
@@ -103,13 +104,13 @@ function InputField({
 
   if (isArea === "selected") {
     return (
-      <div className="text-20-semibold leading-8 flex flex-col gap-4">
+      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
         <div>
           {text}
           <span className="text-blue-300"> *</span>
         </div>
 
-        <div className="grid grid-cols-5 gap-x-3.5 gap-y-4.5 w-[430px]">
+        <div className="grid grid-cols-5 gap-x-3.5 gap-y-4.5">
           {regions.map((region) => (
             <button
               key={region}
@@ -126,13 +127,13 @@ function InputField({
   //그외 일반적인 input인 경우 (별명, 경력, 한 줄 소개)
   return (
     <div className="leading-[32px] flex flex-col gap-4">
-      <div className="text-20-semibold">
+      <div className="text-16-semibold lg:text-20-semibold">
         {text}
         <span className="text-blue-300"> *</span>
       </div>
       <input
         type="text"
-        className={`${width} ${height} text-gray-300 rounded-2xl pl-3.5 bg-bg-200`}
+        className={`w-full ${height} text-gray-300 rounded-2xl pl-3.5 bg-bg-200`}
         placeholder={placeholder}
       />
     </div>
