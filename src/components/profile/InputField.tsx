@@ -79,7 +79,7 @@ function InputField({
   //제공 서비스 input인 경우 (소형이사, 가정이사, 사무실이사)
   const serviceTypes = ["소형이사", "가정이사", "사무실이사"];
   if (isServiceType === "selected") {
-    // value가 배열인지 보장
+    // value가 배열인지 보장 (중복선택 가능)
     const selectedValues = Array.isArray(value) ? value : [];
 
     const handleToggle = (type: string) => {
@@ -97,16 +97,20 @@ function InputField({
         </div>
 
         <div className="flex gap-3">
-          {serviceTypes.map((type) => (
-            <button
-              key={type}
-              type="button"
-              onClick={() => handleToggle(type)}
-              className="flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-16-regular leading-[26px]"
-            >
-              {type}
-            </button>
-          ))}
+          {serviceTypes.map((type) => {
+            const isSelected = selectedValues.includes(type);
+            return (
+              <button
+                key={type}
+                type="button"
+                onClick={() => handleToggle(type)}
+                className={`flex justify-center px-5 py-2.5 border rounded-full text-16-regular leading-[26px]
+              ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "border-gray-100 bg-bg-200 border"}`}
+              >
+                {type}
+              </button>
+            );
+          })}
         </div>
         {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
       </div>
@@ -134,7 +138,7 @@ function InputField({
       "부산",
       "제주",
     ];
-    // value가 배열인지 보장
+    // value가 배열인지 보장 (중복선택 가능)
     const selectedValues = Array.isArray(value) ? value : [];
 
     const handleToggle = (type: string) => {
@@ -152,16 +156,20 @@ function InputField({
           <span className="text-blue-300"> *</span>
         </div>
         <div className="grid grid-cols-5 gap-x-3.5 gap-y-4.5">
-          {regions.map((region) => (
-            <button
-              key={region}
-              type="button"
-              onClick={() => handleToggle(region)}
-              className="flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-18-regular leading-7"
-            >
-              {region}
-            </button>
-          ))}
+          {regions.map((region) => {
+            const isSelected = selectedValues.includes(region);
+            return (
+              <button
+                key={region}
+                type="button"
+                onClick={() => handleToggle(region)}
+                className={`flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-18-regular leading-7
+                 ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "border-gray-100 bg-bg-200 border"}`}
+              >
+                {region}
+              </button>
+            );
+          })}
         </div>
         {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
       </div>
