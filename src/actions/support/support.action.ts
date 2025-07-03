@@ -8,7 +8,6 @@
 //             content: formData.get('content') as string,
 //             file : formData.get('file') as FormDataEntryValue | null
 //         };
-        
 
 //         console.log(email);
 //     } catch(error) {
@@ -19,3 +18,4 @@
 
 // //codeit4movingteam
 // //Codeit4Moving!2025
+
