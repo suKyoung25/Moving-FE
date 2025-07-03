@@ -1,8 +1,18 @@
 "use server";
 
-export async function createMoverProfile(state: any, formData: FormData) {
+import { moverProfileSchema } from "@/validations";
+
+type profileState = {
+  status: boolean;
+  error?: string;
+} | null;
+
+export async function createMoverProfile(
+  state: profileState,
+  formData: FormData
+): Promise<profileState> {
   try {
-    const profile = {
+    const profileInputData = {
       image: formData.get("image") as string,
       alias: formData.get("alias") as string,
       career: Number(formData.get("career")),
@@ -12,9 +22,22 @@ export async function createMoverProfile(state: any, formData: FormData) {
       area: formData.get("area") as string,
     };
 
-    console.log("서버에서 받은 데이터", profile);
-    return { success: true };
+    //데이터 유효성 검사
+    const parsed = moverProfileSchema.safeParse(profileInputData);
+
+    if (!parsed.success) {
+      const formatted = parsed.error.format();
+
+      return { status: false, error: JSON.stringify(formatted) };
+    }
+
+    //디버깅
+    const profile = parsed.data;
+    console.log("서버로 전송할 데이터", profile);
+
+    return { status: true };
   } catch (error) {
-    console.error(error);
+    console.error("서버 에러:", error);
+    return { status: false };
   }
 }
