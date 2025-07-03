@@ -21,6 +21,7 @@ function MoverProfilePage() {
     area: "",
   });
 
+  //각 input의 onChange props로 내려줄 함수
   const handleFormChange = (name: string, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -31,9 +32,18 @@ function MoverProfilePage() {
     : {};
 
   // form 제출 버튼 disabled 조건
-  const isInitial = state === null; // 폼 제출이 한 번도 안 된 상태
+  const requiredFields = [
+    formData.alias,
+    formData.career,
+    formData.onelineIntroduction,
+    formData.detailDescription,
+  ];
+  const areRequiredFieldsFilled = //input에 빈문자열이 있는지 확인
+    requiredFields.every((field) => field.trim() !== "") &&
+    formData.serviceType.length > 0 && // 배열은 별도로 체크 (제공 서비스)
+    formData.area.length > 0; // 배열은 별도로 체크 (서비스 가능 지역)
   const hasFieldErrors = Object.keys(fieldErrors).length > 0; //각 input에서 error가 있는지 확인
-  const isDisabled = isInitial || isPending || hasFieldErrors;
+  const isDisabled = isPending || hasFieldErrors || !areRequiredFieldsFilled; //>>>최종적으로 버튼 활성화 여부 확인
 
   //디버깅
   console.log(formData);
@@ -136,7 +146,7 @@ function MoverProfilePage() {
           />
 
           <div className="mt-17">
-            <SolidButton disabled={!isDisabled} type="submit">
+            <SolidButton disabled={isDisabled} type="submit">
               {isPending ? "등록 중..." : "시작하기"}
             </SolidButton>
           </div>
