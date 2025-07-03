@@ -16,10 +16,10 @@ export async function createMoverProfile(
       image: formData.get("image") as string,
       alias: formData.get("alias") as string,
       career: Number(formData.get("career")),
-      onelineIntoduction: formData.get("onelineIntoduction") as string,
+      onelineIntroduction: formData.get("onelineIntroduction") as string,
       detailDescription: formData.get("detailDescription") as string,
-      serviceType: formData.get("serviceType") as string,
-      area: formData.get("area") as string,
+      serviceType: formData.getAll("serviceType") as string[],
+      area: formData.getAll("area") as string[],
     };
 
     //데이터 유효성 검사

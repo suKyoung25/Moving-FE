@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import profileUploaderIcon from "@/assets/images/profileUploaderIcon.svg";
 
 interface InputFieldProps {
   name?: string;
-  isImage?: string; //이미지input인지
-  isTextArea?: string; //textArea인지
-  isServiceType?: string; //제공 서비스인지
-  isArea?: string; //서비스 가능 지역인지
+  isImage?: boolean; //이미지input인지
+  isTextArea?: boolean; //textArea인지
+  isServiceType?: boolean; //제공 서비스인지
+  isArea?: boolean; //서비스 가능 지역인지
   text: string;
   placeholder?: string;
   height?: string;
@@ -18,7 +18,7 @@ interface InputFieldProps {
   onChange?: (value: string | string[]) => void;
 }
 
-//이미지input / textArea / 제공 서비스 / 지역선택    각 형식을 [isprops] === "selected"를 통해 분기처리
+//이미지input / textArea / 제공 서비스 / 지역선택    각 형식을 [isprops] === boolean을 통해 분기처리
 function InputField({
   name,
   isImage,
@@ -39,7 +39,7 @@ function InputField({
   };
 
   //프로필 이미지 input인 경우
-  if (isImage === "selected") {
+  if (isImage) {
     return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-4">
         <div>{text}</div>
@@ -57,7 +57,7 @@ function InputField({
   }
 
   //상세 설명 input인 경우
-  if (isTextArea === "selected") {
+  if (isTextArea) {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-16-semibold lg:text-20-semibold">
@@ -78,7 +78,7 @@ function InputField({
 
   //제공 서비스 input인 경우 (소형이사, 가정이사, 사무실이사)
   const serviceTypes = ["소형이사", "가정이사", "사무실이사"];
-  if (isServiceType === "selected") {
+  if (isServiceType) {
     // value가 배열인지 보장 (중복선택 가능)
     const selectedValues = Array.isArray(value) ? value : [];
 
@@ -100,15 +100,21 @@ function InputField({
           {serviceTypes.map((type) => {
             const isSelected = selectedValues.includes(type);
             return (
-              <button
-                key={type}
-                type="button"
-                onClick={() => handleToggle(type)}
-                className={`flex justify-center px-5 py-2.5 border rounded-full text-16-regular leading-[26px]
+              <React.Fragment key={type}>
+                <button
+                  type="button"
+                  onClick={() => handleToggle(type)}
+                  className={`flex justify-center px-5 py-2.5 border rounded-full text-16-regular leading-[26px]
               ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "border-gray-100 bg-bg-200 border"}`}
-              >
-                {type}
-              </button>
+                >
+                  {type}
+                </button>
+                <input //button에는 name으로 연결시킬 수 없어서 hidden input 사용
+                  type="hidden"
+                  name="type"
+                  value={type}
+                />
+              </React.Fragment>
             );
           })}
         </div>
@@ -118,7 +124,7 @@ function InputField({
   }
 
   //서비스 가능 input인 경우 (각 지역별로)
-  if (isArea === "selected") {
+  if (isArea) {
     const regions = [
       "서울",
       "경기",
@@ -159,15 +165,21 @@ function InputField({
           {regions.map((region) => {
             const isSelected = selectedValues.includes(region);
             return (
-              <button
-                key={region}
-                type="button"
-                onClick={() => handleToggle(region)}
-                className={`flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-18-regular leading-7
+              <React.Fragment key={region}>
+                <button
+                  type="button"
+                  onClick={() => handleToggle(region)}
+                  className={`flex justify-center px-5 py-2.5 rounded-full bg-bg-200 border border-gray-100 text-18-regular leading-7
                  ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "border-gray-100 bg-bg-200 border"}`}
-              >
-                {region}
-              </button>
+                >
+                  {region}
+                </button>
+                <input //button에는 name으로 연결시킬 수 없어서 hidden input 사용
+                  type="hidden"
+                  name="region"
+                  value={region}
+                />
+              </React.Fragment>
             );
           })}
         </div>
