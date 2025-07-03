@@ -14,7 +14,7 @@ function MoverProfilePage() {
 
   //모든 input의 입력값 관리
   const [formData, setFormData] = useState({
-    alias: "",
+    name: "",
     career: "",
     onelineIntroduction: "",
     detailDescription: "",
@@ -51,7 +51,7 @@ function MoverProfilePage() {
 
   // form 제출 버튼 disabled 조건
   const requiredFields = [
-    formData.alias,
+    formData.name,
     formData.career,
     formData.onelineIntroduction,
     formData.detailDescription,
@@ -92,13 +92,13 @@ function MoverProfilePage() {
 
           <div className="mt-8">
             <InputField
-              name="alias"
-              value={formData.alias}
-              onChange={(val) => handleFormChange("alias", val)}
+              name="name"
+              value={formData.name}
+              onChange={(val) => handleFormChange("name", val)}
               text="별명"
               placeholder="사이트에 노출될 이름을 입력해주세요"
               height="h-13 mg:h-13 lg:h-16"
-              error={errors.alias}
+              error={errors.name}
             />
           </div>
 

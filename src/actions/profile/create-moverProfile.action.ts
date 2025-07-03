@@ -14,7 +14,7 @@ export async function createMoverProfile(
   try {
     const profileInputData = {
       image: formData.get("image") as string,
-      alias: formData.get("alias") as string,
+      name: formData.get("name") as string,
       career: Number(formData.get("career")),
       onelineIntroduction: formData.get("onelineIntroduction") as string,
       detailDescription: formData.get("detailDescription") as string,

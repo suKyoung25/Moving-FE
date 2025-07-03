@@ -68,10 +68,14 @@ function InputField({
           name={name}
           value={value}
           onChange={handleChange}
-          className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 pt-3.5 bg-bg-200`}
+          className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 pt-3.5 bg-bg-200 ${error ? "border border-red-500" : ""}`}
           placeholder={placeholder}
         />
-        {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
+        {error && (
+          <div className="text-red-500 mt-2 text-base font-medium leading-[26px]">
+            {error}
+          </div>
+        )}
       </div>
     );
   }
@@ -90,10 +94,15 @@ function InputField({
       onChange?.(updated);
     };
     return (
-      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
+      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-6">
         <div>
           {text}
           <span className="text-blue-300"> *</span>
+          {error && (
+            <div className="text-red-500 mt-0.5 text-base font-medium leading-[26px]">
+              {error}
+            </div>
+          )}
         </div>
 
         <div className="flex gap-3">
@@ -118,7 +127,6 @@ function InputField({
             );
           })}
         </div>
-        {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
       </div>
     );
   }
@@ -156,10 +164,15 @@ function InputField({
     };
 
     return (
-      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-4">
+      <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-6">
         <div>
           {text}
           <span className="text-blue-300"> *</span>
+          {error && (
+            <div className="text-red-500 mt-0.5 text-base font-medium leading-[26px]">
+              {error}
+            </div>
+          )}
         </div>
         <div className="grid grid-cols-5 gap-x-3.5 gap-y-4.5">
           {regions.map((region) => {
@@ -183,7 +196,6 @@ function InputField({
             );
           })}
         </div>
-        {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
       </div>
     );
   }
@@ -200,11 +212,15 @@ function InputField({
         value={value}
         onChange={handleChange}
         type="text"
-        className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 bg-bg-200`}
+        className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 bg-bg-200 ${error ? "border border-red-500" : ""}`}
         placeholder={placeholder}
       />
 
-      {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
+      {error && (
+        <div className="text-red-500 mt-2 text-base font-medium leading-[26px] lg:self-end">
+          {error}
+        </div>
+      )}
     </div>
   );
 }
