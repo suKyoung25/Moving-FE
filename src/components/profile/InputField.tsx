@@ -217,7 +217,7 @@ function InputField({
       />
 
       {error && (
-        <div className="text-red-500 mt-2 text-base font-medium leading-[26px] lg:self-end">
+        <div className="text-red-500 mt-2 text-base font-medium leading-[26px] self-end">
           {error}
         </div>
       )}
