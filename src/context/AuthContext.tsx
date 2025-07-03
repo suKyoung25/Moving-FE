@@ -16,7 +16,14 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 // ✅ context 값 설정
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null); // 이용자 정보
+  const [user, setUser] = useState<User | null>({
+    userType: "client",
+    id: "1",
+    email: "client@example.com",
+    nickname: "일반 사용자",
+    profile:
+      "https://i.namu.wiki/i/prFwl-7kmWl-kONk_w3eAyOt_ENdI9yv3cttWzACi68m_dEM53O2IZBPBHln6Qn3ba7D8-Tx32b8chFVV4CV2w.webp",
+  }); // 이용자 정보
 
   // ★ 로그인 함수 목록
   const loginAsClient = () => {
@@ -25,6 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       id: "1",
       email: "client@example.com",
       nickname: "일반 사용자",
+      profile:
+        "https://i.namu.wiki/i/prFwl-7kmWl-kONk_w3eAyOt_ENdI9yv3cttWzACi68m_dEM53O2IZBPBHln6Qn3ba7D8-Tx32b8chFVV4CV2w.webp",
     });
   };
 

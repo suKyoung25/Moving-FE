@@ -18,10 +18,7 @@ export default function HeaderSideBarMenu({ onClick }: Prop) {
 
   return (
     // 배경
-    <section
-      onClick={onClick}
-      className="fixed z-30 inset-0 bg-bg-black opacity-50"
-    >
+    <section onClick={onClick} className="fixed z-30 inset-0 bg-bg-black/50">
       {/* SideBar 영역 */}
       <aside
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 창이 안 닫히게
@@ -49,23 +46,23 @@ export default function HeaderSideBarMenu({ onClick }: Prop) {
           )}
           {user?.userType === "client" && (
             <>
-              <Link href="" className={linkStyle}>
+              <Link href="/request" className={linkStyle}>
                 견적 요청
               </Link>
               <Link href="/mover-search" className={linkStyle}>
                 기사님 찾기
               </Link>
-              <Link href="" className={linkStyle}>
+              <Link href="/my-quotes" className={linkStyle}>
                 내 견적 찾기
               </Link>
             </>
           )}
           {user?.userType === "mover" && (
             <>
-              <Link href="" className={linkStyle}>
+              <Link href="/received-requests" className={linkStyle}>
                 받은 요청
               </Link>
-              <Link href="" className={linkStyle}>
+              <Link href="/my-quotes" className={linkStyle}>
                 내 견적 관리
               </Link>
             </>
