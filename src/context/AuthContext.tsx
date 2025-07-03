@@ -20,10 +20,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     userType: "client",
     id: "1",
     email: "client@example.com",
-    nickname: "일반 사용자",
+    nickname: "일반인",
     profile:
       "https://i.namu.wiki/i/prFwl-7kmWl-kONk_w3eAyOt_ENdI9yv3cttWzACi68m_dEM53O2IZBPBHln6Qn3ba7D8-Tx32b8chFVV4CV2w.webp",
-  }); // 이용자 정보
+  }); // 假 이용자 정보
 
   // ★ 로그인 함수 목록
   const loginAsClient = () => {
@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       userType: "client",
       id: "1",
       email: "client@example.com",
-      nickname: "일반 사용자",
+      nickname: "일반인",
       profile:
         "https://i.namu.wiki/i/prFwl-7kmWl-kONk_w3eAyOt_ENdI9yv3cttWzACi68m_dEM53O2IZBPBHln6Qn3ba7D8-Tx32b8chFVV4CV2w.webp",
     });
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// ✅ context 값 불러옴
+// context 값 불러옴
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context)

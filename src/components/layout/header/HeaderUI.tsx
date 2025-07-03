@@ -4,29 +4,32 @@ import Image from "next/image";
 import logo from "@/assets/images/logo.svg";
 import menuIcon from "@/assets/images/menuGrayIcon.svg";
 import alarmIcon from "@/assets/images/alarmIcon.svg";
-import profileIcon from "@/assets/images/profileIcon.svg";
+
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
+import HeaderProfile from "./HeaderProfile";
 
+// prop
 interface Prop {
   onToggleMenu: () => void;
 }
 
-// 스타일 모음
+// 스타일
 const defaultLinkStyle =
   "text-18-bold flex gap-10 hover:text-black-400 active:text-black-400";
 const iconStyle = "relative w-6 h-6 cursor-pointer";
 
+// ★ 본문
 export default function HeaderUI({ onToggleMenu }: Prop) {
-  const { user, logout } = useAuth(); // 이용자 정보
+  const { user } = useAuth(); // 이용자 정보
   const pathname = usePathname(); // 현재 경로 받기 (링크 색상)
 
+  // 스타일22
   const linkStyle = (href: string) => {
     const cleanPathname = pathname.replace(/\/$/, "");
     const cleanHref = href.replace(/\/$/, "");
 
-    console.log("pathname:", pathname, "href:", href);
     return cleanPathname.startsWith(cleanHref)
       ? `${defaultLinkStyle} text-black-400`
       : `${defaultLinkStyle} text-gray-400`;
@@ -41,7 +44,7 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
             "
       >
         <div className="flex items-center gap-20">
-          {/* 로고 */}
+          {/* ✅ 로고 */}
           <Link href="/mover-search">
             <figure
               className="
@@ -53,7 +56,7 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
             </figure>
           </Link>
 
-          {/* lg Menu */}
+          {/* ✅ lg Menu */}
           <nav className="hidden lg:flex gap-10">
             {!user && (
               <>
@@ -98,42 +101,24 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
         </div>
 
         <div className="flex gap-6">
-          {/* 알림 아이콘 : 아직 설정 안 함 */}
+          {/* ✅ 알림 아이콘 : 아직 설정 안 함 */}
           {user && (
             <figure className={iconStyle}>
               <Image src={alarmIcon} alt="알림 아이콘" fill />
             </figure>
           )}
 
-          {/* 프로필 아이콘 */}
-          <Link href="/profile">
-            {user?.profile ? (
-              <div className="flex gap-4">
-                <figure className={`${iconStyle} rounded-full overflow-hidden`}>
-                  <Image
-                    src={user.profile}
-                    alt="프로필 아이콘"
-                    fill
-                    className="object-cover"
-                  />
-                </figure>
-                <span className="text-black-400 text-18-medium hidden lg:inline-block">
-                  {user.nickname}
-                </span>
-              </div>
-            ) : (
-              <figure className={iconStyle}>
-                <Image src={profileIcon} alt="프로필 아이콘" fill />
-              </figure>
-            )}
-          </Link>
+          <HeaderProfile />
 
-          {/* sm, md Menu 버튼 */}
-          <figure onClick={onToggleMenu} className={`${iconStyle} lg:hidden`}>
+          {/* ✅ sm, md Menu 버튼 */}
+          <figure
+            onClick={onToggleMenu}
+            className="relative w-6 h-6 cursor-pointer lg:hidden"
+          >
             <Image src={menuIcon} alt="메뉴 아이콘" fill />
           </figure>
 
-          {/* 로그인 버튼 */}
+          {/* ✅ 로그인 버튼 */}
           {!user && (
             <Link href="/sign-in/client">
               <button

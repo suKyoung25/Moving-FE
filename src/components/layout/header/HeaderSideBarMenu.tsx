@@ -11,7 +11,7 @@ interface Prop {
 }
 
 // Link 글자 스타일
-const linkStyle = "text-black-400 text-18-bold flex gap-10 px-5 py-6";
+const linkStyle = "text-black-400 text-18-medium flex gap-10 px-5 py-6";
 
 export default function HeaderSideBarMenu({ onClick }: Prop) {
   const { user } = useAuth(); // 이용자 정보
