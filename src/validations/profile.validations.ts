@@ -1,28 +1,6 @@
 import { ValidationResult } from "@/types/profile.types";
 import { z } from "zod";
 
-// //필드명-유효성검사함수 매핑
-// const fieldValidators: Record<string, (value: any) => ValidationResult> = {
-//   name: validateName,
-//   career: validateCareer,
-//   onelineIntroduction: validateOnelineIntroduction,
-//   detailDescription: validateDetailDescription,
-//   serviceType: validateServiceType,
-//   area: validateArea,
-// };
-
-// // 유효성 검사 함수
-// const validateField = (
-//   name: keyof typeof formData,
-//   value: string | string[]
-// ) => {
-//   const validator = fieldValidators[name];
-//   if (!validator) return "";
-
-//   const result = validator(value);
-//   return result.success ? "" : result.message;
-// };
-
 export function validateName(name: string | string[]): ValidationResult {
   const schema = z.string().min(1, "별명을 입력해주세요.");
   const result = schema.safeParse(name);

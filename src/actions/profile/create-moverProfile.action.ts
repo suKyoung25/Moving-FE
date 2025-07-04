@@ -1,5 +1,6 @@
 "use server";
 
+import { profileState } from "@/types/profile.types";
 import {
   validateName,
   validateCareer,
@@ -9,18 +10,12 @@ import {
   validateArea,
 } from "@/validations";
 
-type profileState = {
-  status: boolean;
-  error?: string;
-} | null;
-
 export async function createMoverProfile(
   state: profileState,
   formData: FormData
 ): Promise<profileState> {
   try {
     const profileInputData = {
-      image: formData.get("image") as string,
       name: formData.get("name") as string,
       career: formData.get("career") as string,
       onelineIntroduction: formData.get("onelineIntroduction") as string,
