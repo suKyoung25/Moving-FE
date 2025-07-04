@@ -31,6 +31,10 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
     pathname.startsWith(path)
   );
 
+  const isSubMenuPage = ["/my-quotes", "/reviews"].some((path) =>
+    pathname.startsWith(path)
+  );
+
   // 링크 스타일22
   const linkStyle = (href: string) => {
     const cleanPathname = pathname.replace(/\/$/, "");
@@ -44,7 +48,7 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
   return (
     <header
       className={`
-        sticky top-0 left-0 z-20 bg-white
+        sticky top-0 left-0 z-25 bg-white
         ${
           isDefaultLogoPage
             ? "border-b border-line-100"
@@ -94,7 +98,7 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
                   기사님 찾기
                 </Link>
                 <Link href="/my-quotes" className={linkStyle("/my-quotes")}>
-                  내 견적 찾기
+                  내 견적 관리
                 </Link>
               </>
             )}

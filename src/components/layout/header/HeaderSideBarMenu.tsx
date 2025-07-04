@@ -53,7 +53,7 @@ export default function HeaderSideBarMenu({ onClick }: Prop) {
                 기사님 찾기
               </Link>
               <Link href="/my-quotes" className={linkStyle}>
-                내 견적 찾기
+                내 견적 관리
               </Link>
             </>
           )}
