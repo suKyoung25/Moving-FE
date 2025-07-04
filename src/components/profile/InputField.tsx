@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import profileUploaderIcon from "@/assets/images/profileUploaderIcon.svg";
 import { InputFieldProps } from "@/types/profile.types";
 
@@ -15,14 +15,34 @@ function InputField({
   text,
   placeholder,
   height,
-  error,
-  value,
-  onChange,
+  // error,
+  // value,
+  // onChange,
+  validator, // 유효성 검사 함수
+  defaultValue,
+  onValidChange, // 값이 바뀔 때 호출
 }: InputFieldProps) {
+  const [value, setValue] = useState<string | string[]>(
+    defaultValue ?? (isServiceType || isArea ? [] : "")
+  );
+  const [error, setError] = useState("");
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    onChange?.(e.target.value);
+    const newVal = e.target.value;
+    setValue(newVal); //input 값 저장
+
+    if (validator) {
+      const result = validator(newVal); //input 값을 유효성 검사
+
+      if (result.success) {
+        onValidChange?.(name, newVal); // 외부로 값 전달
+        setError("");
+      } else {
+        setError(result.message);
+      }
+    }
   };
 
   //프로필 이미지 input인 경우
@@ -67,19 +87,32 @@ function InputField({
     );
   }
 
+  //버튼 사용하는 컴포넌트에서 사용
+  const handleToggle = (type: string) => {
+    if (!Array.isArray(value)) return;
+
+    const updated = value.includes(type)
+      ? value.filter((item) => item !== type) // 한번 더 누르면 선택 해제
+      : [...value, type]; // 선택 추가
+
+    setValue(updated);
+
+    if (validator) {
+      const result = validator(updated);
+      setError(result.success ? "" : result.message);
+
+      if (result.success) {
+        onValidChange?.(name, updated);
+      }
+    }
+  };
+
   //제공 서비스 input인 경우 (소형이사, 가정이사, 사무실이사)
-  const serviceTypes = ["소형이사", "가정이사", "사무실이사"];
+
   if (isServiceType) {
-    // value가 배열인지 보장 (중복선택 가능)
-    const selectedValues = Array.isArray(value) ? value : [];
+    const serviceTypes = ["소형이사", "가정이사", "사무실이사"];
+    const selectedValues = Array.isArray(value) ? value : []; // value가 배열인지 보장 (중복선택 가능)
 
-    const handleToggle = (type: string) => {
-      const updated = selectedValues.includes(type)
-        ? selectedValues.filter((item) => item !== type) // 한번 더 누르면 선택 해제
-        : [...selectedValues, type]; // 선택 추가
-
-      onChange?.(updated);
-    };
     return (
       <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-6">
         <div>
@@ -105,11 +138,13 @@ function InputField({
                 >
                   {type}
                 </button>
-                <input //button에는 name으로 연결시킬 수 없어서 hidden input 사용
-                  type="hidden"
-                  name="type"
-                  value={type}
-                />
+                {isSelected && (
+                  <input //button에는 name으로 연결시킬 수 없어서 hidden input 사용
+                    type="hidden"
+                    name="type"
+                    value={type}
+                  />
+                )}
               </React.Fragment>
             );
           })}
@@ -139,16 +174,7 @@ function InputField({
       "부산",
       "제주",
     ];
-    // value가 배열인지 보장 (중복선택 가능)
-    const selectedValues = Array.isArray(value) ? value : [];
-
-    const handleToggle = (type: string) => {
-      const updated = selectedValues.includes(type)
-        ? selectedValues.filter((item) => item !== type) // 한번 더 누르면 선택 해제
-        : [...selectedValues, type]; // 선택 추가
-
-      onChange?.(updated);
-    };
+    const selectedValues = Array.isArray(value) ? value : []; // value가 배열인지 보장 (중복선택 가능)
 
     return (
       <div className="text-16-semibold lg:text-20-semibold leading-8 flex flex-col gap-6">
@@ -174,11 +200,13 @@ function InputField({
                 >
                   {region}
                 </button>
-                <input //button에는 name으로 연결시킬 수 없어서 hidden input 사용
-                  type="hidden"
-                  name="region"
-                  value={region}
-                />
+                {isSelected && (
+                  <input //button에는 name으로 연결시킬 수 없어서 hidden input 사용
+                    type="hidden"
+                    name="region"
+                    value={region}
+                  />
+                )}
               </React.Fragment>
             );
           })}
@@ -201,6 +229,12 @@ function InputField({
         type="text"
         className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 bg-bg-200 ${error ? "border border-red-500" : ""}`}
         placeholder={placeholder}
+        // onBlur={() => {
+        //   if (validator) {
+        //     const result = validator(value);
+        //     setError(result.success ? "" : result.message);
+        //   }
+        // }}
       />
 
       {error && (

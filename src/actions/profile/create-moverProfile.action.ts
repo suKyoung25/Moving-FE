@@ -1,6 +1,13 @@
 "use server";
 
-import { moverProfileSchema } from "@/validations";
+import {
+  validateName,
+  validateCareer,
+  validateOnelineIntroduction,
+  validateDetailDescription,
+  validateServiceType,
+  validateArea,
+} from "@/validations";
 
 type profileState = {
   status: boolean;
@@ -15,20 +22,42 @@ export async function createMoverProfile(
     const profileInputData = {
       image: formData.get("image") as string,
       name: formData.get("name") as string,
-      career: Number(formData.get("career")),
+      career: formData.get("career") as string,
       onelineIntroduction: formData.get("onelineIntroduction") as string,
       detailDescription: formData.get("detailDescription") as string,
       serviceType: formData.getAll("serviceType") as string[],
       area: formData.getAll("area") as string[],
     };
 
-    //데이터 유효성 검사
-    const parsed = moverProfileSchema.safeParse(profileInputData);
+    // 개별 유효성 검사 실행
+    const errors: Record<string, string> = {};
 
-    if (!parsed.success) {
-      const formatted = parsed.error.format();
+    const nameResult = validateName(profileInputData.name);
+    if (!nameResult.success) errors.name = nameResult.message;
 
-      return { status: false, error: JSON.stringify(formatted) };
+    const careerResult = validateCareer(profileInputData.career);
+    if (!careerResult.success) errors.career = careerResult.message;
+
+    const onelineResult = validateOnelineIntroduction(
+      profileInputData.onelineIntroduction
+    );
+    if (!onelineResult.success)
+      errors.onelineIntroduction = onelineResult.message;
+
+    const detailResult = validateDetailDescription(
+      profileInputData.detailDescription
+    );
+    if (!detailResult.success) errors.detailDescription = detailResult.message;
+
+    const serviceTypeResult = validateServiceType(profileInputData.serviceType);
+    if (!serviceTypeResult.success)
+      errors.serviceType = serviceTypeResult.message;
+
+    const areaResult = validateArea(profileInputData.area);
+    if (!areaResult.success) errors.area = areaResult.message;
+
+    if (Object.keys(errors).length > 0) {
+      return { status: false, error: JSON.stringify(errors) };
     }
 
     return { status: true };
