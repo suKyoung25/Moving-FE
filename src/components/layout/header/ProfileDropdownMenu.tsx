@@ -14,7 +14,7 @@ interface Prop {
 const commonTextStyle =
   "flex w-full pl-3 py-2 items-center gap-0.5 text-black-400 lg:py-3.5";
 
-export default function HeaderDropdownMenu({ onClose }: Prop) {
+export default function ProfileDropdownMenu({ onClose }: Prop) {
   const { user, logout } = useAuth();
   const router = useRouter();
 

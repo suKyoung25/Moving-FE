@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import profileIcon from "@/assets/images/profileIcon.svg";
 import Link from "next/link";
-import HeaderDropdownMenu from "./HeaderDropdownMenu";
+import ProfileDropdownMenu from "./ProfileDropdownMenu";
 
 const iconStyle = "relative w-6 h-6 cursor-pointer";
 
@@ -58,7 +58,7 @@ export default function HeaderProfile() {
   ) : (
     <div className="relative" ref={dropdownRef}>
       <button onClick={() => setIsOpen(!isOpen)}>{profileDiv}</button>
-      {isOpen && <HeaderDropdownMenu onClose={() => setIsOpen(false)} />}
+      {isOpen && <ProfileDropdownMenu onClose={() => setIsOpen(false)} />}
     </div>
   );
 }

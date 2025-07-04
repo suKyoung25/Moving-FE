@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/assets/images/logo.svg";
+import logo from "@/assets/images/logoMobile.svg";
+import logoText from "@/assets/images/logoText.svg";
 import menuIcon from "@/assets/images/menuGrayIcon.svg";
 import alarmIcon from "@/assets/images/alarmIcon.svg";
 
@@ -15,7 +16,7 @@ interface Prop {
   onToggleMenu: () => void;
 }
 
-// 스타일
+// 링크 스타일
 const defaultLinkStyle =
   "text-18-bold flex gap-10 hover:text-black-400 active:text-black-400";
 const iconStyle = "relative w-6 h-6 cursor-pointer";
@@ -25,7 +26,12 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
   const { user } = useAuth(); // 이용자 정보
   const pathname = usePathname(); // 현재 경로 받기 (링크 색상)
 
-  // 스타일22
+  // ✅ 로고, 밑줄 스타일 바꿀 페이지 정리
+  const isDefaultLogoPage = ["/sign-up", "/sign-in", "/profile"].some((path) =>
+    pathname.startsWith(path)
+  );
+
+  // 링크 스타일22
   const linkStyle = (href: string) => {
     const cleanPathname = pathname.replace(/\/$/, "");
     const cleanHref = href.replace(/\/$/, "");
@@ -36,23 +42,31 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
   };
 
   return (
-    <header className="sticky top-0 left-0 z-20 bg-white border-b border-line-100">
+    <header
+      className={`
+        sticky top-0 left-0 z-20 bg-white
+        ${
+          isDefaultLogoPage
+            ? "border-b border-line-100"
+            : "lg:border-b lg:border-line-100"
+        }`}
+    >
       <div
         className="
             flex items-center justify-between mx-auto
-            max-w-[1400px] h-14 lg:h-20 px-6 md:px-16 lg:px-0
+            max-w-[1400px] h-14 lg:h-22 px-6 md:px-16 lg:px-0
             "
       >
         <div className="flex items-center gap-20">
           {/* ✅ 로고 */}
           <Link href="/mover-search">
-            <figure
-              className="
-                relative cursor-pointer
-                w-22 lg:w-29 h-[34px] lg:h-11
-              "
-            >
-              <Image src={logo} alt="무빙 로고" fill />
+            <figure className="relative flex gap-0 cursor-pointer h-8 lg:h-11 lg:gap-2.5">
+              <Image src={logo} alt="무빙 로고(icon)" />
+              <Image
+                src={logoText}
+                alt="무빙 로고(text)"
+                className={isDefaultLogoPage ? "block" : "!hidden md:!block"}
+              />
             </figure>
           </Link>
 
@@ -108,6 +122,7 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
             </figure>
           )}
 
+          {/* ✅ 프로필 + dropdownMenu */}
           <HeaderProfile />
 
           {/* ✅ sm, md Menu 버튼 */}
