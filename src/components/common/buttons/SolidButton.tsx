@@ -2,11 +2,13 @@ import React from "react";
 
 type SolidButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
+  className?: string;
 };
 
 export default function SolidButton({
   children,
   disabled,
+  className = "",
   ...props
 }: SolidButtonProps) {
   return (
@@ -27,6 +29,7 @@ export default function SolidButton({
         h-13.5
         md:h-16 md:text-20-semibold
         disabled:!cursor-not-allowed
+        ${className}
       `}
       {...props}
     >
