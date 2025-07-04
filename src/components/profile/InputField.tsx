@@ -131,7 +131,7 @@ function InputField({
     );
   }
 
-  //서비스 가능 input인 경우 (각 지역별로)
+  //서비스 가능 input인 경우
   if (isArea) {
     const regions = [
       "서울",

@@ -63,10 +63,6 @@ function MoverProfilePage() {
   const hasFieldErrors = Object.values(errors).some((err) => err); //각 input에서 error가 있는지 확인
   const isDisabled = isPending || hasFieldErrors || !areRequiredFieldsFilled; //>>>최종적으로 버튼 활성화 여부 확인
 
-  //디버깅
-  console.log(formData);
-  console.log(hasFieldErrors);
-
   return (
     <>
       <div className="flex flex-col gap-4 lg:gap-8 mb-6 lg:mb-12">

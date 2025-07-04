@@ -31,10 +31,6 @@ export async function createMoverProfile(
       return { status: false, error: JSON.stringify(formatted) };
     }
 
-    //디버깅
-    const profile = parsed.data;
-    console.log("서버로 전송할 데이터", profile);
-
     return { status: true };
   } catch (error) {
     console.error("서버 에러:", error);
