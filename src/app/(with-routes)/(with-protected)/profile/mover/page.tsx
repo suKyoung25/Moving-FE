@@ -7,10 +7,7 @@ import { moverProfileSchema } from "@/validations";
 import React, { useActionState, useState } from "react";
 
 function MoverProfilePage() {
-  const [state, formAction, isPending] = useActionState(
-    createMoverProfile,
-    null
-  );
+  const [, formAction, isPending] = useActionState(createMoverProfile, null);
 
   //모든 input의 입력값 관리
   const [formData, setFormData] = useState({
@@ -28,7 +25,7 @@ function MoverProfilePage() {
   // 클라이언트 측 유효성 검사 함수
   const validateField = (
     name: keyof typeof moverProfileSchema.shape,
-    value: any
+    value: string | string[]
   ) => {
     //name은 zod에서 key 타입이랑 비교
     const partial = { [name]: value };
