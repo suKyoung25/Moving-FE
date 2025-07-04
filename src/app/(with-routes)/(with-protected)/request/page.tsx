@@ -1,8 +1,9 @@
-//견적 요청
-export default function Page() {
-    return(
-        <div>
-            페이지 이름을 각자 알맞게 수정!
-        </div>
-    )
+import FormWizard from "./_components/FormWizard";
+
+export default function EstimateRequestPage() {
+  return (
+    <div className="flex flex-col w-full min-h-screen px-6 md:px-52 lg:px-65 bg-bg-200">
+      <FormWizard />
+    </div>
+  );
 }

@@ -23,9 +23,9 @@ export default function SolidButton({
         duration-200
         bg-primary-blue-300
         hover:bg-primary-blue-200
-        disabled:bg-gray-300
+        disabled:bg-gray-100
         h-13.5
-        md:h-16 md:text-20-semibold
+        lg:h-16 lg:text-20-semibold
         disabled:!cursor-not-allowed
       `}
       {...props}
