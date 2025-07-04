@@ -31,10 +31,6 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
     pathname.startsWith(path)
   );
 
-  const isSubMenuPage = ["/my-quotes", "/reviews"].some((path) =>
-    pathname.startsWith(path)
-  );
-
   // 링크 스타일22
   const linkStyle = (href: string) => {
     const cleanPathname = pathname.replace(/\/$/, "");
