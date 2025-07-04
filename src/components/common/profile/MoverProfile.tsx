@@ -42,7 +42,7 @@ export default function MoverProfile({
       {/* 프로필 이미지 */}
       <div
         className={
-          "relative rounded-full overflow-hidden mr-3 lg:mr-6 w-11.5 h-11.5 " +
+          "relative rounded-full overflow-hidden mr-3 lg:mr-6 w-11.5 h-11.5 border-2 border-primary-blue-400 " +
           (big ? "lg:w-20 lg:h-20" : "lg:w-14 lg:h-14")
         }
       >

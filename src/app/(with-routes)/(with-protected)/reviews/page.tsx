@@ -1,8 +1,10 @@
+import ReviewTabs from "./_components/ReviewTabs";
+
 // 리뷰 작성
-export default function Page() {
-    return(
-        <div>
-            페이지 이름을 각자 알맞게 수정!
-        </div>
-    )
+export default function ReviewsPage() {
+  return (
+    <div>
+      <ReviewTabs />
+    </div>
+  );
 }
