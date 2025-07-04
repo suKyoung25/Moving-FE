@@ -45,7 +45,11 @@ export default function ReviewModal({
           리뷰 쓰기
         </div>
         <button
-          onClick={onClose}
+          onClick={() => {
+            onClose();
+            setContent("");
+            setRating(0);
+          }}
           className="absolute top-7.5 right-6 w-6 h-6 lg:w-9 lg:h-9"
         >
           <Image src={close} fill alt="닫기" />
