@@ -9,8 +9,8 @@ function GeneralInputField({
   text,
   placeholder,
   height,
-  validator, // 주석: 유효성 검사 함수
   defaultValue,
+  validator,
   onValidChange, // 주석: 시작하기 버튼의 활성화 관련
 }: InputFieldProps) {
   const [value, setValue] = useState<string | string[]>(defaultValue ?? "");

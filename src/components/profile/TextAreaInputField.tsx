@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { InputFieldProps } from "@/types/profile.types";
+import { validateDetailDescription } from "@/validations";
 
 //상세 설명 (textArea) input인 경우
 function TextAreaInputField({
@@ -9,7 +10,6 @@ function TextAreaInputField({
   text,
   placeholder,
   height,
-  validator, // 주석: 유효성 검사 함수
   defaultValue,
   onValidChange, // 주석: 시작하기 버튼의 활성화 관련
 }: InputFieldProps) {
@@ -22,15 +22,13 @@ function TextAreaInputField({
     const newVal = e.target.value;
     setValue(newVal);
 
-    if (validator) {
-      const result = validator(newVal);
+    const result = validateDetailDescription(newVal);
 
-      if (result.success) {
-        onValidChange?.(name, result.success);
-        setError("");
-      } else {
-        setError(result.message);
-      }
+    if (result.success) {
+      onValidChange?.(name, result.success);
+      setError("");
+    } else {
+      setError(result.message);
     }
   };
 

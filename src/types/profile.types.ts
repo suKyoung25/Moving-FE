@@ -1,9 +1,9 @@
 //기사님 프로필 등록 페이지의 input값 모음집
 export interface InputFieldProps {
-  name?: string;
-  text: string; //input의 제목
+  name: string; //useActionsState로 매핑하기 위한
+  text: string;
   placeholder?: string;
-  height?: string; //반응형 높이 조절
+  height?: string;
 
   isServiceType?: boolean; //제공 서비스인지
   isArea?: boolean; //서비스 가능 지역인지

@@ -4,17 +4,16 @@ import { createMoverProfile } from "@/actions/profile/create-moverProfile.action
 import SolidButton from "@/components/common/buttons/SolidButton";
 import GeneralInputField from "@/components/profile/GeneralInputField";
 import React, { useActionState, useState } from "react";
-import {
-  validateName,
-  validateCareer,
-  validateOnelineIntroduction,
-  validateDetailDescription,
-  validateServiceType,
-  validateArea,
-} from "@/validations"; //주석: 입력값의 유효성 검사를 개별적으로 진행
 import ImageInputField from "./ImageInputField";
 import ButtonInputField from "./ButtonInputField";
 import TextAreaInputField from "./TextAreaInputField";
+import {
+  validateArea,
+  validateCareer,
+  validateName,
+  validateOnelineIntroduction,
+  validateServiceType,
+} from "@/validations";
 
 function ProfileForm() {
   const [, formAction, isPending] = useActionState(createMoverProfile, null);
@@ -47,7 +46,7 @@ function ProfileForm() {
       className="flex flex-col w-full mt-6 lg:mt-12 lg:flex-row lg:gap-18"
     >
       <div className="flex flex-col flex-1">
-        <ImageInputField text="프로필 이미지" />
+        <ImageInputField name="image" text="프로필 이미지" />
 
         <hr className="hidden lg:block m-0 p-0 border-t-[1px] border-line-100 my-8" />
 
@@ -57,10 +56,8 @@ function ProfileForm() {
             text="별명"
             placeholder="사이트에 노출될 이름을 입력해주세요"
             height="h-13 mg:h-13 lg:h-16"
+            onValidChange={handleValidityChange}
             validator={validateName}
-            onValidChange={(name, isValid) =>
-              handleValidityChange(name, isValid)
-            }
           />
         </div>
 
@@ -71,8 +68,8 @@ function ProfileForm() {
           text="경력"
           placeholder="기사님의 경력을 입력해주세요"
           height="h-13 mg:h-13 lg:h-16"
-          validator={validateCareer}
           onValidChange={handleValidityChange}
+          validator={validateCareer}
         />
 
         <hr className="m-0 p-0 border-t-[1px] border-line-100 my-8" />
@@ -82,8 +79,8 @@ function ProfileForm() {
           text="한 줄 소개"
           placeholder="한 줄 소개를 입력해주세요"
           height="h-13 mg:h-13 lg:h-16"
-          validator={validateOnelineIntroduction}
           onValidChange={handleValidityChange}
+          validator={validateOnelineIntroduction}
         />
 
         <hr className="m-0 p-0 border-t-[1px] border-line-100 my-8 lg:hidden" />
@@ -95,7 +92,6 @@ function ProfileForm() {
           text="상세 설명"
           placeholder="상세 내용을 입력해주세요"
           height="h-[160px]"
-          validator={validateDetailDescription}
           onValidChange={handleValidityChange}
         />
 

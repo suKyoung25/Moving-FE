@@ -1,14 +1,7 @@
 "use server";
 
 import { profileState } from "@/types/profile.types";
-import {
-  validateName,
-  validateCareer,
-  validateOnelineIntroduction,
-  validateDetailDescription,
-  validateServiceType,
-  validateArea,
-} from "@/validations";
+import { moverProfileSchema } from "@/validations";
 
 export async function createMoverProfile(
   state: profileState,
@@ -16,6 +9,7 @@ export async function createMoverProfile(
 ): Promise<profileState> {
   try {
     const profileInputData = {
+      image: formData.get("image") as string,
       name: formData.get("name") as string,
       career: formData.get("career") as string,
       onelineIntroduction: formData.get("onelineIntroduction") as string,
@@ -24,36 +18,14 @@ export async function createMoverProfile(
       area: formData.getAll("area") as string[],
     };
 
-    // 개별 유효성 검사 실행
-    const errors: Record<string, string> = {};
+    const parsed = moverProfileSchema.safeParse(profileInputData);
 
-    const nameResult = validateName(profileInputData.name);
-    if (!nameResult.success) errors.name = nameResult.message;
-
-    const careerResult = validateCareer(profileInputData.career);
-    if (!careerResult.success) errors.career = careerResult.message;
-
-    const onelineResult = validateOnelineIntroduction(
-      profileInputData.onelineIntroduction
-    );
-    if (!onelineResult.success)
-      errors.onelineIntroduction = onelineResult.message;
-
-    const detailResult = validateDetailDescription(
-      profileInputData.detailDescription
-    );
-    if (!detailResult.success) errors.detailDescription = detailResult.message;
-
-    const serviceTypeResult = validateServiceType(profileInputData.serviceType);
-    if (!serviceTypeResult.success)
-      errors.serviceType = serviceTypeResult.message;
-
-    const areaResult = validateArea(profileInputData.area);
-    if (!areaResult.success) errors.area = areaResult.message;
-
-    if (Object.keys(errors).length > 0) {
+    if (!parsed.success) {
+      const errors = parsed.error.flatten().fieldErrors;
       return { status: false, error: JSON.stringify(errors) };
     }
+
+    // TODO: fetch 구문 작성 예정
 
     return { status: true };
   } catch (error) {
