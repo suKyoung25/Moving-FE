@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/types/auth.type";
+import { User } from "@/lib/types/auth.type";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 // ✅ type 등
