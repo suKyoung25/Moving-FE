@@ -1,4 +1,4 @@
-//기사님 프로필 등록 페이지의 input값 모음집
+//기사님 프로필 컴포넌트 모음집
 export interface InputFieldProps {
   name: string; //useActionsState로 매핑하기 위한
   text: string;

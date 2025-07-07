@@ -1,21 +1,24 @@
 "use server";
 
 import { profileState } from "@/types/profile.types";
-import { moverProfileSchema } from "@/validations";
+import { MoverProfileInput, moverProfileSchema } from "@/validations";
 
 export async function createMoverProfile(
   state: profileState,
   formData: FormData
 ): Promise<profileState> {
   try {
-    const profileInputData = {
-      image: formData.get("image") as string,
-      name: formData.get("name") as string,
-      career: formData.get("career") as string,
-      onelineIntroduction: formData.get("onelineIntroduction") as string,
-      detailDescription: formData.get("detailDescription") as string,
-      serviceType: formData.getAll("serviceType") as string[],
-      area: formData.getAll("area") as string[],
+    const profileInputData: MoverProfileInput = {
+      image: formData.get("image")?.toString(),
+      name: formData.get("name")?.toString() ?? "",
+      career: formData.get("career")?.toString() ?? "",
+      onelineIntroduction:
+        formData.get("onelineIntroduction")?.toString() ?? "",
+      detailDescription: formData.get("detailDescription")?.toString() ?? "",
+      serviceType: formData
+        .getAll("serviceType")
+        ?.map((item) => item.toString()),
+      area: formData.getAll("area")?.map((item) => item.toString()),
     };
 
     const parsed = moverProfileSchema.safeParse(profileInputData);

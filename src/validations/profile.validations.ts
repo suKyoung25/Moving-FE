@@ -78,3 +78,5 @@ export const moverProfileSchema = z.object({
   serviceType: z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요."),
   area: z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요."),
 });
+
+export type MoverProfileInput = z.input<typeof moverProfileSchema>;
