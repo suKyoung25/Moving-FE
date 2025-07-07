@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import profileUploaderIcon from "@/assets/images/profileUploaderIcon.svg";
-import { InputFieldProps } from "@/types/profile.types";
+import { InputFieldProps } from "@/lib/types/profile.types";
 
 //프로필 이미지 input인 경우
 function ImageInputField({ text }: InputFieldProps) {

@@ -1,4 +1,4 @@
-import { ValidationResult } from "@/types/profile.types";
+import { ValidationResult } from "@/lib/types/profile.types";
 import { z } from "zod";
 
 export function validateName(name: string | string[]): ValidationResult {

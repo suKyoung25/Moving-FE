@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { InputFieldProps } from "@/types/profile.types";
+import { InputFieldProps } from "@/lib/types/profile.types";
 
 //일반적인 (별명, 경력, 한 줄 소개) input인 경우
 function GeneralInputField({
