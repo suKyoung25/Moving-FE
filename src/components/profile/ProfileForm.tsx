@@ -20,7 +20,7 @@ function ProfileForm() {
 
   //주석: 시작하기 버튼 활성화를 위한 상태 관리
   const [fieldValidity, setFieldValidity] = useState<Record<string, boolean>>({
-    name: false,
+    nickName: false,
     career: false,
     onelineIntroduction: false,
     detailDescription: false,
@@ -29,10 +29,10 @@ function ProfileForm() {
   });
 
   //주석: 시작하기 버튼 활성화를 위해 InputField 컴포넌트로 내려줄 함수
-  const handleValidityChange = (name: string, isValid: boolean) => {
+  const handleValidityChange = (key: string, isValid: boolean) => {
     setFieldValidity((prev) => ({
       ...prev,
-      [name]: isValid,
+      [key]: isValid,
     }));
   };
 
@@ -52,7 +52,7 @@ function ProfileForm() {
 
         <div className="mt-8">
           <GeneralInputField
-            name="name"
+            name="nickName"
             text="별명"
             placeholder="사이트에 노출될 이름을 입력해주세요"
             height="h-13 mg:h-13 lg:h-16"

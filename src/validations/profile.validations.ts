@@ -65,7 +65,7 @@ export function validateArea(area: string | string[]): ValidationResult {
 //서버용 유효성 모음집
 export const moverProfileSchema = z.object({
   image: z.string().optional(),
-  name: z.string().min(1, "별명을 입력해주세요."),
+  nickName: z.string().min(1, "별명을 입력해주세요."),
   career: z
     .string()
     .min(1, "숫자만 입력해주세요.") // 빈 문자열인지 체크 (처음부터 숫자로 하면 빈문자열을 0으로 인식함)
