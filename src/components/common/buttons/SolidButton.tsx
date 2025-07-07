@@ -7,6 +7,7 @@ type SolidButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export default function SolidButton({
   children,
   disabled,
+  className = "w-full",
   ...props
 }: SolidButtonProps) {
   return (
@@ -14,7 +15,6 @@ export default function SolidButton({
       type="button"
       disabled={disabled}
       className={`
-        w-full
         px-4
         rounded-2xl
         text-white
@@ -27,6 +27,7 @@ export default function SolidButton({
         h-13.5
         lg:h-16 lg:text-20-semibold
         disabled:!cursor-not-allowed
+        ${className}
       `}
       {...props}
     >
