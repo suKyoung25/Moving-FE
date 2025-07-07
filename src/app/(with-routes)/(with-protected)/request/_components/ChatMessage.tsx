@@ -31,7 +31,7 @@ export default function ChatMessage({
   return (
     <div className="flex flex-col items-end gap-2 self-end">
       <div
-        className={`${baseStyle} rounded-l-3xl rounded-br-3xl bg-blue-500 text-white`}
+        className={`${baseStyle} rounded-l-3xl rounded-br-3xl bg-primary-blue-300 text-white`}
       >
         {message}
       </div>

@@ -8,10 +8,12 @@ import Image from "next/image";
 import CheckedIcon from "@/assets/images/roundActiveIcon.svg";
 import UncheckedIcon from "@/assets/images/roundDefaultIcon.svg";
 import SolidButton from "@/components/common/buttons/SolidButton";
+import ChatWrapper from "./ChatWrapper";
 
 // 이사 종류 선택
 export default function Step1() {
-  const { state, dispatch, currentStep, goToNextStep } = useFormWizard();
+  const { state, dispatch, currentStep, goToNextStep, goToPrevStep } =
+    useFormWizard();
   const selected = state.moveType;
 
   const selectOptions = [
@@ -28,12 +30,16 @@ export default function Step1() {
     dispatch({ type: "SET_MOVE_TYPE", payload: value });
   };
 
+  // 이미 Step1이 완료된 경우: 선택 결과만 보여줌
   if (currentStep > 0) {
-    // 이미 Step1이 완료된 경우: 선택 결과만 보여줌
     return (
       <>
         <ChatMessage type="system" message="이사 종류를 선택해 주세요." />
-        <ChatMessage type="user" message={selectedLabel ?? ""} />
+        <ChatMessage
+          type="user"
+          message={selectedLabel ?? ""}
+          onEditClick={goToPrevStep}
+        />
       </>
     );
   }
@@ -41,8 +47,7 @@ export default function Step1() {
   return (
     <>
       <ChatMessage type="system" message="이사 종류를 선택해 주세요." />
-
-      <div className="flex flex-col gap-4 self-end w-fit lg:gap-6 bg-white p-4 lg:p-10 rounded-l-3xl rounded-br-3xl">
+      <ChatWrapper>
         <div className="flex flex-col gap-2 lg:gap-4">
           {selectOptions.map((option) => (
             <button
@@ -66,11 +71,10 @@ export default function Step1() {
             </button>
           ))}
         </div>
-
         <SolidButton onClick={goToNextStep} disabled={!selected}>
           선택완료
         </SolidButton>
-      </div>
+      </ChatWrapper>
     </>
   );
 }

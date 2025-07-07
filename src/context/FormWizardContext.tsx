@@ -1,19 +1,24 @@
 "use client";
 
 import {
-  ChildrenProps,
   FormWizardAction,
   FormWizardContextType,
   FormWizardState,
 } from "@/types";
 
-import { createContext, useContext, useReducer, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useReducer,
+  useState,
+} from "react";
 
 const initialState: FormWizardState = {
-  moveType: null,
-  moveDate: null,
-  fromAddress: null,
-  toAddress: null,
+  moveType: undefined,
+  moveDate: undefined,
+  fromAddress: undefined,
+  toAddress: undefined,
 };
 
 function reducer(
@@ -42,7 +47,7 @@ export const useFormWizard = () => {
   return context;
 };
 
-export const FormWizardProvider = ({ children }: ChildrenProps) => {
+export const FormWizardProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [currentStep, setCurrentStep] = useState<number>(0);
 
