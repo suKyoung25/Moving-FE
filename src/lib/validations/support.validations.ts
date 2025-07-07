@@ -1,0 +1,1 @@
+// 예시 코드는 email.validations.ts에 작성됨.
