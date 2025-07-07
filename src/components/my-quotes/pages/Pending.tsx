@@ -14,7 +14,7 @@ const Pending = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-[#fafafa] py-8 text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">
+    <div className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">
       <section
         style={{
           boxShadow:

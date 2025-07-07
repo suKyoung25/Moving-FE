@@ -14,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="min-h-full h-full">{children}</body>
+      <body className="min-h-full h-full">
+        <main>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

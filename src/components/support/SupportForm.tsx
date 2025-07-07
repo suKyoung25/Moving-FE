@@ -14,8 +14,8 @@
 //             className="w-full flex flex-col"
 //         >
 //             <div className="md:flex md:gap-10 lg:gap-20">
-//                 <SupportInput name="name" label="작성자 성함" important={true} />
-//                 <SupportInput name="email" label="이메일" important={true} />
+//                 <SupportInput name="name"  label="작성자 성함" important={true} />
+//                 <SupportInput name="email" label="이메일"  important={true} />
 //             </div>
 //             <div className="md:flex md:gap-10 lg:gap-20">
 //                 <SupportInput name="title" label="글제목" important={true} />
@@ -36,7 +36,8 @@
 //                 />
 //             </div>
 //             <div className="flex justify-center mt-12">
-//                <SupportSubmitButton />
+//                {/* <SupportSubmitButton /> */}
+//                <button type="submit">전송</button>
 //             </div>
 //         </form>
 //     )
