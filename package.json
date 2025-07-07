@@ -15,7 +15,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
-    "react-multi-carousel": "^2.8.6"
+    "react-multi-carousel": "^2.8.6",
+    "zod": "^3.25.71"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -28,5 +29,18 @@
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
+  },
+  "description": "고객이 견적을 요청하고, 비교 및 예약할 수 있도록 돕는 웹 기반 이사 서비스 플랫폼입니다.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/az0319h/6th-Moving-4Team-FE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/az0319h/6th-Moving-4Team-FE/issues"
+  },
+  "homepage": "https://github.com/az0319h/6th-Moving-4Team-FE#readme"
 }
