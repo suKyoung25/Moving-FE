@@ -5,7 +5,7 @@ export default function SearchBar() {
   return (
     <div className="w-full">
       <div className="flex items-center w-full h-14 px-4 py-3 rounded-xl bg-bg-200 text-gray-400">
-        <Image src={Search} alt="기사님 프로필" className="w-７ h-７ mr-2" />
+        <Image src={Search} alt="기사님 프로필" className="w-7 h-7 mr-2" />
         <input
           type="text"
           placeholder="텍스트를 입력해 주세요."
