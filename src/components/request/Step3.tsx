@@ -9,30 +9,36 @@ import OutlinedButton from "@/components/common/buttons/OutlinedButton";
 import AddressModal from "./AddressModal";
 import { Request } from "@/lib/types";
 
-// 주소 입력
+// 출발지/도착지 주소 입력 단계
 export default function Step3() {
-  const { currentStep, goToNextStep } = useFormWizard();
+  const { state, dispatch, goToNextStep } = useFormWizard();
+  const { currentStep } = state;
   const [fromAddress, setFromAddress] = useState<Request["fromAddress"]>();
   const [toAddress, setToAddress] = useState<Request["toAddress"]>();
-  const [targetField, setTargetField] = useState<"from" | "to" | null>(null);
+  const [targetField, setTargetField] = useState<"from" | "to" | null>(null); // 현재 열려있는 주소 필드
   const [showModal, setShowModal] = useState<boolean>(false);
 
+  // 주소 선택 완료 시 실행
   const handleComplete = (addr: string) => {
-    console.log(addr);
     if (targetField === "from") {
       setFromAddress(addr);
+      dispatch({ type: "SET_FROM_ADDRESS", payload: addr });
     } else if (targetField === "to") {
       setToAddress(addr);
+      dispatch({ type: "SET_TO_ADDRESS", payload: addr });
     }
     setShowModal(false);
   };
 
+  // 견적 확정하기 클릭 시 다음 단계(폼 제출 상태)로 이동
+  // TODO: 견적 요청 API 연결
   const handleConfirm = () => {
     if (currentStep === 3) {
       goToNextStep();
     }
   };
 
+  // 출발지/도착지 둘 다 입력되면 다음 단계(폼 완성 상태)로 이동
   useEffect(() => {
     if (currentStep === 2 && fromAddress && toAddress) {
       goToNextStep();
@@ -41,7 +47,10 @@ export default function Step3() {
 
   return (
     <>
+      {/* 시스템 메세지 */}
       <ChatMessage type="system" message="이사 지역을 선택해 주세요." />
+
+      {/* 유저 메세지 */}
       <ChatWrapper className="px-6 py-5 lg:p-8">
         <label className="text-sm font-medium lg:text-lg">출발지</label>
         <OutlinedButton
@@ -71,6 +80,7 @@ export default function Step3() {
         </SolidButton>
       </ChatWrapper>
 
+      {/* 주소 검색 모달 */}
       {showModal && (
         <AddressModal
           type={targetField}

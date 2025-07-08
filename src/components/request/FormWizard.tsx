@@ -10,9 +10,12 @@ import Image from "next/image";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import CarImage from "@/assets/images/emptyCarIcon.svg";
 
+// 견적 요청 채팅 폼 (단계별 흐름 제어)
 export default function FormWizard() {
-  const { currentStep } = useFormWizard();
+  const { state } = useFormWizard();
+  const { currentStep } = state;
 
+  // Step 4: 견적 요청 진행중 화면 렌더링
   if (currentStep === 4) {
     return (
       <div className="flex flex-col items-center justify-center gap-8 mt-[127px] lg:mt-[194px]">
@@ -33,6 +36,7 @@ export default function FormWizard() {
     );
   }
 
+  // Step 1~3: 채팅 폼 순차 렌더링 (다음 단계에서 이전 단계 채팅 결과 포함)
   return (
     <>
       <form className="flex flex-col gap-2 lg:gap-6">

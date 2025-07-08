@@ -7,9 +7,11 @@ import { useEffect, useState } from "react";
 import { useFormWizard } from "@/context/FormWizardContext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { currentStep } = useFormWizard();
+  const { state } = useFormWizard();
+  const { currentStep } = state;
   const [progress, setProgress] = useState(0);
 
+  // 현재 단계에 따라 ProgressBar 업데이트
   useEffect(() => {
     setProgress((currentStep + 1) * 25);
   }, [currentStep]);

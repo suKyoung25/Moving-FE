@@ -1,5 +1,6 @@
 import React from "react";
 
+// 유저 채팅 메세지 UI Wrapper (선택 단계)
 export default function ChatWrapper({
   children,
   className = "p-4 lg:p-10 ",

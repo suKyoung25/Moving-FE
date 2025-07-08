@@ -1,5 +1,6 @@
 import React from "react";
 
+// 견적 요청 진행 상태 표시 바
 export default function ProgressBar({ progress }: { progress: number }) {
   return (
     <div
