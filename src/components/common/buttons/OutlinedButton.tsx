@@ -2,11 +2,13 @@ import React from "react";
 
 type OutlinedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
+  className?: string;
 };
 
 export default function OutlinedButton({
   children,
   disabled,
+  className = "",
   ...props
 }: OutlinedButtonProps) {
   return (
@@ -31,6 +33,7 @@ export default function OutlinedButton({
         h-13.5
         md:h-16 md:text-20-semibold
         disabled:!cursor-not-allowed
+        ${className}
       `}
       {...props}
     >

@@ -41,17 +41,17 @@ export default function MoverProfile({
     forceMobileStyle
       ? "lg:h-19.5 px-2.5 py-4"
       : isBig
-      ? "lg:h-28 px-4.5 py-4"
-      : "lg:h-23 px-2.5 py-4",
+        ? "lg:h-28 px-4.5 py-4"
+        : "lg:h-23 px-2.5 py-4",
   ].join(" ");
 
   const profileImageClass = [
-    "relative rounded-full overflow-hidden mr-3",
+    "relative rounded-full overflow-hidden mr-3 border-2 border-primary-blue-400",
     forceMobileStyle
       ? "w-11.5 h-11.5"
       : isBig
-      ? "lg:w-20 lg:h-20 w-14 h-14 mr-6"
-      : "lg:w-14 lg:h-14 w-11.5 h-11.5 mr-3",
+        ? "lg:w-20 lg:h-20 w-14 h-14 mr-6"
+        : "lg:w-14 lg:h-14 w-11.5 h-11.5 mr-3",
   ].join(" ");
 
   return (
