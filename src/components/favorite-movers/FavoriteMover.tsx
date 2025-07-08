@@ -2,9 +2,9 @@
 
 import MoverProfile from "@/components/common/profile/MoverProfile";
 import React, { useState } from "react";
-import { moverMocks } from "./moverMock";
 import MoveChip from "@/components/common/chips/MoveChip";
 import { isChipType } from "@/lib/types";
+import { moverMocks } from "./moverMock";
 
 export default function FavoriteMover() {
   const movers = moverMocks;

@@ -1,6 +1,6 @@
 // 리뷰 작성
-import MyReviews from "./_components/MyReviews";
-import WritableReviews from "./_components/WritableReviews";
+import MyReviews from "../../../components/reviews/MyReviews";
+import WritableReviews from "../../../components/reviews/WritableReviews";
 
 type PageProps = {
   searchParams: Promise<{ tab?: string }>;
