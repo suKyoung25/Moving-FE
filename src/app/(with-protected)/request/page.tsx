@@ -1,8 +1,8 @@
-import FormWizard from "@/app/(with-routes)/(with-protected)/request/_components/FormWizard";
+import FormWizard from "@/app/(with-protected)/request/_components/FormWizard";
 
 export default function EstimateRequestPage() {
   return (
-    <div className="flex flex-col w-full min-h-screen px-6 pb-15 md:px-52 lg:px-65 lg:pb-54 bg-bg-200">
+    <div className="flex flex-col w-full min-h-screen pb-15 lg:px-65 lg:pb-54 bg-bg-200">
       <FormWizard />
     </div>
   );

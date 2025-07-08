@@ -1,7 +1,7 @@
-import { loadPostcodeScript } from "@/utils/address.util";
-import Image from "next/image";
+import { loadPostcodeScript } from "@/lib/utils/address.util";
 import { useEffect, useRef } from "react";
 import closeIcon from "@/assets/images/xIcon.svg";
+import Image from "next/image";
 
 export default function AddressModal({
   type,

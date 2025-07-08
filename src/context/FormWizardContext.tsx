@@ -4,7 +4,7 @@ import {
   FormWizardAction,
   FormWizardContextType,
   FormWizardState,
-} from "@/types";
+} from "@/lib/types";
 
 import {
   createContext,

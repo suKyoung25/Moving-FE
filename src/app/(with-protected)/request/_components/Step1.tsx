@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormWizard } from "@/context/FormWizardContext";
-import { Request } from "@/types";
+import { Request } from "@/lib/types";
 import React from "react";
 import ChatMessage from "./ChatMessage";
 import Image from "next/image";
