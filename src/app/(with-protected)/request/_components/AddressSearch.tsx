@@ -11,7 +11,6 @@ interface AddressResult {
   zonecode: string;
   roadAddress: string;
   jibunAddress: string;
-  buildingName: string;
 }
 
 const addrBoxClass = "flex items-center gap-2 break-keep";

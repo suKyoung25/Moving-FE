@@ -1,25 +1,24 @@
 "use client";
 
 import { useFormWizard } from "@/context/FormWizardContext";
-
 import React, { useEffect, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatWrapper from "./ChatWrapper";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import OutlinedButton from "@/components/common/buttons/OutlinedButton";
-import DaumPostcodeEmbed from "react-daum-postcode";
-import AddressModal from "./AddressModal";
+// import DaumPostcodeEmbed from "react-daum-postcode";
+// import AddressModal from "./AddressModal";
 import AddressSearch from "./AddressSearch";
 import { Request } from "@/lib/types";
 
-const themeObj = {
-  bgColor: "#FFFFFF", //바탕 배경색
-  searchBgColor: "#FAFAFA", //검색창 배경색
-  textColor: "#1F1F1F", //기본 글자색
-  queryTextColor: "#1F1F1F", //검색창 글자색
-  postcodeTextColor: "#1F1F1F", //우편번호 글자색
-  emphTextColor: "#1B92FF", //강조 글자색
-};
+// const themeObj = {
+//   bgColor: "#FFFFFF", //바탕 배경색
+//   searchBgColor: "#FAFAFA", //검색창 배경색
+//   textColor: "#1F1F1F", //기본 글자색
+//   queryTextColor: "#1F1F1F", //검색창 글자색
+//   postcodeTextColor: "#1F1F1F", //우편번호 글자색
+//   emphTextColor: "#1B92FF", //강조 글자색
+// };
 
 // 주소 입력
 export default function Step3() {
