@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { ZodType, ZodTypeDef } from "zod";
 import { ValidationResult } from "@/lib/types/profile.types"; // 기존 유지
 import { profileSchemas } from "./profile.schemas";
 
 function validateField<TInput, TOutput>(
-  schema: z.ZodType<TOutput, any, TInput>,
+  schema: ZodType<TOutput, ZodTypeDef, TInput>,
   value: TInput,
   successMsg: string
 ): ValidationResult {

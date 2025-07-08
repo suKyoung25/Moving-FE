@@ -11,8 +11,8 @@ export const moverProfileSchema = z.object({
     .refine((val) => !isNaN(val) && val >= 0, {
       message: "경력은 0 이상이어야 합니다.",
     }),
-  onelineIntroduction: z.string().min(1, "8자 이상 입력해주세요."),
-  detailDescription: z.string().min(1, "10자 이상 입력해주세요."),
+  onelineIntroduction: z.string().min(8, "8자 이상 입력해주세요."),
+  detailDescription: z.string().min(10, "10자 이상 입력해주세요."),
   serviceType: z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요."),
   area: z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요."),
 });
