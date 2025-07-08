@@ -1,12 +1,13 @@
 "use client";
 
-import { useMyQuotes } from "@/context/MyQuotesContext";
+import { useMyQuotes } from "@/lib/hooks/useMyQuotes";
 
+// 서브 헤더
 export default function MyQuotesLayout() {
   const { activeTab, setActiveTab } = useMyQuotes();
 
   return (
-    <div className="mb-[-12px] h-13.5 flex items-center gap-6">
+    <div className="-mb-3 h-13.5 flex items-center gap-6">
       <p
         onClick={() => setActiveTab("pending")}
         className={`h-full leading-13.5 cursor-pointer ${activeTab === "pending" ? "text-14-bold border-b-2 border-black-400" : "text-14-semibold text-gray-400"}`}

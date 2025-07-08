@@ -14,7 +14,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             "
       >
         <Header>
-          {/* 여기에 서브 헤더 컴포넌트 추가 */}
           <MyQuotesLayout />
         </Header>
 

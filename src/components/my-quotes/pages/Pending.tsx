@@ -10,9 +10,9 @@ import SolidButton from "@/components/common/buttons/SolidButton";
 import OutlinedButton from "@/components/common/buttons/OutlinedButton";
 import { useRouter } from "next/navigation";
 
-const Pending = () => {
+// 대기중인 견적
+export default function Pending() {
   const router = useRouter();
-
   return (
     <div className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">
       <section
@@ -20,7 +20,7 @@ const Pending = () => {
           boxShadow:
             "-2px -2px 10px rgba(220, 220, 220, 0.2), 2px 2px 10px rgba(220, 220, 220, 0.2)",
         }}
-        className="bg-white px-3 lg:px-6 pt-5 lg:pt-7 pb-3.5 lg:pb-5.5 w-[327px] md:w-150 lg:w-172 mx-auto lg:mx-0 flex flex-col gap-2 rounded-2xl"
+        className="bg-white px-3 lg:px-6 pt-5 lg:pt-7 pb-3.5 lg:pb-5.5 w-full lg:w-172 mx-auto lg:mx-0 flex flex-col gap-2 rounded-2xl"
       >
         <div className="flex flex-col gap-3.5">
           <article className="flex items-center gap-2">
@@ -60,6 +60,4 @@ const Pending = () => {
       </section>
     </div>
   );
-};
-
-export default Pending;
+}

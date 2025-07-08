@@ -1,6 +1,4 @@
-import React from "react";
-
-const QuotaionInfo = () => {
+export default function QuotaionInfo() {
   return (
     <article>
       <p className="text-16-semibold mb-6 lg:text-24-semibold lg:mb-10">
@@ -30,6 +28,4 @@ const QuotaionInfo = () => {
       </ul>
     </article>
   );
-};
-
-export default QuotaionInfo;
+}

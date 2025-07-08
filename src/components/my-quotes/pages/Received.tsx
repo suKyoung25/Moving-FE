@@ -1,7 +1,4 @@
-import React from "react";
-
-const Received = () => {
+// 받았던 견적
+export default function Received() {
   return <div>Received</div>;
-};
-
-export default Received;
+}

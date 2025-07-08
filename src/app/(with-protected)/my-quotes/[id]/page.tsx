@@ -18,7 +18,7 @@ export default function Page() {
     <div>
       <PageTitle title="견적 상세" />
       <div className="flex item justify-between">
-        <section className="w-full flex flex-col items gap-6 mt-2 mb-27 lg:max-w-[955px] lg:mt-6 lg:gap-10">
+        <section className="w-full flex flex-col items gap-6 mt-2 mb-27 lg:max-w-238.5 lg:mt-6 lg:gap-10">
           <article className="bg-white border border-line-100 rounded-2xl px-3.5 py-4 flex flex-col gap-3.5 lg:px-6 lg:py-5">
             <div className="flex items-center gap-2">
               <MoveChip type="PENDING" />
