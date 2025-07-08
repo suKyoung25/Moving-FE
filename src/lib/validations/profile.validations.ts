@@ -1,82 +1,40 @@
-import { ValidationResult } from "@/lib/types/profile.types";
 import { z } from "zod";
+import { ValidationResult } from "@/lib/types/profile.types"; // 기존 유지
+import { profileSchemas } from "./profile.schemas";
 
-export function validateName(name: string | string[]): ValidationResult {
-  const schema = z.string().min(1, "별명을 입력해주세요.");
-  const result = schema.safeParse(name);
-  return result.success
-    ? { success: true, message: "유효한 이름입니다." }
-    : { success: false, message: result.error.issues[0].message };
-}
-
-export function validateCareer(career: string | string[]): ValidationResult {
-  const schema = z
-    .string()
-    .min(1, "숫자만 입력해주세요.")
-    .transform((val) => Number(val))
-    .refine((val) => !isNaN(val) && val >= 0, {
-      message: "경력은 0 이상이어야 합니다.",
-    });
-
-  const result = schema.safeParse(career);
-  return result.success
-    ? { success: true, message: "유효한 경력입니다." }
-    : { success: false, message: result.error.issues[0].message };
-}
-
-export function validateOnelineIntroduction(
-  text: string | string[]
+function validateField<TInput, TOutput>(
+  schema: z.ZodType<TOutput, any, TInput>,
+  value: TInput,
+  successMsg: string
 ): ValidationResult {
-  const schema = z.string().min(8, "8자 이상 입력해주세요.");
-  const result = schema.safeParse(text);
+  const result = schema.safeParse(value);
   return result.success
-    ? { success: true, message: "유효한 한 줄 소개입니다." }
+    ? { success: true, message: successMsg }
     : { success: false, message: result.error.issues[0].message };
 }
 
-export function validateDetailDescription(
-  text: string | string[]
-): ValidationResult {
-  const schema = z.string().min(10, "10자 이상 입력해주세요.");
-  const result = schema.safeParse(text);
-  return result.success
-    ? { success: true, message: "유효한 상세 소개입니다." }
-    : { success: false, message: result.error.issues[0].message };
-}
+export const validateName = (name: string | string[]) =>
+  validateField(profileSchemas.nickName, name, "유효한 이름입니다.");
 
-export function validateServiceType(
-  serviceType: string | string[]
-): ValidationResult {
-  const schema = z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요.");
-  const result = schema.safeParse(serviceType);
-  return result.success
-    ? { success: true, message: "유효한 서비스 타입입니다." }
-    : { success: false, message: result.error.issues[0].message };
-}
+export const validateCareer = (career: string | string[]) =>
+  validateField(profileSchemas.career, career, "유효한 경력입니다.");
 
-export function validateArea(area: string | string[]): ValidationResult {
-  const schema = z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요.");
-  const result = schema.safeParse(area);
-  return result.success
-    ? { success: true, message: "유효한 지역입니다." }
-    : { success: false, message: result.error.issues[0].message };
-}
+export const validateOnelineIntroduction = (text: string | string[]) =>
+  validateField(
+    profileSchemas.onelineIntroduction,
+    text,
+    "유효한 한 줄 소개입니다."
+  );
 
-//서버용 유효성 모음집
-export const moverProfileSchema = z.object({
-  image: z.string().optional(),
-  nickName: z.string().min(1, "별명을 입력해주세요."),
-  career: z
-    .string()
-    .min(1, "숫자만 입력해주세요.") // 빈 문자열인지 체크 (처음부터 숫자로 하면 빈문자열을 0으로 인식함)
-    .transform((val) => Number(val)) // 숫자로 변환
-    .refine((val) => !isNaN(val) && val >= 0, {
-      message: "경력은 0 이상이어야 합니다.",
-    }),
-  onelineIntroduction: z.string().min(1, "8자 이상 입력해주세요."),
-  detailDescription: z.string().min(1, "10자 이상 입력해주세요."),
-  serviceType: z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요."),
-  area: z.array(z.string().min(1)).min(1, "* 1개 이상 선택해주세요."),
-});
+export const validateDetailDescription = (text: string | string[]) =>
+  validateField(
+    profileSchemas.detailDescription,
+    text,
+    "유효한 상세 소개입니다."
+  );
 
-export type MoverProfileInput = z.input<typeof moverProfileSchema>;
+export const validateServiceType = (type: string | string[]) =>
+  validateField(profileSchemas.serviceType, type, "유효한 서비스 타입입니다.");
+
+export const validateArea = (area: string | string[]) =>
+  validateField(profileSchemas.area, area, "유효한 지역입니다.");
