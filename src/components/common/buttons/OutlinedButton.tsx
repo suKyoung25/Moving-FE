@@ -2,6 +2,7 @@ import React from "react";
 
 type OutlinedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
+  className?: string;
 };
 
 export default function OutlinedButton({
