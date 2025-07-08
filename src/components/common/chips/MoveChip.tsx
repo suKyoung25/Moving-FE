@@ -8,7 +8,7 @@ type ChipType = "SMALL" | "HOME" | "OFFICE" | "DESIGNATED" | "PENDING";
 
 const CHIP_CONFIG: Record<
   ChipType,
-  { label: string; bg: string; text: string; icon?: StaticImageData }
+  { label: string; bg: string; text: string; icon?: string | StaticImageData }
 > = {
   SMALL: {
     label: "소형이사",
