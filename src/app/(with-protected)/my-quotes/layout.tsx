@@ -1,5 +1,4 @@
 import DefaultLayout from "@/components/layout/DefaultLayout";
-import ExampleLayout from "@/components/layout/ExampleLayout";
 import Header from "@/components/layout/Header";
 import MyQuotesLayout from "@/components/layout/MyQuotesLayout";
 
