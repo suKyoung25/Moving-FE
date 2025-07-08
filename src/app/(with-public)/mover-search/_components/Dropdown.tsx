@@ -50,8 +50,8 @@ export default function Dropdown({ label, options, onSelect, multiColumn }: Drop
           px-3 lg:px-4 py-2 rounded-lg lg:rounded-2xl border text-14-medium lg:text-18-medium text-left
           ${isOpen
             ? 'border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50'
-            : 'border-gray-200 bg-white'}
-          w-20 lg:w-80 lg:h-15
+            : 'border-gray-100 bg-white'}
+          w-20 lg:w-80 h-9 lg:h-15
         `}
       >
         {selected}

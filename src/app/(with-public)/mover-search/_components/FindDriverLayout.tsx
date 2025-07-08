@@ -57,7 +57,7 @@ export default function FindDriverLayout() {
           <div className="flex-1 w-80 md:w-[36rem] lg:w-full box-border">
             <div className="w-full flex flex-row justify-between">
               {/* 모바일 & 중간 사이즈 - 필터 상단에 노출 */}
-              <div className="block lg:hidden mb-6">
+              <div className="block lg:hidden mb-4">
                 <FilterAreaServiceBox
                   areaOptions={areaOptions}
                   serviceOptions={serviceOptions}

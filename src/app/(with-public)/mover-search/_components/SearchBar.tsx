@@ -9,7 +9,7 @@ export default function SearchBar() {
         <input
           type="text"
           placeholder="텍스트를 입력해 주세요."
-          className="w-full bg-transparent text-20-regular placeholder-gray-400 focus:outline-none"
+          className="w-full bg-transparent text-14-regular lg:text-20-regular placeholder-gray-400 focus:outline-none"
         />
       </div>
     </div>
