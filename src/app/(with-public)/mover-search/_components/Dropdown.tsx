@@ -45,19 +45,20 @@ export default function Dropdown({ label, options, onSelect, multiColumn }: Drop
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className={`
-          flex flex-row justify-between items-center
-          w-[75px] lg:w-[328px] px-3 py-2 rounded-lg border text-14-regular text-left
-          ${multiColumn ? '' : 'w-auto lg:w-[328px]'}
+          flex justify-between items-center
+          ${multiColumn ? '' : 'w-auto lg:w-80'}
+          px-3 py-2 rounded-lg border text-sm text-left
           ${isOpen
             ? 'border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50'
-            : 'border-gray-200  bg-white'}
+            : 'border-gray-200 bg-white'}
+          w-20 lg:w-80
         `}
       >
         {selected}
         <Image
           src={isOpen ? chevronDownBlueIcon : chevronDownBlackIcon}
           alt="드롭다운"
-          className="w-[20px] h-[20px]"
+          className="w-5 h-5"
         />
       </button>
 
@@ -67,7 +68,7 @@ export default function Dropdown({ label, options, onSelect, multiColumn }: Drop
           className={`
             absolute z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-md
             overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent
-            ${multiColumn ? 'w-[165px] h-[180px] lg:w-auto lg:h-[320px]' : ''}
+            ${multiColumn ? 'w-40 h-44 lg:w-auto lg:h-80' : ''}
           `}
         >
           {multiColumn ? (
@@ -77,9 +78,9 @@ export default function Dropdown({ label, options, onSelect, multiColumn }: Drop
                   key={option.value}
                   onClick={() => handleSelect(option)}
                   className="
-                    cursor-pointer hover:bg-gray-100 text-14-regular
+                    cursor-pointer hover:bg-gray-100 text-sm
                     flex items-center justify-start
-                    w-[75px] h-[36px] lg:w-[164px] lg:h-[64px] px-2
+                    w-20 h-9 lg:w-40 lg:h-16 px-2
                   "
                 >
                   {option.label}
@@ -93,9 +94,9 @@ export default function Dropdown({ label, options, onSelect, multiColumn }: Drop
                   key={option.value}
                   onClick={() => handleSelect(option)}
                   className="
-                    cursor-pointer hover:bg-gray-100 text-14-regular
+                    cursor-pointer hover:bg-gray-100 text-sm
                     flex items-center justify-start
-                    w-[89px] h-[36px] lg:w-[328px] lg:h-[64px] px-3
+                    w-22 h-9 lg:w-80 lg:h-16 px-3
                   "
                 >
                   {option.label}

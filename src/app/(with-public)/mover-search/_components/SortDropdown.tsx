@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
-import chevronDownIcon from "@/assets/images/chevronDownIcon.svg"
+import chevronDownIcon from "@/assets/images/chevronDownIcon.svg";
 
 interface DropdownOption {
   label: string;
@@ -28,35 +28,33 @@ export default function SortDropdown() {
   };
 
   // 외부 클릭 시 닫기
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div ref={dropdownRef} className="relative inline-block text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-[91px] h-[32px] lg:w-[114px] lg:h-[40px] rounded-lg text-12-regular lg:text-14-regular flex items-center justify-center"
+        className="w-24 h-8 lg:w-28 lg:h-10 rounded-lg text-xs lg:text-sm flex items-center justify-center gap-1"
       >
         {selected.label}
-        <Image src={chevronDownIcon} alt="dropdownIcon" className="w-[20px] h-[20px]" />
+        <Image src={chevronDownIcon} alt="dropdownIcon" className="w-5 h-5" />
       </button>
 
       {isOpen && (
-        <div
-          className="absolute right-0 mt-2 w-[91px]  lg:w-[114px] bg-white border border-gray-100 rounded-lg shadow-md z-10"
-        >
+        <div className="absolute right-0 mt-2 w-24 lg:w-28 bg-white border border-gray-100 rounded-lg shadow-md z-10">
           {sortOptions.map((option) => (
             <div
               key={option.value}
               onClick={() => handleSelect(option)}
-              className="w-full h-[32px] lg:w-[114px] lg:h-[40px] px-3 flex items-center cursor-pointer hover:bg-gray-100 text-14-regular"
+              className="w-full h-8 lg:h-10 px-3 flex items-center cursor-pointer hover:bg-gray-100 text-sm"
             >
               {option.label}
             </div>
