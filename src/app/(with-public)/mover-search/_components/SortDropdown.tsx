@@ -39,10 +39,10 @@ export default function SortDropdown() {
   }, []);
 
   return (
-    <div ref={dropdownRef} className="relative inline-block text-left">
+    <div ref={dropdownRef} className="relative inline-block text-left lg:pb-2">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-24 h-8 lg:w-28 lg:h-10 rounded-lg text-xs lg:text-sm flex items-center justify-center gap-1"
+        className="w-24 h-8 lg:w-28 lg:h-10 rounded-lg text-12-semibold lg:text-14-semibold flex items-center justify-center gap-1"
       >
         {selected.label}
         <Image src={chevronDownIcon} alt="dropdownIcon" className="w-5 h-5" />
@@ -54,7 +54,7 @@ export default function SortDropdown() {
             <div
               key={option.value}
               onClick={() => handleSelect(option)}
-              className="w-full h-8 lg:h-10 px-3 flex items-center cursor-pointer hover:bg-gray-100 text-sm"
+              className="w-full h-8 lg:h-10 px-3 flex items-center cursor-pointer hover:bg-gray-100 text-12-medium lg:text-14-medium"
             >
               {option.label}
             </div>
