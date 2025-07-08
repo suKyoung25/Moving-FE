@@ -1,9 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import MoveChip from "@/components/common/chips/MoveChip";
-import MoverProfile from "@/components/common/profile/MoverProfile";
-import profile from "@/assets/images/profileIcon.svg";
 import shareLink from "@/assets/images/shareLinkIcon.svg";
 import shareKakao from "@/assets/images/shareKakaoIcon.svg";
 import shareFacebook from "@/assets/images/shareFaceBookIcon.svg";
@@ -11,35 +6,16 @@ import QuotaionInfo from "@/components/my-quotes/common/QuotaionInfo";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import likeIcon from "@/assets/images/likeFilledIcon.svg";
 import PageTitle from "@/components/layout/PageTitle";
+import MoverProfileClient from "@/components/my-quotes/common/MoverProfileClient";
 
 // 견적 관리 상세
-export default function Page() {
+export default async function Page() {
   return (
     <div>
       <PageTitle title="견적 상세" />
       <div className="flex item justify-between">
         <section className="w-full flex flex-col items gap-6 mt-2 mb-27 lg:max-w-238.5 lg:mt-6 lg:gap-10">
-          <article className="bg-white border border-line-100 rounded-2xl px-3.5 py-4 flex flex-col gap-3.5 lg:px-6 lg:py-5">
-            <div className="flex items-center gap-2">
-              <MoveChip type="PENDING" />
-              <MoveChip type="SMALL" />
-              <MoveChip type="DESIGNATED" />
-            </div>
-            <p className="text-14-semibold text-black-300 lg:text-24-semibold">
-              고객님의 물품을 안전하게 운송해 드립니다.
-            </p>
-            <MoverProfile
-              nickName="이삿짐킹"
-              profileImage={profile}
-              isLiked={false}
-              handleLikedClick={() => console.log("찜 토글")}
-              favoriteCount={24}
-              averageReviewRating={4.8}
-              reviewCount={37}
-              career={7}
-              estimateCount={120}
-            />
-          </article>
+          <MoverProfileClient />
           <hr className="h-px bg-line-100 border-0" />
           <article>
             <p className="text-16-semibold mb-4 lg:text-24-semibold">견적가</p>
