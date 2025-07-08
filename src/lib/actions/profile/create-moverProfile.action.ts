@@ -1,7 +1,7 @@
 "use server";
 
 import { profileState } from "@/lib/types/profile.types";
-import { MoverProfileInput, moverProfileSchema } from "@/validations";
+import { MoverProfileInput, moverProfileSchema } from "@/lib/validations";
 
 export async function createMoverProfile(
   state: profileState,

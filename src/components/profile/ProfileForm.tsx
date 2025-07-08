@@ -1,6 +1,6 @@
 "use client";
 
-import { createMoverProfile } from "@/actions/profile/create-moverProfile.action";
+import { createMoverProfile } from "@/lib/actions/profile/create-moverProfile.action";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import GeneralInputField from "@/components/profile/GeneralInputField";
 import React, { useActionState, useState } from "react";
@@ -13,7 +13,7 @@ import {
   validateName,
   validateOnelineIntroduction,
   validateServiceType,
-} from "@/validations";
+} from "@/lib/validations";
 
 function ProfileForm() {
   const [, formAction, isPending] = useActionState(createMoverProfile, null);
