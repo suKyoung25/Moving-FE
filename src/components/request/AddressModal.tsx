@@ -18,7 +18,7 @@ const addrTypeClass =
   "flex justify-center items-center w-11 h-6 lg:w-[54px] lg:h-7 px-1.5 py-0.5 bg-primary-blue-50 text-blue-500 text-xs lg:text-sm font-semibold rounded-3xl";
 const addrClass = "max-lg:text-sm";
 
-export default function AddressSearch({
+export default function AddressModal({
   type,
   onSelect,
   onClose,

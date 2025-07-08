@@ -6,19 +6,8 @@ import ChatMessage from "./ChatMessage";
 import ChatWrapper from "./ChatWrapper";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import OutlinedButton from "@/components/common/buttons/OutlinedButton";
-// import DaumPostcodeEmbed from "react-daum-postcode";
-// import AddressModal from "./AddressModal";
-import AddressSearch from "./AddressSearch";
+import AddressModal from "./AddressModal";
 import { Request } from "@/lib/types";
-
-// const themeObj = {
-//   bgColor: "#FFFFFF", //바탕 배경색
-//   searchBgColor: "#FAFAFA", //검색창 배경색
-//   textColor: "#1F1F1F", //기본 글자색
-//   queryTextColor: "#1F1F1F", //검색창 글자색
-//   postcodeTextColor: "#1F1F1F", //우편번호 글자색
-//   emphTextColor: "#1B92FF", //강조 글자색
-// };
 
 // 주소 입력
 export default function Step3() {
@@ -83,21 +72,11 @@ export default function Step3() {
       </ChatWrapper>
 
       {showModal && (
-        <AddressSearch
+        <AddressModal
           type={targetField}
           onSelect={handleComplete}
           onClose={() => setShowModal(false)}
         />
-        // <AddressModal
-        //   type={targetField}
-        //   onComplete={handleComplete}
-        //   onClose={() => setShowModal(false)}
-        // />
-        // <div className="fixed inset-0 bg-bg-black/50 z-50 flex flex-col items-center justify-center">
-        //   <div className="w-73 lg:w-152 bg-white">
-        //     {/* <DaumPostcodeEmbed theme={themeObj} /> */}
-        //   </div>
-        // </div>
       )}
     </>
   );

@@ -2,7 +2,7 @@
 
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import Header from "@/components/layout/Header";
-import ProgressBar from "./_components/ProgressBar";
+import ProgressBar from "@/components/request/ProgressBar";
 import { useEffect, useState } from "react";
 import { useFormWizard } from "@/context/FormWizardContext";
 

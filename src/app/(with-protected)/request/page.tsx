@@ -1,4 +1,4 @@
-import FormWizard from "@/app/(with-protected)/request/_components/FormWizard";
+import FormWizard from "@/components/request/FormWizard";
 
 export default function EstimateRequestPage() {
   return (
