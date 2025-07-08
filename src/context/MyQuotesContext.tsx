@@ -23,4 +23,3 @@ export function MyQuotesProvider({ children }: { children: ReactNode }) {
     </MyQuotesContext.Provider>
   );
 }
-
