@@ -28,6 +28,7 @@ function TextAreaInputField({
       onValidChange?.(name, result.success);
       setError("");
     } else {
+      onValidChange?.(name, result.success);
       setError(result.message);
     }
   };

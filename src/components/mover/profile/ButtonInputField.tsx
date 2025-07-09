@@ -31,8 +31,8 @@ function ButtonInputField({
 
     if (validator) {
       const result = validator(updated);
-      setError(result.success ? "" : result.message);
 
+      setError(result.success ? "" : result.message);
       onValidChange?.(name, result.success);
     }
   };

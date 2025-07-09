@@ -125,9 +125,8 @@ function BasicInfoForms() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 lg:flex-row-reverse lg:mt-16">
+      <div className="flex flex-col gap-2 lg:flex-row-reverse lg:mt-16 lg:gap-8">
         <SolidButton
-          className="h-13 lg:h-16"
           disabled={isDisabled}
           type="submit"
         >
