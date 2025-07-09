@@ -6,7 +6,7 @@ import MoveChip from '@/components/common/chips/MoveChip';
 export default function FavoriteDriverList() {
   return (
     <div className="mt-8 flex flex-col gap-4 rounded-lg">
-      <h2 className="text-18-semibold">찜한 기사님</h2>
+      <h2 className="text-18-semibold border-b pb-5 border-b-gray-100 ">찜한 기사님</h2>
       {/* 반복 렌더링할 때 map 사용 예정 */}
       {[1, 2].map((_, i) => (
         <div

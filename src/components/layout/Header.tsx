@@ -1,25 +1,21 @@
-'use client'
+"use client";
 
-import { usePathname } from "next/navigation"
+import { usePathname } from "next/navigation";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname();
-  const isRequestPage = 
+  const isRequestPage =
     pathname.startsWith("/request") ||
     pathname.startsWith("/reviews") ||
     pathname.startsWith("/favorite-movers") ||
     pathname.startsWith("/received-requests") ||
-    pathname === "/my-quotes"
-    
+    pathname === "/my-quotes";
 
-  const headerClass = `
-    sticky top-0 left-0 z-50 bg-white border-b border-line-100
-  `;
+  const headerClass =
+    "sticky top-0 left-0 z-50 bg-white border-b border-line-100";
 
-  const commonContainerClass = `
-    flex items-center
-    max-w-[1400px] mx-auto px-6 md:px-16 lg:px-0
-  `;
+  const commonContainerClass =
+    "flex items-center max-w-[1400px] mx-auto px-6 md:px-16 lg:px-0";
 
   const containerClass = `
     ${commonContainerClass}
@@ -30,12 +26,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
     <header className={headerClass}>
       <div className={containerClass}>
         {isRequestPage ? (
-          <div>
+          <div className="flex flex-col w-full">
             <div>성경님 헤더</div>
-            <div className="py-3 lg:py-4">{children}</div>
+            {children}
           </div>
         ) : (
-            <div>성경님 헤더</div>
+          <div>성경님 헤더</div>
         )}
       </div>
     </header>

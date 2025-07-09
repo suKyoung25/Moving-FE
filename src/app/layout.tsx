@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "무빙 - 스마트한 이사 비교 플랫폼",
@@ -15,9 +16,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="min-h-full h-full">
-        <main>
-          {children}
-        </main>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );
