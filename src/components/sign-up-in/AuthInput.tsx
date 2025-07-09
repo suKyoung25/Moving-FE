@@ -1,42 +1,64 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import ErrorText from "./ErrorText";
+import { AuthValidationResult } from "@/lib/types/auth.type";
 
 interface Props {
-  type: "text" | "email";
-  id: string;
+  type?: "text" | "email";
   name: string;
   label: string;
-  value: string;
   placeholder: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  error?: string;
+  validator?: (value: string) => AuthValidationResult;
+  onValidChange?: (key: string, isValid: boolean) => void;
+  onValueChange?: (key: string, value: string) => void;
 }
 
 export default function AuthInput({
-  type,
-  id,
+  type = "text",
   name,
   label,
-  value,
   placeholder,
-  onChange,
-  error,
+  validator,
+  onValidChange,
+  onValueChange,
 }: Props) {
+  const [value, setValue] = useState<string>("");
+  const [error, setError] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    onValueChange?.(name, newValue);
+
+    if (validator) {
+      const result = validator(newValue);
+
+      if (result.success) {
+        onValidChange?.(name, true);
+        setError("");
+      } else {
+        onValidChange?.(name, false);
+        setError(result.message);
+      }
+    }
+  };
+
   return (
     <section className="w-full flex flex-col gap-2 lg:gap-4">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={name}>{label}</label>
       <input
         type={type}
-        id={id}
+        id={name}
         name={name}
         value={value}
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={handleChange}
         className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"}
           bg-white border rounded-2xl h-14 lg:h-16 p-3.5 text-black-400`}
       />
 
-      <ErrorText error={error} />
+      {error && <ErrorText error={error} />}
     </section>
   );
 }

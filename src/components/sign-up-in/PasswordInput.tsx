@@ -5,46 +5,66 @@ import ErrorText from "./ErrorText";
 import Image from "next/image";
 import openedEye from "@/assets/images/visibilityIcon.svg";
 import closedEye from "@/assets/images/visibilityOffIcon.svg";
+import { AuthValidationResult } from "@/lib/types/auth.type";
 
 interface Props {
   type: "text" | "password";
-  id: string;
   name: string;
-  value: string;
   label: string;
   placeholder: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  error?: string;
+  validator?: (value: string) => AuthValidationResult;
+  onValidChange?: (key: string, isValid: boolean) => void;
+  onValueChange?: (key: string, value: string) => void;
 }
 
 export default function PasswordInput({
-  id,
   name,
   label,
-  value,
+  validator,
   placeholder,
-  onChange,
-  error,
+  onValidChange,
+  onValueChange,
 }: Props) {
   const [isVisible, setIsVisible] = useState(false);
+  const [value, setValue] = useState<string>("");
+  const [error, setError] = useState("");
 
   const toggleEyeIcon = () => setIsVisible((prev) => !prev);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    if (validator) {
+      const result = validator(newValue);
+      onValueChange?.(name, newValue);
+
+      if (result.success) {
+        onValidChange?.(name, true);
+        setError("");
+      } else {
+        onValidChange?.(name, false);
+        setError(result.message);
+      }
+    }
+  };
+
   return (
     <section className="w-full flex flex-col gap-2 lg:gap-4">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={name}>{label}</label>
 
       <div className="relative w-full">
+        {/* 입력창 */}
         <input
           type={isVisible ? "text" : "password"}
-          id={id}
           name={name}
           value={value}
           placeholder={placeholder}
-          onChange={onChange}
+          onChange={handleChange}
           className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"}
           bg-white border rounded-2xl h-14 lg:h-16 p-3.5 text-black-400 w-full`}
         />
+        {/* 눈 아이콘 */}
         <button
           type="button"
           onClick={toggleEyeIcon}
@@ -59,7 +79,7 @@ export default function PasswordInput({
         </button>
       </div>
 
-      <ErrorText error={error} />
+      {error && <ErrorText error={error} />}
     </section>
   );
 }

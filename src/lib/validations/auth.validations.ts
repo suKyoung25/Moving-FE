@@ -1,41 +1,40 @@
 import * as authSchema from "./auth.schemas";
+import { ZodType, ZodTypeDef } from "zod";
+import { AuthValidationResult } from "../types/auth.type";
+
+// ✅ 타입 오류 없애는 용도의 공용 함수
+function validateField<TInput, TOutput>(
+  schema: ZodType<TOutput, ZodTypeDef, TInput>,
+  value: TInput
+): AuthValidationResult {
+  const result = schema.safeParse(value);
+  return result.success
+    ? { success: true, message: "" }
+    : { success: false, message: result.error.issues[0].message };
+}
 
 // ✅ 이름 검사
-export function nameValidate(name: string) {
-  return authSchema.nameSchema.safeParse(name);
+export function validateAuthName(name: string) {
+  return validateField(authSchema.nameSchema, name);
 }
 
 // ✅ 이메일 검사
-export function emailValidate(email: string) {
-  return authSchema.emailSchema.safeParse(email);
+export function validateAuthEmail(email: string) {
+  return validateField(authSchema.emailSchema, email);
 }
 
 // ✅ 전화번호 검사
-export function phoneNumberValidate(phoneNumber: string) {
-  return authSchema.phoneNumberSchema.safeParse(phoneNumber);
+export function validateAuthPhoneNumber(phoneNumber: string) {
+  return validateField(authSchema.phoneNumberSchema, phoneNumber);
 }
 
 // ✅ 비밀번호 검사
-export function passwordValidate(password: string) {
-  return authSchema.passwordSchema.safeParse(password);
-}
-
-// ✅ 비밀번호 확인 검사
-export function passwordConfirmationValidate(
-  password: string,
-  passwordConfirmation: string
-) {
-  if (password !== passwordConfirmation) {
-    return {
-      success: false,
-      message: "비밀번호가 일치하지 않습니다.",
-    };
-  }
-  return { success: true };
+export function validateAuthPassword(password: string) {
+  return validateField(authSchema.passwordSchema, password);
 }
 
 // ✅ 전체 검증 - 회원가입
-export function signUpFormValidate(data: {
+export function validateSignUpForm(data: {
   name: string;
   email: string;
   phoneNumber: string;
@@ -46,6 +45,6 @@ export function signUpFormValidate(data: {
 }
 
 // ✅ 전체 검증 - 로그인
-export function loginFormValidate(data: { email: string; password: string }) {
+export function validateLoginForm(data: { email: string; password: string }) {
   return authSchema.loginFormSchema.safeParse(data);
 }
