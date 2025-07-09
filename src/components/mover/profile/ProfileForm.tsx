@@ -1,8 +1,8 @@
 "use client";
 
-import { createMoverProfile } from "@/lib/actions/profile/create-moverProfile.action";
+import { createMoverProfile } from "@/lib/actions/mover/create-moverProfile.action";
 import SolidButton from "@/components/common/buttons/SolidButton";
-import GeneralInputField from "@/components/profile/GeneralInputField";
+import GeneralInputField from "@/components/mover/profile/GeneralInputField";
 import React, { useActionState, useState } from "react";
 import ImageInputField from "./ImageInputField";
 import ButtonInputField from "./ButtonInputField";
@@ -10,7 +10,7 @@ import TextAreaInputField from "./TextAreaInputField";
 import {
   validateArea,
   validateCareer,
-  validateName,
+  validateProfileName,
   validateOnelineIntroduction,
   validateServiceType,
 } from "@/lib/validations";
@@ -57,7 +57,7 @@ function ProfileForm() {
             placeholder="사이트에 노출될 이름을 입력해주세요"
             height="h-13 mg:h-13 lg:h-16"
             onValidChange={handleValidityChange}
-            validator={validateName}
+            validator={validateProfileName}
           />
         </div>
 

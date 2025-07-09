@@ -1,6 +1,5 @@
 import BasicInfoForms from "@/components/basicInfo/BasicInfoForms";
 
-// 기사님 기본 정보 수정
 export default function MoverBasicInfoEditPage() {
   return (
     <>

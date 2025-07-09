@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { InputFieldProps } from "@/lib/types/profile.types";
+import { InputFieldProps } from "@/lib/types/mover.types";
+import { validateDetailDescription } from "@/lib/validations";
 
-//일반적인 (별명, 경력, 한 줄 소개) input인 경우
-function GeneralInputField({
+//상세 설명 (textArea) input인 경우
+function TextAreaInputField({
   name,
   text,
   placeholder,
   height,
   defaultValue,
-  validator,
   onValidChange, // 주석: 시작하기 버튼의 활성화 관련
 }: InputFieldProps) {
   const [value, setValue] = useState<string | string[]>(defaultValue ?? "");
@@ -22,35 +22,31 @@ function GeneralInputField({
     const newVal = e.target.value;
     setValue(newVal);
 
-    if (validator) {
-      const result = validator(newVal);
+    const result = validateDetailDescription(newVal);
 
-      if (result.success) {
-        onValidChange?.(name, result.success);
-        setError("");
-      } else {
-        setError(result.message);
-      }
+    if (result.success) {
+      onValidChange?.(name, result.success);
+      setError("");
+    } else {
+      setError(result.message);
     }
   };
 
   return (
-    <div className="leading-[32px] flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="text-16-semibold lg:text-20-semibold">
         {text}
         <span className="text-blue-300"> *</span>
       </div>
-      <input
+      <textarea
         name={name}
         value={value}
         onChange={handleChange}
-        type="text"
-        className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 bg-bg-200 ${error ? "border border-red-500" : ""}`}
+        className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 pt-3.5 bg-bg-200 ${error ? "border border-red-500" : ""}`}
         placeholder={placeholder}
       />
-
       {error && (
-        <div className="text-red-500 mt-2 text-base font-medium leading-[26px] self-end">
+        <div className="text-red-500 mt-2 text-base font-medium leading-[26px]">
           {error}
         </div>
       )}
@@ -58,4 +54,4 @@ function GeneralInputField({
   );
 }
 
-export default GeneralInputField;
+export default TextAreaInputField;

@@ -1,5 +1,5 @@
 // 프로필 등록(일반 유저 + 사장님) 추후 데이터 불러올 때 분기 처리 예정
-import ProfileForm from "@/components/profile/ProfileForm";
+import ProfileForm from "@/components/mover/profile/ProfileForm";
 import React from "react";
 
 function MoverProfilePage() {

@@ -1,30 +1,32 @@
 "use client";
 
 import React, { useState } from "react";
-import { InputFieldProps } from "@/lib/types/profile.types";
+import { BasicInfoInputProps } from "@/lib/types/mover.types";
 import Image from "next/image";
 import visibilityOff from "@/assets/images/visibilityOffIcon.svg";
 import visibilityOn from "@/assets/images/visibilityIcon.svg";
 
-//기본정보 수정페이지 input 컴포넌트화
+//기본정보 수정페이지 비밀번호input 컴포넌트화
 function SecretInputField({
   name,
   text,
   placeholder,
   height,
-  defaultValue,
   validator,
   onValidChange, // 주석: 시작하기 버튼의 활성화 관련
-}: InputFieldProps) {
-  const [value, setValue] = useState<string | string[]>(defaultValue ?? "");
+  onChange,
+}: BasicInfoInputProps) {
+  const [value, setValue] = useState<string>("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVal = e.target.value;
     setValue(newVal);
+
+    if (onChange) {
+      onChange(e);
+    }
 
     if (validator) {
       const result = validator(newVal);

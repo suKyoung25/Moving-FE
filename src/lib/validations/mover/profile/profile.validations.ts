@@ -1,5 +1,5 @@
 import { ZodType, ZodTypeDef } from "zod";
-import { ValidationResult } from "@/lib/types/profile.types"; // 기존 유지
+import { ValidationResult } from "@/lib/types/mover.types";
 import { profileSchemas } from "./profile.schemas";
 
 function validateField<TInput, TOutput>(
@@ -13,7 +13,7 @@ function validateField<TInput, TOutput>(
     : { success: false, message: result.error.issues[0].message };
 }
 
-export const validateName = (name: string | string[]) =>
+export const validateProfileName = (name: string | string[]) =>
   validateField(profileSchemas.nickName, name, "유효한 이름입니다.");
 
 export const validateCareer = (career: string | string[]) =>

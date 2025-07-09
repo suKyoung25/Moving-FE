@@ -1,6 +1,6 @@
 import z from "zod";
 
-//서버용 유효성 모음집
+//기사님 프로필 등록 시 사용
 export const moverProfileSchema = z.object({
   image: z.string().optional(),
   nickName: z.string().min(1, "별명을 입력해주세요."),
@@ -19,7 +19,7 @@ export const moverProfileSchema = z.object({
 
 export type MoverProfileInput = z.input<typeof moverProfileSchema>;
 
-//schema 재사용을 위한 export
+//위 schema 재사용을 위한 export
 export const profileSchemas = {
   nickName: moverProfileSchema.shape.nickName,
   career: moverProfileSchema.shape.career,

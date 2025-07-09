@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { InputFieldProps } from "@/lib/types/profile.types";
+import { InputFieldProps } from "@/lib/types/mover.types";
 import { regions } from "@/constants";
 
 //주석: serviceType인지 Area인지 boolean으로 분기처리

@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { BasicInfoInputProps, InputFieldProps } from "@/lib/types/mover.types";
+import { InputFieldProps } from "@/lib/types/mover.types";
 
-//기본정보 수정페이지 기본input 컴포넌트화
-function BasicInputField({
+//일반적인 (별명, 경력, 한 줄 소개) input인 경우
+function GeneralInputField({
   name,
   text,
   placeholder,
   height,
   validator,
   onValidChange, // 주석: 시작하기 버튼의 활성화 관련
-}: BasicInfoInputProps) {
-  const [value, setValue] = useState<string>("");
+}: InputFieldProps) {
+  const [value, setValue] = useState<string | string[]>("");
   const [error, setError] = useState("");
 
   const handleChange = (
@@ -35,7 +35,10 @@ function BasicInputField({
 
   return (
     <div className="leading-[32px] flex flex-col gap-4">
-      <div className="text-16-semibold lg:text-20-semibold">{text}</div>
+      <div className="text-16-semibold lg:text-20-semibold">
+        {text}
+        <span className="text-blue-300"> *</span>
+      </div>
       <input
         name={name}
         value={value}
@@ -54,4 +57,4 @@ function BasicInputField({
   );
 }
 
-export default BasicInputField;
+export default GeneralInputField;
