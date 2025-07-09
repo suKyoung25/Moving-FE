@@ -42,7 +42,7 @@ function ProfileForm() {
 
    return (
       <form action={formAction} className="mt-6 flex w-full flex-col lg:mt-12">
-         <div className="flex lg:flex-row lg:gap-18">
+         <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex flex-1 flex-col">
                <ImageInputField name="image" text="프로필 이미지" />
 

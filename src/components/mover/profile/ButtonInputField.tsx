@@ -62,7 +62,7 @@ function ButtonInputField({
                         <button
                            type="button"
                            onClick={() => handleToggle(type)}
-                           className={`text-16-regular flex justify-center rounded-full border px-5 py-2.5 leading-6.5 ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "bg-bg-200 border border-gray-100"}`}
+                           className={`text-14-medium flex justify-center rounded-full border px-5 py-2.5 leading-6.5 ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "bg-bg-200 border border-gray-100"}`}
                         >
                            {type}
                         </button>
@@ -96,7 +96,7 @@ function ButtonInputField({
                   </div>
                )}
             </div>
-            <div className="grid grid-cols-5 gap-x-3.5 gap-y-4.5">
+            <div className="grid w-[90%] grid-cols-5 gap-x-2 gap-y-3 lg:gap-x-3.5 lg:gap-y-4.5">
                {regions.map((region) => {
                   const isSelected = selectedValues.includes(region);
                   return (
@@ -104,7 +104,7 @@ function ButtonInputField({
                         <button
                            type="button"
                            onClick={() => handleToggle(region)}
-                           className={`bg-bg-200 text-18-regular flex justify-center rounded-full border border-gray-100 px-5 py-2.5 leading-7 ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "bg-bg-200 border border-gray-100"}`}
+                           className={`bg-bg-200 text-14-medium flex justify-center rounded-full border border-gray-100 px-3 py-2.5 leading-7 lg:px-5 ${isSelected ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50" : "bg-bg-200 border border-gray-100"}`}
                         >
                            {region}
                         </button>
