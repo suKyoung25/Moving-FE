@@ -8,7 +8,6 @@ function BasicInputField({
    name,
    text,
    placeholder,
-   height,
    validator,
    onValidChange, // 주석: 시작하기 버튼의 활성화 관련
 }: BasicInfoInputProps) {
@@ -42,7 +41,7 @@ function BasicInputField({
             value={value}
             onChange={handleChange}
             type="text"
-            className={`w-full ${height} bg-bg-200 rounded-2xl pl-3.5 placeholder:text-gray-300 ${error ? "border border-red-500" : ""}`}
+            className={`mg:h-13 bg-bg-200 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:h-16 ${error ? "border border-red-500" : ""}`}
             placeholder={placeholder}
          />
 
