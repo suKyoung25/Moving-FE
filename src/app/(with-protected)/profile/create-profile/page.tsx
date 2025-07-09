@@ -3,23 +3,23 @@ import ProfileForm from "@/components/mover/profile/ProfileForm";
 import React from "react";
 
 function MoverProfilePage() {
-  return (
-    <>
-      <div className="flex flex-col gap-4 lg:gap-8 mb-6 lg:mb-12">
-        <div className="text-18-semibold leading-8 lg:text-32-semibold ">
-          기사님 프로필 등록
-        </div>
+   return (
+      <>
+         <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
+            <div className="text-18-semibold lg:text-32-semibold leading-8">
+               기사님 프로필 등록
+            </div>
 
-        <div className="lg:text-20-regular text-12-regular leading-8 text-black-200">
-          추가 정보를 입력하여 회원가입을 완료해주세요
-        </div>
-      </div>
+            <div className="lg:text-20-regular text-12-regular text-black-200 leading-8">
+               추가 정보를 입력하여 회원가입을 완료해주세요
+            </div>
+         </div>
 
-      <hr className="m-0 p-0 border-t-[1px] border-line-100" />
+         <hr className="border-line-100 m-0 border-t p-0" />
 
-      <ProfileForm />
-    </>
-  );
+         <ProfileForm />
+      </>
+   );
 }
 
 export default MoverProfilePage;

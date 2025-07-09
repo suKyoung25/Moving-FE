@@ -34,7 +34,7 @@ function GeneralInputField({
    };
 
    return (
-      <div className="flex flex-col gap-4 leading-[32px]">
+      <div className="flex flex-col gap-4 leading-8">
          <div className="text-16-semibold lg:text-20-semibold">
             {text}
             <span className="text-blue-300"> *</span>
@@ -49,7 +49,7 @@ function GeneralInputField({
          />
 
          {error && (
-            <div className="mt-2 self-end text-base leading-[26px] font-medium text-red-500">
+            <div className="mt-2 self-end text-base leading-6.5 font-medium text-red-500">
                {error}
             </div>
          )}

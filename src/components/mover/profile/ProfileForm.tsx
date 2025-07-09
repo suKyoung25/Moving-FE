@@ -46,7 +46,7 @@ function ProfileForm() {
             <div className="flex flex-1 flex-col">
                <ImageInputField name="image" text="프로필 이미지" />
 
-               <hr className="border-line-100 m-0 my-8 hidden border-t-[1px] p-0 lg:block" />
+               <hr className="border-line-100 m-0 my-8 hidden border-t p-0 lg:block" />
 
                <div className="mt-8">
                   <GeneralInputField
@@ -58,7 +58,7 @@ function ProfileForm() {
                   />
                </div>
 
-               <hr className="border-line-100 m-0 my-8 border-t-[1px] p-0" />
+               <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <GeneralInputField
                   name="career"
@@ -68,7 +68,7 @@ function ProfileForm() {
                   validator={validateCareer}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t-[1px] p-0" />
+               <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <GeneralInputField
                   name="onelineIntroduction"
@@ -78,7 +78,7 @@ function ProfileForm() {
                   validator={validateOnelineIntroduction}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t-[1px] p-0 lg:hidden" />
+               <hr className="border-line-100 m-0 my-8 border-t p-0 lg:hidden" />
             </div>
 
             <div className="flex-1">
@@ -89,7 +89,7 @@ function ProfileForm() {
                   onValidChange={handleValidityChange}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t-[1px] p-0" />
+               <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <ButtonInputField
                   name="serviceType"
@@ -99,7 +99,7 @@ function ProfileForm() {
                   onValidChange={handleValidityChange}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t-[1px] p-0" />
+               <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <ButtonInputField
                   name="area"

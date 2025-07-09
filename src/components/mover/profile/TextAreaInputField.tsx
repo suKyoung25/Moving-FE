@@ -46,7 +46,7 @@ function TextAreaInputField({
             placeholder={placeholder}
          />
          {error && (
-            <div className="mt-2 text-base leading-[26px] font-medium text-red-500">
+            <div className="mt-2 text-base leading-6.5 font-medium text-red-500">
                {error}
             </div>
          )}

@@ -1,19 +1,19 @@
 import BasicInfoForms from "@/components/basicInfo/BasicInfoForms";
 
 export default function MoverBasicInfoEditPage() {
-  return (
-    <>
-      <div className="flex flex-col gap-4 lg:gap-8 mb-6 lg:mb-12">
-        <div className="text-18-semibold leading-8 lg:text-32-semibold ">
-          기본정보 수정
-        </div>
-      </div>
+   return (
+      <>
+         <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
+            <div className="text-18-semibold lg:text-32-semibold leading-8">
+               기본정보 수정
+            </div>
+         </div>
 
-      <hr className="m-0 p-0 border-t-[1px] border-line-100" />
+         <hr className="border-line-100 m-0 border-t p-0" />
 
-      <div className="mt-10">
-        <BasicInfoForms />
-      </div>
-    </>
-  );
+         <div className="mt-10">
+            <BasicInfoForms />
+         </div>
+      </>
+   );
 }

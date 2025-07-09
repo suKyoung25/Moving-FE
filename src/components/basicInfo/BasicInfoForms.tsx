@@ -72,7 +72,7 @@ export default function BasicInfoForms() {
                   onValidChange={handleValidityChange}
                />
 
-               <hr className="p-o border-line-100 my-8 border-t-[1px]" />
+               <hr className="p-o border-line-100 my-8 border-t" />
 
                <BasicInputField
                   name="phone"
@@ -83,7 +83,7 @@ export default function BasicInfoForms() {
                />
             </div>
 
-            <hr className="p-o border-line-100 my-8 border-t-[1px] lg:hidden" />
+            <hr className="p-o border-line-100 my-8 border-t lg:hidden" />
 
             <div className="flex-1">
                <SecretInputField
@@ -94,7 +94,7 @@ export default function BasicInfoForms() {
                   onValidChange={handleValidityChange}
                />
 
-               <hr className="p-o border-line-100 my-8 border-t-[1px]" />
+               <hr className="p-o border-line-100 my-8 border-t" />
 
                <SecretInputField
                   name="newPassword"
@@ -105,7 +105,7 @@ export default function BasicInfoForms() {
                   onChange={handleNewPasswordChange}
                />
 
-               <hr className="p-o border-line-100 my-8 border-t-[1px]" />
+               <hr className="p-o border-line-100 my-8 border-t" />
 
                <SecretInputField
                   name="checkNewPassword"
@@ -117,7 +117,7 @@ export default function BasicInfoForms() {
                   onValidChange={handleValidityChange}
                />
 
-               <hr className="p-o border-line-100 my-8 border-t-[1px] lg:hidden" />
+               <hr className="p-o border-line-100 my-8 border-t lg:hidden" />
             </div>
          </div>
 
