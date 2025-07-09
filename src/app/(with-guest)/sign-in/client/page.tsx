@@ -1,12 +1,12 @@
 "use client";
 
-import AuthInput from "../../_component/AuthInput";
-import PasswordInput from "../../_component/PasswordInput";
+import AuthInput from "../../../../components/sign-up-in/AuthInput";
+import PasswordInput from "../../../../components/sign-up-in/PasswordInput";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import Link from "next/link";
 import useLoginForm from "@/lib/hooks/useLoginForm";
-import ClientTitle from "../../_component/ClientTitle";
-import EasyLoginForm from "../../_component/EasyLoginForm";
+import ClientTitle from "../../../../components/sign-up-in/ClientTitle";
+import EasyLoginForm from "../../../../components/sign-up-in/EasyLoginForm";
 
 export default function ClientSignInPage() {
   const { form, errors, handleChange } = useLoginForm();

@@ -1,38 +1,51 @@
-import { z } from "zod";
+import * as authSchema from "./auth.schemas";
 
-// 일반 회원 쪽
-export const signUpSchema = z
-  .object({
-    nickname: z
-      .string()
-      .trim()
-      .min(1, "성함을 입력해 주세요.")
-      .max(4, "4자 이내로 입력해 주세요."),
+// ✅ 이름 검사
+export function nameValidate(name: string) {
+  return authSchema.nameSchema.safeParse(name);
+}
 
-    email: z.string().trim().email("이메일 형식이 아닙니다."),
+// ✅ 이메일 검사
+export function emailValidate(email: string) {
+  return authSchema.emailSchema.safeParse(email);
+}
 
-    phoneNumber: z
-      .string()
-      .trim()
-      .regex(
-        /^\d{10,11}$/,
-        "전화번호는 10~11자리의 숫자로만 입력할 수 있습니다."
-      ),
+// ✅ 전화번호 검사
+export function phoneNumberValidate(phoneNumber: string) {
+  return authSchema.phoneNumberSchema.safeParse(phoneNumber);
+}
 
-    password: z.string().min(8, "비밀번호를 8자리 이상 입력해 주세요."),
+// ✅ 비밀번호 검사
+export function passwordValidate(password: string) {
+  return authSchema.passwordSchema.safeParse(password);
+}
 
-    passwordConfirmation: z
-      .string()
-      .min(8, "비밀번호를 8자리 이상 입력해 주세요."),
-  })
-  .refine((data) => data.password === data.passwordConfirmation, {
-    message: "비밀번호가 일치하지 않습니다.",
-    path: ["passwordConfirmation"],
-  });
+// ✅ 비밀번호 확인 검사
+export function passwordConfirmationValidate(
+  password: string,
+  passwordConfirmation: string
+) {
+  if (password !== passwordConfirmation) {
+    return {
+      success: false,
+      message: "비밀번호가 일치하지 않습니다.",
+    };
+  }
+  return { success: true };
+}
 
-// 일반 회원 쪽
-export const loginSchema = z.object({
-  email: z.string().trim().email("이메일 형식이 아닙니다."),
+// ✅ 전체 검증 - 회원가입
+export function signUpFormValidate(data: {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  passwordConfirmation: string;
+}) {
+  return authSchema.signUpFormSchema.safeParse(data);
+}
 
-  password: z.string().min(8, "비밀번호를 8자리 이상 입력해 주세요."),
-});
+// ✅ 전체 검증 - 로그인
+export function loginFormValidate(data: { email: string; password: string }) {
+  return authSchema.loginFormSchema.safeParse(data);
+}
