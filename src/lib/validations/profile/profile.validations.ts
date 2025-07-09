@@ -1,6 +1,6 @@
 import { ZodType, ZodTypeDef } from "zod";
-import { ValidationResult } from "@/lib/types/profile.types"; // 기존 유지
 import { profileSchemas } from "./profile.schemas";
+import { ValidationResult } from "@/lib/types";
 
 function validateField<TInput, TOutput>(
    schema: ZodType<TOutput, ZodTypeDef, TInput>,

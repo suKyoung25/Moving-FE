@@ -1,58 +1,58 @@
 "use client";
 
 import React, { useState } from "react";
-import { BasicInfoInputProps, InputFieldProps } from "@/lib/types/mover.types";
+import { BasicInfoInputProps } from "@/lib/types/mover.types";
 
 //기본정보 수정페이지 기본input 컴포넌트화
 function BasicInputField({
-  name,
-  text,
-  placeholder,
-  height,
-  validator,
-  onValidChange, // 주석: 시작하기 버튼의 활성화 관련
+   name,
+   text,
+   placeholder,
+   height,
+   validator,
+   onValidChange, // 주석: 시작하기 버튼의 활성화 관련
 }: BasicInfoInputProps) {
-  const [value, setValue] = useState<string>("");
-  const [error, setError] = useState("");
+   const [value, setValue] = useState<string>("");
+   const [error, setError] = useState("");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const newVal = e.target.value;
-    setValue(newVal);
+   const handleChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+   ) => {
+      const newVal = e.target.value;
+      setValue(newVal);
 
-    if (validator) {
-      const result = validator(newVal);
+      if (validator) {
+         const result = validator(newVal);
 
-      if (result.success) {
-        onValidChange?.(name, result.success);
-        setError("");
-      } else {
-        onValidChange?.(name, result.success);
-        setError(result.message);
+         if (result.success) {
+            onValidChange?.(name, result.success);
+            setError("");
+         } else {
+            onValidChange?.(name, result.success);
+            setError(result.message);
+         }
       }
-    }
-  };
+   };
 
-  return (
-    <div className="leading-[32px] flex flex-col gap-4">
-      <div className="text-16-semibold lg:text-20-semibold">{text}</div>
-      <input
-        name={name}
-        value={value}
-        onChange={handleChange}
-        type="text"
-        className={`w-full ${height} placeholder:text-gray-300 rounded-2xl pl-3.5 bg-bg-200 ${error ? "border border-red-500" : ""}`}
-        placeholder={placeholder}
-      />
+   return (
+      <div className="flex flex-col gap-4 leading-[32px]">
+         <div className="text-16-semibold lg:text-20-semibold">{text}</div>
+         <input
+            name={name}
+            value={value}
+            onChange={handleChange}
+            type="text"
+            className={`w-full ${height} bg-bg-200 rounded-2xl pl-3.5 placeholder:text-gray-300 ${error ? "border border-red-500" : ""}`}
+            placeholder={placeholder}
+         />
 
-      {error && (
-        <div className="text-red-500 mt-2 text-base font-medium leading-[26px] self-end">
-          {error}
-        </div>
-      )}
-    </div>
-  );
+         {error && (
+            <div className="mt-2 self-end text-base leading-[26px] font-medium text-red-500">
+               {error}
+            </div>
+         )}
+      </div>
+   );
 }
 
 export default BasicInputField;
