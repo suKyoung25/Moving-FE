@@ -4,8 +4,7 @@ import { profileState } from "@/lib/types";
 import {
   MoverProfileInput,
   moverProfileSchema,
-} from "@/lib/validations/profile.schemas";
-
+} from "@/lib/validations/profile/profile.schemas";
 export async function createMoverProfile(
   state: profileState,
   formData: FormData

@@ -15,7 +15,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
     "sticky top-0 left-0 z-50 bg-white border-b border-line-100";
 
   const commonContainerClass =
-    "flex items-center max-w-[1400px] mx-auto px-6 md:px-16 lg:px-[260px]";
+    "flex items-center max-w-[1400px] mx-auto px-6 md:px-16 lg:px-0";
 
   const containerClass = `
     ${commonContainerClass}
