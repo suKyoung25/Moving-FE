@@ -2,13 +2,16 @@
 import PaperPlane from "@/components/animations/PaperPlane";
 import { useState } from "react";
 
-export default function SupportSubmitButton() {
+// 문의 전송 버튼 컴포넌트
+export default function SupportSubmitButton({isPending} : {isPending : boolean}) {
 
     const [isHover, setIsHover] = useState(false);
 
     return (
         <button
             type="submit"
+            disabled={isPending}
+            
             className="
                 flex items-center 
                 px-10 py-3.5
@@ -39,7 +42,10 @@ export default function SupportSubmitButton() {
                     transition-all duration-3000 ease-in-out
                 "
             >
-                무빙에 문의하기
+                 {/* 전송 중일 때 텍스트 변경 */}
+                {
+                    isPending ? "무빙에 문의하는 중" : "무빙에 문의하기"
+                }
             </span>
             {isHover && (
                 <span>
