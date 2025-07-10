@@ -14,13 +14,13 @@ interface ReviewModalProps {
 }
 
 export default function InputModal({
-  isOpen,
-  onClose,
-  onClick,
-  title,
+  isOpen,      // 모달 오픈 유무
+  onClose,     // 모달 닫기
+  onClick,     // 버튼 클릭
+  title,       // 모달 제목
   children,
-  buttonTitle,
-  isActive,
+  buttonTitle, // 버튼 이름
+  isActive,    // 버튼 활성화
 }: ReviewModalProps) {
   if (!isOpen) return null;
 
@@ -29,6 +29,7 @@ export default function InputModal({
       <div className="bg-white rounded-t-2xl md:rounded-2xl shadow-lg md:max-w-94 lg:max-w-152 w-full pt-8 pb-10 px-6">
         <div className="flex justify-between items-center">
           <div className="text-18-bold lg:text-24-semibold">{title}</div>
+          {/* 닫기 버튼 */}
           <button onClick={() => onClose()}>
             <Image
               src={close}
@@ -39,7 +40,9 @@ export default function InputModal({
             />
           </button>
         </div>
+        {/* 모달 내용 컴포넌트 위치 */}
         <div className="py-6.5 lg:py-10">{children}</div>
+        {/* 모달 내부 버튼 */}
         <SolidButton disabled={!isActive} onClick={onClick}>
           {buttonTitle}
         </SolidButton>

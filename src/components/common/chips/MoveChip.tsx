@@ -4,7 +4,7 @@ import solidHomeIcon from "@/assets/images/solidHomeIcon.svg";
 import solidCompanyIcon from "@/assets/images/solidCompanyIcon.svg";
 import solidDocumentIcon from "@/assets/images/solidDocumentIcon.svg";
 
-type ChipType = "SMALL" | "HOME" | "OFFICE" | "DESIGNATED" | "PENDING";
+type ChipType = "SMALL" | "HOME" | "OFFICE" | "DESIGNATED" | "PENDING" | "DONE";
 
 const CHIP_CONFIG: Record<
   ChipType,
@@ -40,9 +40,15 @@ const CHIP_CONFIG: Record<
     text: "text-primary-blue-400",
     icon: undefined,
   },
+    DONE: {
+    label: "확정 견적",
+    bg: "bg-gray-100",
+    text: "text-primary-blue-400",
+    icon: undefined,
+  },
 };
 
-type MoveChipProps = {
+interface MoveChipProps {
   type: ChipType;
   mini?: boolean;
 };
