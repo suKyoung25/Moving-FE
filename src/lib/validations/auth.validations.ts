@@ -36,15 +36,15 @@ export function validateAuthPassword(password: string) {
 // ✅ 비밀번호 재확인 검사
 export function validateAuthCheckPassword(
    password: string,
-   checkPassword: string,
+   checkedPassword: string,
 ) {
-   if (password !== checkPassword) {
+   if (password !== checkedPassword) {
       return {
          success: false,
          message: "비밀번호와 일치하지 않습니다.",
       };
    }
-   return validateField(authSchema.checkPasswordSchema, checkPassword);
+   return validateField(authSchema.checkPasswordSchema, checkedPassword);
 }
 
 // ✅ 전체 검증 - 회원가입
