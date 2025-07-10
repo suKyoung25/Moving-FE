@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { InputFieldProps } from "@/lib/types/mover.types";
+import { InputFieldProps } from "@/lib/types/profile.types";
 import { validateDetailDescription } from "@/lib/validations";
 
 //상세 설명 (textArea) input인 경우

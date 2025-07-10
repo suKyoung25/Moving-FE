@@ -15,6 +15,7 @@ interface Props {
    validator?: (value: string) => AuthValidationResult;
    onValidChange?: (key: string, isValid: boolean) => void;
    onValueChange?: (key: string, value: string) => void;
+   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function PasswordInput({
@@ -24,6 +25,7 @@ export default function PasswordInput({
    placeholder,
    onValidChange,
    onValueChange,
+   onChange,
 }: Props) {
    const [isVisible, setIsVisible] = useState(false);
    const [value, setValue] = useState<string>("");
@@ -34,6 +36,10 @@ export default function PasswordInput({
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
       setValue(newValue);
+
+      if (onChange) {
+         onChange(e);
+      }
 
       if (validator) {
          const result = validator(newValue);

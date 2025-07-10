@@ -1,4 +1,4 @@
-import SignUpForm from "@/components/sign-up-in/SignUpForm";
+import ClientSignUpForm from "@/components/sign-up-in/ClientSignUpForm";
 import ClientTitle from "../../../../components/sign-up-in/ClientTitle";
 import EasyLoginForm from "../../../../components/sign-up-in/EasyLoginForm";
 
@@ -9,7 +9,7 @@ export default function ClientSignUpPage() {
          <ClientTitle type="signup" />
 
          {/* 서식 */}
-         <SignUpForm />
+         <ClientSignUpForm />
 
          {/* 간편 회원가입 */}
          <EasyLoginForm />
