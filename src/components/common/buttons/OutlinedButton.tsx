@@ -8,7 +8,7 @@ type OutlinedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export default function OutlinedButton({
   children,
   disabled,
-  className = "",
+  className = "w-full",
   ...props
 }: OutlinedButtonProps) {
   return (
@@ -16,7 +16,6 @@ export default function OutlinedButton({
       type="button"
       disabled={disabled}
       className={`
-        w-full
         px-4
         rounded-2xl
         text-16-semibold
@@ -31,7 +30,7 @@ export default function OutlinedButton({
         disabled:border-gray-100
         disabled:text-gray-100
         h-13.5
-        md:h-16 md:text-20-semibold
+        lg:h-16 lg:text-20-semibold
         disabled:!cursor-not-allowed
         ${className}
       `}
