@@ -1,6 +1,6 @@
 import ClientTitle from "../../../../components/sign-up-in/ClientTitle";
 import EasyLoginForm from "../../../../components/sign-up-in/EasyLoginForm";
-import LoginForm from "@/components/sign-up-in/LoginForm";
+import ClientLoginForm from "@/components/sign-up-in/ClientLoginForm";
 
 export default function ClientSignInPage() {
    return (
@@ -9,7 +9,7 @@ export default function ClientSignInPage() {
          <ClientTitle type="login" />
 
          {/* 서식 */}
-         <LoginForm />
+         <ClientLoginForm />
 
          {/* 간편 회원가입 */}
          <EasyLoginForm />

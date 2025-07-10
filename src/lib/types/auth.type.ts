@@ -35,3 +35,7 @@ export interface SignUpFormState {
 export interface ErrorsState {
    [key: string]: string;
 }
+
+export interface MoverSignInProps {
+   type: "login" | "signup";
+}

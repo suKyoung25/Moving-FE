@@ -2,13 +2,10 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/images/logoText.svg";
-
-interface Prop {
-   type: "login" | "signup";
-}
+import { MoverSignInProps } from "@/lib/types/auth.type";
 
 // 회원가입 & 로그인 페이지 제목 로고 및 링크 (일반 회원)
-export default function MoverTitle({ type }: Prop) {
+export default function MoverTitle({ type }: MoverSignInProps) {
    return (
       <div className="mb-10">
          <Link href="/mover-search">
@@ -18,13 +15,13 @@ export default function MoverTitle({ type }: Prop) {
          </Link>
          <div className="lg:mt- mt-4 flex gap-1 lg:gap-2">
             <p className="text-black-100 text-12-regular lg:text-20-regular">
-               기사님이신가요?
+               일반 유저라면?
             </p>
             <Link
-               href={type === "login" ? "sign-in/mover" : "/sign-up/mover"}
+               href={type === "login" ? "/sign-in/client" : "/sign-up/client"}
                className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
             >
-               기사님 전용 페이지
+               일반 유저 전용 페이지
             </Link>
          </div>
       </div>

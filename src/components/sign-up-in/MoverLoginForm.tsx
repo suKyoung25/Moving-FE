@@ -7,31 +7,29 @@ import SolidButton from "../common/buttons/SolidButton";
 import Link from "next/link";
 
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
-import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local-login.action";
+import createMoverLocalLoginAction from "@/lib/actions/auth/create-mover-local-login.action";
 
-export default function LoginForm() {
+export default function MoverLoginForm() {
    // 상태 모음
    const [, formAction, isPending] = useActionState(
-      createClientLocalLoginAction,
+      createMoverLocalLoginAction,
       null,
    );
 
-   // 1. 유효성 검사 : 시작하기 버튼 활성화 여부
+   // 시작하기 버튼 활성화 상태
    const [validity, setValidity] = useState<Record<string, boolean>>({
       email: false,
       password: false,
    });
 
-   // 2.
-   const handleValidatyChange = (key: string, isValid: boolean) => {
-      setValidity((prev) => ({ ...prev, [key]: isValid }));
-   };
-
-   // 3.
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
 
-   // 본문
+   // 각 input에 유효성 확인
+   const handleValidateChange = (key: string, isValid: boolean) => {
+      setValidity((prev) => ({ ...prev, [key]: isValid }));
+   };
+
    return (
       <form action={formAction} className="flex w-full flex-col gap-4">
          <AuthInput
@@ -40,7 +38,7 @@ export default function LoginForm() {
             validator={validateAuthEmail}
             type="email"
             placeholder="이메일을 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidateChange}
          />
          <PasswordInput
             name="password"
@@ -48,7 +46,7 @@ export default function LoginForm() {
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidateChange}
          />
 
          {/* 로그인 버튼 */}
