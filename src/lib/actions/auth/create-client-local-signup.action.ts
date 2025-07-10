@@ -7,8 +7,8 @@ export default async function createClientLocalSignupAction(
    _: AuthValidation | null,
    formData: FormData,
 ): Promise<AuthValidation> {
-   // 양식
    try {
+      // ✅ 자료 구조
       const rawFormData = {
          name: formData.get("name")?.toString(),
          email: formData.get("email")?.toString(),
@@ -17,7 +17,7 @@ export default async function createClientLocalSignupAction(
          passwordConfirmation: formData.get("passwordConfirmation")?.toString(),
       };
 
-      // 유효성 검사
+      // ✅ 유효성 검사
       const validationResult = signUpFormSchema.safeParse(rawFormData);
 
       if (!validationResult.success) {
@@ -25,7 +25,7 @@ export default async function createClientLocalSignupAction(
          return { status: false, error: JSON.stringify(errors) };
       }
 
-      // 백엔드 연동
+      // ✅ 백엔드 연동
       return { status: true };
    } catch (error) {
       console.error("회원가입 실패 원인: ", error);
