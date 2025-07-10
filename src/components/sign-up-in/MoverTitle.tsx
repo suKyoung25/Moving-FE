@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/images/logoText.svg";
-import { MoverSignInProps } from "@/lib/types/auth.type";
+import { MoverAuthProps } from "@/lib/types/auth.type";
 
 // 회원가입 & 로그인 페이지 제목 로고 및 링크 (일반 회원)
-export default function MoverTitle({ type }: MoverSignInProps) {
+export default function MoverTitle({ type }: MoverAuthProps) {
    return (
       <div className="mb-10">
          <Link href="/mover-search">

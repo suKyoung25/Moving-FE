@@ -59,7 +59,7 @@ export default function MoverLoginForm() {
                   아직 무빙 회원이 아니신가요?
                </p>
                <Link
-                  href="/sign-up/client"
+                  href="/sign-up/mover"
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
                >
                   이메일로 회원가입하기

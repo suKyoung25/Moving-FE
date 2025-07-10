@@ -14,6 +14,13 @@ export const passwordSchema = baseAuthSchema
       "문자와 숫자를 섞어 사용해 주세요.",
    );
 
+export const checkPasswordSchema = baseAuthSchema
+   .min(8, "비밀번호를 8자리 이상 입력해 주세요.")
+   .regex(
+      /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/,
+      "문자와 숫자를 섞어 사용해 주세요.",
+   );
+
 export const nameSchema = baseAuthSchema
    .min(1, "성함을 입력해 주세요.")
    .max(4, "4자 이내로 입력해 주세요.");

@@ -33,6 +33,20 @@ export function validateAuthPassword(password: string) {
    return validateField(authSchema.passwordSchema, password);
 }
 
+// ✅ 비밀번호 재확인 검사
+export function validateAuthCheckPassword(
+   password: string,
+   checkPassword: string,
+) {
+   if (password !== checkPassword) {
+      return {
+         success: false,
+         message: "비밀번호와 일치하지 않습니다.",
+      };
+   }
+   return validateField(authSchema.checkPasswordSchema, checkPassword);
+}
+
 // ✅ 전체 검증 - 회원가입
 export function validateSignUpForm(data: {
    name: string;

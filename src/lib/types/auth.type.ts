@@ -36,6 +36,6 @@ export interface ErrorsState {
    [key: string]: string;
 }
 
-export interface MoverSignInProps {
+export interface MoverAuthProps {
    type: "login" | "signup";
 }

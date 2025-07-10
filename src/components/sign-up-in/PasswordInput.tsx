@@ -15,6 +15,7 @@ interface Props {
    validator?: (value: string) => AuthValidationResult;
    onValidChange?: (key: string, isValid: boolean) => void;
    onValueChange?: (key: string, value: string) => void;
+   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function PasswordInput({
