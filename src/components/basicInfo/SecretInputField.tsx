@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { BasicInfoInputProps } from "@/lib/types/mover.types";
 import Image from "next/image";
 import visibilityOff from "@/assets/images/visibilityOffIcon.svg";
 import visibilityOn from "@/assets/images/visibilityIcon.svg";
+import { BasicInfoInputProps } from "@/lib/types";
 
 //기본정보 수정페이지 비밀번호input 컴포넌트화
 function SecretInputField({

@@ -1,3 +1,5 @@
-export default function Page() {
-  return <div>페이지 이름을 각자 알맞게 수정!</div>;
+export default function MoverSignInPage() {
+   return (
+      <section className="mx-auto mt-18 mb-31 flex w-82 flex-col items-center lg:w-160"></section>
+   );
 }

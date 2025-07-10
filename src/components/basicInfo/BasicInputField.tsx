@@ -1,7 +1,7 @@
 "use client";
 
+import { BasicInfoInputProps } from "@/lib/types";
 import React, { useState } from "react";
-import { BasicInfoInputProps } from "@/lib/types/mover.types";
 
 //기본정보 수정페이지 기본input 컴포넌트화
 function BasicInputField({
