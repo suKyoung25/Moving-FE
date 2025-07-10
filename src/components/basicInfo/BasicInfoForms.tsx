@@ -6,7 +6,7 @@ import SolidButton from "../common/buttons/SolidButton";
 import OutlinedButton from "../common/buttons/OutlinedButton";
 import SecretInputField from "./SecretInputField";
 import { useRouter } from "next/navigation";
-import { updateMoverBasicInfo } from "@/lib/actions/mover/update-moverBasicInfo.action";
+import { updateMoverBasicInfo } from "@/lib/actions/mover/update-mover-basicInfo.action";
 import {
    validateCheckNewPassword,
    validateEmail,
