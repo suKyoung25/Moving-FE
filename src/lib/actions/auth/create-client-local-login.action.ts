@@ -2,6 +2,7 @@
 
 import { AuthValidation } from "@/lib/types/auth.type";
 import { loginFormSchema } from "@/lib/validations/auth.schemas";
+import { defaultFetch } from "../fetch-client";
 
 export default async function createClientLocalLoginAction(
    _: AuthValidation | null,
@@ -23,6 +24,11 @@ export default async function createClientLocalLoginAction(
       }
 
       // ✅ 백엔드 연동
+      await defaultFetch("/auth/signin/client", {
+         method: "POST",
+         body: JSON.stringify(validationResult.data),
+      });
+
       return { status: true };
    } catch (error) {
       console.error("로그인 실패 원인: ", error);

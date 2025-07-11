@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../common/buttons/SolidButton";
@@ -14,10 +14,12 @@ import {
 } from "@/lib/validations";
 import createClientLocalSignupAction from "@/lib/actions/auth/create-client-local-signup.action";
 import { AuthValidationResult } from "@/lib/types/auth.type";
+import { useRouter } from "next/navigation";
 
 // 여기서부터 시작
-export default function ClientSignUpForm() {
-   const [, formAction, isPending] = useActionState(
+export default function SignUpForm() {
+   const router = useRouter();
+   const [formState, formAction, isPending] = useActionState(
       createClientLocalSignupAction,
       null,
    );
@@ -64,6 +66,10 @@ export default function ClientSignUpForm() {
    // 3.
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
+
+   useEffect(() => {
+      if (formState?.status) router.replace("/sign-in/client");
+   }, [formState, router]);
 
    // 본문
    return (
@@ -116,7 +122,7 @@ export default function ClientSignUpForm() {
 
          {/* 회원가입 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton disabled={isDisabled}>
+            <SolidButton type="submit" disabled={isDisabled}>
                {isPending ? "로딩 중..." : "시작하기"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">

@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../common/buttons/SolidButton";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local-login.action";
 
 export default function ClientLoginForm() {
    // 상태 모음
-   const [, formAction, isPending] = useActionState(
+   const router = useRouter();
+   const [formState, formAction, isPending] = useActionState(
       createClientLocalLoginAction,
       null,
    );
@@ -30,6 +32,10 @@ export default function ClientLoginForm() {
    // 3.
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
+
+   useEffect(() => {
+      if (formState?.status) router.replace("/mover-search");
+   }, [formState, router]);
 
    // 본문
    return (
@@ -53,7 +59,7 @@ export default function ClientLoginForm() {
 
          {/* 로그인 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton disabled={isDisabled}>
+            <SolidButton disabled={isDisabled} type="submit">
                {isPending ? "로딩 중..." : "로그인"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">
