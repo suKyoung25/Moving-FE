@@ -13,7 +13,7 @@ export const accessTokenSettings = {
             const isSecure = location.protocol === "https:"; // https 환경 설정
             document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiresIn}; SameSite=lax${isSecure ? "; Secure" : ""}`;
          } catch (error) {
-            console.error("토큰 설정 오류 (set)");
+            console.error("토큰 설정 오류(set): ", error);
          }
       }
    },
@@ -30,7 +30,7 @@ export const accessTokenSettings = {
 
             return token && token.split("=")[1]; // 가져옴
          } catch (error) {
-            return null;
+            console.error("토큰 설정 오류(get): ", error);
          }
       }
 

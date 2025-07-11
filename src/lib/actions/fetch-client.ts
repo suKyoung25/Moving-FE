@@ -40,7 +40,7 @@ export async function defaultFetch(
    } // FormData는 위에서 경우의 수 지웠고 문자열 등이면 자료 형태 그대로 둠
 
    // ★ 응답
-   let response = await fetch(url, { ...options, headers, body });
+   const response = await fetch(url, { ...options, headers, body });
    if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`defaultFetch 오류: [${response.status}] ${errorText}`);
@@ -98,7 +98,7 @@ export async function tokenFetch(
       } catch (error) {
          accessTokenSettings.clear();
          onAuthFail?.();
-         throw new Error("토큰 갱신에 실패했으니, 재로그인해 주세요.");
+         throw new Error(`토큰 갱신에 실패했으니 재로그인해 주세요. ${error}`);
       }
    }
 
