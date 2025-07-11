@@ -7,11 +7,11 @@ export const accessTokenSettings = {
       if (typeof window != "undefined") {
          try {
             const token = JSON.parse(atob(accessToken.split(".")[1])); // 토큰 본문만 가져옴
-            const expiredIn = token.exp - Math.floor(Date.now() / 1000); // 만료 시간
+            const expiresIn = token.exp - Math.floor(Date.now() / 1000); // 만료 시간
 
             // 쿠키 설정
             const isSecure = location.protocol === "https:"; // https 환경 설정
-            document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiredIn}; SameSite=lax${isSecure ? "; Secure" : ""}`;
+            document.cookie = `accessToken=${accessToken}; path=/; max-age=${expiresIn}; SameSite=lax${isSecure ? "; Secure" : ""}`;
          } catch (error) {
             console.error("토큰 설정 오류 (set)");
          }
@@ -24,7 +24,9 @@ export const accessTokenSettings = {
       if (typeof window !== "undefined") {
          try {
             const cookies = document.cookie.split("; "); // 쿠키 중에서
-            const token = cookies.find((row) => row.startsWith("accessToken=")); // accessToken 고르고
+            const token = cookies.find((row) =>
+               row.trim().startsWith("accessToken="),
+            ); // accessToken 고르고
 
             return token && token.split("=")[1]; // 가져옴
          } catch (error) {
