@@ -7,31 +7,30 @@ import SolidButton from "../common/buttons/SolidButton";
 import Link from "next/link";
 
 import {
+   validateAuthCheckPassword,
    validateAuthEmail,
    validateAuthName,
    validateAuthPassword,
    validateAuthPhoneNumber,
 } from "@/lib/validations";
-import createClientLocalSignupAction from "@/lib/actions/auth/create-client-local-signup.action";
-import { AuthValidationResult } from "@/lib/types/auth.type";
+import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
 
-// 여기서부터 시작
-export default function SignUpForm() {
+export default function MoverSignUpForm() {
    const [, formAction, isPending] = useActionState(
-      createClientLocalSignupAction,
+      createMoverLocalSignupAction,
       null,
    );
 
-   // 입력 값 상태 관리
-   const [formValues, setFormValues] = useState({
-      name: "",
-      email: "",
-      phoneNumber: "",
-      password: "",
-      passwordConfirmation: "",
-   });
+   //비밀번호 대조 위한 상태 관리
+   const [checkPassword, setCheckPassword] = useState("");
 
-   // 1. 유효성 검사 : 시작하기 버튼 활성화 여부
+   const handleCheckPasswordChange = (
+      e: React.ChangeEvent<HTMLInputElement>,
+   ) => {
+      setCheckPassword(e.target.value);
+   };
+
+   //시작하기 버튼 활성화 확인
    const [validity, setValidity] = useState<Record<string, boolean>>({
       name: false,
       email: false,
@@ -40,32 +39,17 @@ export default function SignUpForm() {
       passwordConfirmation: false,
    });
 
-   // 2.
+   //시작하기 버튼 활성화를 위해 InputField 컴포넌트로 내려줄 함수
    const handleValidatyChange = (key: string, isValid: boolean) => {
-      setValidity((prev) => ({ ...prev, [key]: isValid }));
+      setValidity((prev) => ({
+         ...prev,
+         [key]: isValid,
+      }));
    };
 
-   // 입력 값 변경
-   const handleValueChange = (key: string, value: string) => {
-      setFormValues((prev) => ({ ...prev, [key]: value }));
-   };
-
-   // 3. 비밀번호 확인 검증
-   const validatePasswordConfirmation = (
-      confirmPassword: string,
-   ): AuthValidationResult => {
-      if (formValues.password !== confirmPassword) {
-         return { success: false, message: "비밀번호가 일치하지 않습니다." };
-      }
-
-      return { success: true, message: "" };
-   };
-
-   // 3.
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
 
-   // 본문
    return (
       <form action={formAction} className="flex w-full flex-col gap-4">
          <AuthInput
@@ -75,7 +59,6 @@ export default function SignUpForm() {
             type="text"
             placeholder="성함을 입력해 주세요"
             onValidChange={handleValidatyChange}
-            onValueChange={handleValueChange}
          />
          <AuthInput
             name="email"
@@ -84,7 +67,6 @@ export default function SignUpForm() {
             type="email"
             placeholder="이메일을 입력해 주세요"
             onValidChange={handleValidatyChange}
-            onValueChange={handleValueChange}
          />
          <AuthInput
             name="phoneNumber"
@@ -93,7 +75,6 @@ export default function SignUpForm() {
             type="text"
             placeholder="숫자만 입력해 주세요"
             onValidChange={handleValidatyChange}
-            onValueChange={handleValueChange}
          />
          <PasswordInput
             name="password"
@@ -102,16 +83,15 @@ export default function SignUpForm() {
             type="password"
             placeholder="비밀번호를 입력해 주세요"
             onValidChange={handleValidatyChange}
-            onValueChange={handleValueChange}
+            onChange={handleCheckPasswordChange}
          />
          <PasswordInput
             name="passwordConfirmation"
-            validator={validatePasswordConfirmation}
+            validator={(val) => validateAuthCheckPassword(val, checkPassword)}
             label="비밀번호 확인"
             type="password"
             placeholder="비밀번호를 다시 한번 입력해 주세요"
             onValidChange={handleValidatyChange}
-            onValueChange={handleValueChange}
          />
 
          {/* 회원가입 버튼 */}
@@ -124,7 +104,7 @@ export default function SignUpForm() {
                   이미 무빙 회원이신가요?
                </p>
                <Link
-                  href="/sign-in/client"
+                  href="/sign-in/mover"
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
                >
                   로그인

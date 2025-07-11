@@ -9,7 +9,7 @@ import Link from "next/link";
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local-login.action";
 
-export default function LoginForm() {
+export default function ClientLoginForm() {
    // 상태 모음
    const [, formAction, isPending] = useActionState(
       createClientLocalLoginAction,

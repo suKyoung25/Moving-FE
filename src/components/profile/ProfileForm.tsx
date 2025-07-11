@@ -1,8 +1,8 @@
 "use client";
 
-import { createMoverProfile } from "@/lib/actions/mover/create-moverProfile.action";
+import { createMoverProfile } from "@/lib/actions/mover/create-mover-profile.action";
 import SolidButton from "@/components/common/buttons/SolidButton";
-import GeneralInputField from "@/components/mover/profile/GeneralInputField";
+import GeneralInputField from "@/components/profile/GeneralInputField";
 import React, { useActionState, useState } from "react";
 import ImageInputField from "./ImageInputField";
 import ButtonInputField from "./ButtonInputField";
