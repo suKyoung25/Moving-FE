@@ -2,7 +2,7 @@
 
 import { AuthValidation } from "@/lib/types/auth.type";
 import { signUpFormSchema } from "@/lib/validations/auth.schemas";
-import { defaultFetch } from "../fetch-client";
+import { defaultFetch } from "../../api/fetch-client";
 
 export default async function createClientLocalSignupAction(
    _: AuthValidation | null,

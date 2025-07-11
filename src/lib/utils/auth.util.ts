@@ -1,4 +1,4 @@
-import { BASE_URL } from "../actions/fetch-client";
+import { BASE_URL } from "../api/fetch-client";
 
 // ✅ 토큰 설정
 export const accessTokenSettings = {
