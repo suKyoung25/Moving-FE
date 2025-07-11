@@ -25,7 +25,17 @@ export default async function createMoverLocalSignupAction(
          return { status: false, error: JSON.stringify(errors) };
       }
 
-      // TODO: fetch 구문 작성 예정
+      //fetch
+      await fetch(`${process.env.BASE_URL}/auth/signup/mover`, {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({
+            name: rawFormData.name,
+            email: rawFormData.email,
+            phoneNumber: rawFormData.phoneNumber,
+            password: rawFormData.password,
+         }),
+      });
 
       return { status: true };
    } catch (error) {

@@ -96,7 +96,7 @@ export default function MoverSignUpForm() {
 
          {/* 회원가입 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton disabled={isDisabled}>
+            <SolidButton type="submit" disabled={isDisabled}>
                {isPending ? "로딩 중..." : "시작하기"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">
