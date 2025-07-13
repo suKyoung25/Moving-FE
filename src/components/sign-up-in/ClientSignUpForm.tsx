@@ -17,7 +17,7 @@ import { AuthValidationResult } from "@/lib/types/auth.type";
 import { useRouter } from "next/navigation";
 
 // 여기서부터 시작
-export default function SignUpForm() {
+export default function ClientSignUpForm() {
    const router = useRouter();
    const [formState, formAction, isPending] = useActionState(
       createClientLocalSignupAction,
@@ -43,7 +43,7 @@ export default function SignUpForm() {
    });
 
    // 2.
-   const handleValidatyChange = (key: string, isValid: boolean) => {
+   const handleValidityChange = (key: string, isValid: boolean) => {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
@@ -52,10 +52,10 @@ export default function SignUpForm() {
       setFormValues((prev) => ({ ...prev, [key]: value }));
 
       // 오류 값 초기화
-      if (formState?.error && typeof formState.error === "object") {
-         const newErrors = { ...formState.error };
+      if (formState?.fieldErrors && typeof formState.fieldErrors === "object") {
+         const newErrors = { ...formState.fieldErrors };
          delete newErrors[key];
-         formState.error = newErrors;
+         formState.fieldErrors = newErrors;
       }
    };
 
@@ -70,12 +70,12 @@ export default function SignUpForm() {
       return { success: true, message: "" };
    };
 
-   // 4.
-   const isDisabled =
-      isPending || !Object.values(validity).every((v) => v === true);
+   // 4. 버튼 활성화 조건
+   const isFormValid = Object.values(validity).every((v) => v === true);
+   const isDisabled = isPending || !isFormValid;
 
    useEffect(() => {
-      if (formState?.status) router.replace("/sign-in/client");
+      if (formState?.success) router.replace("/sign-in/client");
    }, [formState, router]);
 
    // ✅ 본문
@@ -87,7 +87,7 @@ export default function SignUpForm() {
             validator={validateAuthName}
             type="text"
             placeholder="성함을 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
          />
          <AuthInput
@@ -96,9 +96,9 @@ export default function SignUpForm() {
             validator={validateAuthEmail}
             type="email"
             placeholder="이메일을 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
-            errorText={formState?.error}
+            serverError={formState?.fieldErrors?.email}
          />
          <AuthInput
             name="phone"
@@ -106,9 +106,9 @@ export default function SignUpForm() {
             validator={validateAuthPhone}
             type="text"
             placeholder="숫자만 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
-            errorText={formState?.error}
+            serverError={formState?.fieldErrors?.phone}
          />
          <PasswordInput
             name="password"
@@ -116,7 +116,7 @@ export default function SignUpForm() {
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
          />
          <PasswordInput
@@ -125,7 +125,7 @@ export default function SignUpForm() {
             label="비밀번호 확인"
             type="password"
             placeholder="비밀번호를 다시 한번 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
          />
 

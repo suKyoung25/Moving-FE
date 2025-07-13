@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorText from "./ErrorText";
 import { AuthValidationResult } from "@/lib/types/auth.type";
 
@@ -12,7 +12,7 @@ interface Props {
    validator?: (value: string) => AuthValidationResult;
    onValidChange?: (key: string, isValid: boolean) => void;
    onValueChange?: (key: string, value: string) => void;
-   errorText?: string | Record<string, string>;
+   serverError?: string;
 }
 
 export default function AuthInput({
@@ -23,36 +23,39 @@ export default function AuthInput({
    validator,
    onValidChange,
    onValueChange,
-   errorText,
+   serverError,
 }: Props) {
    const [value, setValue] = useState<string>("");
-   const [error, setError] = useState("");
+   const [clientError, setClientError] = useState("");
 
    // ✅ 값과 errorText 변경
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
       setValue(newValue);
-      onValueChange?.(name, newValue);
 
       if (validator) {
          const result = validator(newValue);
+         onValueChange?.(name, newValue);
 
          if (result.success) {
             onValidChange?.(name, true);
-            setError("");
+            setClientError("");
          } else {
             onValidChange?.(name, false);
-            setError(result.message);
+            setClientError(result.message);
          }
       }
    };
 
    // ✅ 백엔드에서 받는 오류 메시지
-   let displayError = error;
+   useEffect(() => {
+      if (serverError) {
+         setClientError("");
+      }
+   }, [serverError]);
 
-   if (errorText && typeof errorText === "object" && name in errorText) {
-      displayError = (errorText as Record<string, string>)[name];
-   }
+   // 표시할 메시지 결정 (서버 우선)
+   const displayError = serverError || clientError;
 
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">

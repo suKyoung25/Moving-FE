@@ -1,18 +1,19 @@
 "use server";
 
-import { AuthValidation } from "@/lib/types/auth.type";
+import { AuthActionResult } from "@/lib/types/auth.type";
 import { loginFormSchema } from "@/lib/validations/auth.schemas";
 import { defaultFetch } from "../../api/fetch-client";
+import { accessTokenSettings } from "@/lib/utils/auth.util";
 
 export default async function createClientLocalLoginAction(
-   _: AuthValidation | null,
+   _: AuthActionResult | null,
    formData: FormData,
-): Promise<AuthValidation> {
+): Promise<AuthActionResult> {
    try {
       // ✅ 자료 구조
       const rawFormData = {
-         email: formData.get("email")?.toString(),
-         password: formData.get("password")?.toString(),
+         email: formData.get("email")?.toString() || "",
+         password: formData.get("password")?.toString() || "",
       };
 
       // ✅ 유효성 검사
@@ -20,16 +21,31 @@ export default async function createClientLocalLoginAction(
 
       if (!validationResult.success) {
          const errors = validationResult.error.flatten().fieldErrors;
-         return { status: false, error: JSON.stringify(errors) };
+         return {
+            success: false,
+            fieldErrors: Object.fromEntries(
+               Object.entries(errors).map(([key, value]) => [
+                  key,
+                  Array.isArray(value) ? value[0] : value,
+               ]),
+            ),
+         };
       }
 
       // ✅ 백엔드 연동
-      await defaultFetch("/auth/signin/client", {
+      const response = await defaultFetch("/auth/signin/client", {
          method: "POST",
          body: JSON.stringify(validationResult.data),
+         credentials: "include",
+         cache: "no-store",
       });
 
-      return { status: true };
+      // 성공 응답
+      return {
+         success: true,
+         user: response.data.clientInfo,
+         accessToken: response.data.accessToken,
+      };
    } catch (error: any) {
       console.error("로그인 실패 원인: ", error);
 
@@ -37,16 +53,17 @@ export default async function createClientLocalLoginAction(
          const message = error.body.message;
 
          if (message.includes("사용자를 찾을 수 없습니다")) {
-            return { status: false, error: { email: message } };
+            return { success: false, fieldErrors: { email: message } };
          }
 
          if (message.includes("비밀번호를 잘못 입력하셨습니다.")) {
-            return { status: false, error: { password: message } };
+            return { success: false, fieldErrors: { password: message } };
          }
-
-         return { status: false, error: { global: message } };
       }
 
-      return { status: false, error: { global: "로그인에 실패했습니다." } };
+      return {
+         success: false,
+         globalError: "로그인에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+      };
    }
 }

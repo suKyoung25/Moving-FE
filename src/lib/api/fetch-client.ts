@@ -70,7 +70,9 @@ export async function tokenFetch(
    // 3. accessToken
    let accessToken = accessTokenSettings.get();
    if (!accessToken) {
-      accessToken = await accessTokenSettings.refresh();
+      console.warn("accessToken 없음: 로그인 필요");
+      onAuthFail?.();
+      throw new Error("로그인 정보가 없습니다. 다시 로그인해 주세요.");
    }
 
    // 4. headers
@@ -93,22 +95,35 @@ export async function tokenFetch(
       body = JSON.stringify(body);
    }
 
-   // ★ 응답
-   let response = await fetch(url, { ...options, headers, body });
+   // ★ 요청
+   let response = await fetch(url, {
+      ...options,
+      headers,
+      credentials: "include",
+      body,
+   });
 
-   // accessToken 만료되면 재발급
+   // 401 오류면 토큰 재발급 시도
    if (response.status === 401) {
       try {
          accessToken = await accessTokenSettings.refresh();
          headers.Authorization = `Bearer ${accessToken}`;
 
-         response = await fetch(url, { ...options, headers, body });
+         response = await fetch(url, {
+            ...options,
+            headers,
+            credentials: "include",
+            body,
+         });
       } catch (error) {
+         console.error("토큰 갱신 실패:", error);
          accessTokenSettings.clear();
          onAuthFail?.();
-         throw new Error(`토큰 갱신에 실패했으니 재로그인해 주세요. ${error}`);
+         throw new Error("토큰 갱신에 실패했습니다. 재로그인을 시도해 주세요.");
       }
    }
+
+   if (response.status === 204) return null;
 
    // !response.ok + 반환
    try {
@@ -120,6 +135,13 @@ export async function tokenFetch(
       return response.json();
    } catch (error: any) {
       console.error("token Fetch Error: ", error);
+
+      // 서버 연동 안 된 것 같을 때
+      if (error.name === "TypeError" && error.message.includes("fetch")) {
+         throw new Error(
+            "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해 주세요.",
+         );
+      }
 
       if (error?.status && error?.body) throw error;
 

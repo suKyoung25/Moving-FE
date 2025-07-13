@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorText from "./ErrorText";
 import Image from "next/image";
 import openedEye from "@/assets/images/visibilityIcon.svg";
@@ -16,7 +16,7 @@ interface Props {
    onValidChange?: (key: string, isValid: boolean) => void;
    onValueChange?: (key: string, value: string) => void;
    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-   errorText?: string | Record<string, string>;
+   serverError?: string;
 }
 
 export default function PasswordInput({
@@ -27,11 +27,11 @@ export default function PasswordInput({
    onValidChange,
    onValueChange,
    onChange,
-   errorText,
+   serverError,
 }: Props) {
    const [isVisible, setIsVisible] = useState(false);
    const [value, setValue] = useState<string>("");
-   const [error, setError] = useState("");
+   const [clientError, setClientError] = useState("");
 
    // type="password" <-> "text"
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
@@ -49,20 +49,23 @@ export default function PasswordInput({
 
          if (result.success) {
             onValidChange?.(name, true);
-            setError("");
+            setClientError("");
          } else {
             onValidChange?.(name, false);
-            setError(result.message);
+            setClientError(result.message);
          }
       }
    };
 
-   // errorText가 들어오면 내부 error 대신 표시 (= 백엔드 로그인 정보 없을 때)
-   let displayError = error;
+   // ✅ 백엔드에서 받는 오류 메시지
+   useEffect(() => {
+      if (serverError) {
+         setClientError("");
+      }
+   }, [serverError]);
 
-   if (errorText && typeof errorText === "object" && name in errorText) {
-      displayError = (errorText as Record<string, string>)[name];
-   }
+   // 표시할 메시지 결정 (서버 우선)
+   const displayError = serverError || clientError;
 
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
