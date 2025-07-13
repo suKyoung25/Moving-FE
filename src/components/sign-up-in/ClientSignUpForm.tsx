@@ -10,7 +10,7 @@ import {
    validateAuthEmail,
    validateAuthName,
    validateAuthPassword,
-   validateAuthPhoneNumber,
+   validateAuthPhone,
 } from "@/lib/validations";
 import createClientLocalSignupAction from "@/lib/actions/auth/create-client-local-signup.action";
 import { AuthValidationResult } from "@/lib/types/auth.type";
@@ -28,16 +28,16 @@ export default function SignUpForm() {
    const [formValues, setFormValues] = useState({
       name: "",
       email: "",
-      phoneNumber: "",
+      phone: "",
       password: "",
       passwordConfirmation: "",
    });
 
-   // 1. 유효성 검사 : 시작하기 버튼 활성화 여부
+   // ✅ 유효성 검사: 시작하기 버튼 활성화 여부, 1.
    const [validity, setValidity] = useState<Record<string, boolean>>({
       name: false,
       email: false,
-      phoneNumber: false,
+      phone: false,
       password: false,
       passwordConfirmation: false,
    });
@@ -47,9 +47,16 @@ export default function SignUpForm() {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
-   // 입력 값 변경
+   // ✅ 입력 값 변경
    const handleValueChange = (key: string, value: string) => {
       setFormValues((prev) => ({ ...prev, [key]: value }));
+
+      // 오류 값 초기화
+      if (formState?.error && typeof formState.error === "object") {
+         const newErrors = { ...formState.error };
+         delete newErrors[key];
+         formState.error = newErrors;
+      }
    };
 
    // 3. 비밀번호 확인 검증
@@ -63,7 +70,7 @@ export default function SignUpForm() {
       return { success: true, message: "" };
    };
 
-   // 3.
+   // 4.
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
 
@@ -71,7 +78,7 @@ export default function SignUpForm() {
       if (formState?.status) router.replace("/sign-in/client");
    }, [formState, router]);
 
-   // 본문
+   // ✅ 본문
    return (
       <form action={formAction} className="flex w-full flex-col gap-4">
          <AuthInput
@@ -91,15 +98,17 @@ export default function SignUpForm() {
             placeholder="이메일을 입력해 주세요"
             onValidChange={handleValidatyChange}
             onValueChange={handleValueChange}
+            errorText={formState?.error}
          />
          <AuthInput
-            name="phoneNumber"
+            name="phone"
             label="전화번호"
-            validator={validateAuthPhoneNumber}
+            validator={validateAuthPhone}
             type="text"
             placeholder="숫자만 입력해 주세요"
             onValidChange={handleValidatyChange}
             onValueChange={handleValueChange}
+            errorText={formState?.error}
          />
          <PasswordInput
             name="password"

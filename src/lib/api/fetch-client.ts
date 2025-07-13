@@ -40,13 +40,21 @@ export async function defaultFetch(
    } // FormData는 위에서 경우의 수 지웠고 문자열 등이면 자료 형태 그대로 둠
 
    // ★ 응답
-   const response = await fetch(url, { ...options, headers, body });
-   if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`defaultFetch 오류: [${response.status}] ${errorText}`);
-   }
+   try {
+      const response = await fetch(url, { ...options, headers, body });
+      if (!response.ok) {
+         const errorBody = await response.json();
+         throw { status: response.status, body: errorBody };
+      }
 
-   return response.status === 204 ? null : response.json(); // 반환: DELETE 메소드 적용 or 본문
+      return response.json();
+   } catch (error: any) {
+      console.error("defaultFetch Error: ", error);
+
+      if (error?.status && error?.body) throw error;
+
+      throw new Error("서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.");
+   }
 }
 
 // ✅ with-protect 경로에서 쓰는 fetch
@@ -103,10 +111,18 @@ export async function tokenFetch(
    }
 
    // !response.ok + 반환
-   if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`tokenFetch 오류: [${response.status}] ${errorText}`);
-   }
+   try {
+      if (!response.ok) {
+         const errorBody = await response.json();
+         throw { status: response.status, body: errorBody };
+      }
 
-   return response.status === 204 ? null : response.json();
+      return response.json();
+   } catch (error: any) {
+      console.error("token Fetch Error: ", error);
+
+      if (error?.status && error?.body) throw error;
+
+      throw new Error("서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.");
+   }
 }

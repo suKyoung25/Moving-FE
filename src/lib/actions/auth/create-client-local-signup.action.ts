@@ -13,7 +13,7 @@ export default async function createClientLocalSignupAction(
       const rawFormData = {
          name: formData.get("name")?.toString(),
          email: formData.get("email")?.toString(),
-         phoneNumber: formData.get("phoneNumber")?.toString(),
+         phone: formData.get("phone")?.toString(),
          password: formData.get("password")?.toString(),
          passwordConfirmation: formData.get("passwordConfirmation")?.toString(),
       };
@@ -33,8 +33,24 @@ export default async function createClientLocalSignupAction(
       });
 
       return { status: true };
-   } catch (error) {
+   } catch (error: any) {
       console.error("회원가입 실패 원인: ", error);
-      return { status: false };
+
+      // ✅ BE 오류 받음 (이메일, 전화번호 중복)
+      if (error?.body?.message) {
+         try {
+            // message에 JSON 형태 오류가 들어오면 파싱
+            const parsed = JSON.parse(
+               error.body.message.replace("회원가입 실패: ", ""),
+            );
+
+            return { status: false, error: parsed };
+         } catch {
+            // 파싱 실패 -> 일반 문자열 처리
+            return { status: false, error: { error: error.body.message } };
+         }
+      }
+
+      return { status: false, error: "알 수 없는 오류가 발생했습니다." };
    }
 }

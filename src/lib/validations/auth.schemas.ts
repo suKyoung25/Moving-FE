@@ -25,7 +25,7 @@ export const nameSchema = baseAuthSchema
    .min(1, "성함을 입력해 주세요.")
    .max(4, "4자 이내로 입력해 주세요.");
 
-export const phoneNumberSchema = baseAuthSchema
+export const phoneSchema = baseAuthSchema
    .min(9, "9자 이상 입력해주세요.")
    .regex(
       /^(\+82\s?1[016789]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$/,
@@ -37,7 +37,7 @@ export const signUpFormSchema = z
    .object({
       name: nameSchema,
       email: emailSchema,
-      phoneNumber: phoneNumberSchema,
+      phone: phoneSchema,
       password: passwordSchema,
       passwordConfirmation: baseAuthSchema,
    })

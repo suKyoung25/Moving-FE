@@ -12,6 +12,7 @@ interface Props {
    validator?: (value: string) => AuthValidationResult;
    onValidChange?: (key: string, isValid: boolean) => void;
    onValueChange?: (key: string, value: string) => void;
+   errorText?: string | Record<string, string>;
 }
 
 export default function AuthInput({
@@ -22,10 +23,12 @@ export default function AuthInput({
    validator,
    onValidChange,
    onValueChange,
+   errorText,
 }: Props) {
    const [value, setValue] = useState<string>("");
    const [error, setError] = useState("");
 
+   // ✅ 값과 errorText 변경
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
       setValue(newValue);
@@ -44,6 +47,13 @@ export default function AuthInput({
       }
    };
 
+   // ✅ 백엔드에서 받는 오류 메시지
+   let displayError = error;
+
+   if (errorText && typeof errorText === "object" && name in errorText) {
+      displayError = (errorText as Record<string, string>)[name];
+   }
+
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
          <label htmlFor={name}>{label}</label>
@@ -54,10 +64,10 @@ export default function AuthInput({
             value={value}
             placeholder={placeholder}
             onChange={handleChange}
-            className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 rounded-2xl border bg-white p-3.5 lg:h-16`}
+            className={`${displayError ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 rounded-2xl border bg-white p-3.5 lg:h-16`}
          />
 
-         {error && <ErrorText error={error} />}
+         {displayError && <ErrorText error={displayError} />}
       </section>
    );
 }

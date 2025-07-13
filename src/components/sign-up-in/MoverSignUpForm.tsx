@@ -11,7 +11,7 @@ import {
    validateAuthEmail,
    validateAuthName,
    validateAuthPassword,
-   validateAuthPhoneNumber,
+   validateAuthPhone,
 } from "@/lib/validations";
 import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
 
@@ -71,7 +71,7 @@ export default function MoverSignUpForm() {
          <AuthInput
             name="phoneNumber"
             label="전화번호"
-            validator={validateAuthPhoneNumber}
+            validator={validateAuthPhone}
             type="text"
             placeholder="숫자만 입력해 주세요"
             onValidChange={handleValidatyChange}

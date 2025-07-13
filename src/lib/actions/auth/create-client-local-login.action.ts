@@ -30,8 +30,10 @@ export default async function createClientLocalLoginAction(
       });
 
       return { status: true };
-   } catch (error) {
+   } catch (error: any) {
       console.error("로그인 실패 원인: ", error);
-      return { status: false };
+
+      const errorMessage = error?.message || "로그인에 실패했습니다.";
+      return { status: false, error: errorMessage };
    }
 }

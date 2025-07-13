@@ -13,12 +13,13 @@ import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local
 export default function ClientLoginForm() {
    // 상태 모음
    const router = useRouter();
+   const [serverError, setServerError] = useState<string | null>(null);
    const [formState, formAction, isPending] = useActionState(
       createClientLocalLoginAction,
       null,
    );
 
-   // 1. 유효성 검사 : 시작하기 버튼 활성화 여부
+   // ✅ 유효성 검사: 1. 시작하기 버튼 활성화 여부
    const [validity, setValidity] = useState<Record<string, boolean>>({
       email: false,
       password: false,
@@ -33,8 +34,18 @@ export default function ClientLoginForm() {
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
 
+   // ✅ 등록되지 않은 이메일 or 비밀번호 오류 시
    useEffect(() => {
-      if (formState?.status) router.replace("/mover-search");
+      if (formState?.error) setServerError(formState.error);
+   }, [formState]);
+
+   const handleValueChange = () => {
+      if (serverError) setServerError(null);
+   };
+
+   // ✅ 로그인 성공하면 페이지 이동
+   useEffect(() => {
+      if (formState?.status) router.push("/mover-search");
    }, [formState, router]);
 
    // 본문
@@ -47,6 +58,8 @@ export default function ClientLoginForm() {
             type="email"
             placeholder="이메일을 입력해 주세요"
             onValidChange={handleValidatyChange}
+            onValueChange={handleValueChange}
+            errorText={formState?.error}
          />
          <PasswordInput
             name="password"
@@ -55,6 +68,8 @@ export default function ClientLoginForm() {
             type="password"
             placeholder="비밀번호를 입력해 주세요"
             onValidChange={handleValidatyChange}
+            onValueChange={handleValueChange}
+            errorText={formState?.error}
          />
 
          {/* 로그인 버튼 */}

@@ -19,14 +19,14 @@ export type AuthValidationResult = {
 // 회원가입
 export type AuthValidation = {
    status: boolean;
-   error?: string;
+   error?: string | Record<string, string>;
 } | null;
 
 // 회원가입 양식
 export interface SignUpFormState {
    name: string;
    email: string;
-   phoneNumber: string;
+   phone: string;
    password: string;
    passwordConfirmation: string;
 }
