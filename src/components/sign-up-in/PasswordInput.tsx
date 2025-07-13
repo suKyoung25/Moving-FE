@@ -16,7 +16,7 @@ interface Props {
    onValidChange?: (key: string, isValid: boolean) => void;
    onValueChange?: (key: string, value: string) => void;
    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-   errorText?: string;
+   errorText?: string | Record<string, string>;
 }
 
 export default function PasswordInput({
@@ -36,7 +36,7 @@ export default function PasswordInput({
    // type="password" <-> "text"
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
 
-   // 값과 errorText 변경
+   // ✅ 값과 errorText 변경
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
       setValue(newValue);
@@ -58,7 +58,11 @@ export default function PasswordInput({
    };
 
    // errorText가 들어오면 내부 error 대신 표시 (= 백엔드 로그인 정보 없을 때)
-   const displayError = errorText || error;
+   let displayError = error;
+
+   if (errorText && typeof errorText === "object" && name in errorText) {
+      displayError = (errorText as Record<string, string>)[name];
+   }
 
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
@@ -89,7 +93,7 @@ export default function PasswordInput({
             </button>
          </div>
 
-         {displayError && <ErrorText error={error} />}
+         {displayError && <ErrorText error={displayError} />}
       </section>
    );
 }

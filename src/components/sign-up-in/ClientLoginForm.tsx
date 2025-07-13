@@ -13,7 +13,6 @@ import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local
 export default function ClientLoginForm() {
    // 상태 모음
    const router = useRouter();
-   const [serverError, setServerError] = useState<string | null>(null);
    const [formState, formAction, isPending] = useActionState(
       createClientLocalLoginAction,
       null,
@@ -30,18 +29,18 @@ export default function ClientLoginForm() {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
+   // ✅ 등록되지 않은 이메일 or 비밀번호 오류 시
+   const handleValueChange = (key: string) => {
+      if (formState?.error && typeof formState.error === "object") {
+         const newErrors = { ...formState.error };
+         delete newErrors[key];
+         formState.error = newErrors;
+      }
+   };
+
    // 3.
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
-
-   // ✅ 등록되지 않은 이메일 or 비밀번호 오류 시
-   useEffect(() => {
-      if (formState?.error) setServerError(formState.error);
-   }, [formState]);
-
-   const handleValueChange = () => {
-      if (serverError) setServerError(null);
-   };
 
    // ✅ 로그인 성공하면 페이지 이동
    useEffect(() => {

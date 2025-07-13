@@ -33,7 +33,20 @@ export default async function createClientLocalLoginAction(
    } catch (error: any) {
       console.error("로그인 실패 원인: ", error);
 
-      const errorMessage = error?.message || "로그인에 실패했습니다.";
-      return { status: false, error: errorMessage };
+      if (error?.body?.message) {
+         const message = error.body.message;
+
+         if (message.includes("사용자를 찾을 수 없습니다")) {
+            return { status: false, error: { email: message } };
+         }
+
+         if (message.includes("비밀번호를 잘못 입력하셨습니다.")) {
+            return { status: false, error: { password: message } };
+         }
+
+         return { status: false, error: { global: message } };
+      }
+
+      return { status: false, error: { global: "로그인에 실패했습니다." } };
    }
 }
