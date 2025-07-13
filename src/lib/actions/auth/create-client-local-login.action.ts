@@ -3,7 +3,7 @@
 import { AuthActionResult } from "@/lib/types/auth.type";
 import { loginFormSchema } from "@/lib/validations/auth.schemas";
 import { defaultFetch } from "../../api/fetch-client";
-import { accessTokenSettings } from "@/lib/utils/auth.util";
+import isFetchError from "@/lib/utils/fetch-error.util";
 
 export default async function createClientLocalLoginAction(
    _: AuthActionResult | null,
@@ -46,10 +46,10 @@ export default async function createClientLocalLoginAction(
          user: response.data.clientInfo,
          accessToken: response.data.accessToken,
       };
-   } catch (error: any) {
+   } catch (error: unknown) {
       console.error("로그인 실패 원인: ", error);
 
-      if (error?.body?.message) {
+      if (isFetchError(error)) {
          const message = error.body.message;
 
          if (message.includes("사용자를 찾을 수 없습니다")) {

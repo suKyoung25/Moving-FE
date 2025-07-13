@@ -3,6 +3,7 @@
 import { AuthActionResult } from "@/lib/types/auth.type";
 import { signUpFormSchema } from "@/lib/validations/auth.schemas";
 import { defaultFetch } from "../../api/fetch-client";
+import isFetchError from "@/lib/utils/fetch-error.util";
 
 export default async function createClientLocalSignupAction(
    _: AuthActionResult | null,
@@ -42,11 +43,11 @@ export default async function createClientLocalSignupAction(
       });
 
       return { success: true };
-   } catch (error: any) {
+   } catch (error: unknown) {
       console.error("회원가입 실패 원인: ", error);
 
       // ✅ BE 오류 받음 (이메일, 전화번호 중복)
-      if (error?.body?.message) {
+      if (isFetchError(error)) {
          const message = error.body.message;
 
          // message에 JSON 형태 오류가 들어오면 Parsing
@@ -61,6 +62,7 @@ export default async function createClientLocalSignupAction(
             };
          }
       }
+
       return {
          success: false,
          globalError: "회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.",

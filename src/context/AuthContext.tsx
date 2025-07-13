@@ -1,9 +1,9 @@
 "use client";
 
-import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local-login.action";
 import authApi from "@/lib/api/auth.api";
 import { User } from "@/lib/types/auth.type";
 import { accessTokenSettings } from "@/lib/utils/auth.util";
+import isFetchError from "@/lib/utils/fetch-error.util";
 import { usePathname, useRouter } from "next/navigation";
 import {
    createContext,
@@ -60,10 +60,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
          } else {
             setUser(null);
          }
-      } catch (error: any) {
+      } catch (error: unknown) {
          console.error("사용자 정보 호출 실패: ", error);
-         setUser(null);
-         accessTokenSettings.clear();
+
+         if (isFetchError(error) && error.status === 401) {
+            setUser(null);
+            accessTokenSettings.clear();
+         }
       } finally {
          setIsLoading(false);
       }

@@ -46,3 +46,11 @@ export interface AuthActionResult {
    fieldErrors?: Record<string, string>;
    globalError?: string;
 }
+
+export interface FetchError {
+   status: number;
+   body: {
+      message: string;
+      [key: string]: unknown;
+   };
+}

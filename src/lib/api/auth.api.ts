@@ -1,4 +1,5 @@
-import { defaultFetch, tokenFetch } from "./fetch-client";
+import isFetchError from "../utils/fetch-error.util";
+import { tokenFetch } from "./fetch-client";
 
 const authApi = {
    // signUp: (name,),
@@ -16,11 +17,11 @@ const authApi = {
          }
 
          return null;
-      } catch (error: any) {
+      } catch (error: unknown) {
          console.error("사용자 정보 api 호출 실패", error);
 
          // 정상적인 로그아웃
-         if (error?.status === 401) {
+         if (isFetchError(error) && error.status === 401) {
             return null;
          }
 

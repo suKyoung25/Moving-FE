@@ -7,6 +7,7 @@
  */
 
 import { accessTokenSettings } from "../utils/auth.util";
+import isFetchError from "../utils/fetch-error.util";
 
 // ✅ 기본 url : 두 개를 바꿔 가면서 쓰세요.
 export const BASE_URL = "http://localhost:4000"; // "https://www.moving-web.site"
@@ -48,10 +49,10 @@ export async function defaultFetch(
       }
 
       return response.json();
-   } catch (error: any) {
+   } catch (error: unknown) {
       console.error("defaultFetch Error: ", error);
 
-      if (error?.status && error?.body) throw error;
+      if (isFetchError(error)) throw error;
 
       throw new Error("서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.");
    }
@@ -133,17 +134,10 @@ export async function tokenFetch(
       }
 
       return response.json();
-   } catch (error: any) {
+   } catch (error: unknown) {
       console.error("token Fetch Error: ", error);
 
-      // 서버 연동 안 된 것 같을 때
-      if (error.name === "TypeError" && error.message.includes("fetch")) {
-         throw new Error(
-            "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해 주세요.",
-         );
-      }
-
-      if (error?.status && error?.body) throw error;
+      if (isFetchError(error)) throw error;
 
       throw new Error("서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.");
    }
