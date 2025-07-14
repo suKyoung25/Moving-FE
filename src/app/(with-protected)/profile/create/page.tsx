@@ -9,7 +9,7 @@ export default function CreateProfilePage() {
 
    //일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
-      return; //클라이언트 UI
+      return <></>;
    }
 
    //기사님으로 로그인한 회원의 경우
