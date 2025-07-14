@@ -15,7 +15,7 @@ import {
    validateServiceType,
 } from "@/lib/validations";
 
-function ProfileForm() {
+function MoverProfileForm() {
    const [, formAction, isPending] = useActionState(createMoverProfile, null);
 
    //주석: 시작하기 버튼 활성화를 위한 상태 관리
@@ -120,4 +120,4 @@ function ProfileForm() {
    );
 }
 
-export default ProfileForm;
+export default MoverProfileForm;
