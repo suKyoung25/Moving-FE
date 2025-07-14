@@ -24,8 +24,8 @@ export function validateAuthEmail(email: string) {
 }
 
 // ✅ 전화번호 검사
-export function validateAuthPhoneNumber(phoneNumber: string) {
-   return validateField(authSchema.phoneNumberSchema, phoneNumber);
+export function validateAuthPhone(phone: string) {
+   return validateField(authSchema.phoneSchema, phone);
 }
 
 // ✅ 비밀번호 검사
@@ -51,7 +51,7 @@ export function validateAuthCheckPassword(
 export function validateSignUpForm(data: {
    name: string;
    email: string;
-   phoneNumber: string;
+   phone: string;
    password: string;
    passwordConfirmation: string;
 }) {

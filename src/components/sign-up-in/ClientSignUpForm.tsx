@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../common/buttons/SolidButton";
@@ -10,14 +10,16 @@ import {
    validateAuthEmail,
    validateAuthName,
    validateAuthPassword,
-   validateAuthPhoneNumber,
+   validateAuthPhone,
 } from "@/lib/validations";
 import createClientLocalSignupAction from "@/lib/actions/auth/create-client-local-signup.action";
 import { AuthValidationResult } from "@/lib/types/auth.type";
+import { useRouter } from "next/navigation";
 
 // 여기서부터 시작
 export default function ClientSignUpForm() {
-   const [, formAction, isPending] = useActionState(
+   const router = useRouter();
+   const [formState, formAction, isPending] = useActionState(
       createClientLocalSignupAction,
       null,
    );
@@ -26,28 +28,35 @@ export default function ClientSignUpForm() {
    const [formValues, setFormValues] = useState({
       name: "",
       email: "",
-      phoneNumber: "",
+      phone: "",
       password: "",
       passwordConfirmation: "",
    });
 
-   // 1. 유효성 검사 : 시작하기 버튼 활성화 여부
+   // ✅ 유효성 검사: 시작하기 버튼 활성화 여부, 1.
    const [validity, setValidity] = useState<Record<string, boolean>>({
       name: false,
       email: false,
-      phoneNumber: false,
+      phone: false,
       password: false,
       passwordConfirmation: false,
    });
 
    // 2.
-   const handleValidatyChange = (key: string, isValid: boolean) => {
+   const handleValidityChange = (key: string, isValid: boolean) => {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
-   // 입력 값 변경
+   // ✅ 입력 값 변경
    const handleValueChange = (key: string, value: string) => {
       setFormValues((prev) => ({ ...prev, [key]: value }));
+
+      // 오류 값 초기화
+      if (formState?.fieldErrors && typeof formState.fieldErrors === "object") {
+         const newErrors = { ...formState.fieldErrors };
+         delete newErrors[key];
+         formState.fieldErrors = newErrors;
+      }
    };
 
    // 3. 비밀번호 확인 검증
@@ -61,11 +70,15 @@ export default function ClientSignUpForm() {
       return { success: true, message: "" };
    };
 
-   // 3.
-   const isDisabled =
-      isPending || !Object.values(validity).every((v) => v === true);
+   // 4. 버튼 활성화 조건
+   const isFormValid = Object.values(validity).every((v) => v === true);
+   const isDisabled = isPending || !isFormValid;
 
-   // 본문
+   useEffect(() => {
+      if (formState?.success) router.replace("/sign-in/client");
+   }, [formState, router]);
+
+   // ✅ 본문
    return (
       <form action={formAction} className="flex w-full flex-col gap-4">
          <AuthInput
@@ -74,7 +87,7 @@ export default function ClientSignUpForm() {
             validator={validateAuthName}
             type="text"
             placeholder="성함을 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
          />
          <AuthInput
@@ -83,17 +96,19 @@ export default function ClientSignUpForm() {
             validator={validateAuthEmail}
             type="email"
             placeholder="이메일을 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
+            serverError={formState?.fieldErrors?.email}
          />
          <AuthInput
-            name="phoneNumber"
+            name="phone"
             label="전화번호"
-            validator={validateAuthPhoneNumber}
+            validator={validateAuthPhone}
             type="text"
             placeholder="숫자만 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
+            serverError={formState?.fieldErrors?.phone}
          />
          <PasswordInput
             name="password"
@@ -101,7 +116,7 @@ export default function ClientSignUpForm() {
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
          />
          <PasswordInput
@@ -110,13 +125,13 @@ export default function ClientSignUpForm() {
             label="비밀번호 확인"
             type="password"
             placeholder="비밀번호를 다시 한번 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
             onValueChange={handleValueChange}
          />
 
          {/* 회원가입 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton disabled={isDisabled}>
+            <SolidButton type="submit" disabled={isDisabled}>
                {isPending ? "로딩 중..." : "시작하기"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">

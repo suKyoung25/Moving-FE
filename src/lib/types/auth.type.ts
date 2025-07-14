@@ -6,7 +6,7 @@ export interface User {
    userType: UserType;
    id: string;
    email: string;
-   nickname: string;
+   name: string;
    profile?: string;
 }
 
@@ -16,17 +16,19 @@ export type AuthValidationResult = {
    message: string;
 };
 
-// 회원가입
+// 인증 정보
 export type AuthValidation = {
    status: boolean;
-   error?: string;
-} | null;
+   error?: string | Record<string, string>;
+   user?: User;
+   accessToken?: string;
+};
 
 // 회원가입 양식
 export interface SignUpFormState {
    name: string;
    email: string;
-   phoneNumber: string;
+   phone: string;
    password: string;
    passwordConfirmation: string;
 }
@@ -34,4 +36,21 @@ export interface SignUpFormState {
 // 오류 상태
 export interface ErrorsState {
    [key: string]: string;
+}
+
+// Server Action 응답
+export interface AuthActionResult {
+   success: boolean;
+   user?: User;
+   accessToken?: string;
+   fieldErrors?: Record<string, string>;
+   globalError?: string;
+}
+
+export interface FetchError {
+   status: number;
+   body: {
+      message: string;
+      [key: string]: unknown;
+   };
 }
