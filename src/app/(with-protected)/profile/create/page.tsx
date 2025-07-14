@@ -4,7 +4,7 @@ import MoverProfileForm from "@/components/profile/MoverProfileForm";
 import { useAuth } from "@/context/AuthContext";
 import React from "react";
 
-export default function CreagetProfilePage() {
+export default function CreateProfilePage() {
    const { user } = useAuth();
 
    //일반으로 로그인한 회원의 경우
