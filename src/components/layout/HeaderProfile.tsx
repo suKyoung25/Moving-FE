@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import profileIcon from "@/assets/images/profileIcon.svg";
-import Link from "next/link";
 import ProfileDropdownMenu from "./ProfileDropdownMenu";
 
 const iconStyle = "relative w-6 h-6 cursor-pointer";
@@ -53,10 +52,8 @@ export default function HeaderProfile() {
       </div>
    );
 
-   // 반환: 기사면 링크 이동, 회원이면 dropdownMenu 열기
-   return user?.userType === "mover" ? (
-      <Link href="/profile">{profileDiv}</Link>
-   ) : (
+   // 반환: dropdownMenu 열기
+   return (
       <div className="relative" ref={dropdownRef}>
          <button onClick={() => setIsOpen(!isOpen)}>{profileDiv}</button>
          {isOpen && <ProfileDropdownMenu onClose={() => setIsOpen(false)} />}
