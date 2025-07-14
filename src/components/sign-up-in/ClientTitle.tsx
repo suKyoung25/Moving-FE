@@ -21,7 +21,7 @@ export default function ClientTitle({ type }: Prop) {
                기사님이신가요?
             </p>
             <Link
-               href={type === "login" ? "sign-in/mover" : "/sign-up/mover"}
+               href={type === "login" ? "/sign-in/mover" : "/sign-up/mover"}
                className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
             >
                기사님 전용 페이지

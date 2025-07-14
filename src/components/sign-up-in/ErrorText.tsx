@@ -5,7 +5,7 @@ interface Prop {
 }
 
 export default function ErrorText({ error }: Prop) {
-   if (!error) return;
+   if (!error) return null;
 
    return (
       <p className="text-secondary-red-200 text-13-medium lg:text-16-medium text-right">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorText from "./ErrorText";
 import Image from "next/image";
 import openedEye from "@/assets/images/visibilityIcon.svg";
@@ -16,6 +16,7 @@ interface Props {
    onValidChange?: (key: string, isValid: boolean) => void;
    onValueChange?: (key: string, value: string) => void;
    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   serverError?: string;
 }
 
 export default function PasswordInput({
@@ -26,20 +27,21 @@ export default function PasswordInput({
    onValidChange,
    onValueChange,
    onChange,
+   serverError,
 }: Props) {
    const [isVisible, setIsVisible] = useState(false);
    const [value, setValue] = useState<string>("");
-   const [error, setError] = useState("");
+   const [clientError, setClientError] = useState("");
 
+   // type="password" <-> "text"
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
 
+   // ✅ 값과 errorText 변경
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
       setValue(newValue);
 
-      if (onChange) {
-         onChange(e);
-      }
+      if (onChange) onChange(e);
 
       if (validator) {
          const result = validator(newValue);
@@ -47,13 +49,23 @@ export default function PasswordInput({
 
          if (result.success) {
             onValidChange?.(name, true);
-            setError("");
+            setClientError("");
          } else {
             onValidChange?.(name, false);
-            setError(result.message);
+            setClientError(result.message);
          }
       }
    };
+
+   // ✅ 백엔드에서 받는 오류 메시지
+   useEffect(() => {
+      if (serverError) {
+         setClientError("");
+      }
+   }, [serverError]);
+
+   // 표시할 메시지 결정 (서버 우선)
+   const displayError = serverError || clientError;
 
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
@@ -67,7 +79,7 @@ export default function PasswordInput({
                value={value}
                placeholder={placeholder}
                onChange={handleChange}
-               className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 w-full rounded-2xl border bg-white p-3.5 lg:h-16`}
+               className={`${displayError ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 w-full rounded-2xl border bg-white p-3.5 lg:h-16`}
             />
             {/* 눈 아이콘 */}
             <button
@@ -84,7 +96,7 @@ export default function PasswordInput({
             </button>
          </div>
 
-         {error && <ErrorText error={error} />}
+         {displayError && <ErrorText error={displayError} />}
       </section>
    );
 }
