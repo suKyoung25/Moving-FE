@@ -10,7 +10,7 @@ import { accessTokenSettings } from "../utils/auth.util";
 import isFetchError from "../utils/fetch-error.util";
 
 // ✅ 기본 url : 두 개를 바꿔 가면서 쓰세요.
-export const BASE_URL = "https://www.moving-web.site"; // "http://localhost:4000";
+export const BASE_URL = "https://sixth-moving-4team-be.onrender.com"; // "http://localhost:4000";
 
 // ✅ with-guest, with-public 경로에서 쓰는 미로그인 전용 fetch
 export async function defaultFetch(
