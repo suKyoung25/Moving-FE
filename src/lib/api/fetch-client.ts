@@ -42,7 +42,14 @@ export async function defaultFetch(
 
    // ★ 응답
    try {
-      const response = await fetch(url, { ...options, headers, body });
+      const response = await fetch(url, {
+         ...options,
+         headers,
+         body,
+         cache: "no-store",
+         credentials: "include",
+         next: { revalidate: 0 },
+      });
       if (!response.ok) {
          const errorBody = await response.json();
          throw { status: response.status, body: errorBody };
@@ -100,8 +107,10 @@ export async function tokenFetch(
    let response = await fetch(url, {
       ...options,
       headers,
-      credentials: "include",
       body,
+      credentials: "include",
+      cache: "no-store",
+      next: { revalidate: 0 },
    });
 
    // 401 오류면 토큰 재발급 시도
