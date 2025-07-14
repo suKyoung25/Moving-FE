@@ -37,7 +37,7 @@ export const signUpFormSchema = z
    .object({
       name: nameSchema,
       email: emailSchema,
-      phone: phoneSchema,
+      phoneNumber: phoneSchema,
       password: passwordSchema,
       passwordConfirmation: baseAuthSchema,
    })

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../common/buttons/SolidButton";
@@ -14,9 +14,12 @@ import {
    validateAuthPhone,
 } from "@/lib/validations";
 import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
+import { useRouter } from "next/navigation";
 
 export default function MoverSignUpForm() {
-   const [, formAction, isPending] = useActionState(
+   const router = useRouter();
+
+   const [state, formAction, isPending] = useActionState(
       createMoverLocalSignupAction,
       null,
    );
@@ -49,6 +52,13 @@ export default function MoverSignUpForm() {
 
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
+
+   //회원가입 성공 시 리다이렉트
+   useEffect(() => {
+      if (state?.success) {
+         router.push("/profile/mover");
+      }
+   }, [state, router]);
 
    return (
       <form action={formAction} className="flex w-full flex-col gap-4">

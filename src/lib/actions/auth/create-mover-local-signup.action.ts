@@ -1,12 +1,14 @@
 "use server";
 
-import { AuthValidation } from "@/lib/types/auth.type";
+import { defaultFetch, tokenFetch } from "@/lib/api/fetch-client";
+import { AuthActionResult, AuthValidation } from "@/lib/types/auth.type";
+import isFetchError from "@/lib/utils/fetch-error.util";
 import { signUpFormSchema } from "@/lib/validations/auth.schemas";
 
 export default async function createMoverLocalSignupAction(
    _: AuthValidation | null,
    formData: FormData,
-): Promise<AuthValidation> {
+): Promise<AuthActionResult> {
    try {
       const rawFormData = {
          name: formData.get("name")?.toString() ?? "",
@@ -22,24 +24,47 @@ export default async function createMoverLocalSignupAction(
 
       if (!validationResult.success) {
          const errors = validationResult.error.flatten().fieldErrors;
-         return { status: false, error: JSON.stringify(errors) };
+         return {
+            success: false,
+            fieldErrors: Object.fromEntries(
+               Object.entries(errors).map(([key, value]) => [
+                  key,
+                  Array.isArray(value) ? value[0] : value,
+               ]),
+            ),
+         };
       }
 
-      //fetch
-      await fetch(`${process.env.BASE_URL}/auth/signup/mover`, {
+      //토큰 + 쿠키 관련
+      await tokenFetch(`/auth/signup/mover`, {
          method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({
-            name: rawFormData.name,
-            email: rawFormData.email,
-            phoneNumber: rawFormData.phoneNumber,
-            password: rawFormData.password,
-         }),
+         body: JSON.stringify(validationResult.data),
       });
 
-      return { status: true };
+      return { success: true };
    } catch (error) {
       console.error("회원가입 실패 원인: ", error);
-      return { status: false };
+
+      // ✅ BE 오류 받음 (이메일, 전화번호 중복)
+      if (isFetchError(error)) {
+         const message = error.body.message;
+
+         // message에 JSON 형태 오류가 들어오면 Parsing
+         const parsedErrors = JSON.parse(
+            message.replace("회원가입 실패: ", ""),
+         );
+
+         if (typeof parsedErrors === "object" && parsedErrors !== null) {
+            return {
+               success: false,
+               fieldErrors: parsedErrors,
+            };
+         }
+      }
+
+      return {
+         success: false,
+         globalError: "회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+      };
    }
 }
