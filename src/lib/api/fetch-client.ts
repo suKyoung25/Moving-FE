@@ -10,7 +10,7 @@ import { accessTokenSettings } from "../utils/auth.util";
 import isFetchError from "../utils/fetch-error.util";
 
 // ✅ 기본 url : 두 개를 바꿔 가면서 쓰세요.
-export const BASE_URL = "https://fe13364ba3c7.ngrok-free.app/"; // "http://localhost:4000"; // "https://sixth-moving-4team-be.onrender.com";
+export const BASE_URL = "https://7345e07e08fa.ngrok-free.app"; // "http://localhost:4000"; // "https://sixth-moving-4team-be.onrender.com";
 
 // ✅ with-guest, with-public 경로에서 쓰는 미로그인 전용 fetch
 export async function defaultFetch(
