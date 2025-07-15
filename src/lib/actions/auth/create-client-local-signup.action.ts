@@ -36,7 +36,7 @@ export default async function createClientLocalSignupAction(
          };
       }
 
-      // ✅ 백엔드 연동
+      // 백엔드 연동
       await defaultFetch("/auth/signup/client", {
          method: "POST",
          body: JSON.stringify(validationResult.data),
