@@ -31,16 +31,18 @@ export default async function createMoverLocalLoginAction(
       }
 
       // fetch 직접 요청
-      const BASE_URL = "http://localhost:4000";
-      const response = await fetch(`${BASE_URL}/auth/signin/mover`, {
-         method: "POST",
-         headers: {
-            "Content-Type": "application/json",
+      const response = await fetch(
+         `${process.env.NEXT_PUBLIC_API_URL}/auth/signin/mover`,
+         {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify(validationResult.data),
+            credentials: "include",
+            cache: "no-store",
          },
-         body: JSON.stringify(validationResult.data),
-         credentials: "include",
-         cache: "no-store",
-      });
+      );
 
       if (!response.ok) {
          throw { status: response.status };
