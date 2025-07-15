@@ -12,7 +12,7 @@ export default async function createMoverLocalSignupAction(
       const rawFormData = {
          name: formData.get("name")?.toString() ?? "",
          email: formData.get("email")?.toString() ?? "",
-         phoneNumber: formData.get("phoneNumber")?.toString() ?? "",
+         phone: formData.get("phoneNumber")?.toString() ?? "",
          password: formData.get("password")?.toString() ?? "",
          passwordConfirmation:
             formData.get("passwordConfirmation")?.toString() ?? "",
