@@ -85,6 +85,7 @@ export async function tokenFetch(
 ) {
    // ★ 기본 정보
    const url = `${BASE_URL}${endpoint}`; // 1. 주소
+   console.log(url);
    let body = options.body; // 2. 본문
 
    // 3. accessToken
