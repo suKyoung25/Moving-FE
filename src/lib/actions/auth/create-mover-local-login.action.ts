@@ -43,42 +43,6 @@ export default async function createMoverLocalLoginAction(
          user: response.mover.user,
          accessToken: response.mover.accessToken,
       };
-
-      // // fetch 직접 요청
-      // const response = await fetch(
-      //    `${process.env.NEXT_PUBLIC_API_URL}/auth/signin/mover`,
-      //    {
-      //       method: "POST",
-      //       headers: {
-      //          "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify(validationResult.data),
-      //       credentials: "include",
-      //       cache: "no-store",
-      //    },
-      // );
-
-      // if (!response.ok) {
-      //    throw { status: response.status };
-      // }
-
-      // const result = await response.json();
-      // console.log("서버액션 결과", result);
-
-      // // accessToken 쿠키에 저장 (서버 측 쿠키)
-      // cookies().set("accessToken", accessToken, {
-      //    httpOnly: true,
-      //    secure: process.env.NODE_ENV === "production",
-      //    path: "/",
-      //    maxAge: 60 * 60 * 1, // 1시간
-      // });
-
-      // // 성공 응답
-      // return {
-      //    success: true,
-      //    user: result.user,
-      //    accessToken: result.accessToken,
-      // };
    } catch (error) {
       console.error("로그인 실패 원인: ", error);
 
