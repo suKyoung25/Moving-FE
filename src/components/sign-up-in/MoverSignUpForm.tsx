@@ -59,12 +59,9 @@ export default function MoverSignUpForm() {
    useEffect(() => {
       if (state?.success && state.accessToken && state.user) {
          login(state.user, state.accessToken);
-         router.push("/profile/create");
+         location.href = "/profile/create";
       }
    }, [state, login, router]);
-
-   //디버깅
-   console.log("state", state);
 
    return (
       <form action={MoverFormAction} className="flex w-full flex-col gap-4">
