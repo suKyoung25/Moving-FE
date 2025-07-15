@@ -1,6 +1,5 @@
 "use server";
 
-import { tokenFetch } from "@/lib/api/fetch-client";
 import { AuthActionResult, AuthValidation } from "@/lib/types/auth.type";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import { signUpFormSchema } from "@/lib/validations/auth.schemas";
