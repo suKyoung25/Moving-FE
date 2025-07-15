@@ -15,7 +15,9 @@ export default async function Page() {
       <PageTitle title="견적 상세" />
       <div className="flex item justify-between">
         <section className="w-full flex flex-col items gap-6 mt-2 mb-27 lg:max-w-238.5 lg:mt-6 lg:gap-10">
-          <MoverProfileClient />
+          <article className="bg-white border border-line-100 rounded-2xl px-3.5 py-4 lg:px-6 lg:py-5">
+            <MoverProfileClient />
+          </article>
           <hr className="h-px bg-line-100 border-0" />
           <article>
             <p className="text-16-semibold mb-4 lg:text-24-semibold">견적가</p>
