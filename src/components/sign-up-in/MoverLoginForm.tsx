@@ -9,10 +9,13 @@ import Link from "next/link";
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createMoverLocalLoginAction from "@/lib/actions/auth/create-mover-local-login.action";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function MoverLoginForm() {
    const router = useRouter();
-   // 상태 모음
+   const { login } = useAuth();
+
+   // 서버 액션 호출
    const [state, moverFormAction, isPending] = useActionState(
       createMoverLocalLoginAction,
       null,
@@ -32,9 +35,16 @@ export default function MoverLoginForm() {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
+   //로그인 성공 시 프로필 생성 페이지로 리다이렉트
    useEffect(() => {
-      if (state?.success) router.push("/profile/create");
-   }, [state, router]);
+      if (state?.success) {
+         const { user, accessToken } = state;
+         if (user && accessToken) {
+            login(user, accessToken);
+            router.push("/profile/create");
+         }
+      }
+   }, [state, login, router]);
 
    return (
       <form action={moverFormAction} className="flex w-full flex-col gap-4">
