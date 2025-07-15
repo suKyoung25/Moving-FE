@@ -1,5 +1,6 @@
 "use server";
 
+import { defaultFetch } from "@/lib/api/fetch-client";
 import { AuthActionResult, AuthValidation } from "@/lib/types/auth.type";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import { signUpFormSchema } from "@/lib/validations/auth.schemas";
@@ -34,29 +35,32 @@ export default async function createMoverLocalSignupAction(
          };
       }
 
-      // //토큰 + 쿠키 관련
-      // await tokenFetch(`/auth/signup/mover`, {
-      //    method: "POST",
-      //    body: JSON.stringify(validationResult.data),
-      // });
+      //디버깅
+      console.log("validationResult.data", validationResult.data);
 
-      return { success: true };
+      // 백엔드 연동
+      const response = await defaultFetch("/auth/signup/mover", {
+         method: "POST",
+         body: JSON.stringify(validationResult.data),
+      });
+
+      return {
+         success: true,
+         accessToken: response.mover.accessToken,
+         user: response.mover.user,
+      };
    } catch (error) {
       console.error("회원가입 실패 원인: ", error);
 
       // ✅ BE 오류 받음 (이메일, 전화번호 중복)
       if (isFetchError(error)) {
-         const message = error.body.message;
+         const { data } = error.body;
 
-         // message에 JSON 형태 오류가 들어오면 Parsing
-         const parsedErrors = JSON.parse(
-            message.replace("회원가입 실패: ", ""),
-         );
-
-         if (typeof parsedErrors === "object" && parsedErrors !== null) {
+         // 객체 형태라 data 형태로 오류 반환 (문자면 위에서 message를 받음)
+         if (data && typeof data === "object") {
             return {
                success: false,
-               fieldErrors: parsedErrors,
+               fieldErrors: data as Record<string, string>,
             };
          }
       }

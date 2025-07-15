@@ -15,11 +15,13 @@ import {
 } from "@/lib/validations";
 import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function MoverSignUpForm() {
    const router = useRouter();
+   const { login } = useAuth();
 
-   const [state, formAction, isPending] = useActionState(
+   const [state, MoverFormAction, isPending] = useActionState(
       createMoverLocalSignupAction,
       null,
    );
@@ -55,13 +57,17 @@ export default function MoverSignUpForm() {
 
    //회원가입 성공 시 리다이렉트
    useEffect(() => {
-      if (state?.success) {
-         router.push("/profile/mover");
+      if (state?.success && state.accessToken && state.user) {
+         login(state.user, state.accessToken);
+         router.push("/profile/create");
       }
-   }, [state, router]);
+   }, [state, login, router]);
+
+   //디버깅
+   console.log("state", state);
 
    return (
-      <form action={formAction} className="flex w-full flex-col gap-4">
+      <form action={MoverFormAction} className="flex w-full flex-col gap-4">
          <AuthInput
             name="name"
             label="이름"

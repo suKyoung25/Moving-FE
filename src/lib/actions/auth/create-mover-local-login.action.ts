@@ -1,5 +1,6 @@
 "use server";
 
+import { defaultFetch } from "@/lib/api/fetch-client";
 import { AuthActionResult, AuthValidation } from "@/lib/types/auth.type";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import { loginFormSchema } from "@/lib/validations/auth.schemas";
@@ -30,26 +31,39 @@ export default async function createMoverLocalLoginAction(
          };
       }
 
-      // fetch 직접 요청
-      const response = await fetch(
-         `${process.env.NEXT_PUBLIC_API_URL}/auth/signin/mover`,
-         {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify(validationResult.data),
-            credentials: "include",
-            cache: "no-store",
-         },
-      );
+      // 백엔드 연동
+      const response = await defaultFetch("/auth/signin/mover", {
+         method: "POST",
+         body: JSON.stringify(validationResult.data),
+      });
 
-      if (!response.ok) {
-         throw { status: response.status };
-      }
+      // 성공 응답
+      return {
+         success: true,
+         user: response.mover.user,
+         accessToken: response.mover.accessToken,
+      };
 
-      const result = await response.json();
-      console.log("서버액션 결과", result);
+      // // fetch 직접 요청
+      // const response = await fetch(
+      //    `${process.env.NEXT_PUBLIC_API_URL}/auth/signin/mover`,
+      //    {
+      //       method: "POST",
+      //       headers: {
+      //          "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify(validationResult.data),
+      //       credentials: "include",
+      //       cache: "no-store",
+      //    },
+      // );
+
+      // if (!response.ok) {
+      //    throw { status: response.status };
+      // }
+
+      // const result = await response.json();
+      // console.log("서버액션 결과", result);
 
       // // accessToken 쿠키에 저장 (서버 측 쿠키)
       // cookies().set("accessToken", accessToken, {
@@ -59,23 +73,24 @@ export default async function createMoverLocalLoginAction(
       //    maxAge: 60 * 60 * 1, // 1시간
       // });
 
-      // 성공 응답
-      return {
-         success: true,
-         user: result.user,
-         accessToken: result.accessToken,
-      };
+      // // 성공 응답
+      // return {
+      //    success: true,
+      //    user: result.user,
+      //    accessToken: result.accessToken,
+      // };
    } catch (error) {
       console.error("로그인 실패 원인: ", error);
 
+      // 문자열 message, 객체 data 중 message 받음
       if (isFetchError(error)) {
          const message = error.body.message;
 
-         if (message.includes("사용자를 찾을 수 없습니다")) {
+         if (message.includes("사용자")) {
             return { success: false, fieldErrors: { email: message } };
          }
 
-         if (message.includes("비밀번호를 잘못 입력하셨습니다.")) {
+         if (message.includes("비밀번호")) {
             return { success: false, fieldErrors: { password: message } };
          }
       }

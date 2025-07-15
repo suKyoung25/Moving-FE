@@ -22,7 +22,7 @@ export default function CreateProfilePage() {
    }
 
    //TODO: 일반으로 로그인한 회원의 경우
-   // if (user?.userType === "client") {
+   // if (user.userType === "client") {
    //    return <></>;
    // }
 

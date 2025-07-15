@@ -15,25 +15,25 @@ export default function MoverLoginForm() {
    const router = useRouter();
    const { login } = useAuth();
 
-   // 서버 액션 호출
    const [state, moverFormAction, isPending] = useActionState(
       createMoverLocalLoginAction,
       null,
    );
 
-   // 시작하기 버튼 활성화 상태
+   // 유효성 검사: 시작하기 버튼 활성화 여부
    const [validity, setValidity] = useState<Record<string, boolean>>({
       email: false,
       password: false,
    });
 
-   const isDisabled =
-      isPending || !Object.values(validity).every((v) => v === true);
-
    // 각 input에 유효성 확인
    const handleValidateChange = (key: string, isValid: boolean) => {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
+
+   //버튼 활성화 조건
+   const isDisabled =
+      isPending || !Object.values(validity).every((v) => v === true);
 
    //로그인 성공 시 프로필 생성 페이지로 리다이렉트
    useEffect(() => {
