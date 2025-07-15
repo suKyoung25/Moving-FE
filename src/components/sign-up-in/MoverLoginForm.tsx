@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../common/buttons/SolidButton";
@@ -8,30 +8,46 @@ import Link from "next/link";
 
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createMoverLocalLoginAction from "@/lib/actions/auth/create-mover-local-login.action";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function MoverLoginForm() {
-   // 상태 모음
-   const [, formAction, isPending] = useActionState(
+   const router = useRouter();
+   const { login } = useAuth();
+
+   const [state, moverFormAction, isPending] = useActionState(
       createMoverLocalLoginAction,
       null,
    );
 
-   // 시작하기 버튼 활성화 상태
+   // 유효성 검사: 시작하기 버튼 활성화 여부
    const [validity, setValidity] = useState<Record<string, boolean>>({
       email: false,
       password: false,
    });
-
-   const isDisabled =
-      isPending || !Object.values(validity).every((v) => v === true);
 
    // 각 input에 유효성 확인
    const handleValidateChange = (key: string, isValid: boolean) => {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
+   //버튼 활성화 조건
+   const isDisabled =
+      isPending || !Object.values(validity).every((v) => v === true);
+
+   //로그인 성공 시 프로필 생성 페이지로 리다이렉트
+   useEffect(() => {
+      if (state?.success) {
+         const { user, accessToken } = state;
+         if (user && accessToken) {
+            login(user, accessToken);
+            router.push("/profile/create");
+         }
+      }
+   }, [state, login, router]);
+
    return (
-      <form action={formAction} className="flex w-full flex-col gap-4">
+      <form action={moverFormAction} className="flex w-full flex-col gap-4">
          <AuthInput
             name="email"
             label="이메일"
@@ -51,7 +67,7 @@ export default function MoverLoginForm() {
 
          {/* 로그인 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton disabled={isDisabled}>
+            <SolidButton disabled={isDisabled} type="submit">
                {isPending ? "로딩 중..." : "로그인"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">

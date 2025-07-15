@@ -23,6 +23,7 @@ interface AuthContextType {
    login: (user: User, accessToken: string) => void;
    logout: () => void;
    refreshUser: () => Promise<void>;
+   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 //  context 생성
@@ -72,8 +73,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    }, []);
 
    useEffect(() => {
+      if (user) return;
       refreshUser();
-   }, []);
+   }, [user, refreshUser]);
 
    const value = useMemo<AuthContextType>(
       () => ({
@@ -82,8 +84,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
          login,
          logout,
          refreshUser,
+         setUser,
       }),
-      [user, isLoading, login, logout, refreshUser],
+      [user, isLoading, login, logout, refreshUser, setUser],
    );
 
    if (isLoading) return <AuthSpinner />;

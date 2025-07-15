@@ -18,7 +18,7 @@ export type AuthValidationResult = {
 
 // 인증 정보
 export type AuthValidation = {
-   status: boolean;
+   success: boolean;
    error?: string | Record<string, string>;
    user?: User;
    accessToken?: string;
