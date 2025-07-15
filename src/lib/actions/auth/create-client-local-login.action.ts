@@ -36,8 +36,6 @@ export default async function createClientLocalLoginAction(
       const response = await defaultFetch("/auth/signin/client", {
          method: "POST",
          body: JSON.stringify(validationResult.data),
-         credentials: "include",
-         cache: "no-store",
       });
 
       // 성공 응답
@@ -49,14 +47,15 @@ export default async function createClientLocalLoginAction(
    } catch (error: unknown) {
       console.error("로그인 실패 원인: ", error);
 
+      // 문자열 message, 객체 data 중 message 받음
       if (isFetchError(error)) {
-         const message = error.body.message;
+         const { message } = error.body;
 
-         if (message.includes("사용자를 찾을 수 없습니다")) {
+         if (message.includes("사용자")) {
             return { success: false, fieldErrors: { email: message } };
          }
 
-         if (message.includes("비밀번호를 잘못 입력하셨습니다.")) {
+         if (message.includes("비밀번호")) {
             return { success: false, fieldErrors: { password: message } };
          }
       }
