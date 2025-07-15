@@ -1,11 +1,12 @@
 "use client";
 
-import { searchAddressAction } from "@/lib/actions/request.action";
-import { startTransition, useState } from "react";
+import { searchAddressAction } from "@/lib/actions/request/address.action";
+import { useMemo, useState } from "react";
 import closeIcon from "@/assets/images/xIcon.svg";
 import inputCloseIcon from "@/assets/images/xCircleIcon.svg";
 import searchIcon from "@/assets/images/searchIcon.svg";
 import Image from "next/image";
+import { debounce } from "lodash";
 
 interface AddressResult {
    zonecode: string;
@@ -32,13 +33,21 @@ export default function AddressModal({
    const [query, setQuery] = useState<string>("");
    const [results, setResults] = useState<AddressResult[]>([]);
 
-   // 사용자가 입력한 검색어로 카카오 주소 검색 API 호출
-   const handleSearch = (value: string) => {
-      setQuery(value);
-      startTransition(async () => {
-         const addresses = await searchAddressAction(value);
-         setResults(addresses);
-      });
+   // 주소 검색 요청에 debounce 적용 (300ms)
+   // 사용자가 입력을 멈춘 후 300ms 지난 시점에만 API 호출하여 과도한 요청 방지
+   const debouncedSearch = useMemo(
+      () =>
+         debounce(async (value: string) => {
+            setQuery(value);
+            const addresses = await searchAddressAction(value);
+            setResults(addresses);
+         }, 300),
+      [],
+   );
+
+   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setQuery(e.target.value);
+      debouncedSearch(e.target.value);
    };
 
    return (
@@ -67,7 +76,7 @@ export default function AddressModal({
                   className="bg-bg-200 w-full rounded-2xl px-4 py-3"
                   placeholder="텍스트를 입력해 주세요."
                   value={query}
-                  onChange={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => handleInputChange(e)}
                />
                {/* TODO: 입력 초기화 오류 수정 */}
                <button
