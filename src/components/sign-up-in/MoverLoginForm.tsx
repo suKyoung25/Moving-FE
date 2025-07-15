@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../common/buttons/SolidButton";
@@ -8,10 +8,12 @@ import Link from "next/link";
 
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createMoverLocalLoginAction from "@/lib/actions/auth/create-mover-local-login.action";
+import { useRouter } from "next/navigation";
 
 export default function MoverLoginForm() {
+   const router = useRouter();
    // 상태 모음
-   const [, formAction, isPending] = useActionState(
+   const [state, moverFormAction, isPending] = useActionState(
       createMoverLocalLoginAction,
       null,
    );
@@ -30,8 +32,12 @@ export default function MoverLoginForm() {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
+   useEffect(() => {
+      if (state?.success) router.push("/profile/create");
+   }, [state, router]);
+
    return (
-      <form action={formAction} className="flex w-full flex-col gap-4">
+      <form action={moverFormAction} className="flex w-full flex-col gap-4">
          <AuthInput
             name="email"
             label="이메일"
@@ -51,7 +57,7 @@ export default function MoverLoginForm() {
 
          {/* 로그인 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton disabled={isDisabled}>
+            <SolidButton disabled={isDisabled} type="submit">
                {isPending ? "로딩 중..." : "로그인"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">

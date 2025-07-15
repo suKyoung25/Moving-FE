@@ -7,10 +7,13 @@ import React from "react";
 export default function CreateProfilePage() {
    const { user } = useAuth();
 
+   //디버깅
+   console.log(user);
+
    //일반으로 로그인한 회원의 경우
-   if (user?.userType === "client") {
-      return <></>;
-   }
+   // if (user?.userType === "client") {
+   //    return <></>;
+   // }
 
    //기사님으로 로그인한 회원의 경우
    if (user?.userType === "mover") {

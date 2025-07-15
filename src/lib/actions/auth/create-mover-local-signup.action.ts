@@ -1,6 +1,6 @@
 "use server";
 
-import { defaultFetch, tokenFetch } from "@/lib/api/fetch-client";
+import { tokenFetch } from "@/lib/api/fetch-client";
 import { AuthActionResult, AuthValidation } from "@/lib/types/auth.type";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import { signUpFormSchema } from "@/lib/validations/auth.schemas";
@@ -35,11 +35,11 @@ export default async function createMoverLocalSignupAction(
          };
       }
 
-      //토큰 + 쿠키 관련
-      await tokenFetch(`/auth/signup/mover`, {
-         method: "POST",
-         body: JSON.stringify(validationResult.data),
-      });
+      // //토큰 + 쿠키 관련
+      // await tokenFetch(`/auth/signup/mover`, {
+      //    method: "POST",
+      //    body: JSON.stringify(validationResult.data),
+      // });
 
       return { success: true };
    } catch (error) {
