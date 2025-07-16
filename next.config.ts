@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
    images: {
-      domains: ["www.zimssa.com", "i.namu.wiki"], // 외부 이미지 호스트 허용
+      domains: ["www.zimssa.com"], // 외부 이미지 호스트 허용
    },
    webpack(config) {
       config.module.rules.push({
