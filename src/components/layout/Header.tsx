@@ -13,8 +13,8 @@ export default function Header({ children }: { children?: React.ReactNode }) {
       pathname.startsWith("/request") ||
       pathname.startsWith("/reviews") ||
       pathname.startsWith("/favorite-movers") ||
-      pathname.startsWith("/received-requests") ||
-      pathname === "/my-quotes";
+      pathname === "/my-quotes/client" ||
+      pathname === "/my-quotes/mover";
 
    return (
       <>
