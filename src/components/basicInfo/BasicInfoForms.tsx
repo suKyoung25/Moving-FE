@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import BasicInputField from "./BasicInputField";
 import SolidButton from "../common/buttons/SolidButton";
 import OutlinedButton from "../common/buttons/OutlinedButton";
@@ -38,7 +38,10 @@ export default function BasicInfoForms() {
    //    }
    // }, [user]);
 
-   const [, formAction, isPending] = useActionState(updateMoverBasicInfo, null);
+   const [formState, formAction, isPending] = useActionState(
+      updateMoverBasicInfo,
+      null,
+   );
    const [newPassword, setNewPassword] = useState(""); //비밀번호 대조를 위한 상태 관리
 
    const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +73,18 @@ export default function BasicInfoForms() {
       isPending || !Object.values(updateValidity).every((v) => v === true);
 
    const router = useRouter();
+
+   //디버깅
+   console.log("액션 훅의 스테이트", formState);
+   // console.log("뉴페스워드", formState.newPassword);
+   // console.log("체크뉴패스워드", updateValidity.checkNewPassword);
+
+   //기본정보 수정 성공 시 마이페이지로 리다이렉트
+   useEffect(() => {
+      if (formState?.success) {
+         router.push("/dashboard");
+      }
+   }, [formState, router]);
 
    return (
       <form action={formAction}>

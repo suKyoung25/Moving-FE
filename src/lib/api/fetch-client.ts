@@ -89,7 +89,13 @@ export async function tokenFetch(
    let body = options.body; // 2. 본문
 
    // 3. accessToken
-   let accessToken = accessTokenSettings.get();
+   let accessToken = await accessTokenSettings.get();
+
+   //디버깅
+   console.log("!!!!!!!이건 옵션스", options);
+   console.log("!!!!!!!이거슨 바디", options.body);
+   console.log("!!!!!토큰패치의 바디", body);
+   console.log("!!!!!수정하기-액세스토큰", accessToken);
 
    if (!accessToken) {
       console.warn("accessToken 없음: 로그인 필요");
@@ -106,6 +112,9 @@ export async function tokenFetch(
          : { "Content-Type": "application/json" }),
    };
 
+   //디버깅
+   console.log("!!!!!수정하기의 헤더스", headers);
+
    // ★ body 변환 : 객체랑 GET 제외22
    const ifConditions =
       body &&
@@ -117,6 +126,9 @@ export async function tokenFetch(
       body = JSON.stringify(body);
    }
 
+   //디버깅
+   console.log("!!!!!수정하기 유알엘", url);
+
    // ★ 요청
    try {
       let response = await fetch(url, {
@@ -127,6 +139,9 @@ export async function tokenFetch(
          cache: "no-store",
          next: { revalidate: 0 },
       });
+
+      //디버깅
+      console.log("!!!!!!!fetch-client의 패치 response", response);
 
       // 401 오류면 토큰 재발급 시도
       if (response.status === 401) {

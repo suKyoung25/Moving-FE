@@ -18,7 +18,8 @@ export async function updateMoverBasicInfo(
          phone: formData.get("phone")?.toString() || "",
          existedPassword: formData.get("existedPassword")?.toString() || "",
          newPassword: formData.get("newPassword")?.toString() || "",
-         checkNewPassword: formData.get("checkNewPassword")?.toString() || "",
+         newPasswordConfirmation:
+            formData.get("checkNewPassword")?.toString() || "",
       };
 
       const validationResult =
@@ -37,9 +38,12 @@ export async function updateMoverBasicInfo(
          };
       }
 
+      //디버깅
+      console.log("!!!!!수정하기 버튼 클릭!!!!!!");
+
       //백엔드 연동
       const response = await tokenFetch("/dashboard/edit/mover", {
-         method: "POST",
+         method: "PATCH",
          body: JSON.stringify(validationResult.data),
       });
 

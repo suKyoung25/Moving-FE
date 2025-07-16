@@ -10,14 +10,14 @@ const rawMoverBasicInfoSchema = {
       .regex(/^\d+$/, "숫자만 입력해주세요."),
    existedPassword: z.string().min(8, "기존 비밀번호를 입력해주세요."),
    newPassword: z.string().min(8, "최소 8자리 이상이어야 합니다."),
-   checkNewPassword: z.string().min(8, "최소 8자리 이상이어야 합니다."),
+   newPasswordConfirmation: z.string().min(8, "최소 8자리 이상이어야 합니다."),
 };
 
 //refine 로직 때문에 분리 (cheackNewPassword)
 export const moverBasicInfoSchema = z
    .object(rawMoverBasicInfoSchema)
-   .refine((data) => data.newPassword === data.checkNewPassword, {
-      path: ["checkNewPassword"],
+   .refine((data) => data.newPassword === data.newPasswordConfirmation, {
+      path: ["newPasswordConfirmation"],
       message: "비밀번호가 일치하지 않습니다.",
    });
 
@@ -28,7 +28,7 @@ export const basicInfoSchema = {
    phone: rawMoverBasicInfoSchema.phone,
    existedPassword: rawMoverBasicInfoSchema.existedPassword,
    newPassword: rawMoverBasicInfoSchema.newPassword,
-   checkNewPassword: rawMoverBasicInfoSchema.checkNewPassword,
+   newPasswordConfirmation: rawMoverBasicInfoSchema.newPasswordConfirmation,
 };
 
 export type MoverBasicInfoInput = z.infer<typeof moverBasicInfoSchema>;

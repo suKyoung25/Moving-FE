@@ -48,7 +48,7 @@ export const validateCheckNewPassword = (
    }
 
    return validateField(
-      basicInfoSchema.checkNewPassword,
+      basicInfoSchema.newPasswordConfirmation,
       checkNewPassword,
       "유효한 새 비밀번호입니다.",
    );
