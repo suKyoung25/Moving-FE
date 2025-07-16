@@ -1,8 +1,7 @@
 "use server";
 
-import { defaultFetch, tokenFetch } from "@/lib/api/fetch-client";
+import { tokenFetch } from "@/lib/api/fetch-client";
 import { profileState } from "@/lib/types";
-import { accessTokenSettings } from "@/lib/utils/auth.util";
 import {
    MoverBasicInfoInput,
    moverBasicInfoSchema,
@@ -37,10 +36,6 @@ export async function updateMoverBasicInfo(
             ),
          };
       }
-
-      //디버깅
-      const token = accessTokenSettings.get();
-      console.log("저장된 token", token);
 
       //백엔드 연동
       const response = await tokenFetch("/dashboard/edit/mover", {

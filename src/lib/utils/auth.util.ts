@@ -1,4 +1,5 @@
 import { BASE_URL } from "../api/fetch-client";
+import { getServerSideToken } from "./getServerSideToken.util";
 
 // ✅ 토큰 설정
 export const accessTokenSettings = {
@@ -32,6 +33,11 @@ export const accessTokenSettings = {
          } catch (error) {
             console.error("토큰 설정 오류(get): ", error);
          }
+      }
+
+      //서버 환경의 경우
+      if (typeof document === "undefined") {
+         return getServerSideToken("accessToken");
       }
 
       return null; // 로그인 안 했으면 토큰 안 가져옴

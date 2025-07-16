@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useActionState, useState } from "react";
 import BasicInputField from "./BasicInputField";
 import SolidButton from "../common/buttons/SolidButton";
 import OutlinedButton from "../common/buttons/OutlinedButton";
@@ -16,7 +16,6 @@ import {
    validateName,
 } from "@/lib/validations";
 import { useAuth } from "@/context/AuthContext";
-import { accessTokenSettings } from "@/lib/utils/auth.util";
 
 export default function BasicInfoForms() {
    const { user } = useAuth();
@@ -71,12 +70,6 @@ export default function BasicInfoForms() {
       isPending || !Object.values(updateValidity).every((v) => v === true);
 
    const router = useRouter();
-
-   //디버깅
-   console.log("formValues", formValues);
-   console.log("updateValidity", updateValidity);
-   const token = accessTokenSettings.get();
-   console.log("저장된 token", token);
 
    return (
       <form action={formAction}>

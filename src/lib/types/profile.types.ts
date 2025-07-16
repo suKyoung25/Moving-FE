@@ -25,6 +25,7 @@ export type profileState = {
    success: boolean;
    user?: User;
    error?: string;
+   accessToken?: string;
    fieldErrors?: Record<string, string>;
    globalError?: string;
 };
