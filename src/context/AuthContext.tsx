@@ -1,10 +1,11 @@
 "use client";
 
+import AuthSpinner from "@/components/spinner/AuthSpinner";
 import authApi from "@/lib/api/auth.api";
 import { User } from "@/lib/types/auth.type";
 import { accessTokenSettings } from "@/lib/utils/auth.util";
 import isFetchError from "@/lib/utils/fetch-error.util";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
    createContext,
    useCallback,
@@ -13,6 +14,7 @@ import {
    useMemo,
    useState,
 } from "react";
+import { delay } from "../../delay";
 
 // ✅ type 등
 interface AuthContextType {
@@ -21,6 +23,7 @@ interface AuthContextType {
    login: (user: User, accessToken: string) => void;
    logout: () => void;
    refreshUser: () => Promise<void>;
+   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 //  context 생성
@@ -28,12 +31,12 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 // ✅ context 값 설정
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-   const pathname = usePathname();
    const router = useRouter();
-   const [user, setUser] = useState<User | null>(null); // 이용자 정보
-   const [isLoading, setIsLoading] = useState(false);
+   const [user, setUser] = useState<User | null>(null);
+   const [isLoading, setIsLoading] = useState(true); // 기본값 true로 시작
 
-   // ★ 인증 함수 목록
+   console.log("User : ", user); // 나중에 삭제
+
    const login = useCallback((user: User, accessToken: string) => {
       accessTokenSettings.set(accessToken);
       setUser(user);
@@ -42,27 +45,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    const logout = useCallback(() => {
       setUser(null);
       accessTokenSettings.clear();
-      router.push("/login");
-   }, [router]);
+      location.href = "/sign-in/client"; // 임시
+   }, [setUser, router]);
 
    const refreshUser = useCallback(async () => {
+      setIsLoading(true);
       if (!accessTokenSettings.get()) {
          setUser(null);
+         setIsLoading(false);
          return;
       }
 
-      setIsLoading(true);
-
       try {
+         await delay(3000);
          const response = await authApi.getMe();
-         if (response?.user) {
-            setUser(response.user);
-         } else {
-            setUser(null);
-         }
-      } catch (error: unknown) {
+         if (response?.user) setUser(response.user);
+         else setUser(null);
+      } catch (error) {
          console.error("사용자 정보 호출 실패: ", error);
-
          if (isFetchError(error) && error.status === 401) {
             setUser(null);
             accessTokenSettings.clear();
@@ -72,12 +72,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
    }, []);
 
-   // ✅ 페이지 이동 시 로그인 유지
    useEffect(() => {
+      if (user) return;
       refreshUser();
-   }, [pathname, refreshUser]);
+   }, [user, refreshUser]);
 
-   // 반환
    const value = useMemo<AuthContextType>(
       () => ({
          user,
@@ -85,9 +84,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
          login,
          logout,
          refreshUser,
+         setUser,
       }),
-      [user, isLoading, login, logout, refreshUser],
+      [user, isLoading, login, logout, refreshUser, setUser],
    );
+
+   if (isLoading) return <AuthSpinner />;
 
    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

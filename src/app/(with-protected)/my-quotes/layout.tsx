@@ -10,9 +10,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div
         className="
                 min-h-screen
-                bg-bg-100
+               
+                bg-white
             "
       >
+        {/*  bg-bg-100 */}
         <Header>
           <MyQuotesLayout />
         </Header>

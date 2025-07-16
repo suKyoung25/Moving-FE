@@ -6,13 +6,13 @@ import profile from "@/assets/images/profileIcon.svg";
 
 export default function MoverProfileclient() {
   return (
-    <article className="bg-white border border-line-100 rounded-2xl px-3.5 py-4 flex flex-col gap-3.5 lg:px-6 lg:py-5">
+    <article className=" flex flex-col gap-3.5 ">
       <div className="flex items-center gap-2">
         <MoveChip type="PENDING" />
         <MoveChip type="SMALL" />
         <MoveChip type="DESIGNATED" />
       </div>
-      <p className="text-14-semibold text-black-300 lg:text-24-semibold">
+      <p className="text-14-semibold text-black-300 lg:text-20-semibold">
         고객님의 물품을 안전하게 운송해 드립니다.
       </p>
       <MoverProfile

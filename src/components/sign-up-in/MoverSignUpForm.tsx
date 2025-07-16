@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../common/buttons/SolidButton";
@@ -14,9 +14,14 @@ import {
    validateAuthPhone,
 } from "@/lib/validations";
 import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function MoverSignUpForm() {
-   const [, formAction, isPending] = useActionState(
+   const router = useRouter();
+   const { login } = useAuth();
+
+   const [state, MoverFormAction, isPending] = useActionState(
       createMoverLocalSignupAction,
       null,
    );
@@ -50,8 +55,16 @@ export default function MoverSignUpForm() {
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
 
+   //회원가입 성공 시 리다이렉트
+   useEffect(() => {
+      if (state?.success && state.accessToken && state.user) {
+         login(state.user, state.accessToken);
+         location.href = "/profile/create";
+      }
+   }, [state, login, router]);
+
    return (
-      <form action={formAction} className="flex w-full flex-col gap-4">
+      <form action={MoverFormAction} className="flex w-full flex-col gap-4">
          <AuthInput
             name="name"
             label="이름"
@@ -96,7 +109,7 @@ export default function MoverSignUpForm() {
 
          {/* 회원가입 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton disabled={isDisabled}>
+            <SolidButton type="submit" disabled={isDisabled}>
                {isPending ? "로딩 중..." : "시작하기"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">

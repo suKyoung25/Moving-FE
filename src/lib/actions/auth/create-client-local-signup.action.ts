@@ -36,7 +36,7 @@ export default async function createClientLocalSignupAction(
          };
       }
 
-      // ✅ 백엔드 연동
+      // 백엔드 연동
       await defaultFetch("/auth/signup/client", {
          method: "POST",
          body: JSON.stringify(validationResult.data),
@@ -48,17 +48,13 @@ export default async function createClientLocalSignupAction(
 
       // ✅ BE 오류 받음 (이메일, 전화번호 중복)
       if (isFetchError(error)) {
-         const message = error.body.message;
+         const { data } = error.body;
 
-         // message에 JSON 형태 오류가 들어오면 Parsing
-         const parsedErrors = JSON.parse(
-            message.replace("회원가입 실패: ", ""),
-         );
-
-         if (typeof parsedErrors === "object" && parsedErrors !== null) {
+         // 객체 형태라 data 형태로 오류 반환 (문자면 위에서 message를 받음)
+         if (data && typeof data === "object") {
             return {
                success: false,
-               fieldErrors: parsedErrors,
+               fieldErrors: data as Record<string, string>,
             };
          }
       }

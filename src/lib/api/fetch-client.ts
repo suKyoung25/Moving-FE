@@ -9,8 +9,24 @@
 import { accessTokenSettings } from "../utils/auth.util";
 import isFetchError from "../utils/fetch-error.util";
 
-// ✅ 기본 url : 두 개를 바꿔 가면서 쓰세요.
-export const BASE_URL = "https://www.moving-web.site"; // "http://localhost:4000";
+// ✅ 기본 url : 환경 변수 설정해서 쓰세요.
+export const BASE_URL =
+   process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL;
+
+// ✅ 서버에서 던진 오류 받기: 문자 형태, 객체 형태(data로 받음)
+async function handleResponse(response: Response) {
+   if (!response.ok) {
+      const errorBody = await response.json();
+      throw {
+         status: response.status,
+         body: {
+            message: errorBody.message || "서버 오류 발생",
+            data: errorBody.data || undefined,
+         },
+      };
+   }
+   return response.json();
+}
 
 // ✅ with-guest, with-public 경로에서 쓰는 미로그인 전용 fetch
 export async function defaultFetch(
@@ -42,13 +58,19 @@ export async function defaultFetch(
 
    // ★ 응답
    try {
-      const response = await fetch(url, { ...options, headers, body });
-      if (!response.ok) {
-         const errorBody = await response.json();
-         throw { status: response.status, body: errorBody };
-      }
+      //디버깅
+      console.log("url", url);
 
-      return response.json();
+      const response = await fetch(url, {
+         ...options,
+         headers,
+         body,
+         cache: "no-store",
+         credentials: "include",
+         next: { revalidate: 0 },
+      });
+
+      return await handleResponse(response);
    } catch (error: unknown) {
       console.error("defaultFetch Error: ", error);
 
@@ -66,6 +88,7 @@ export async function tokenFetch(
 ) {
    // ★ 기본 정보
    const url = `${BASE_URL}${endpoint}`; // 1. 주소
+   console.log(url);
    let body = options.body; // 2. 본문
 
    // 3. accessToken
@@ -97,43 +120,38 @@ export async function tokenFetch(
    }
 
    // ★ 요청
-   let response = await fetch(url, {
-      ...options,
-      headers,
-      credentials: "include",
-      body,
-   });
-
-   // 401 오류면 토큰 재발급 시도
-   if (response.status === 401) {
-      try {
-         accessToken = await accessTokenSettings.refresh();
-         headers.Authorization = `Bearer ${accessToken}`;
-
-         response = await fetch(url, {
-            ...options,
-            headers,
-            credentials: "include",
-            body,
-         });
-      } catch (error) {
-         console.error("토큰 갱신 실패:", error);
-         accessTokenSettings.clear();
-         onAuthFail?.();
-         throw new Error("토큰 갱신에 실패했습니다. 재로그인을 시도해 주세요.");
-      }
-   }
-
-   if (response.status === 204) return null;
-
-   // !response.ok + 반환
    try {
-      if (!response.ok) {
-         const errorBody = await response.json();
-         throw { status: response.status, body: errorBody };
+      let response = await fetch(url, {
+         ...options,
+         headers,
+         body,
+         credentials: "include",
+         cache: "no-store",
+         next: { revalidate: 0 },
+      });
+
+      // 401 오류면 토큰 재발급 시도
+      if (response.status === 401) {
+         try {
+            accessToken = await accessTokenSettings.refresh();
+            headers.Authorization = `Bearer ${accessToken}`;
+
+            response = await fetch(url, {
+               ...options,
+               headers,
+               body,
+            });
+         } catch (error) {
+            console.error("토큰 갱신 실패:", error);
+            accessTokenSettings.clear();
+            onAuthFail?.();
+            throw new Error(
+               "토큰 갱신에 실패했습니다. 재로그인을 시도해 주세요.",
+            );
+         }
       }
 
-      return response.json();
+      return await handleResponse(response);
    } catch (error: unknown) {
       console.error("token Fetch Error: ", error);
 
