@@ -10,6 +10,7 @@ import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createMoverLocalLoginAction from "@/lib/actions/auth/create-mover-local-login.action";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { User } from "@/lib/types";
 
 export default function MoverLoginForm() {
    const router = useRouter();
@@ -47,7 +48,9 @@ export default function MoverLoginForm() {
    //로그인 성공 시 프로필 생성 페이지로 리다이렉트
    useEffect(() => {
       if (formState?.success && formState.user && formState?.accessToken) {
-         login(formState.user, formState.accessToken);
+         const rawUser = formState.user as User;
+
+         login(rawUser, formState.accessToken);
          router.push("/profile/create");
       }
    }, [formState, login, router]);

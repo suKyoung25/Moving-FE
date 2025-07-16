@@ -3,7 +3,7 @@
 import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import ClientProfileTitle from "@/components/profile/ClientProfileTitle";
-import MoverProfileForm from "@/components/profile/MoverProfileForm";
+import MoverProfileForm from "@/components/profile/MoverProfileForms";
 import ClientProfileForm from "../ClientProfileForm";
 
 export default function CreateProfilePage() {
