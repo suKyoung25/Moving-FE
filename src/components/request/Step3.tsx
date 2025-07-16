@@ -44,7 +44,8 @@ export default function Step3() {
          return;
       }
 
-      const { currentStep, ...rest } = JSON.parse(requestData!);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { currentStep, ...rest } = JSON.parse(requestData);
 
       try {
          await createRequestAction(rest);
