@@ -90,7 +90,7 @@ export default function MoverSignUpForm() {
    useEffect(() => {
       if (formState?.success && formState.accessToken && formState.user) {
          login(formState.user, formState.accessToken);
-         router.push("/profile/create");
+         location.href = "/profile/create";
       }
    }, [formState, login, router]);
 
