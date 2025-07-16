@@ -14,7 +14,7 @@ import {
 } from "@/lib/validations";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { AuthValidationResult } from "@/lib/types";
+import { AuthValidationResult, User } from "@/lib/types";
 import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
 
 export default function MoverSignUpForm() {
@@ -89,8 +89,10 @@ export default function MoverSignUpForm() {
    //회원가입 성공 시 리다이렉트
    useEffect(() => {
       if (formState?.success && formState.accessToken && formState.user) {
-         login(formState.user, formState.accessToken);
-         location.href = "/profile/create";
+         const rawUser = formState.user as User;
+
+         login(rawUser, formState.accessToken);
+         router.push("/profile/create");
       }
    }, [formState, login, router]);
 

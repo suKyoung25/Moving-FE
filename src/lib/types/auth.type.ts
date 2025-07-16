@@ -1,13 +1,43 @@
-// userType
-export type UserType = "guest" | "client" | "mover";
+// ✅ userType
+export type UserType = "client" | "mover";
 
-// 그냥 불러올 User 정보 (헤더)
-export interface User {
+// ✅ 불러올 사용자 정보
+interface BaseUser {
    userType: UserType;
    id: string;
    email: string;
    name: string;
-   profile?: string;
+   phone?: string;
+   profileImage?: string;
+   isProfileCompleted: boolean;
+}
+
+interface Client extends BaseUser {
+   serviceType: string[];
+   livingArea: string[];
+}
+
+interface Mover extends BaseUser {
+   nickName?: string;
+   career?: number;
+   introduction?: string;
+   description?: string;
+   serviceType: string[];
+   serviceArea: string[];
+   favoriteCount: number;
+   estimateCount: number;
+   reviewCount: number;
+}
+
+export type User = Client | Mover;
+
+// ✅ Type Guard 함수
+export function isClient(user: User): user is Client {
+   return user.userType === "client";
+}
+
+export function isMover(user: User): user is Mover {
+   return user.userType === "mover";
 }
 
 // 유효성 검사용 type 모음
@@ -20,7 +50,7 @@ export type AuthValidationResult = {
 export type AuthValidation = {
    success: boolean;
    error?: string | Record<string, string>;
-   user?: User;
+   user?: BaseUser;
    accessToken?: string;
 };
 
@@ -41,7 +71,7 @@ export interface ErrorsState {
 // Server Action 응답
 export interface AuthActionResult {
    success: boolean;
-   user?: User;
+   user?: BaseUser;
    accessToken?: string;
    fieldErrors?: Record<string, string>;
    globalError?: string;

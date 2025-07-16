@@ -1,10 +1,25 @@
 "use client";
 
-import MoverProfileForm from "@/components/profile/MoverProfileForms";
+import React from "react";
 import { useAuth } from "@/context/AuthContext";
+import ClientProfileTitle from "@/components/profile/ClientProfileTitle";
+import MoverProfileForm from "@/components/profile/MoverProfileForms";
+import ClientProfileForm from "../ClientProfileForm";
 
 export default function CreateProfilePage() {
    const { user } = useAuth();
+
+   //일반으로 로그인한 회원의 경우
+   if (user?.userType === "client") {
+      return (
+         <div className="pt-4 pb-10 lg:pt-6">
+            <div className="mx-auto flex max-w-82 flex-col gap-4 lg:max-w-160 lg:gap-6">
+               <ClientProfileTitle />
+               <ClientProfileForm />
+            </div>
+         </div>
+      );
+   }
 
    //기사님으로 로그인한 회원의 경우
    if (user!.userType === "mover") {
