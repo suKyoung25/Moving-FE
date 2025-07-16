@@ -2,32 +2,12 @@
 
 import MoverProfileForm from "@/components/profile/MoverProfileForms";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
 
 export default function CreateProfilePage() {
-   const { user, isLoading } = useAuth();
-   const router = useRouter();
-
-   //로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
-   useEffect(() => {
-      if (!isLoading && !user) {
-         router.push("/login");
-      }
-   }, [isLoading, user, router]);
-
-   // 로딩 중이면 아무것도 보여주지 않음
-   if (isLoading || !user) {
-      return null;
-   }
-
-   //TODO: 일반으로 로그인한 회원의 경우
-   // if (user.userType === "client") {
-   //    return <></>;
-   // }
+   const { user } = useAuth();
 
    //기사님으로 로그인한 회원의 경우
-   if (user.userType === "mover") {
+   if (user!.userType === "mover") {
       return (
          <>
             <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">

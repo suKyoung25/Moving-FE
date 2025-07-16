@@ -15,7 +15,7 @@ export default function MoverLoginForm() {
    const router = useRouter();
    const { login } = useAuth();
 
-   const [state, moverFormAction, isPending] = useActionState(
+   const [formState, moverFormAction, isPending] = useActionState(
       createMoverLocalLoginAction,
       null,
    );
@@ -31,20 +31,26 @@ export default function MoverLoginForm() {
       setValidity((prev) => ({ ...prev, [key]: isValid }));
    };
 
+   //입력 값 변경 시 서버 오류 제거
+   const handleValueChange = (key: string) => {
+      if (formState?.fieldErrors && typeof formState.fieldErrors === "object") {
+         const newErrors = { ...formState.fieldErrors };
+         delete newErrors[key];
+         formState.fieldErrors = newErrors;
+      }
+   };
+
    //버튼 활성화 조건
    const isDisabled =
       isPending || !Object.values(validity).every((v) => v === true);
 
    //로그인 성공 시 프로필 생성 페이지로 리다이렉트
    useEffect(() => {
-      if (state?.success) {
-         const { user, accessToken } = state;
-         if (user && accessToken) {
-            login(user, accessToken);
-            router.push("/profile/create");
-         }
+      if (formState?.success && formState.user && formState?.accessToken) {
+         login(formState.user, formState.accessToken);
+         router.push("/profile/create");
       }
-   }, [state, login, router]);
+   }, [formState, login, router]);
 
    return (
       <form action={moverFormAction} className="flex w-full flex-col gap-4">
@@ -55,6 +61,8 @@ export default function MoverLoginForm() {
             type="email"
             placeholder="이메일을 입력해 주세요"
             onValidChange={handleValidateChange}
+            onValueChange={handleValueChange}
+            serverError={formState?.fieldErrors?.email}
          />
          <PasswordInput
             name="password"
@@ -63,6 +71,8 @@ export default function MoverLoginForm() {
             type="password"
             placeholder="비밀번호를 입력해 주세요"
             onValidChange={handleValidateChange}
+            onValueChange={handleValueChange}
+            serverError={formState?.fieldErrors?.password}
          />
 
          {/* 로그인 버튼 */}

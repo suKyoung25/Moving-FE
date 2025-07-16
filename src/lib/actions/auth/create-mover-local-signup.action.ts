@@ -1,19 +1,19 @@
 "use server";
 
 import { defaultFetch } from "@/lib/api/fetch-client";
-import { AuthActionResult, AuthValidation } from "@/lib/types/auth.type";
+import { AuthActionResult } from "@/lib/types/auth.type";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import { signUpFormSchema } from "@/lib/validations/auth.schemas";
 
 export default async function createMoverLocalSignupAction(
-   _: AuthValidation | null,
+   _: AuthActionResult | null,
    formData: FormData,
 ): Promise<AuthActionResult> {
    try {
       const rawFormData = {
          name: formData.get("name")?.toString() ?? "",
          email: formData.get("email")?.toString() ?? "",
-         phone: formData.get("phoneNumber")?.toString() ?? "",
+         phone: formData.get("phone")?.toString() ?? "",
          password: formData.get("password")?.toString() ?? "",
          passwordConfirmation:
             formData.get("passwordConfirmation")?.toString() ?? "",
@@ -35,9 +35,6 @@ export default async function createMoverLocalSignupAction(
          };
       }
 
-      //디버깅
-      console.log("validationResult.data", validationResult.data);
-
       // 백엔드 연동
       const response = await defaultFetch("/auth/signup/mover", {
          method: "POST",
@@ -46,10 +43,10 @@ export default async function createMoverLocalSignupAction(
 
       return {
          success: true,
-         accessToken: response.mover.accessToken,
-         user: response.mover.user,
+         accessToken: response.data.accessToken,
+         user: response.data.user,
       };
-   } catch (error) {
+   } catch (error: unknown) {
       console.error("회원가입 실패 원인: ", error);
 
       // ✅ BE 오류 받음 (이메일, 전화번호 중복)
