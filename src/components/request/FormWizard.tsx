@@ -31,7 +31,7 @@ export default function FormWizard() {
                진행 중인 이사 완료 후 새로운 견적을 받아보세요.
             </p>
             <SolidButton className="max-w-[196px] px-6">
-               <Link href="/my-quotes">받은 견적 보러가기</Link>
+               <Link href="/my-quotes/client">받은 견적 보러가기</Link>
             </SolidButton>
          </div>
       );

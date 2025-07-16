@@ -48,7 +48,7 @@ export default function Step2() {
                onEditClick={() => setIsEditing(true)}
             />
          ) : (
-            <ChatWrapper className="rounded-tr-3xl p-[14px]">
+            <ChatWrapper className="gap-6 rounded-tr-3xl p-[14px] lg:p-6">
                {/* 날짜 선택용 달력 라이브러리 */}
                <DayPicker
                   animate
@@ -60,13 +60,13 @@ export default function Step2() {
                   showOutsideDays
                   required
                   classNames={{
-                     day: `w-11 h-10`,
+                     day: `w-11 h-10 lg:px-6 lg:py-4`,
                      today: `font-bold text-primary-blue-300`,
-                     selected: `[&>button]:!mx-auto [&>button]:!my-0 [&>button]:!bg-primary-blue-300 [&>button]:rounded-full [&>button]:!w-6 [&>button]:!h-6 !text-white`,
+                     selected: `[&>button]:!mx-auto [&>button]:!my-0 [&>button]:!bg-primary-blue-300 [&>button]:rounded-full [&>button]:!w-6 [&>button]:!h-6 lg:[&>button]:!w-10 lg:[&>button]:!h-10 !text-white`,
                      weekday: `text-gray-400 font-medium px-4 py-[10px]`,
                      outside: `text-gray-100`,
-                     month_caption: `${defaultClassNames.month_caption} !text-base !font-semibold`,
-                     root: `${defaultClassNames.root} text-sm`,
+                     month_caption: `flex justify-center items-center px-[14px] py-3 text-base lg:text-xl font-semibold mb-2`,
+                     root: `${defaultClassNames.root} text-sm lg:text-xl`,
                      chevron: `${defaultClassNames.chevron} !fill-gray-300`,
                   }}
                   formatters={{
