@@ -52,9 +52,6 @@ export default function MoverLoginForm() {
       }
    }, [formState, login, router]);
 
-   //디버깅
-   console.log("formState.fieldErrors", formState?.fieldErrors);
-
    return (
       <form action={moverFormAction} className="flex w-full flex-col gap-4">
          <AuthInput

@@ -35,20 +35,16 @@ export default async function createMoverLocalSignupAction(
          };
       }
 
-      //디버깅
-      console.log("validationResult.data", validationResult.data);
-
       // 백엔드 연동
       const response = await defaultFetch("/auth/signup/mover", {
          method: "POST",
          body: JSON.stringify(validationResult.data),
       });
 
-      console.log(response);
       return {
          success: true,
-         accessToken: response.mover.accessToken,
-         user: response.mover.user,
+         accessToken: response.data.accessToken,
+         user: response.data.user,
       };
    } catch (error: unknown) {
       console.error("회원가입 실패 원인: ", error);

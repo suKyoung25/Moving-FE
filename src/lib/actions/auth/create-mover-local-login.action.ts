@@ -40,8 +40,8 @@ export default async function createMoverLocalLoginAction(
       // 성공 응답
       return {
          success: true,
-         user: response.mover.user,
-         accessToken: response.mover.accessToken,
+         user: response.data.user,
+         accessToken: response.data.accessToken,
       };
    } catch (error) {
       console.error("로그인 실패 원인: ", error);
