@@ -74,11 +74,6 @@ export default function BasicInfoForms() {
 
    const router = useRouter();
 
-   //디버깅
-   console.log("액션 훅의 스테이트", formState);
-   // console.log("뉴페스워드", formState.newPassword);
-   // console.log("체크뉴패스워드", updateValidity.checkNewPassword);
-
    //기본정보 수정 성공 시 마이페이지로 리다이렉트
    useEffect(() => {
       if (formState?.success) {

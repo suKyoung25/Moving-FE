@@ -38,9 +38,6 @@ export async function updateMoverBasicInfo(
          };
       }
 
-      //디버깅
-      console.log("!!!!!수정하기 버튼 클릭!!!!!!");
-
       //백엔드 연동
       const response = await tokenFetch("/dashboard/edit/mover", {
          method: "PATCH",
