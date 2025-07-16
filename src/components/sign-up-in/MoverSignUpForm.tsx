@@ -7,49 +7,80 @@ import SolidButton from "../common/buttons/SolidButton";
 import Link from "next/link";
 
 import {
-   validateAuthCheckPassword,
    validateAuthEmail,
    validateAuthName,
    validateAuthPassword,
    validateAuthPhone,
 } from "@/lib/validations";
-import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { AuthValidationResult } from "@/lib/types";
+import createMoverLocalSignupAction from "@/lib/actions/auth/create-mover-local-signup.action";
 
 export default function MoverSignUpForm() {
    const router = useRouter();
    const { login } = useAuth();
 
-   const [state, MoverFormAction, isPending] = useActionState(
+   const [formState, MoverFormAction, isPending] = useActionState(
       createMoverLocalSignupAction,
       null,
    );
 
-   //비밀번호 대조 위한 상태 관리
-   const [checkPassword, setCheckPassword] = useState("");
+   // 입력 값 상태 관리
+   const [formValues, setFormValues] = useState({
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      passwordConfirmation: "",
+   });
 
-   const handleCheckPasswordChange = (
-      e: React.ChangeEvent<HTMLInputElement>,
-   ) => {
-      setCheckPassword(e.target.value);
-   };
+   // //비밀번호 대조 위한 상태 관리
+   // const [checkPassword, setCheckPassword] = useState("");
+
+   // const handleCheckPasswordChange = (
+   //    e: React.ChangeEvent<HTMLInputElement>,
+   // ) => {
+   //    setCheckPassword(e.target.value);
+   // };
 
    //시작하기 버튼 활성화 확인
    const [validity, setValidity] = useState<Record<string, boolean>>({
       name: false,
       email: false,
-      phoneNumber: false,
+      phone: false,
       password: false,
       passwordConfirmation: false,
    });
 
    //시작하기 버튼 활성화를 위해 InputField 컴포넌트로 내려줄 함수
-   const handleValidatyChange = (key: string, isValid: boolean) => {
+   const handleValidityChange = (key: string, isValid: boolean) => {
       setValidity((prev) => ({
          ...prev,
          [key]: isValid,
       }));
+   };
+
+   const handleValueChange = (key: string, value: string) => {
+      setFormValues((prev) => ({ ...prev, [key]: value }));
+
+      // 오류 값 초기화
+      if (formState?.fieldErrors && typeof formState.fieldErrors === "object") {
+         const newErrors = { ...formState.fieldErrors };
+         delete newErrors[key];
+         formState.fieldErrors = newErrors;
+      }
+   };
+
+   //비밀번호 확인 검증
+   const validatePasswordConfirmation = (
+      confirmPassword: string,
+   ): AuthValidationResult => {
+      if (formValues.password !== confirmPassword) {
+         return { success: false, message: "비밀번호가 일치하지 않습니다." };
+      }
+
+      return { success: true, message: "" };
    };
 
    const isDisabled =
@@ -57,11 +88,11 @@ export default function MoverSignUpForm() {
 
    //회원가입 성공 시 리다이렉트
    useEffect(() => {
-      if (state?.success && state.accessToken && state.user) {
-         login(state.user, state.accessToken);
+      if (formState?.success && formState.accessToken && formState.user) {
+         login(formState.user, formState.accessToken);
          location.href = "/profile/create";
       }
-   }, [state, login, router]);
+   }, [formState, login, router]);
 
    return (
       <form action={MoverFormAction} className="flex w-full flex-col gap-4">
@@ -71,7 +102,8 @@ export default function MoverSignUpForm() {
             validator={validateAuthName}
             type="text"
             placeholder="성함을 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
+            onValueChange={handleValueChange}
          />
          <AuthInput
             name="email"
@@ -79,15 +111,19 @@ export default function MoverSignUpForm() {
             validator={validateAuthEmail}
             type="email"
             placeholder="이메일을 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
+            onValueChange={handleValueChange}
+            serverError={formState?.fieldErrors?.email}
          />
          <AuthInput
-            name="phoneNumber"
+            name="phone"
             label="전화번호"
             validator={validateAuthPhone}
             type="text"
             placeholder="숫자만 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
+            onValueChange={handleValueChange}
+            serverError={formState?.fieldErrors?.phone}
          />
          <PasswordInput
             name="password"
@@ -95,16 +131,18 @@ export default function MoverSignUpForm() {
             label="비밀번호"
             type="password"
             placeholder="비밀번호를 입력해 주세요"
-            onValidChange={handleValidatyChange}
-            onChange={handleCheckPasswordChange}
+            onValidChange={handleValidityChange}
+            // onChange={handleCheckPasswordChange}
+            onValueChange={handleValueChange}
          />
          <PasswordInput
             name="passwordConfirmation"
-            validator={(val) => validateAuthCheckPassword(val, checkPassword)}
+            validator={validatePasswordConfirmation}
             label="비밀번호 확인"
             type="password"
             placeholder="비밀번호를 다시 한번 입력해 주세요"
-            onValidChange={handleValidatyChange}
+            onValidChange={handleValidityChange}
+            onValueChange={handleValueChange}
          />
 
          {/* 회원가입 버튼 */}

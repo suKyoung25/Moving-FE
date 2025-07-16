@@ -91,7 +91,7 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
                            기사님 찾기
                         </Link>
                         <Link
-                           href="/my-quotes"
+                           href="/my-quotes/client"
                            className={linkStyle("/my-quotes")}
                         >
                            내 견적 관리
@@ -107,7 +107,7 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
                            받은 요청
                         </Link>
                         <Link
-                           href="/my-quotes"
+                           href="/my-quotes/mover"
                            className={linkStyle("/my-quotes")}
                         >
                            내 견적 관리
