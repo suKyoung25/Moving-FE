@@ -8,7 +8,7 @@ import MoveDateCard from "../common/MoveDateCard";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import OutlinedButton from "@/components/common/buttons/OutlinedButton";
 import { useRouter } from "next/navigation";
-import { fetchPendingQuotes } from "@/lib/api/estimates/getMyQuotes";
+import { fetchPendingQuotes } from "@/lib/api/my-quotes/getMyQuotes";
 import { pendingQuote } from "@/lib/types/quotes.types";
 import emptyQuotes from "@/assets/images/emptyBlueFolderIcon.svg";
 import Image from "next/image";
