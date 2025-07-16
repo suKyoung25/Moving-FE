@@ -9,4 +9,6 @@ export interface BasicInfoInputProps {
    onValidChange: (name: string, value: boolean) => void;
    validator: (value: string) => ValidationResult; // 유효성 검사 함수
    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   existedValue?: string;
+   onValueChange?: (name: string, newVal: string) => void;
 }

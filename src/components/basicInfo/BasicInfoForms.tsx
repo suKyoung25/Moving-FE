@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import BasicInputField from "./BasicInputField";
 import SolidButton from "../common/buttons/SolidButton";
 import OutlinedButton from "../common/buttons/OutlinedButton";
@@ -13,10 +13,32 @@ import {
    validateExistedPassword,
    validateNewPassword,
    validatePhone,
-   validateRealName,
+   validateName,
 } from "@/lib/validations";
+import { useAuth } from "@/context/AuthContext";
+import { accessTokenSettings } from "@/lib/utils/auth.util";
 
 export default function BasicInfoForms() {
+   const { user } = useAuth();
+
+   //현재 로그인한 유저의 데이터를 미리 입력
+   const [formValues, setFormValues] = useState({
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "", //추후 추가 예정
+   });
+
+   // //초기 user 정보고 유효성 검사
+   // useEffect(() => {
+   //    if (user) {
+   //       setFormValues({
+   //          name: user?.name || "",
+   //          email: user?.email || "",
+   //          // phone: user?.phone || "",
+   //       });
+   //    }
+   // }, [user]);
+
    const [, formAction, isPending] = useActionState(updateMoverBasicInfo, null);
    const [newPassword, setNewPassword] = useState(""); //비밀번호 대조를 위한 상태 관리
 
@@ -28,9 +50,9 @@ export default function BasicInfoForms() {
    const [updateValidity, setUpdateValidity] = useState<
       Record<string, boolean>
    >({
-      realName: false,
-      email: false,
-      phone: false,
+      name: true, // DB 값을 불러오는 거라서 true 처리함
+      email: true, // DB 값을 불러오는 거라서 true 처리함
+      phone: true, // DB 값을 불러오는 거라서 true 처리함
       existedPassword: false,
       newPassword: false,
       checkNewPassword: false,
@@ -50,16 +72,26 @@ export default function BasicInfoForms() {
 
    const router = useRouter();
 
+   //디버깅
+   console.log("formValues", formValues);
+   console.log("updateValidity", updateValidity);
+   const token = accessTokenSettings.get();
+   console.log("저장된 token", token);
+
    return (
       <form action={formAction}>
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex-1">
                <BasicInputField
-                  name="realName"
+                  name="name"
                   text="이름"
                   placeholder="사이트에 노출될 본명을 입력해주세요"
-                  validator={validateRealName}
+                  validator={validateName}
                   onValidChange={handleValidityChange}
+                  existedValue={formValues.name}
+                  onValueChange={(key, val) =>
+                     setFormValues((prev) => ({ ...prev, [key]: val }))
+                  }
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />
@@ -70,6 +102,10 @@ export default function BasicInfoForms() {
                   placeholder="moving.@email.com"
                   validator={validateEmail}
                   onValidChange={handleValidityChange}
+                  existedValue={formValues.email}
+                  onValueChange={(key, val) =>
+                     setFormValues((prev) => ({ ...prev, [key]: val }))
+                  }
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />
@@ -80,6 +116,10 @@ export default function BasicInfoForms() {
                   placeholder="01012345678"
                   validator={validatePhone}
                   onValidChange={handleValidityChange}
+                  existedValue={formValues.phone}
+                  onValueChange={(key, val) =>
+                     setFormValues((prev) => ({ ...prev, [key]: val }))
+                  }
                />
             </div>
 

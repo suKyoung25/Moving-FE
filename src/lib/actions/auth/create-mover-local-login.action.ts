@@ -37,6 +37,9 @@ export default async function createMoverLocalLoginAction(
          body: JSON.stringify(validationResult.data),
       });
 
+      //디버깅
+      console.log("response", response);
+
       // 성공 응답
       return {
          success: true,

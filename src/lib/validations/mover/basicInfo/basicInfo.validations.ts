@@ -13,8 +13,8 @@ function validateField(
       : { success: false, message: result.error.issues[0].message };
 }
 
-export const validateRealName = (realName: string) =>
-   validateField(basicInfoSchema.realName, realName, "유효한 이름입니다.");
+export const validateName = (name: string) =>
+   validateField(basicInfoSchema.name, name, "유효한 이름입니다.");
 
 export const validateEmail = (email: string) =>
    validateField(basicInfoSchema.email, email, "유효한 이메일입니다.");

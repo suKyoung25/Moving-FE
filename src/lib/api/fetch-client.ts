@@ -90,6 +90,9 @@ export async function tokenFetch(
 
    // 3. accessToken
    let accessToken = accessTokenSettings.get();
+
+   //디버깅
+   console.log("accessToken", accessToken);
    if (!accessToken) {
       console.warn("accessToken 없음: 로그인 필요");
       onAuthFail?.();
