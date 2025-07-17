@@ -5,3 +5,4 @@ export * from "./request.types";
 export * from "./moverBasicInfo.types";
 export * from "./auth.type";
 export * from "./moverAuth.types";
+export * from "./mover.types";
