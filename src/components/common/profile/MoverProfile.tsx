@@ -12,12 +12,12 @@ type MoverProfileProps = {
    big?: boolean;
    isLiked?: boolean;
    forceMobileStyle?: boolean;
-   handleLikedClick: () => void;
+   handleLikedClick: (e: React.MouseEvent) => void;
    nickName: string;
    favoriteCount: number;
    averageReviewRating: number;
    reviewCount: number;
-   career: number | null;
+   career: number;
    estimateCount: number;
 };
 
