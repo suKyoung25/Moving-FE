@@ -11,4 +11,5 @@ export interface BasicInfoInputProps {
    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
    existedValue?: string;
    onValueChange?: (name: string, newVal: string) => void;
+   serverError?: string;
 }

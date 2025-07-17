@@ -6,6 +6,7 @@ import {
    MoverBasicInfoInput,
    moverBasicInfoSchema,
 } from "@/lib/validations/mover/basicInfo/basicInfo.schemas";
+import { revalidatePath } from "next/cache";
 
 export async function updateMoverBasicInfo(
    state: profileState | null,
@@ -44,7 +45,14 @@ export async function updateMoverBasicInfo(
          body: JSON.stringify(validationResult.data),
       });
 
-      return { success: true };
+      //디버깅
+      console.log("ㅁㄴㅇㄻ!!서버액션 끝");
+
+      // 리다이렉트 & 컴포넌트 재실행
+      // revalidatePath("/dashboard"); // 페이지 최신화
+      // redirect("/dashboard"); // 이동
+
+      return { success: true, user: response };
    } catch (error) {
       console.error("서버 에러:", error);
       return { success: false };

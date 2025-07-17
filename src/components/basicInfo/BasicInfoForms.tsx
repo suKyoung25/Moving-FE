@@ -18,13 +18,28 @@ import {
 import { useAuth } from "@/context/AuthContext";
 
 export default function BasicInfoForms() {
-   const { user } = useAuth();
+   const { user, setUser } = useAuth();
+   const router = useRouter();
+
+   const [newPassword, setNewPassword] = useState(""); //비밀번호 대조를 위한 상태 관리
 
    //현재 로그인한 유저의 데이터를 미리 입력
    const [formValues, setFormValues] = useState({
       name: user?.name || "",
       email: user?.email || "",
       phone: user?.phone || "", //추후 추가 예정
+   });
+
+   //주석: 수정하기 버튼 활성화를 위한 상태 관리
+   const [updateValidity, setUpdateValidity] = useState<
+      Record<string, boolean>
+   >({
+      name: true, // DB 값을 불러오는 거라서 true 처리함
+      email: true, // DB 값을 불러오는 거라서 true 처리함
+      phone: true, // DB 값을 불러오는 거라서 true 처리함
+      existedPassword: false,
+      newPassword: false,
+      checkNewPassword: false,
    });
 
    // //초기 user 정보고 유효성 검사
@@ -42,23 +57,10 @@ export default function BasicInfoForms() {
       updateMoverBasicInfo,
       null,
    );
-   const [newPassword, setNewPassword] = useState(""); //비밀번호 대조를 위한 상태 관리
 
    const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setNewPassword(e.target.value);
    };
-
-   //주석: 수정하기 버튼 활성화를 위한 상태 관리
-   const [updateValidity, setUpdateValidity] = useState<
-      Record<string, boolean>
-   >({
-      name: true, // DB 값을 불러오는 거라서 true 처리함
-      email: true, // DB 값을 불러오는 거라서 true 처리함
-      phone: true, // DB 값을 불러오는 거라서 true 처리함
-      existedPassword: false,
-      newPassword: false,
-      checkNewPassword: false,
-   });
 
    //주석: 수정하기 버튼 활성화를 위해 InputField 컴포넌트로 내려줄 함수
    const handleValidityChange = (key: string, isValid: boolean) => {
@@ -72,14 +74,16 @@ export default function BasicInfoForms() {
    const isDisabled =
       isPending || !Object.values(updateValidity).every((v) => v === true);
 
-   const router = useRouter();
-
-   //기본정보 수정 성공 시 마이페이지로 리다이렉트
+   //서버액션 성공 시 마이페이지로 리다이렉트
    useEffect(() => {
       if (formState?.success) {
+         // setUser(formState?.user!);
          router.push("/dashboard");
       }
-   }, [formState, router]);
+   }, [formState]);
+
+   //디버깅
+   console.log("수정된 유저 정보", formState?.user);
 
    return (
       <form action={formAction}>
@@ -109,6 +113,7 @@ export default function BasicInfoForms() {
                   onValueChange={(key, val) =>
                      setFormValues((prev) => ({ ...prev, [key]: val }))
                   }
+                  serverError={formState?.fieldErrors?.email}
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />
@@ -123,6 +128,7 @@ export default function BasicInfoForms() {
                   onValueChange={(key, val) =>
                      setFormValues((prev) => ({ ...prev, [key]: val }))
                   }
+                  serverError={formState?.fieldErrors?.phone}
                />
             </div>
 
@@ -135,6 +141,7 @@ export default function BasicInfoForms() {
                   placeholder="현재 비밀번호를 입력해주세요"
                   validator={validateExistedPassword}
                   onValidChange={handleValidityChange}
+                  serverError={formState?.fieldErrors?.existedPassword}
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />

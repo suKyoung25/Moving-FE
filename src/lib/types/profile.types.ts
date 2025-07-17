@@ -28,4 +28,5 @@ export type profileState = {
    accessToken?: string;
    fieldErrors?: Record<string, string>;
    globalError?: string;
+   message?: string;
 };

@@ -12,9 +12,11 @@ function BasicInputField({
    onValidChange, // 주석: 시작하기 버튼의 활성화 관련
    existedValue: initialValue,
    onValueChange,
+   serverError,
 }: BasicInfoInputProps) {
    // const [value, setValue] = useState<string>("");
    const [error, setError] = useState("");
+   // const [moverError, setMoverError] = useState("");
 
    // //기존의 기본정보가 변경되면 input 값 업데이트
    // useEffect(() => {
@@ -40,6 +42,16 @@ function BasicInputField({
          }
       }
    };
+
+   // ✅ 백엔드에서 받는 오류 메시지
+   useEffect(() => {
+      if (serverError) {
+         setError("");
+      }
+   }, [serverError]);
+
+   // 표시할 메시지 결정 (서버 우선)
+   const displayError = serverError || error;
 
    return (
       <div className="flex flex-col gap-4 leading-8">
