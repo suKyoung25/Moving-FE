@@ -1,3 +1,5 @@
+import { User } from "./auth.type";
+
 //기사님 프로필 컴포넌트 모음집
 export interface InputFieldProps {
    name: string; //useActionsState로 매핑하기 위한
@@ -20,6 +22,11 @@ export type ValidationResult = {
 
 //기사님 프로필 관련
 export type profileState = {
-   status: boolean;
+   success: boolean;
+   user?: User;
    error?: string;
-} | null;
+   accessToken?: string;
+   fieldErrors?: Record<string, string>;
+   globalError?: string;
+   message?: string;
+};
