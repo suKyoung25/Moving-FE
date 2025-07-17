@@ -14,3 +14,14 @@ export interface MyReview extends WritableReview {
    content: string;
    createdAt: Date;
 }
+
+export type ReviewFormState = {
+   success: boolean;
+   message: string;
+};
+
+export type ReviewPayload = {
+   estimateId: string;
+   rating: number;
+   content: string;
+};

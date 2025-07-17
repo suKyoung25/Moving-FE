@@ -12,30 +12,27 @@ import { isChipType, MyReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { getMyReviews } from "@/lib/api/reviews/getMyReviews";
+import Pagination from "../common/pagination";
 
 export default function MyReviews() {
    const router = useRouter();
    const [reviews, setReviews] = useState<MyReview[]>([]);
-   const [pagination, setPagination] = useState({
-      page: 1,
-      limit: 6,
-      totalPages: 1,
+   const [pagination, setPagination] = useState(() => {
+      let initialLimit = 6;
+      // 첫 로딩 때 width로 limit값 결정
+      if (typeof window !== "undefined" && window.innerWidth < 1440) {
+         initialLimit = 4;
+      }
+      return {
+         page: 1,
+         limit: initialLimit,
+         totalPages: 1,
+      };
    });
 
-   // 데스크탑 limit=6, 나머지 limit=4
-   useEffect(() => {
-      function updateLimit() {
-         const width = window.innerWidth;
-         if (width < 1440) {
-            setPagination((prev) => ({ ...prev, limit: 4 }));
-         } else {
-            setPagination((prev) => ({ ...prev, limit: 6 }));
-         }
-      }
-      updateLimit();
-      window.addEventListener("resize", updateLimit);
-      return () => window.removeEventListener("resize", updateLimit);
-   });
+   const handlePageChange = (page: number) => {
+      setPagination((prev) => ({ ...prev, page }));
+   };
 
    useEffect(() => {
       async function fetchData() {
@@ -135,6 +132,11 @@ export default function MyReviews() {
                </div>
             ))}
          </div>
+         <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={handlePageChange}
+         />
          {reviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <Image

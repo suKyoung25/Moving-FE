@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MoveChip from "@/components/common/chips/MoveChip";
 import Image from "next/image";
 import profile from "@/assets/images/profileUploaderIcon.svg";
@@ -9,39 +9,37 @@ import ReviewModal from "./ReviewModal";
 import blueFolder from "@/assets/images/emptyBlueFolderIcon.svg";
 import { isChipType, WritableReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
-import { getWritableReviewsAction } from "@/lib/actions/reviews/get-writable-reviews.action";
+import { getWritableReviews } from "@/lib/api/reviews/getWritableReviews";
+import Pagination from "../common/pagination";
 
 export default function WritableReviews() {
    // 작성 가능한 리뷰 목록
    const [writableReviews, setWritableReviews] = useState<WritableReview[]>([]);
    // 페이지네이션
-   const [pagination, setPagination] = useState({
-      page: 1,
-      limit: 6,
-      totalPages: 1,
+   const [pagination, setPagination] = useState(() => {
+      let initialLimit = 6;
+      if (typeof window !== "undefined" && window.innerWidth < 1440) {
+         initialLimit = 4;
+      }
+      return {
+         page: 1,
+         limit: initialLimit,
+         totalPages: 1,
+      };
    });
    // 선택된 estimate의 id를 저장
    const [selectedId, setSelectedId] = useState<string | null>(null);
+   // 리뷰 작성 성공 여부
+   const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
-   // 데스크탑 limit=6, 나머지 limit=4
-   useEffect(() => {
-      function updateLimit() {
-         const width = window.innerWidth;
-         if (width < 1440) {
-            setPagination((prev) => ({ ...prev, limit: 4 }));
-         } else {
-            setPagination((prev) => ({ ...prev, limit: 6 }));
-         }
-      }
-      updateLimit();
-      window.addEventListener("resize", updateLimit);
-      return () => window.removeEventListener("resize", updateLimit);
-   });
+   const handlePageChange = (page: number) => {
+      setPagination((prev) => ({ ...prev, page }));
+   };
 
    useEffect(() => {
       async function fetchData() {
          try {
-            const res = await getWritableReviewsAction(
+            const res = await getWritableReviews(
                pagination.page,
                pagination.limit,
             );
@@ -52,16 +50,12 @@ export default function WritableReviews() {
          }
       }
       fetchData();
-   }, [pagination.page, pagination.limit]);
+   }, [pagination.page, pagination.limit, reviewSubmitted]);
 
    // id로 해당 estimate 객체 찾기
-   const selectedEstimate = writableReviews.find(
-      (item) => item.estimateId === selectedId,
-   );
-
-   const handleReviewModal = (id: string | null) => {
-      setSelectedId(id);
-   };
+   const selectedEstimate = useMemo(() => {
+      return writableReviews.find((item) => item.estimateId === selectedId);
+   }, [selectedId, writableReviews]);
 
    return (
       <div>
@@ -114,15 +108,18 @@ export default function WritableReviews() {
                      </div>
                   </div>
                   <SolidButton
-                     onClick={() =>
-                        handleReviewModal(writableReview.estimateId)
-                     }
+                     onClick={() => setSelectedId(writableReview.estimateId)}
                   >
                      리뷰 작성하기
                   </SolidButton>
                </div>
             ))}
          </div>
+         <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={handlePageChange}
+         />
          {writableReviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <Image
@@ -137,11 +134,14 @@ export default function WritableReviews() {
                </div>
             </div>
          )}
-         <ReviewModal
-            isOpen={selectedId !== null}
-            onClose={() => setSelectedId(null)}
-            selectedEstimate={selectedEstimate}
-         />
+         {selectedId && selectedEstimate && (
+            <ReviewModal
+               isOpen={true}
+               onClose={() => setSelectedId(null)}
+               selectedEstimate={selectedEstimate}
+               onReviewSuccess={() => setReviewSubmitted((prev) => !prev)}
+            />
+         )}
       </div>
    );
 }
