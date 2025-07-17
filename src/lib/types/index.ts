@@ -6,3 +6,4 @@ export * from "./moverBasicInfo.types";
 export * from "./auth.types";
 export * from "./moverAuth.types";
 export * from "./review.types";
+export * from "./mover.types";
