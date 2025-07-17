@@ -1,4 +1,3 @@
-import { getServerSideToken } from "../actions/auth/auth";
 import { BASE_URL } from "../api/fetch-client";
 import { getServerSideToken } from "./getServerSideToken.util";
 

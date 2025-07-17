@@ -30,3 +30,10 @@ export type profileState = {
    globalError?: string;
    message?: string;
 };
+
+// 일반 회원 프로필
+export interface ClientProfileData {
+   profileImage?: string;
+   serviceType?: ("SMALL" | "HOME" | "OFFICE")[];
+   livingArea?: string[];
+}
