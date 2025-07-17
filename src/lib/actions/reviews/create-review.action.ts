@@ -49,13 +49,11 @@ export async function createReviewAction(
          return { success: false, message: msg };
       }
       return { success: true, message: "리뷰가 등록되었습니다." };
-   } catch (error: any) {
+   } catch (error) {
+      console.error(error);
       return {
          success: false,
-         message:
-            (error?.body?.message as string) ||
-            error?.message ||
-            "리뷰 등록 중 오류가 발생했습니다.",
+         message: "리뷰 등록 중 오류가 발생했습니다",
       };
    }
 }

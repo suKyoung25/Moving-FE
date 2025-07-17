@@ -14,7 +14,7 @@ interface PaginationProps {
 function getPageRange(page: number, totalPages: number, maxPages: number) {
    const pages = [];
    let start = Math.max(1, page - Math.floor(maxPages / 2));
-   let end = Math.min(totalPages, start + maxPages - 1);
+   const end = Math.min(totalPages, start + maxPages - 1);
 
    if (end - start + 1 < maxPages) {
       start = Math.max(1, end - maxPages + 1);

@@ -51,7 +51,7 @@ export default function ReviewModal({
          resetState();
          onReviewSuccess?.();
       }
-   }, [state.success]);
+   }, [state.success, onClose, onReviewSuccess]);
 
    if (!isOpen || !selectedEstimate) return null;
 
