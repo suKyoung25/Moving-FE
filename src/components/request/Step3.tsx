@@ -6,9 +6,10 @@ import ChatMessage from "./ChatMessage";
 import ChatWrapper from "./ChatWrapper";
 import SolidButton from "@/components/common/buttons/SolidButton";
 import OutlinedButton from "@/components/common/buttons/OutlinedButton";
-import AddressModal from "./AddressModal";
 import { Request } from "@/lib/types";
 import { createRequestAction } from "@/lib/actions/request/request.action";
+import AddressSearch from "./AddressSearch";
+import ToastPopup from "../common/popup/ToastPopup";
 
 // 출발지/도착지 주소 입력 단계
 export default function Step3() {
@@ -22,6 +23,7 @@ export default function Step3() {
    );
    const [targetField, setTargetField] = useState<"from" | "to" | null>(null); // 현재 열려있는 주소 필드
    const [showModal, setShowModal] = useState<boolean>(false);
+   const [showToast, setShowToast] = useState<boolean>(false);
 
    // 주소 선택 완료 시 실행
    const handleComplete = (addr: string) => {
@@ -53,10 +55,22 @@ export default function Step3() {
          // 요청 성공 시 localStorage 초기화
          dispatch({ type: "RESET_FORM_ONLY" });
          localStorage.removeItem("requestData");
+
+         setShowToast(true); // 토스트 알림 표시
+         setTimeout(() => setShowToast(false), 3000);
       } catch (err) {
          console.error("견적 요청 실패:", err);
       }
    };
+
+   useEffect(() => {
+      if (showToast) {
+         const timer = setTimeout(() => {
+            setShowToast(false);
+         }, 3000);
+         return () => clearTimeout(timer);
+      }
+   }, [showToast]);
 
    // 출발지/도착지 둘 다 입력되면 다음 단계(폼 완성 상태)로 이동
    useEffect(() => {
@@ -69,7 +83,6 @@ export default function Step3() {
       <>
          {/* 시스템 메세지 */}
          <ChatMessage type="system" message="이사 지역을 선택해 주세요." />
-
          {/* 유저 메세지 */}
          <ChatWrapper className="px-6 py-5 lg:p-8">
             <label className="text-sm font-medium lg:text-lg">출발지</label>
@@ -99,15 +112,15 @@ export default function Step3() {
                견적 확정하기
             </SolidButton>
          </ChatWrapper>
-
          {/* 주소 검색 모달 */}
          {showModal && (
-            <AddressModal
+            <AddressSearch
                type={targetField}
-               onSelect={handleComplete}
+               onComplete={handleComplete}
                onClose={() => setShowModal(false)}
             />
          )}
+         {showToast && <ToastPopup>견적 요청이 완료되었습니다.</ToastPopup>}
       </>
    );
 }
