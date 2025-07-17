@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import ErrorText from "./ErrorText";
-import { AuthValidationResult } from "@/lib/types/auth.type";
+import { AuthValidationResult } from "@/lib/types/auth.types";
 
 interface Props {
    type?: "text" | "email";

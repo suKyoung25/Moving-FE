@@ -30,7 +30,6 @@ export default function HeaderSideBarMenu({ onClick }: Prop) {
                   <Image src={xIcon} alt="x 아이콘" width={24} height={24} />
                </button>
             </div>
-            <>{console.log(user)}</>
             <nav>
                {!user && (
                   <>
@@ -50,7 +49,7 @@ export default function HeaderSideBarMenu({ onClick }: Prop) {
                      <Link href="/mover-search" className={linkStyle}>
                         기사님 찾기
                      </Link>
-                     <Link href="/my-quotes" className={linkStyle}>
+                     <Link href="/my-quotes/client" className={linkStyle}>
                         내 견적 관리
                      </Link>
                   </>
@@ -60,7 +59,7 @@ export default function HeaderSideBarMenu({ onClick }: Prop) {
                      <Link href="/received-requests" className={linkStyle}>
                         받은 요청
                      </Link>
-                     <Link href="/my-quotes" className={linkStyle}>
+                     <Link href="/my-quotes/mover" className={linkStyle}>
                         내 견적 관리
                      </Link>
                   </>

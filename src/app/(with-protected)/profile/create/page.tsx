@@ -4,7 +4,7 @@ import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import ClientProfileTitle from "@/components/profile/ClientProfileTitle";
 import MoverProfileForm from "@/components/profile/MoverProfileForms";
-import ClientProfileForm from "../ClientProfileForm";
+import ClientProfileForm from "../../../../components/profile/ClientProfileForm";
 
 export default function CreateProfilePage() {
    const { user } = useAuth();
@@ -13,8 +13,8 @@ export default function CreateProfilePage() {
    if (user?.userType === "client") {
       return (
          <div className="pt-4 pb-10 lg:pt-6">
-            <div className="mx-auto flex max-w-82 flex-col gap-4 lg:max-w-160 lg:gap-6">
-               <ClientProfileTitle />
+            <div className="mx-auto max-w-82 lg:max-w-160">
+               <ClientProfileTitle type="제목" />
                <ClientProfileForm />
             </div>
          </div>
