@@ -27,7 +27,7 @@ function SecretInputField({
       if (serverError && isHandleChange === false) {
          setError(serverError || error);
       }
-   }, [serverError, error]);
+   }, [serverError, error, isHandleChange]);
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setIsHandelChange(true);
