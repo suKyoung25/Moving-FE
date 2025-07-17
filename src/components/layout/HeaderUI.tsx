@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
 import HeaderProfile from "./HeaderProfile";
+import NotificationModal from "../common/modal/NotificationModal";
+import { useState } from "react";
 
 // prop
 interface Prop {
@@ -23,6 +25,7 @@ const iconStyle = "relative w-6 h-6 cursor-pointer";
 
 // ★ 본문
 export default function HeaderUI({ onToggleMenu }: Prop) {
+   const [isNotiModalOpen, setIsNotiModalOpen] = useState(false);
    const { user } = useAuth(); // 이용자 정보
    const pathname = usePathname(); // 현재 경로 받기 (링크 색상)
 
@@ -118,12 +121,20 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
             </div>
 
             {/* ✅ 로그인 버튼 or 알림, 프로필 버튼 등 */}
-            <div className="flex gap-6">
+            <div className="relative flex gap-6">
                {/* 알림 아이콘 : 아직 설정 안 함 */}
                {user && (
-                  <figure className={iconStyle}>
-                     <Image src={alarmIcon} alt="알림 아이콘" fill />
-                  </figure>
+                  <>
+                     <button
+                        className={iconStyle}
+                        onClick={() => setIsNotiModalOpen((prev) => !prev)}
+                     >
+                        <Image src={alarmIcon} alt="알림 아이콘" fill />
+                     </button>
+                  </>
+               )}
+               {isNotiModalOpen && (
+                  <NotificationModal setIsNotiModalOpen={setIsNotiModalOpen} />
                )}
 
                {/* 프로필 + dropdownMenu */}

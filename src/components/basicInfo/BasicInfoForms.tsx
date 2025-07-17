@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import BasicInputField from "./BasicInputField";
 import SolidButton from "../common/buttons/SolidButton";
 import OutlinedButton from "../common/buttons/OutlinedButton";
@@ -13,28 +13,43 @@ import {
    validateExistedPassword,
    validateNewPassword,
    validatePhone,
-   validateRealName,
+   validateName,
 } from "@/lib/validations";
+import { useAuth } from "@/context/AuthContext";
 
 export default function BasicInfoForms() {
-   const [, formAction, isPending] = useActionState(updateMoverBasicInfo, null);
+   const { user } = useAuth();
+   const router = useRouter();
+
    const [newPassword, setNewPassword] = useState(""); //비밀번호 대조를 위한 상태 관리
 
-   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setNewPassword(e.target.value);
-   };
+   const [formState, formAction, isPending] = useActionState(
+      updateMoverBasicInfo,
+      null,
+   );
+
+   //현재 로그인한 유저의 데이터를 미리 입력
+   const [formValues, setFormValues] = useState({
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "", //추후 추가 예정
+   });
 
    //주석: 수정하기 버튼 활성화를 위한 상태 관리
    const [updateValidity, setUpdateValidity] = useState<
       Record<string, boolean>
    >({
-      realName: false,
-      email: false,
-      phone: false,
+      name: true, // DB 값을 불러오는 거라서 true 처리함
+      email: true, // DB 값을 불러오는 거라서 true 처리함
+      phone: true, // DB 값을 불러오는 거라서 true 처리함
       existedPassword: false,
       newPassword: false,
       checkNewPassword: false,
    });
+
+   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setNewPassword(e.target.value);
+   };
 
    //주석: 수정하기 버튼 활성화를 위해 InputField 컴포넌트로 내려줄 함수
    const handleValidityChange = (key: string, isValid: boolean) => {
@@ -48,18 +63,28 @@ export default function BasicInfoForms() {
    const isDisabled =
       isPending || !Object.values(updateValidity).every((v) => v === true);
 
-   const router = useRouter();
+   //서버액션 성공 시 마이페이지로 리다이렉트
+   useEffect(() => {
+      if (formState?.success) {
+         // setUser(formState?.user!); //추후에 로직 추가해야함
+         router.push("/dashboard");
+      }
+   }, [formState, router]);
 
    return (
       <form action={formAction}>
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex-1">
                <BasicInputField
-                  name="realName"
+                  name="name"
                   text="이름"
                   placeholder="사이트에 노출될 본명을 입력해주세요"
-                  validator={validateRealName}
+                  validator={validateName}
                   onValidChange={handleValidityChange}
+                  existedValue={formValues.name}
+                  onValueChange={(key, val) =>
+                     setFormValues((prev) => ({ ...prev, [key]: val }))
+                  }
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />
@@ -70,6 +95,11 @@ export default function BasicInfoForms() {
                   placeholder="moving.@email.com"
                   validator={validateEmail}
                   onValidChange={handleValidityChange}
+                  existedValue={formValues.email}
+                  onValueChange={(key, val) =>
+                     setFormValues((prev) => ({ ...prev, [key]: val }))
+                  }
+                  serverError={formState?.fieldErrors?.email}
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />
@@ -80,6 +110,11 @@ export default function BasicInfoForms() {
                   placeholder="01012345678"
                   validator={validatePhone}
                   onValidChange={handleValidityChange}
+                  existedValue={formValues.phone}
+                  onValueChange={(key, val) =>
+                     setFormValues((prev) => ({ ...prev, [key]: val }))
+                  }
+                  serverError={formState?.fieldErrors?.phone}
                />
             </div>
 
@@ -92,6 +127,7 @@ export default function BasicInfoForms() {
                   placeholder="현재 비밀번호를 입력해주세요"
                   validator={validateExistedPassword}
                   onValidChange={handleValidityChange}
+                  serverError={formState?.fieldErrors?.existedPassword}
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />
