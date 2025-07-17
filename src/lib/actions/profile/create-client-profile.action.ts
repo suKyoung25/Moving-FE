@@ -4,7 +4,16 @@ import { MOVE_TYPES } from "@/constants";
 import { tokenFetch } from "@/lib/api/fetch-client";
 import { ClientProfileData } from "@/lib/types";
 
-export default async function createClientProfile(_: any, formData: FormData) {
+type ClientProfileActionState = {
+   success: boolean;
+   message: string;
+   data?: ClientProfileData;
+};
+
+export default async function createClientProfile(
+   _: ClientProfileActionState | null | undefined,
+   formData: FormData,
+) {
    try {
       // FormData에서 데이터 추출
       const serviceTypes = formData.getAll("serviceType") as string[];
@@ -30,8 +39,6 @@ export default async function createClientProfile(_: any, formData: FormData) {
          ),
          livingArea: livingAreas as string[],
       };
-
-      console.log("여기까지 됨");
 
       // ❌ BE 연동 : 이미지 들어가면 JSON 쓰면 안 되는데 일단 구현 때문에 넣음. 나중에 수정 예정.
       const response = await tokenFetch("/profile/clients", {
