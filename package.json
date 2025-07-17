@@ -11,6 +11,7 @@
   "dependencies": {
     "animate.css": "^4.1.1",
     "date-fns": "^4.1.0",
+    "lodash": "^4.17.21",
     "lottie-react": "^2.4.1",
     "next": "15.3.4",
     "nodemailer": "^7.0.5",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/lodash": "^4.17.20",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
