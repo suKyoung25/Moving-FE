@@ -13,6 +13,7 @@ const authApi = {
          });
 
          if (response?.user) {
+            console.log("auth.api 응답: ", response.user);
             return { user: response.user };
          }
 

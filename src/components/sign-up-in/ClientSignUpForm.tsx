@@ -13,7 +13,7 @@ import {
    validateAuthPhone,
 } from "@/lib/validations";
 import createClientLocalSignupAction from "@/lib/actions/auth/create-client-local-signup.action";
-import { AuthValidationResult } from "@/lib/types/auth.type";
+import { AuthValidationResult } from "@/lib/types/auth.types";
 import { useRouter } from "next/navigation";
 
 // 여기서부터 시작

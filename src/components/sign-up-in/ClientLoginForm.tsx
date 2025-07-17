@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local-login.action";
-import { User } from "@/lib/types";
+import { Client } from "@/lib/types";
 
 export default function ClientLoginForm() {
    // 상태 모음
@@ -47,12 +47,22 @@ export default function ClientLoginForm() {
 
    // ✅ 로그인 성공하면 페이지 이동
    useEffect(() => {
-      if (formState?.success && formState.user && formState?.accessToken) {
-         const rawUser = formState.user as User;
+      // 1. 정보가 잘 안 왔으면 바로 반환
+      if (!formState?.success || !formState.user || !formState.accessToken)
+         return;
 
-         login(rawUser, formState.accessToken);
-         router.push("/mover-search");
-      }
+      // 2. 로그인함
+      const rawUser = formState.user as Client;
+      login(rawUser, formState.accessToken);
+
+      // 3. useEffect 때문에 순서 밀리고 mover-search로 가지 않게 setTimeOut 설정
+      setTimeout(() => {
+         if (!rawUser.isProfileCompleted) {
+            router.replace("/profile/create");
+         } else {
+            router.replace("/mover-search");
+         }
+      }, 0);
    }, [formState, login, router]);
 
    // 본문

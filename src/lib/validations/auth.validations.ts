@@ -1,6 +1,6 @@
 import * as authSchema from "./auth.schemas";
 import { ZodType, ZodTypeDef } from "zod";
-import { AuthValidationResult } from "../types/auth.type";
+import { AuthValidationResult } from "../types/auth.types";
 
 // ✅ 타입 오류 없애는 용도의 공용 함수
 function validateField<TInput, TOutput>(
