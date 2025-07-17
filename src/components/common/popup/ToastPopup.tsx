@@ -1,5 +1,5 @@
 import React from "react";
-import InfoIcon from "@/assets/images/info.svg";
+import InfoIcon from "@/assets/images/infoIcon.svg";
 import Image from "next/image";
 
 export default function ToastPopup({
