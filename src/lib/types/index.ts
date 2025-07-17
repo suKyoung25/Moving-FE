@@ -3,6 +3,6 @@ export * from "./common/chip.types";
 export * from "./profile.types";
 export * from "./request.types";
 export * from "./moverBasicInfo.types";
-export * from "./auth.type";
+export * from "./auth.types";
 export * from "./moverAuth.types";
 export * from "./mover.types";

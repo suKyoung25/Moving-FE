@@ -5,7 +5,7 @@ import ErrorText from "./ErrorText";
 import Image from "next/image";
 import openedEye from "@/assets/images/visibilityIcon.svg";
 import closedEye from "@/assets/images/visibilityOffIcon.svg";
-import { AuthValidationResult } from "@/lib/types/auth.type";
+import { AuthValidationResult } from "@/lib/types/auth.types";
 
 interface Props {
    type: "text" | "password";

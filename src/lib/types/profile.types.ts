@@ -1,4 +1,4 @@
-import { User } from "./auth.type";
+import { User } from "./auth.types";
 
 //기사님 프로필 컴포넌트 모음집
 export interface InputFieldProps {
@@ -30,3 +30,10 @@ export type profileState = {
    globalError?: string;
    message?: string;
 };
+
+// 일반 회원 프로필
+export interface ClientProfileData {
+   profileImage?: string;
+   serviceType?: ("SMALL" | "HOME" | "OFFICE")[];
+   livingArea?: string[];
+}

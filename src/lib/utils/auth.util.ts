@@ -20,8 +20,12 @@ export const accessTokenSettings = {
    },
 
    // ★ 토큰을 가져옴
-   get: () => {
-      // 로그인한 상태면 토큰 가져옴
+   get: (type = "accessToken") => {
+      if (typeof window === "undefined") {
+         return getServerSideToken(type);
+      }
+
+      // 로그인한 상태면 토큰 가져옴 (브라우저 환경)
       if (typeof window !== "undefined") {
          try {
             const cookies = document.cookie.split("; "); // 쿠키 중에서
