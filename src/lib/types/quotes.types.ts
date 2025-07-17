@@ -14,7 +14,12 @@ export interface Estimate {
    price: number;
    created: string;
    isDesignated: boolean;
-   isFavorited: Favorite | null;
+   isFavorited: Favorite;
+   career: number;
+   estimateCount: number;
+   favoriteCount: number;
+   reviewCount: number;
+   reviewRating: number;
 }
 
 export interface pendingQuote {
@@ -22,5 +27,6 @@ export interface pendingQuote {
    fromAddress: string;
    toAddress: string;
    moveDate: string;
+   moveType: string;
    estimates: Estimate[];
 }
