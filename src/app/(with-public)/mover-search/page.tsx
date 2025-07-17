@@ -1,5 +1,5 @@
 import PageTitle from "@/components/layout/PageTitle";
-import FindDriverLayout from "./_components/FindDriverLayout";
+import FindDriverLayout from "@/components/mover-search/FindDriverLayout";
 
 export default function FindDriverPage() {
    return (
