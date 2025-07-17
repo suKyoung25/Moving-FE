@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const reviews = [
@@ -49,10 +50,12 @@ export default function MyPage() {
             }}
          >
             <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-               <img
+               <Image
                   src="https://i.imgur.com/UZDYJrG.png"
                   alt="프로필"
-                  style={{ width: 80, height: 80, borderRadius: "50%" }}
+                  width={80}
+                  height={80}
+                  style={{ borderRadius: "50%" }}
                />
                <div>
                   <h2 style={{ margin: 0, fontWeight: "bold" }}>김코드</h2>

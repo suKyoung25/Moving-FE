@@ -216,7 +216,7 @@ const filterAndSortMovers = (
    // 서비스 타입 필터링
    if (params.serviceType && params.serviceType !== "all") {
       filtered = filtered.filter((mover) =>
-         mover.serviceType.includes(params.serviceType as any),
+         mover.serviceType.includes(params.serviceType as string),
       );
       console.log("서비스 타입 필터링 후:", filtered.length);
    }

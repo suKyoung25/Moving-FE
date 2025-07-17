@@ -29,7 +29,7 @@ export default function DriverCard({ mover }: DriverCardProps) {
          alert("로그인이 필요합니다.");
          return;
       }
-      await toggleFavorite(mover.id, token);
+      await toggleFavorite(mover.id, token as string);
    };
 
    const validServiceTypes = validateServiceTypes(mover.serviceType);
