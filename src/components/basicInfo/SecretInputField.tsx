@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import visibilityOff from "@/assets/images/visibilityOffIcon.svg";
 import visibilityOn from "@/assets/images/visibilityIcon.svg";
@@ -14,12 +14,27 @@ function SecretInputField({
    validator,
    onValidChange, // 주석: 시작하기 버튼의 활성화 관련
    onChange,
+   onValueChange,
+   serverError,
 }: BasicInfoInputProps) {
    const [value, setValue] = useState<string>("");
    const [error, setError] = useState("");
    const [showPassword, setShowPassword] = useState(false);
+   const [isHandleChange, setIsHandelChange] = useState(false);
+
+   // 백엔드에서 받는 오류 메시지
+   useEffect(() => {
+      if (serverError && isHandleChange === false) {
+         setError(serverError || error);
+      }
+   }, [serverError, error]);
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setIsHandelChange(true);
+
+      // 사용자 입력이 시작되면 서버 에러 초기화
+      setError("");
+
       const newVal = e.target.value;
       setValue(newVal);
 
@@ -29,6 +44,7 @@ function SecretInputField({
 
       if (validator) {
          const result = validator(newVal);
+         onValueChange?.(name, newVal);
 
          if (result.success) {
             onValidChange?.(name, result.success);

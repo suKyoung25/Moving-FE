@@ -2,11 +2,11 @@
 
 import { tokenFetch } from "@/lib/api/fetch-client";
 import { profileState } from "@/lib/types";
+import isFetchError from "@/lib/utils/fetch-error.util";
 import {
    MoverBasicInfoInput,
    moverBasicInfoSchema,
 } from "@/lib/validations/mover/basicInfo/basicInfo.schemas";
-import { revalidatePath } from "next/cache";
 
 export async function updateMoverBasicInfo(
    state: profileState | null,
@@ -45,16 +45,27 @@ export async function updateMoverBasicInfo(
          body: JSON.stringify(validationResult.data),
       });
 
-      //디버깅
-      console.log("ㅁㄴㅇㄻ!!서버액션 끝");
-
-      // 리다이렉트 & 컴포넌트 재실행
-      // revalidatePath("/dashboard"); // 페이지 최신화
-      // redirect("/dashboard"); // 이동
-
       return { success: true, user: response };
    } catch (error) {
-      console.error("서버 에러:", error);
-      return { success: false };
+      console.error("기본정보 수정 실패 원인: ", error);
+
+      // 문자열 message, 객체 data 중 message 받음
+      if (isFetchError(error)) {
+         const message = error.body.message;
+         const fieldErrors = error.body.data;
+
+         if (message.includes("DB와 대조 시")) {
+            return {
+               success: false,
+               fieldErrors: fieldErrors as Record<string, string>,
+            };
+         }
+      }
+
+      return {
+         success: false,
+         globalError:
+            "기본정보 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+      };
    }
 }

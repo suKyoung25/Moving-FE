@@ -14,20 +14,12 @@ function BasicInputField({
    onValueChange,
    serverError,
 }: BasicInfoInputProps) {
-   // const [value, setValue] = useState<string>("");
    const [error, setError] = useState("");
-   // const [moverError, setMoverError] = useState("");
-
-   // //기존의 기본정보가 변경되면 input 값 업데이트
-   // useEffect(() => {
-   //    setValue(initialValue);
-   // }, [initialValue]);
 
    const handleChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
    ) => {
       const newVal = e.target.value;
-      // setValue(newVal);
       onValueChange?.(name, newVal); //상위로 전달
 
       if (validator) {
@@ -46,7 +38,7 @@ function BasicInputField({
    // ✅ 백엔드에서 받는 오류 메시지
    useEffect(() => {
       if (serverError) {
-         setError("");
+         setError(serverError);
       }
    }, [serverError]);
 
@@ -65,7 +57,7 @@ function BasicInputField({
             placeholder={placeholder}
          />
 
-         {error && (
+         {displayError && (
             <div className="mt-2 self-end text-base leading-6.5 font-medium text-red-500">
                {error}
             </div>

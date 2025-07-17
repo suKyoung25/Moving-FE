@@ -18,10 +18,15 @@ import {
 import { useAuth } from "@/context/AuthContext";
 
 export default function BasicInfoForms() {
-   const { user, setUser } = useAuth();
+   const { user } = useAuth();
    const router = useRouter();
 
    const [newPassword, setNewPassword] = useState(""); //비밀번호 대조를 위한 상태 관리
+
+   const [formState, formAction, isPending] = useActionState(
+      updateMoverBasicInfo,
+      null,
+   );
 
    //현재 로그인한 유저의 데이터를 미리 입력
    const [formValues, setFormValues] = useState({
@@ -42,22 +47,6 @@ export default function BasicInfoForms() {
       checkNewPassword: false,
    });
 
-   // //초기 user 정보고 유효성 검사
-   // useEffect(() => {
-   //    if (user) {
-   //       setFormValues({
-   //          name: user?.name || "",
-   //          email: user?.email || "",
-   //          // phone: user?.phone || "",
-   //       });
-   //    }
-   // }, [user]);
-
-   const [formState, formAction, isPending] = useActionState(
-      updateMoverBasicInfo,
-      null,
-   );
-
    const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setNewPassword(e.target.value);
    };
@@ -77,13 +66,10 @@ export default function BasicInfoForms() {
    //서버액션 성공 시 마이페이지로 리다이렉트
    useEffect(() => {
       if (formState?.success) {
-         // setUser(formState?.user!);
+         // setUser(formState?.user!); //추후에 로직 추가해야함
          router.push("/dashboard");
       }
-   }, [formState]);
-
-   //디버깅
-   console.log("수정된 유저 정보", formState?.user);
+   }, [formState, router]);
 
    return (
       <form action={formAction}>

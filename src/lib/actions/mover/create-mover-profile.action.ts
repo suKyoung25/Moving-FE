@@ -2,12 +2,12 @@
 
 import { profileState } from "@/lib/types";
 import {
-  MoverProfileInput,
-  moverProfileSchema,
+   MoverProfileInput,
+   moverProfileSchema,
 } from "@/lib/validations/mover/profile/profile.schemas";
 
 export async function createMoverProfile(
-   state: profileState,
+   state: profileState | null,
    formData: FormData,
 ): Promise<profileState> {
    try {
@@ -28,14 +28,14 @@ export async function createMoverProfile(
 
       if (!parsed.success) {
          const errors = parsed.error.flatten().fieldErrors;
-         return { status: false, error: JSON.stringify(errors) };
+         return { success: false, error: JSON.stringify(errors) };
       }
 
       // TODO: fetch 구문 작성 예정
 
-      return { status: true };
+      return { success: true };
    } catch (error) {
       console.error("서버 에러:", error);
-      return { status: false };
+      return { success: false };
    }
 }
