@@ -1,6 +1,6 @@
 "use server";
 
-import { AuthActionResult } from "@/lib/types/auth.type";
+import { AuthActionResult } from "@/lib/types/auth.types";
 import { loginFormSchema } from "@/lib/validations/auth.schemas";
 import { defaultFetch } from "../../api/fetch-client";
 import isFetchError from "@/lib/utils/fetch-error.util";

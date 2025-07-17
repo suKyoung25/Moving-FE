@@ -1,5 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
-import { isClient, isMover } from "@/lib/types/auth.type";
+import { isClient, isMover } from "@/lib/types/auth.types";
 
 // userType 보는 함수
 export function useUser() {

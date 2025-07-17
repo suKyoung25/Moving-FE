@@ -12,7 +12,7 @@ interface BaseUser {
    isProfileCompleted: boolean;
 }
 
-interface Client extends BaseUser {
+export interface Client extends BaseUser {
    serviceType: string[];
    livingArea: string[];
 }

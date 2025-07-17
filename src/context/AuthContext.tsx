@@ -2,7 +2,7 @@
 
 import AuthSpinner from "@/components/spinner/AuthSpinner";
 import authApi from "@/lib/api/auth.api";
-import { User } from "@/lib/types/auth.type";
+import { User } from "@/lib/types/auth.types";
 import { accessTokenSettings } from "@/lib/utils/auth.util";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import {
@@ -33,8 +33,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    const [user, setUser] = useState<User | null>(null);
    const [isLoading, setIsLoading] = useState(true); // 기본값 true로 시작
 
-   console.log("User : ", user); // 나중에 삭제
-
    const login = useCallback((user: User, accessToken: string) => {
       accessTokenSettings.set(accessToken);
       setUser(user);
@@ -58,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
          await delay(1000);
          const response = await authApi.getMe();
          if (response?.user) setUser(response.user);
-         else setUser(null);
+         setUser(null);
       } catch (error) {
          console.error("사용자 정보 호출 실패: ", error);
          if (isFetchError(error) && error.status === 401) {
