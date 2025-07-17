@@ -23,8 +23,10 @@ export default function Header({ children }: { children?: React.ReactNode }) {
          ) : (
             <div>
                <HeaderUI onToggleMenu={() => setIsMenuOpen(!isMenuOpen)} />
-               <div className="mx-auto flex min-h-14 max-w-350 items-center bg-white px-6 py-3 md:px-16 lg:min-h-22 lg:px-0 lg:py-4">
-                  {children}
+               <div className="w-full bg-white">
+                  <div className="mx-auto w-full max-w-350 items-center px-6 md:px-16 lg:min-h-22 lg:px-0">
+                     {children}
+                  </div>
                </div>
             </div>
          )}
