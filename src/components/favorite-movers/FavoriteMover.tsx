@@ -81,7 +81,7 @@ export default function FavoriteMover() {
                   favoriteCount={mover.favoriteCount}
                   averageReviewRating={mover.averageReviewRating}
                   reviewCount={mover.reviewCount}
-                  career={mover.career}
+                  career={mover.career!}
                   estimateCount={mover.estimateCount}
                />
             </div>
