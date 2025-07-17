@@ -30,7 +30,7 @@ export default function HeaderSideBarMenu({ onClick }: Prop) {
                   <Image src={xIcon} alt="x 아이콘" width={24} height={24} />
                </button>
             </div>
-
+            <>{console.log(user)}</>
             <nav>
                {!user && (
                   <>

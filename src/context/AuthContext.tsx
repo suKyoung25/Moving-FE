@@ -5,7 +5,6 @@ import authApi from "@/lib/api/auth.api";
 import { User } from "@/lib/types/auth.type";
 import { accessTokenSettings } from "@/lib/utils/auth.util";
 import isFetchError from "@/lib/utils/fetch-error.util";
-import { useRouter } from "next/navigation";
 import {
    createContext,
    useCallback,
@@ -31,7 +30,6 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 // ✅ context 값 설정
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-   const router = useRouter();
    const [user, setUser] = useState<User | null>(null);
    const [isLoading, setIsLoading] = useState(true); // 기본값 true로 시작
 
@@ -46,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       accessTokenSettings.clear();
       location.href = "/sign-in/client"; // 임시
-   }, [setUser, router]);
+   }, [setUser]);
 
    const refreshUser = useCallback(async () => {
       setIsLoading(true);
@@ -57,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-         await delay(3000);
+         await delay(1000);
          const response = await authApi.getMe();
          if (response?.user) setUser(response.user);
          else setUser(null);

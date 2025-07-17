@@ -36,7 +36,7 @@ export default function HeaderProfile() {
          {user && (
             <figure className={`${iconStyle} overflow-hidden rounded-full`}>
                <Image
-                  src={user.profile || profileIcon}
+                  src={user.profileImage || profileIcon}
                   alt="프로필 아이콘"
                   fill
                   className="object-cover"

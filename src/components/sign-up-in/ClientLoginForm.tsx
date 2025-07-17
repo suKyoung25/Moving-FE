@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { validateAuthEmail, validateAuthPassword } from "@/lib/validations";
 import createClientLocalLoginAction from "@/lib/actions/auth/create-client-local-login.action";
+import { User } from "@/lib/types";
 
 export default function ClientLoginForm() {
    // 상태 모음
@@ -47,7 +48,9 @@ export default function ClientLoginForm() {
    // ✅ 로그인 성공하면 페이지 이동
    useEffect(() => {
       if (formState?.success && formState.user && formState?.accessToken) {
-         login(formState.user, formState.accessToken);
+         const rawUser = formState.user as User;
+
+         login(rawUser, formState.accessToken);
          router.push("/mover-search");
       }
    }, [formState, login, router]);

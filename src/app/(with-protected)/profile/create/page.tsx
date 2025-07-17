@@ -1,33 +1,28 @@
 "use client";
 
-import MoverProfileForm from "@/components/profile/MoverProfileForms";
+import React from "react";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import ClientProfileTitle from "@/components/profile/ClientProfileTitle";
+import MoverProfileForm from "@/components/profile/MoverProfileForms";
+import ClientProfileForm from "../ClientProfileForm";
 
 export default function CreateProfilePage() {
-   const { user, isLoading } = useAuth();
-   const router = useRouter();
+   const { user } = useAuth();
 
-   //로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
-   useEffect(() => {
-      if (!isLoading && !user) {
-         router.push("/login");
-      }
-   }, [isLoading, user, router]);
-
-   // 로딩 중이면 아무것도 보여주지 않음
-   if (isLoading || !user) {
-      return null;
+   //일반으로 로그인한 회원의 경우
+   if (user?.userType === "client") {
+      return (
+         <div className="pt-4 pb-10 lg:pt-6">
+            <div className="mx-auto flex max-w-82 flex-col gap-4 lg:max-w-160 lg:gap-6">
+               <ClientProfileTitle />
+               <ClientProfileForm />
+            </div>
+         </div>
+      );
    }
 
-   //TODO: 일반으로 로그인한 회원의 경우
-   // if (user.userType === "client") {
-   //    return <></>;
-   // }
-
    //기사님으로 로그인한 회원의 경우
-   if (user.userType === "mover") {
+   if (user!.userType === "mover") {
       return (
          <>
             <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
