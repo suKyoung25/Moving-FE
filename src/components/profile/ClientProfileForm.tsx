@@ -1,16 +1,21 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import ProfileImage from "@/components/profile/ProfileImage";
 import ProfileFieldButton from "@/components/profile/ProfileFieldButton";
 import ClientProfileTitle from "./ClientProfileTitle";
 import SolidButton from "../common/buttons/SolidButton";
 import createClientProfile from "@/lib/actions/profile/create-client-profile.action";
 import { moveType, regions } from "@/constants";
+import { useRouter } from "next/navigation";
 
 export default function ClientProfileForm() {
    // 상태 모음
-   const [, formAction, isPending] = useActionState(createClientProfile, null);
+   const router = useRouter();
+   const [formState, formAction, isPending] = useActionState(
+      createClientProfile,
+      null,
+   );
    const [selectedServices, setSelectedServices] = useState<string[]>([]);
    const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
 
@@ -37,9 +42,16 @@ export default function ClientProfileForm() {
       isPending ||
       (selectedServices.length === 0 && selectedRegions.length === 0);
 
+   // 프로필 생성 성공하면 mover-search로 이동
+   useEffect(() => {
+      if (formState?.success) {
+         router.replace("/mover-search");
+      }
+   }, [formState?.success, router]);
+
    // 반환
    return (
-      <form action={formAction}>
+      <form action={formAction} onSubmit={() => console.log("반환되는 중")}>
          {/* 이미지 */}
          <ProfileImage />
 

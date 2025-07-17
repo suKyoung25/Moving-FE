@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
          await delay(1000);
          const response = await authApi.getMe();
          if (response?.user) setUser(response.user);
-         setUser(null);
+         else setUser(null);
       } catch (error) {
          console.error("사용자 정보 호출 실패: ", error);
          if (isFetchError(error) && error.status === 401) {
