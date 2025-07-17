@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import MoveChip from "@/components/common/chips/MoveChip";
-import MoverProfile from "@/components/common/profile/MoverProfile";
 import profile from "@/assets/images/profileIcon.svg";
 import MoveDateCard from "../common/MoveDateCard";
 import SolidButton from "@/components/common/buttons/SolidButton";
@@ -12,67 +10,8 @@ import { fetchPendingQuotes } from "@/lib/api/my-quotes/getMyQuotes";
 import { pendingQuote } from "@/lib/types/quotes.types";
 import emptyQuotes from "@/assets/images/emptyBlueFolderIcon.svg";
 import Image from "next/image";
-
-// const data = [
-//    {
-//       requestId: "a818fac9-ce84-4440-bfa4-71a89438d7da",
-//       moveDate: "2025-08-01T09:00:00.000Z",
-//       fromAddress: "서울 강남구 테헤란로 1",
-//       toAddress: "경기 성남시 분당구 판교로 1",
-//       estimates: [
-//          {
-//             estimateId: "c562bd92-367f-4178-b39f-6348348b40b8",
-//             moverId: "a61f9424-1df9-40d8-aabd-bc4e18103639",
-//             moverName: "기사1",
-//             moverNickName: "이사짱1",
-//             profileImage: null,
-//             comment: "엘리베이터 있음, 짐 많음",
-//             price: 250000,
-//             created: "2025-07-14T11:30:32.131Z",
-//             isDesignated: true,
-//             isFavorited: {
-//                id: "419fe731-bf24-4773-99a0-5e8764850d8e",
-//                clientId: "6328af51-4c80-4ec2-a5d7-809a2a3dc5ad",
-//                moverId: "a61f9424-1df9-40d8-aabd-bc4e18103639",
-//             },
-//          },
-//          {
-//             estimateId: "d0b6bc91-5ad0-447a-b307-293ad2ebdc48",
-//             moverId: "83aef138-0eaa-4c06-8869-5fa19583b530",
-//             moverName: "무버",
-//             moverNickName: null,
-//             profileImage: null,
-//             comment: "나 김정은인데 남한으로 이사가고 싶엉",
-//             price: 10,
-//             created: "2025-07-15T15:15:03.257Z",
-//             isDesignated: false,
-//             isFavorited: null,
-//          },
-//       ],
-//    },
-//    {
-//       requestId: "6ff26996-b5d9-4b69-808a-4adc47ee5eb8",
-//       moveDate: "2025-07-09T00:00:00.000Z",
-//       fromAddress: "대전 서구 가수원로 17-19",
-//       toAddress: "부산 해운대구 구남로 5",
-//       estimates: [
-//          {
-//             estimateId: "d0b6bc91-5ad0-447a-b307-293ad2ebdc43",
-//             moverId: "83aef138-0eaa-4c06-8869-5fa19583b530",
-//             moverName: "무버",
-//             moverNickName: null,
-//             profileImage: null,
-//             comment: "나 김정은인데 남한으로 이사가고 싶엉",
-//             price: 10,
-//             created: "2025-07-15T15:15:03.257Z",
-//             isDesignated: false,
-//             isFavorited: null,
-//          },
-//       ],
-//    },
-// ];
-
-// 대기중인 견적
+import { ChipType } from "@/lib/types";
+import MoverProfileclient from "../common/MoverProfileClient";
 
 export default function Pending() {
    const [data, setData] = useState<pendingQuote[]>();
@@ -111,24 +50,19 @@ export default function Pending() {
                   className="mx-auto flex w-full flex-col gap-2 rounded-2xl bg-white px-3 pt-5 pb-3.5 lg:mx-0 lg:w-172 lg:px-6 lg:pt-7 lg:pb-5.5"
                >
                   <div className="flex flex-col gap-3.5">
-                     <article className="flex items-center gap-2">
-                        {/* todo: moveType 추가하기 */}
-                        <MoveChip type="PENDING" />
-                        {estimate.isDesignated && (
-                           <MoveChip type="DESIGNATED" />
-                        )}
-                     </article>
-                     <MoverProfile
-                        nickName={estimate.moverNickName || estimate.moverName}
+                     <MoverProfileclient
+                        moveType={request.moveType as ChipType}
+                        isDesignated={estimate.isDesignated}
+                        moverName={estimate.moverName}
                         profileImage={estimate.profileImage || profile}
-                        isLiked={!!estimate.isFavorited}
+                        isFavorited={!!estimate.isFavorited}
                         handleLikedClick={() => console.log("찜 토글")}
-                        // todo: 기사님 상세 정보 추가하기
-                        averageReviewRating={4.5}
-                        reviewCount={3}
-                        career={7}
-                        estimateCount={171}
-                        favoriteCount={5}
+                        averageReviewRating={estimate.reviewRating}
+                        reviewCount={estimate.reviewCount}
+                        career={estimate.career | 0}
+                        estimateCount={estimate.estimateCount}
+                        favoriteCount={estimate.favoriteCount}
+                        quotesStatus="pending"
                      />
                      <MoveDateCard
                         category="이사일"
@@ -158,7 +92,7 @@ export default function Pending() {
                      <SolidButton>견적 확정하기</SolidButton>
                      <OutlinedButton
                         onClick={() =>
-                           router.push(`my-quotes/${request.requestId}`)
+                           router.push(`client/${request.requestId}`)
                         }
                      >
                         상세보기

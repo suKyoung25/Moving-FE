@@ -89,7 +89,8 @@ export async function tokenFetch(
    let body = options.body; // 2. 본문
 
    // 3. accessToken
-   let accessToken = accessTokenSettings.get();
+   let accessToken = await accessTokenSettings.get();
+
    if (!accessToken) {
       console.warn("accessToken 없음: 로그인 필요");
       onAuthFail?.();
