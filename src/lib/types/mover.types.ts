@@ -1,16 +1,16 @@
 export interface Mover {
    id: string;
+   name?: string;
    profileImage?: string;
    nickName: string;
+   career: number;
+   introduction?: string;
+   description?: string;
+   serviceType?: string[];
+   serviceArea?: string[];
    favoriteCount: number;
+   estimateCount: number;
    averageReviewRating: number;
    reviewCount: number;
-   career: number;
-   estimateCount: number;
-   serviceType: string[];
-   region: string[];
-   description: string;
    isFavorite?: boolean;
 }
-
-// export type MoveType = "SMALL" | "HOME" | "OFFICE";

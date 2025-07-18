@@ -56,7 +56,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 7,
       estimateCount: 334,
       serviceType: ["SMALL", "HOME"],
-      region: ["서울", "경기"],
+      serviceArea: ["서울", "경기"],
       description: "안전하고 신속한 이사 서비스를 제공합니다.",
       isFavorite: false,
    },
@@ -69,7 +69,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 5,
       estimateCount: 267,
       serviceType: ["HOME", "OFFICE"],
-      region: ["서울", "인천"],
+      serviceArea: ["서울", "인천"],
       description: "정확하고 깔끔한 포장 이사 전문입니다.",
       isFavorite: true,
    },
@@ -82,7 +82,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 10,
       estimateCount: 445,
       serviceType: ["SMALL", "HOME", "OFFICE"],
-      region: ["서울", "경기", "인천"],
+      serviceArea: ["서울", "경기", "인천"],
       description: "20년 경력의 베테랑 기사입니다.",
       isFavorite: false,
    },
@@ -95,7 +95,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 6,
       estimateCount: 189,
       serviceType: ["SMALL"],
-      region: ["부산", "경남"],
+      serviceArea: ["부산", "경남"],
       description: "소형이사 전문으로 빠르고 정확합니다.",
       isFavorite: false,
    },
@@ -108,7 +108,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 8,
       estimateCount: 298,
       serviceType: ["OFFICE"],
-      region: ["대전", "충남"],
+      serviceArea: ["대전", "충남"],
       description: "사무실 이전 전문가입니다.",
       isFavorite: true,
    },
@@ -121,7 +121,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 12,
       estimateCount: 378,
       serviceType: ["HOME", "OFFICE"],
-      region: ["대구", "경북"],
+      serviceArea: ["대구", "경북"],
       description: "고객 만족도 1위 이사 서비스입니다.",
       isFavorite: false,
    },
@@ -134,7 +134,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 9,
       estimateCount: 256,
       serviceType: ["SMALL", "HOME"],
-      region: ["광주", "전남"],
+      serviceArea: ["광주", "전남"],
       description: "친절하고 꼼꼼한 이사 서비스입니다.",
       isFavorite: false,
    },
@@ -147,7 +147,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 11,
       estimateCount: 389,
       serviceType: ["HOME", "OFFICE"],
-      region: ["울산", "경남"],
+      serviceArea: ["울산", "경남"],
       description: "대형 이사 전문 업체입니다.",
       isFavorite: false,
    },
@@ -160,7 +160,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 7,
       estimateCount: 278,
       serviceType: ["SMALL"],
-      region: ["세종", "충남"],
+      serviceArea: ["세종", "충남"],
       description: "빠르고 안전한 소형이사 전문입니다.",
       isFavorite: false,
    },
@@ -173,7 +173,7 @@ const MOCK_MOVERS: Mover[] = [
       career: 13,
       estimateCount: 412,
       serviceType: ["HOME", "OFFICE"],
-      region: ["강원"],
+      serviceArea: ["강원"],
       description: "강원도 전지역 이사 가능합니다.",
       isFavorite: true,
    },
@@ -202,11 +202,11 @@ const filterAndSortMovers = (
       const targetRegions = areaMapping[params.area] || [];
       console.log("타겟 지역:", targetRegions);
       filtered = filtered.filter((mover) => {
-         const hasRegion = mover.region.some((region) =>
-            targetRegions.includes(region),
+         const hasRegion = mover.serviceArea!.some((serviceArea) =>
+            targetRegions.includes(serviceArea),
          );
          console.log(
-            `${mover.nickName} - regions: ${mover.region.join(", ")} - match: ${hasRegion}`,
+            `${mover.nickName} - regions: ${mover.serviceArea!.join(", ")} - match: ${hasRegion}`,
          );
          return hasRegion;
       });
@@ -216,7 +216,7 @@ const filterAndSortMovers = (
    // 서비스 타입 필터링
    if (params.serviceType && params.serviceType !== "all") {
       filtered = filtered.filter((mover) =>
-         mover.serviceType.includes(params.serviceType as string),
+         mover.serviceType!.includes(params.serviceType as string),
       );
       console.log("서비스 타입 필터링 후:", filtered.length);
    }

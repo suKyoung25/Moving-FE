@@ -13,7 +13,7 @@ export default function MoverProfile({
    career,
    estimateCount,
    isFavorite,
-}: Mover) {
+}: Omit<Mover, "id" | "serviceType" | "region" | "description">) {
    return (
       <div className="flex items-center rounded-lg border border-gray-100 bg-white p-3 shadow-sm lg:p-4">
          <div className="relative mr-3 h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border-2 border-blue-500 lg:mr-4 lg:h-16 lg:w-16">

@@ -1,5 +1,5 @@
 import ShareButtons from "./ShareButton";
-import Line from "./Line";
+import LineDivider from "./LineDivider";
 
 export default function ShareSection() {
    return (
@@ -9,7 +9,7 @@ export default function ShareSection() {
          </p>
          <ShareButtons />
          <div className="pt-5 lg:hidden">
-            <Line />
+            <LineDivider />
          </div>
       </div>
    );
