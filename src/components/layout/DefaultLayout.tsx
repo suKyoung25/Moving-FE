@@ -1,11 +1,11 @@
 export default function DefaultLayout({
-  children,
+   children,
 }: {
-  children: React.ReactNode;
+   children: React.ReactNode;
 }) {
-  return (
-    <div className="px-6 py-2.5 md:px-16 md:py-8 lg:px-0 lg:max-w-[1400px] lg:mx-auto">
-      {children}
-    </div>
-  );
+   return (
+      <div className="px-6 py-6 md:px-16 md:py-8 lg:mx-auto lg:max-w-350 lg:px-0">
+         {children}
+      </div>
+   );
 }
