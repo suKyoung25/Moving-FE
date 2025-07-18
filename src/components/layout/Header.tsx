@@ -18,18 +18,20 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
    return (
       <>
-         {!isRequestPage ? (
-            <HeaderUI onToggleMenu={() => setIsMenuOpen(!isMenuOpen)} />
-         ) : (
-            <div>
+         <div className="sticky top-0 left-0 z-20 w-full bg-white">
+            {!isRequestPage ? (
                <HeaderUI onToggleMenu={() => setIsMenuOpen(!isMenuOpen)} />
-               <div className="w-full bg-white">
-                  <div className="mx-auto w-full max-w-350 items-center px-6 md:px-16 lg:min-h-22 lg:px-0">
-                     {children}
+            ) : (
+               <>
+                  <HeaderUI onToggleMenu={() => setIsMenuOpen(!isMenuOpen)} />
+                  <div className="w-full">
+                     <div className="mx-auto max-w-350 px-6 md:px-16 lg:px-0">
+                        {children}
+                     </div>
                   </div>
-               </div>
-            </div>
-         )}
+               </>
+            )}
+         </div>
          {isMenuOpen && (
             <HeaderSideBarMenu onClick={() => setIsMenuOpen(false)} />
          )}
