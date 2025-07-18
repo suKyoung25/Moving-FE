@@ -1,5 +1,5 @@
 import { Mover } from "@/lib/types/mover.types";
-import Line from "./Line";
+import LineDivider from "./LineDivider";
 
 export default function DetailSections({ mover }: { mover: Mover }) {
    return (
@@ -12,7 +12,7 @@ export default function DetailSections({ mover }: { mover: Mover }) {
             </div>
          </div>
 
-         <Line />
+         <LineDivider />
 
          {/* 제공 서비스 */}
          <div className="p-4 lg:p-5">
@@ -22,14 +22,14 @@ export default function DetailSections({ mover }: { mover: Mover }) {
             <ServiceTags services={mover.serviceType} />
          </div>
 
-         <Line />
+         <LineDivider />
 
          {/* 서비스 가능 지역 */}
          <div className="p-4 lg:p-5">
             <h3 className="mb-4 text-lg font-bold text-gray-900">
                서비스 가능 지역
             </h3>
-            <RegionTags regions={mover.region} />
+            <RegionTags regions={mover.serviceArea} />
          </div>
       </div>
    );

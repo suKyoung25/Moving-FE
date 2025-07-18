@@ -32,7 +32,7 @@ export default function DriverCard({ mover }: DriverCardProps) {
       await toggleFavorite(mover.id, token as string);
    };
 
-   const validServiceTypes = validateServiceTypes(mover.serviceType);
+   const validServiceTypes = validateServiceTypes(mover.serviceType!);
 
    return (
       <div
