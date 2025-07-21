@@ -1,9 +1,3 @@
-import MoverDetail from "@/components/detail/MoverDetail";
-
-export default async function MoverDetailPage() {
-   return (
-      <div>
-         <MoverDetail />
-      </div>
-   );
+export default function Page() {
+   return <div>detail</div>;
 }
