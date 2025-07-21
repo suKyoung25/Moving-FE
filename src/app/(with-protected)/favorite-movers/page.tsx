@@ -1,14 +1,3 @@
-import PageTitle from "@/components/layout/PageTitle";
-import FavoriteMover from "../../../components/favorite-movers/FavoriteMover";
-
-// 내가 찜한 기사님
-export default function FavoriteMoverPage() {
-  return (
-    <div>
-      <PageTitle title="찜한 기사님" />
-      <div className="pt-6">
-        <FavoriteMover />
-      </div>
-    </div>
-  );
+export default function Page() {
+   return <div>page</div>;
 }
