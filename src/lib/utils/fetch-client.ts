@@ -6,7 +6,7 @@
  * - cookieFetch("/경로", 옵션인데 안 써도 됨22)
  */
 
-import { accessTokenSettings } from "../utils/auth.util";
+import { tokenSettings } from "../utils/auth.util";
 import isFetchError from "../utils/fetch-error.util";
 
 // ✅ 기본 url : 환경 변수 설정해서 쓰세요.
@@ -88,7 +88,7 @@ export async function tokenFetch(
    let body = options.body; // 2. 본문
 
    // 3. accessToken
-   let accessToken = await accessTokenSettings.get();
+   let accessToken = await tokenSettings.get();
 
    if (!accessToken) {
       console.warn("accessToken 없음: 로그인 필요");
@@ -130,7 +130,7 @@ export async function tokenFetch(
       // 401 오류면 토큰 재발급 시도
       if (response.status === 401) {
          try {
-            accessToken = await accessTokenSettings.refresh();
+            accessToken = await tokenSettings.refresh();
             headers.Authorization = `Bearer ${accessToken}`;
 
             response = await fetch(url, {
@@ -140,7 +140,7 @@ export async function tokenFetch(
             });
          } catch (error) {
             console.error("토큰 갱신 실패:", error);
-            accessTokenSettings.clear();
+            tokenSettings.clear();
             onAuthFail?.();
             throw new Error(
                "토큰 갱신에 실패했습니다. 재로그인을 시도해 주세요.",
