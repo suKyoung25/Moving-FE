@@ -1,21 +1,21 @@
 "use client";
 
 import React from "react";
-import ErrorText from "./ErrorText";
+import ErrorText from "./../auth/ErrorText";
 import Image from "next/image";
 import openedEye from "@/assets/images/visibilityIcon.svg";
 import closedEye from "@/assets/images/visibilityOffIcon.svg";
-import { AuthInputProps } from "@/lib/types";
+import { ClientProfileUpdateData } from "@/lib/types";
 import { FieldValues } from "react-hook-form";
 
 // ✅ react-hook-form 적용한 Input
-export default function PasswordInput<T extends FieldValues>({
+export default function ProfilePasswordInput<T extends FieldValues>({
    name,
    label,
    placeholder,
    register,
    error,
-}: AuthInputProps<T>) {
+}: ClientProfileUpdateData<T>) {
    // ✅ 아이콘으로 비밀번호 <-> 글자 처리
    const [isVisible, setIsVisible] = React.useState(false);
 
@@ -25,7 +25,7 @@ export default function PasswordInput<T extends FieldValues>({
       <section className="flex w-full flex-col gap-2 lg:gap-4">
          <label
             htmlFor={name}
-            className="text-black-400 text-14-regular lg:text-20-regular"
+            className="text-black-300 text-16-semibold lg:text-20-semibold"
          >
             {label}
          </label>
@@ -37,7 +37,7 @@ export default function PasswordInput<T extends FieldValues>({
                type={isVisible ? "text" : "password"}
                placeholder={placeholder}
                {...register(name)}
-               className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 w-full rounded-2xl border bg-white p-3.5 lg:h-16`}
+               className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200 border" : ""} text-black-400 bg-bg-200 h-14 w-full rounded-2xl p-3.5 lg:h-16`}
             />
 
             {/* ✅ 눈 아이콘 */}
