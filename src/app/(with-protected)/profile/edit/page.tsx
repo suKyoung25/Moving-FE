@@ -1,6 +1,6 @@
 "use client";
 
-import ClientProfileTitle from "@/components/profile/ClientProfileTitle";
+import ClientProfileTitle from "@/components/domain/profile/ClientProfileTitle";
 // import ClientProfileUpdateForm from "@/components/profile/ClientProfileUpdateForm";
 import { useAuth } from "@/context/AuthContext";
 
