@@ -1,10 +1,4 @@
-import {
-   Control,
-   FieldError,
-   FieldValues,
-   Path,
-   UseFormRegister,
-} from "react-hook-form";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 // ✅ userType
 export type UserType = "client" | "mover";

@@ -22,7 +22,7 @@ export default function CreateProfilePage() {
    }
 
    //기사님으로 로그인한 회원의 경우
-   if (user!.userType === "mover") {
+   if (user?.userType === "mover") {
       return (
          <>
             <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
