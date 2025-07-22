@@ -1,3 +1,11 @@
+/**
+ * - TODO:
+ * - 프로필 등록 안 하면 페이지 이동 못 하게 해야 함
+ * - 이건 middleware 만들어지면 작업 예정이고
+ * - 작업할 때 헤더도 같이 건드려야 함
+ * - 추가) 이미지 설정 = AWS 설정 끝나고 나서 해야 함
+ */
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { tokenFetch } from "../utils/fetch-client";
