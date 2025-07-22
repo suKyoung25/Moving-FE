@@ -1,21 +1,21 @@
 "use client";
 
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProfileImage from "@/components/domain/profile/ProfileImage";
 import ProfileFieldButton from "@/components/domain/profile/ProfileFieldButton";
 import ClientProfileTitle from "./ClientProfileTitle";
 import SolidButton from "../../common/SolidButton";
-import createClientProfile from "@/lib/actions/create-client-profile.action";
+// import createClientProfile from "@/lib/actions/create-client-profile.action";
 import { moveType, regions } from "@/constants";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function ClientProfilePostForm() {
    // 상태 모음
-   const router = useRouter();
-   const [formState, formAction, isPending] = useActionState(
-      createClientProfile,
-      null,
-   );
+   // const router = useRouter();
+   // const [formState, formAction, isPending] = useActionState(
+   //    createClientProfile,
+   //    null,
+   // );
    const [selectedServices, setSelectedServices] = useState<string[]>([]);
    const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
 
@@ -38,20 +38,20 @@ export default function ClientProfilePostForm() {
    };
 
    // 버튼 비활성화 여부
-   const isDisabled =
-      isPending ||
-      (selectedServices.length === 0 && selectedRegions.length === 0);
+   // const isDisabled =
+   //    isPending ||
+   //    (selectedServices.length === 0 && selectedRegions.length === 0);
 
-   // 프로필 생성 성공하면 mover-search로 이동
-   useEffect(() => {
-      if (formState?.success) {
-         router.replace("/mover-search");
-      }
-   }, [formState?.success, router]);
+   // // 프로필 생성 성공하면 mover-search로 이동
+   // useEffect(() => {
+   //    if (formState?.success) {
+   //       router.replace("/mover-search");
+   //    }
+   // }, [formState?.success, router]);
 
    // 반환
    return (
-      <form action={formAction} onSubmit={() => console.log("반환되는 중")}>
+      <form onSubmit={() => console.log("반환되는 중")}>
          {/* 이미지 */}
          <ProfileImage />
 
@@ -98,8 +98,9 @@ export default function ClientProfilePostForm() {
          </section>
 
          {/* 제출 버튼 */}
-         <SolidButton type="submit" disabled={isDisabled}>
-            {isPending ? "로딩 중..." : "시작하기"}
+         <SolidButton type="submit" disabled>
+            시작하기
+            {/* {isPending ? "로딩 중..." : "시작하기"} */}
          </SolidButton>
       </form>
    );

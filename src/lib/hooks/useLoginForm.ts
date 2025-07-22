@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormSchema, SignInFormValues } from "../schemas/auth.schema";
-import { defaultFetch } from "../api/fetch-client";
+import { defaultFetch } from "../utils/fetch-client";
 import { AuthFetchError, UserType } from "../types";
 
 export default function useLoginForm() {

@@ -1,4 +1,4 @@
-import { BASE_URL } from "../api/fetch-client";
+import { BASE_URL } from "../utils/fetch-client";
 import {
    clearServerToken,
    getServerToken,
