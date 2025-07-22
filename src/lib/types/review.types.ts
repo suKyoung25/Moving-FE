@@ -1,13 +1,27 @@
-// src/
-// └── lib/
-//     └── types/
-//         ├── client.types.ts
-//         ├── mover.types.ts
-//         ├── request.types.ts
-//         ├── designated-request.types.ts
-//         ├── estimate.types.ts
-//         ├── review.types.ts
-//         ├── favorite.types.ts
-//         ├── notification.types.ts
-//         ├── region.types.ts
-//         └── index.ts         # 통합 export
+export interface WritableReview {
+   estimateId: string;
+   price: number;
+   moveType: string;
+   moveDate: string;
+   isDesignatedEstimate: boolean;
+   moverProfileImage: string | null;
+   moverNickName: string;
+}
+
+export interface MyReview extends WritableReview {
+   id: string;
+   rating: number;
+   content: string;
+   createdAt: Date;
+}
+
+export type ReviewFormState = {
+   success: boolean;
+   message: string;
+};
+
+export type ReviewPayload = {
+   estimateId: string;
+   rating: number;
+   content: string;
+};
