@@ -11,7 +11,6 @@ import {
    MoverBasicInfoSchema,
 } from "../schemas/dashboard.schema";
 import updateInfo from "../api/auth/requests/updateInfo";
-import { tokenSettings } from "../utils";
 
 function useMoverBasicInfo() {
    const { user, refreshUser } = useAuth();
