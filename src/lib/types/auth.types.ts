@@ -72,7 +72,7 @@ export interface AuthFetchError {
    };
 }
 
-//TODO: 기사님 기본정보 수정 시 사용
+//기사님 기본정보 수정 시 사용 //TODO:기본정보 타입 정리할 것
 export interface BasicInfoInputProps<T extends FieldValues> {
    name: Path<T>;
    text: string;

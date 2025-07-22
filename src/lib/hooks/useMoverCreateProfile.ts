@@ -39,11 +39,8 @@ function useMoverCreateProfile() {
       try {
          const res = await createProfile(processedData);
 
-         //디버깅
-         console.log("러후니ㅏ!!!프로필 등록 응답 확인", res);
-
          if (res.data.user) {
-            router.push("/dashboard"); //TODO: 마이페이지로 이동하도록
+            router.push("/dashboard"); //TODO: 마이페이지로 이동하는지 확인
          }
       } catch (error) {
          console.error("기사님 프로필 등록 실패: ", error);

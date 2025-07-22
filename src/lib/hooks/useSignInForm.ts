@@ -41,7 +41,7 @@ export default function useSignInForm() {
             router.replace("/mover-search");
          }
       } catch (error) {
-         console.error("일반 로그인 실패: ", error);
+         console.error("로그인 실패: ", error);
 
          // 오류 처리: 메시지로
          const customError = error as AuthFetchError;

@@ -20,6 +20,8 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
 
    const options = isServiceType ? serviceTypes : isArea ? areaOptions : [];
 
+   if (!control) return null;
+
    return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-6 leading-8">
          <div>
