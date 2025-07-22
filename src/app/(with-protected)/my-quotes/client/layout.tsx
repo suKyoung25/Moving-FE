@@ -5,7 +5,6 @@ import MyQuotesLayout from "@/components/layout/MyQuotesLayout";
 export default function Layout({ children }: { children: React.ReactNode }) {
    return (
       <div className="min-h-screen bg-white">
-         {/*  bg-bg-100 */}
          <Header>
             <MyQuotesLayout />
          </Header>
