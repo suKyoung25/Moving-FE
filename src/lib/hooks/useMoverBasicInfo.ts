@@ -55,7 +55,23 @@ function useMoverBasicInfo() {
       setIsLoading(true);
 
       try {
-         const res = await updateInfo(data);
+         // 기본정보 수정
+         const payload = {
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            existedPassword: data.existedPassword,
+         };
+
+         // 비밀번호도 수정
+         if (data.newPassword && data.newPasswordConfirmation) {
+            Object.assign(payload, {
+               newPassword: data.newPassword,
+               newPasswordConfirmation: data.newPasswordConfirmation,
+            });
+         }
+
+         const res = await updateInfo(payload);
 
          refreshUser();
 
