@@ -35,11 +35,11 @@ export default function useSignInForm() {
          await getUser(res.data.user, res.data.accessToken);
 
          // ★ 프로필 등록 안 했으면 프로필 등록, 아니면 기사님 찾기로 이동
-         if (!res.data.user.isProfileCompleted) {
-            router.replace("/profile/create");
-         } else {
-            router.replace("/mover-search");
-         }
+         // if (!res.data.user.isProfileCompleted) {
+         //    router.replace("/profile/create");
+         // } else {
+         router.replace("/mover-search");
+         // }
       } catch (error) {
          console.error("일반 로그인 실패: ", error);
 
