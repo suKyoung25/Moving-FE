@@ -13,3 +13,4 @@
 //         └── index.ts         # 통합 export
 
 export * from "./auth.types";
+export * from "./profile.types";
