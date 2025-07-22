@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import ErrorText from "./ErrorText";
+import ErrorText from "./../auth/ErrorText";
 import { FieldValues } from "react-hook-form";
 import { AuthInputProps } from "@/lib/types";
 
 // ✅ react-hook-form 적용한 Input
-export default function AuthInput<T extends FieldValues>({
+export default function ProfileInput<T extends FieldValues>({
    type = "text",
    name,
    label,
@@ -16,7 +16,9 @@ export default function AuthInput<T extends FieldValues>({
 }: AuthInputProps<T>) {
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
-         <label htmlFor={name}>{label}</label>
+         <label htmlFor={name} className="text-black-300 text-16-semibold">
+            {label}
+         </label>
          <input
             id={name}
             type={type}

@@ -1,63 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import ProfileImage from "@/components/domain/profile/ProfileImage";
 import ProfileFieldButton from "@/components/domain/profile/ProfileFieldButton";
 import ClientProfileTitle from "./ClientProfileTitle";
 import SolidButton from "../../common/SolidButton";
-// import createClientProfile from "@/lib/actions/create-client-profile.action";
 import { moveType, regions } from "@/constants";
-// import { useRouter } from "next/navigation";
+import useClientProfilePostForm from "@/lib/hooks/useClientProfilePostForm";
 
 export default function ClientProfilePostForm() {
-   // 상태 모음
-   // const router = useRouter();
-   // const [formState, formAction, isPending] = useActionState(
-   //    createClientProfile,
-   //    null,
-   // );
-   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+   // ✅ 함수 등 모음
+   const {
+      isDisabled,
+      isLoading,
+      selectedServices,
+      selectedRegions,
+      handleServiceToggle,
+      handleRegionToggle,
+      onSubmit,
+   } = useClientProfilePostForm();
 
-   // 이용 서비스 선택
-   const handleServiceToggle = (service: string) => {
-      setSelectedServices((prev) =>
-         prev.includes(service)
-            ? prev.filter((s) => s !== service)
-            : [...prev, service],
-      );
-   };
-
-   // 내가 사는 지역 선택
-   const handleRegionToggle = (region: string) => {
-      setSelectedRegions((prev) =>
-         prev.includes(region)
-            ? prev.filter((r) => r !== region)
-            : [...prev, region],
-      );
-   };
-
-   // 버튼 비활성화 여부
-   // const isDisabled =
-   //    isPending ||
-   //    (selectedServices.length === 0 && selectedRegions.length === 0);
-
-   // // 프로필 생성 성공하면 mover-search로 이동
-   // useEffect(() => {
-   //    if (formState?.success) {
-   //       router.replace("/mover-search");
-   //    }
-   // }, [formState?.success, router]);
-
-   // 반환
    return (
-      <form onSubmit={() => console.log("반환되는 중")}>
-         {/* 이미지 */}
+      <form>
+         {/* ✅ 이미지 */}
          <ProfileImage />
 
          <hr className="border-line-100 mb-5 lg:mb-8" />
 
-         {/* 이용 서비스 */}
+         {/* ✅ 이용 서비스 */}
          <section>
             <ClientProfileTitle type="서비스" />
 
@@ -77,7 +47,7 @@ export default function ClientProfilePostForm() {
 
          <hr className="border-line-100 mb-5 lg:mb-8" />
 
-         {/* 내가 사는 지역 */}
+         {/* ✅ 내가 사는 지역 */}
          <section className="mb-8 lg:mb-14">
             <ClientProfileTitle type="지역" />
 
@@ -97,10 +67,9 @@ export default function ClientProfilePostForm() {
             </div>
          </section>
 
-         {/* 제출 버튼 */}
-         <SolidButton type="submit" disabled>
-            시작하기
-            {/* {isPending ? "로딩 중..." : "시작하기"} */}
+         {/* ✅ 제출 버튼 */}
+         <SolidButton disabled={isDisabled} onClick={onSubmit}>
+            {isLoading ? "로딩 중..." : "시작하기"}
          </SolidButton>
       </form>
    );

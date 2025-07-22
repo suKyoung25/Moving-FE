@@ -11,7 +11,8 @@ import isFetchError from "../utils/fetch-error.util";
 
 // ✅ 기본 url : 환경 변수 설정해서 쓰세요.
 export const BASE_URL =
-   process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+   process.env.NEXT_PUBLIC_API_URL ||
+   "https://sixth-moving-4team-be.onrender.com"; // "http://localhost:4000";
 
 // ✅ 서버에서 던진 오류 받기: 문자 형태, 객체 형태(data로 받음)
 async function handleResponse(response: Response) {
