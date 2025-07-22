@@ -7,6 +7,7 @@ import SolidButton from "@/components/common/SolidButton";
 import Link from "next/link";
 import useSignUpForm from "@/lib/hooks/useSignUpForm";
 import { UserType } from "@/lib/types";
+import { SignUpFormValues } from "@/lib/schemas";
 
 interface Prop {
    userType: UserType;
@@ -23,7 +24,7 @@ export default function SignUpForm({ userType }: Prop) {
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
          className="flex w-full flex-col gap-4"
       >
-         <AuthInput
+         <AuthInput<SignUpFormValues>
             type="text"
             name="name"
             label="이름"
@@ -31,7 +32,7 @@ export default function SignUpForm({ userType }: Prop) {
             register={register}
             error={errors.name?.message}
          />
-         <AuthInput
+         <AuthInput<SignUpFormValues>
             type="email"
             name="email"
             label="이메일"
@@ -39,7 +40,7 @@ export default function SignUpForm({ userType }: Prop) {
             register={register}
             error={errors.email?.message}
          />
-         <AuthInput
+         <AuthInput<SignUpFormValues>
             type="text"
             name="phone"
             label="전화번호"
@@ -47,14 +48,14 @@ export default function SignUpForm({ userType }: Prop) {
             register={register}
             error={errors.phone?.message}
          />
-         <PasswordInput
+         <PasswordInput<SignUpFormValues>
             name="password"
             label="비밀번호"
             placeholder="비밀번호를 입력해 주세요"
             register={register}
             error={errors.password?.message}
          />
-         <PasswordInput
+         <PasswordInput<SignUpFormValues>
             name="passwordConfirmation"
             label="비밀번호 확인"
             placeholder="비밀번호를 다시 한번 입력해 주세요"

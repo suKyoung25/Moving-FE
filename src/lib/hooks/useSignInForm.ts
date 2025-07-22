@@ -21,7 +21,7 @@ export default function useSignInForm() {
       handleSubmit,
       setError,
       formState: { errors, isValid },
-   } = useForm({
+   } = useForm<SignInFormValues>({
       mode: "onChange",
       resolver: zodResolver(SignInFormSchema),
    });

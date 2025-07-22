@@ -1,4 +1,10 @@
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import {
+   Control,
+   FieldError,
+   FieldValues,
+   Path,
+   UseFormRegister,
+} from "react-hook-form";
 
 // ✅ userType
 export type UserType = "client" | "mover";
@@ -70,4 +76,13 @@ export interface AuthFetchError {
          [key: string]: string | undefined;
       };
    };
+}
+
+//TODO: 기사님 기본정보 수정 시 사용
+export interface BasicInfoInputProps<T extends FieldValues> {
+   name: Path<T>;
+   text: string;
+   placeholder: string;
+   register: UseFormRegister<T>;
+   error?: string;
 }
