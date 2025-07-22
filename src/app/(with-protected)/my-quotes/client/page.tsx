@@ -1,5 +1,5 @@
-import Pending from "@/components/my-quotes/pages/Pending";
-import Received from "@/components/my-quotes/pages/Received";
+import Pending from "@/components/domain/my-quotes/pages/Pending";
+import Received from "@/components/domain/my-quotes/pages/Received";
 
 // 내 견적 관리
 export default async function Page({

@@ -1,6 +1,6 @@
-import ClientSignUpForm from "@/components/sign-up-in/ClientSignUpForm";
-import ClientTitle from "../../../../components/sign-up-in/ClientTitle";
-import EasyLoginForm from "../../../../components/sign-up-in/EasyLoginForm";
+import SignUpForm from "@/components/domain/auth/SignUpForm";
+import ClientTitle from "@/components/domain/auth/ClientTitle";
+import EasyLoginForm from "@/components/domain/auth/EasyLoginForm";
 
 export default function ClientSignUpPage() {
    return (
@@ -9,7 +9,7 @@ export default function ClientSignUpPage() {
          <ClientTitle type="signup" />
 
          {/* 서식 */}
-         <ClientSignUpForm />
+         <SignUpForm userType="client" />
 
          {/* 간편 회원가입 */}
          <EasyLoginForm />

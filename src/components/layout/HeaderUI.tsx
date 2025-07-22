@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
 import HeaderProfile from "./HeaderProfile";
-import NotificationModal from "../common/modal/NotificationModal";
+import NotificationModal from "../common/NotificationModal";
 import { useState } from "react";
 
 // prop
@@ -33,7 +33,6 @@ export default function HeaderUI({ onToggleMenu }: Prop) {
    const isDefaultLogoPage = [
       "/sign-up",
       "/sign-in",
-      "/profile",
       "mover-search",
       "dashboard/edit-account",
    ].some((path) => pathname.startsWith(path));

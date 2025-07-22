@@ -28,7 +28,7 @@ export default function ProfileDropdownMenu({ onClose }: Prop) {
    const handleCloseMenu = () => onClose();
 
    return (
-      <section className="border-line-200 absolute top-9 left-1/2 z-40 inline-flex h-56 w-38 -translate-x-1/2 flex-col items-start rounded-2xl border bg-white px-1.5 pt-2.5 pb-1.5 shadow-[2px_2px_8px_rgba(224,224,224,0.2)] lg:left-[-2rem] lg:h-74 lg:w-62 lg:px-1 lg:pt-4 lg:pb-1.5">
+      <section className="border-line-200 absolute top-9 left-1/2 z-40 inline-flex w-38 -translate-x-1/2 flex-col items-start rounded-2xl border bg-white px-1.5 pt-2.5 pb-1.5 shadow-[2px_2px_8px_rgba(224,224,224,0.2)] lg:left-[-2rem] lg:w-62 lg:px-1 lg:pt-4 lg:pb-1.5">
          <div className="w-full">
             {/* 이용자 이름 */}
             {user?.userType === "client" && (
