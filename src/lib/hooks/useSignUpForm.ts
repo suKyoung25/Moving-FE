@@ -29,14 +29,13 @@ export default function useSignUpForm() {
    // ✅ 제출
    const onSubmit = (type: UserType) => async (data: SignUpFormValues) => {
       setIsLoading(true);
+      console.log("찍히고 있음");
 
       try {
          const res = await createSignUp(type, data);
+         await getUser(res.data.user, res.data.accessToken);
 
-         if (res.data.user && res.data.accessToken) {
-            await getUser(res.data.user, res.data.accessToken);
-            router.replace("/profile/create");
-         }
+         router.replace("/profile/create");
       } catch (error) {
          console.error("일반 회원가입 실패: ", error);
 

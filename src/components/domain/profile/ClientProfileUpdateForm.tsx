@@ -1,28 +1,28 @@
 import React from "react";
-import ProfileFieldButton from "./ProfileFieldButton";
-import ClientProfileTitle from "./ClientProfileTitle";
-import ProfileInput from "./ProfileInput";
-import SolidButton from "@/components/common/SolidButton";
-import { moveType, regions } from "@/constants";
-import useClientProfileUpdateForm from "@/lib/hooks/useClientProfileUpdateForm";
+// import ProfileFieldButton from "./ProfileFieldButton";
+// import ClientProfileTitle from "./ClientProfileTitle";
+// import ProfileInput from "./ProfileInput";
+// import SolidButton from "@/components/common/SolidButton";
+// import { moveType, regions } from "@/constants";
+// import useClientProfileUpdateForm from "@/lib/hooks/useClientProfileUpdateForm";
 
 export default function ClientProfileUpdateForm() {
    // ✅ 함수 모음
-   const {
-      register,
-      errors,
-      isValid,
-      isLoading,
-      selectedServices,
-      selectedRegions,
-      handleServiceToggle,
-      handleRegionToggle,
-   } = useClientProfileUpdateForm();
+   // const {
+   //    register,
+   //    errors,
+   //    isValid,
+   //    isLoading,
+   //    selectedServices,
+   //    selectedRegions,
+   //    handleServiceToggle,
+   //    handleRegionToggle,
+   // } = useClientProfileUpdateForm();
 
    return (
       <form>
          {/* ✅ 입력창 모음 */}
-         <ProfileInput
+         {/* <ProfileInput
             type="text"
             label="이름"
             name="name"
@@ -36,14 +36,14 @@ export default function ClientProfileUpdateForm() {
             name="email"
             placeholder="codeit@email.com"
             register={register}
-         />
+         /> */}
 
          {/* ✅ 프로필 이미지 */}
 
          <hr className="border-line-100 mb-5 lg:mb-8" />
 
          {/* ✅ 이용 서비스 */}
-         <section>
+         {/* <section>
             <ClientProfileTitle type="서비스" />
 
             {moveType.map((service) => (
@@ -58,12 +58,12 @@ export default function ClientProfileUpdateForm() {
                   {service}
                </ProfileFieldButton>
             ))}
-         </section>
+         </section> */}
 
          <hr className="border-line-100 mb-5 lg:mb-8" />
 
          {/* ✅ 내가 사는 지역 */}
-         <section className="mb-8 lg:mb-14">
+         {/* <section className="mb-8 lg:mb-14">
             <ClientProfileTitle type="지역" />
 
             <div className="grid w-70 grid-cols-5 gap-x-2 gap-y-3 lg:w-104 lg:gap-x-3.5 lg:gap-y-4.5">
@@ -80,12 +80,12 @@ export default function ClientProfileUpdateForm() {
                   </ProfileFieldButton>
                ))}
             </div>
-         </section>
+         </section> */}
 
          {/* ✅ 제출 버튼 */}
-         <SolidButton type="submit" disabled={isLoading || !isValid}>
+         {/* <SolidButton type="submit" disabled={isLoading || !isValid}>
             {isLoading ? "로딩 중..." : "수정하기"}
-         </SolidButton>
+         </SolidButton> */}
       </form>
    );
 }
