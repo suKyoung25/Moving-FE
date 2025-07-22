@@ -1,14 +1,14 @@
 "use client";
 
+import React, { useState } from "react";
 import { useFormWizard } from "@/context/FormWizardContext";
 import { Request } from "@/lib/types";
-import React, { useState } from "react";
 import ChatMessage from "./ChatMessage";
-import Image from "next/image";
-import CheckedIcon from "@/assets/images/roundActiveIcon.svg";
-import UncheckedIcon from "@/assets/images/roundDefaultIcon.svg";
-import SolidButton from "@/components/common/buttons/SolidButton";
 import ChatWrapper from "./ChatWrapper";
+import Image from "next/image";
+import chekcedIcon from "@/assets/images/roundActiveIcon.svg";
+import uncheckedIcon from "@/assets/images/roundDefaultIcon.svg";
+import SolidButton from "@/components/common/SolidButton";
 
 // 이사 종류 선택 단계
 export default function Step1() {
@@ -63,7 +63,7 @@ export default function Step1() {
                         type="button"
                         key={option.value}
                         onClick={() => handleSelect(option.value)}
-                        className={`hover:border-primary-blue-300 flex h-13 w-70 cursor-pointer items-center rounded-2xl border px-4 py-[14px] lg:h-21 lg:w-140 ${
+                        className={`hover:border-primary-blue-300 flex h-13 w-full cursor-pointer items-center rounded-2xl border px-4 py-[14px] text-left break-keep lg:h-21 lg:w-140 ${
                            selected === option.value
                               ? "border-primary-blue-300 bg-primary-blue-50"
                               : "border-line-200"
@@ -72,8 +72,8 @@ export default function Step1() {
                         <Image
                            src={
                               selected === option.value
-                                 ? CheckedIcon
-                                 : UncheckedIcon
+                                 ? chekcedIcon
+                                 : uncheckedIcon
                            }
                            alt={`라디오 버튼 ${selected === option.value ? "선택됨" : "선택안됨"}`}
                            className="aspect-square w-6 lg:w-9"

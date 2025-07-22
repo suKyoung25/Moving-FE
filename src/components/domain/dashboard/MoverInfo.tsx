@@ -42,7 +42,6 @@ export default function MoverInfo({
             <div>
                <span className={serviceClass}>제공 서비스</span>
                <span>
-                  {" "}
                   {serviceType &&
                      serviceType
                         .map(

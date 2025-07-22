@@ -7,8 +7,8 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import ChatMessage from "./ChatMessage";
 import Image from "next/image";
-import SolidButton from "@/components/common/buttons/SolidButton";
-import CarImage from "@/assets/images/emptyCarIcon.svg";
+import SolidButton from "@/components/common/SolidButton";
+import carImage from "@/assets/images/emptyCarIcon.svg";
 import Link from "next/link";
 
 // 견적 요청 채팅 폼 (단계별 흐름 제어)
@@ -21,7 +21,7 @@ export default function FormWizard() {
       return (
          <div className="mt-[127px] flex flex-col items-center justify-center gap-8 lg:mt-[194px]">
             <Image
-               src={CarImage}
+               src={carImage}
                alt="자동차 이미지"
                className="w-61 lg:mb-8 lg:w-[402px]"
             />
@@ -30,9 +30,11 @@ export default function FormWizard() {
                <br />
                진행 중인 이사 완료 후 새로운 견적을 받아보세요.
             </p>
-            <SolidButton className="max-w-[196px] px-6">
-               <Link href="/my-quotes/client">받은 견적 보러가기</Link>
-            </SolidButton>
+            <Link href="/my-quotes/client">
+               <SolidButton className="max-w-[196px] px-6">
+                  받은 견적 보러가기
+               </SolidButton>
+            </Link>
          </div>
       );
    }

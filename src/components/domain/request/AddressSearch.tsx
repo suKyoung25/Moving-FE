@@ -3,7 +3,7 @@ import closeIcon from "@/assets/images/xIcon.svg";
 import Image from "next/image";
 import searchIcon from "@/assets/images/searchIcon.svg";
 import { loadPostcodeScript } from "@/lib/utils/address.util";
-import SolidButton from "../common/buttons/SolidButton";
+import SolidButton from "@/components/common/SolidButton";
 
 const addrBoxClass = "flex text-left gap-2 break-keep w-full h-full";
 const addrTypeClass =

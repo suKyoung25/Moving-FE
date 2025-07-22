@@ -1,4 +1,4 @@
-import FormWizard from "@/components/domain/request-tmp/FormWizard";
+import FormWizard from "@/components/domain/request/FormWizard";
 
 export default function EstimateRequestPage() {
    return (

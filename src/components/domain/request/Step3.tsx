@@ -1,15 +1,15 @@
 "use client";
 
-import { useFormWizard } from "@/context/FormWizardContext";
 import React, { useEffect, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatWrapper from "./ChatWrapper";
-import SolidButton from "@/components/common/buttons/SolidButton";
-import OutlinedButton from "@/components/common/buttons/OutlinedButton";
 import { Request } from "@/lib/types";
-import { createRequestAction } from "@/lib/actions/request/request.action";
 import AddressSearch from "./AddressSearch";
-import ToastPopup from "../common/popup/ToastPopup";
+import { useFormWizard } from "@/context/FormWizardContext";
+import { createRequestAction } from "@/lib/actions/request.action";
+import OutlinedButton from "@/components/common/OutlinedButton";
+import SolidButton from "@/components/common/SolidButton";
+import ToastPopup from "@/components/common/ToastPopup";
 
 // 출발지/도착지 주소 입력 단계
 export default function Step3() {
@@ -84,10 +84,10 @@ export default function Step3() {
          {/* 시스템 메세지 */}
          <ChatMessage type="system" message="이사 지역을 선택해 주세요." />
          {/* 유저 메세지 */}
-         <ChatWrapper className="px-6 py-5 lg:p-8">
+         <ChatWrapper>
             <label className="text-sm font-medium lg:text-lg">출발지</label>
             <OutlinedButton
-               className="w-72 text-left lg:w-140"
+               className="text-left lg:w-140"
                onClick={() => {
                   setTargetField("from");
                   setShowModal(true);
@@ -97,7 +97,7 @@ export default function Step3() {
             </OutlinedButton>
             <label className="text-sm font-medium lg:text-lg">도착지</label>
             <OutlinedButton
-               className="text-left"
+               className="text-left lg:w-140"
                onClick={() => {
                   setTargetField("to");
                   setShowModal(true);

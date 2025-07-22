@@ -1,15 +1,15 @@
 "use client";
 
-import SolidButton from "@/components/common/buttons/SolidButton";
-import { useFormWizard } from "@/context/FormWizardContext";
 import React, { useState } from "react";
-import ChatMessage from "./ChatMessage";
+import { useFormWizard } from "@/context/FormWizardContext";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import ChatMessage from "./ChatMessage";
 import ChatWrapper from "./ChatWrapper";
 import "react-day-picker/style.css";
 import { ko } from "react-day-picker/locale";
 import { format } from "date-fns";
 import { Request } from "@/lib/types";
+import SolidButton from "@/components/common/SolidButton";
 
 // 이사 날짜 선택 단계
 export default function Step2() {
@@ -60,11 +60,12 @@ export default function Step2() {
                   showOutsideDays
                   required
                   classNames={{
-                     day: `w-11 h-10 lg:px-6 lg:py-4`,
+                     day: `lg:px-5 lg:py-4`,
                      today: `font-bold text-primary-blue-300`,
                      selected: `[&>button]:!mx-auto [&>button]:!my-0 [&>button]:!bg-primary-blue-300 [&>button]:rounded-full [&>button]:!w-6 [&>button]:!h-6 lg:[&>button]:!w-10 lg:[&>button]:!h-10 !text-white`,
-                     weekday: `text-gray-400 font-medium px-4 py-[10px]`,
+                     weekday: `text-gray-400 font-medium py-[10px]`,
                      outside: `text-gray-100`,
+                     months: `max-w-fit`,
                      month_caption: `flex justify-center items-center px-[14px] py-3 text-base lg:text-xl font-semibold mb-2`,
                      root: `${defaultClassNames.root} text-sm lg:text-xl`,
                      chevron: `${defaultClassNames.chevron} !fill-gray-300`,
