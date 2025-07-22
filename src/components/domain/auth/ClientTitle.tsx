@@ -7,7 +7,7 @@ interface Prop {
    type: "login" | "signup";
 }
 
-// 회원가입 & 로그인 페이지 제목 로고 및 링크 (일반 회원)
+// ✅ 회원가입 & 로그인 페이지 제목 로고 및 링크 (일반 회원)
 export default function ClientTitle({ type }: Prop) {
    return (
       <div className="mb-10">
