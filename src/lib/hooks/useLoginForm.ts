@@ -49,10 +49,19 @@ export default function useLoginForm() {
          const customError = error as AuthFetchError;
 
          if (customError?.body.message) {
-            setError("email", {
-               type: "server",
-               message: customError.body.message,
-            });
+            const message = customError?.body.message;
+
+            if (message === "사용자를 찾을 수 없습니다.") {
+               setError("email", {
+                  type: "server",
+                  message: message,
+               });
+            } else if (message === "비밀번호가 일치하지 않습니다.") {
+               setError("password", {
+                  type: "server",
+                  message: message,
+               });
+            }
          } else {
             console.error("예상치 못한 오류 발생: ", customError?.body.message);
          }
