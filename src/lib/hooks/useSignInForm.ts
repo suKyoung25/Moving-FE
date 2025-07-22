@@ -6,10 +6,10 @@ import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormSchema, SignInFormValues } from "../schemas/auth.schema";
-import { defaultFetch } from "../utils/fetch-client";
 import { AuthFetchError, UserType } from "../types";
+import createSignIn from "../api/auth/requests/createSignIn";
 
-export default function useLoginForm() {
+export default function useSignInForm() {
    // ✅ 상태 모음
    const router = useRouter();
    const { getUser } = useAuth();
@@ -30,13 +30,8 @@ export default function useLoginForm() {
    const onSubmit = (type: UserType) => async (data: SignInFormValues) => {
       setIsLoading(true);
 
-      const url = `/auth/signin/${type}`;
-
       try {
-         const res = await defaultFetch(url, {
-            method: "POST",
-            body: JSON.stringify(data),
-         });
+         const res = await createSignIn(type, data);
 
          if (res.data.user && res.data.accessToken) {
             await getUser(res.data.user, res.data.accessToken);

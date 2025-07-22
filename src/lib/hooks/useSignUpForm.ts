@@ -6,8 +6,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpFormSchema, SignUpFormValues } from "./../schemas/auth.schema";
-import { defaultFetch } from "../utils/fetch-client";
 import { AuthFetchError, UserType } from "../types";
+import createSignUp from "../api/auth/requests/createSignUp";
 
 export default function useSignUpForm() {
    // ✅ 상태 모음
@@ -30,13 +30,8 @@ export default function useSignUpForm() {
    const onSubmit = (type: UserType) => async (data: SignUpFormValues) => {
       setIsLoading(true);
 
-      const url = `/auth/signup/${type}`;
-
       try {
-         const res = await defaultFetch(url, {
-            method: "POST",
-            body: JSON.stringify(data),
-         });
+         const res = await createSignUp(type, data);
 
          if (res.data.user && res.data.accessToken) {
             await getUser(res.data.user, res.data.accessToken);

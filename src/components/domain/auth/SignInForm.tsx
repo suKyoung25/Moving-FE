@@ -5,7 +5,7 @@ import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../../common/SolidButton";
 import Link from "next/link";
-import useLoginForm from "@/lib/hooks/useLoginForm";
+import useSignInForm from "@/lib/hooks/useSignInForm";
 import { UserType } from "@/lib/types";
 
 interface Prop {
@@ -15,7 +15,7 @@ interface Prop {
 export default function SignInForm({ userType }: Prop) {
    // 상태 모음
    const { register, errors, isValid, onSubmit, isLoading, handleSubmit } =
-      useLoginForm();
+      useSignInForm();
 
    // 본문
    return (
