@@ -1,0 +1,72 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignInFormSchema, SignInFormValues } from "../schemas/auth.schema";
+import { defaultFetch } from "../api/fetch-client";
+import { AuthFetchError, UserType } from "../types";
+
+export default function useLoginForm() {
+   // ✅ 상태 모음
+   const router = useRouter();
+   const { getUser } = useAuth();
+   const [isLoading, setIsLoading] = useState(false);
+
+   // ✅ react-hook-form
+   const {
+      register,
+      handleSubmit,
+      setError,
+      formState: { errors, isValid },
+   } = useForm({
+      mode: "onChange",
+      resolver: zodResolver(SignInFormSchema),
+   });
+
+   // ✅ 제출
+   const onSubmit = (type: UserType) => async (data: SignInFormValues) => {
+      setIsLoading(true);
+
+      const url = `/auth/signin/${type}`;
+
+      try {
+         const res = await defaultFetch(url, {
+            method: "POST",
+            body: JSON.stringify(data),
+         });
+
+         if (res.data.user && res.data.accessToken) {
+            await getUser(res.data.user, res.data.accessToken);
+            router.replace("/mover-search");
+         }
+      } catch (error) {
+         console.error("일반 로그인 실패: ", error);
+
+         // 오류 처리: 메시지로
+         const customError = error as AuthFetchError;
+
+         if (customError?.body.message) {
+            setError("email", {
+               type: "server",
+               message: customError.body.message,
+            });
+         } else {
+            console.error("예상치 못한 오류 발생: ", customError?.body.message);
+         }
+      } finally {
+         setIsLoading(false);
+      }
+   };
+
+   return {
+      register,
+      errors,
+      isValid,
+      onSubmit,
+      isLoading,
+      handleSubmit,
+   };
+}

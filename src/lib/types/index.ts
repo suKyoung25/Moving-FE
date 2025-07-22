@@ -11,3 +11,5 @@
 //         ├── notification.types.ts
 //         ├── region.types.ts
 //         └── index.ts         # 통합 export
+
+export * from "./auth.types";

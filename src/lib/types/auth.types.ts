@@ -1,13 +1,73 @@
-// src/
-// └── lib/
-//     └── types/
-//         ├── client.types.ts
-//         ├── mover.types.ts
-//         ├── request.types.ts
-//         ├── designated-request.types.ts
-//         ├── estimate.types.ts
-//         ├── review.types.ts
-//         ├── favorite.types.ts
-//         ├── notification.types.ts
-//         ├── region.types.ts
-//         └── index.ts         # 통합 export
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+
+// ✅ userType
+export type UserType = "client" | "mover";
+
+// ✅ 불러올 사용자 정보
+interface BaseUser {
+   userType: UserType;
+   id: string;
+   email: string;
+   name: string;
+   phone?: string;
+   profileImage?: string;
+   isProfileCompleted: boolean;
+}
+
+export interface Client extends BaseUser {
+   serviceType: string[];
+   livingArea: string[];
+}
+
+interface Mover extends BaseUser {
+   nickName?: string;
+   career?: number;
+   introduction?: string;
+   description?: string;
+   serviceType: string[];
+   serviceArea: string[];
+   favoriteCount: number;
+   estimateCount: number;
+   reviewCount: number;
+}
+
+export type User = Client | Mover;
+
+// ✅ 회원가입 양식
+export interface SignUpFormState {
+   name: string;
+   email: string;
+   phone: string;
+   password: string;
+   passwordConfirmation: string;
+}
+
+// ✅ 로그인 양식
+export interface LoginFormState {
+   email: string;
+   password: string;
+}
+
+// ✅ 인증 컴포넌트 props
+export interface AuthInputProps<T extends FieldValues> {
+   name: Path<T>;
+   label: string;
+   type?: "text" | "email" | "password";
+   placeholder: string;
+   register: UseFormRegister<T>;
+   error?: string;
+}
+
+// ✅ 오류 메시지 출력
+export interface AuthFetchError {
+   status?: number;
+   body: {
+      message?: string;
+      data?: {
+         email?: string;
+         password?: string;
+         phone?: string;
+         [key: string]: string | undefined;
+      };
+   };
+}

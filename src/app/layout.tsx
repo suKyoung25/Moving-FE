@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-// import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
    title: "무빙 - 스마트한 이사 비교 플랫폼",
@@ -16,9 +16,9 @@ export default function RootLayout({
    return (
       <html lang="ko">
          <body className="h-full min-h-screen">
-            {/* <AuthProvider> */}
-            <main>{children}</main>
-            {/* </AuthProvider> */}
+            <AuthProvider>
+               <main>{children}</main>
+            </AuthProvider>
          </body>
       </html>
    );
