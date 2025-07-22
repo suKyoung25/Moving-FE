@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 export default function EditProfilePage() {
    const { user } = useAuth();
 
-   //일반으로 로그인한 회원의 경우
+   // ✅ 일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
       return (
          <div className="pt-4 pb-10 lg:pt-6">

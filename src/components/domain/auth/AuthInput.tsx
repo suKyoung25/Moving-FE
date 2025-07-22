@@ -5,6 +5,7 @@ import ErrorText from "./ErrorText";
 import { FieldValues } from "react-hook-form";
 import { AuthInputProps } from "@/lib/types";
 
+// ✅ react-hook-form 적용한 Input
 export default function AuthInput<T extends FieldValues>({
    type = "text",
    name,

@@ -8,6 +8,7 @@ import closedEye from "@/assets/images/visibilityOffIcon.svg";
 import { AuthInputProps } from "@/lib/types";
 import { FieldValues } from "react-hook-form";
 
+// ✅ react-hook-form 적용한 Input
 export default function PasswordInput<T extends FieldValues>({
    name,
    label,
@@ -15,7 +16,7 @@ export default function PasswordInput<T extends FieldValues>({
    register,
    error,
 }: AuthInputProps<T>) {
-   // 아이콘으로 비밀번호 <-> 글자 처리
+   // ✅ 아이콘으로 비밀번호 <-> 글자 처리
    const [isVisible, setIsVisible] = React.useState(false);
 
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
@@ -25,7 +26,7 @@ export default function PasswordInput<T extends FieldValues>({
          <label htmlFor={name}>{label}</label>
 
          <div className="relative w-full">
-            {/* 입력창 */}
+            {/* ✅ 입력창 */}
             <input
                id={name}
                type={isVisible ? "text" : "password"}
@@ -34,7 +35,7 @@ export default function PasswordInput<T extends FieldValues>({
                className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 w-full rounded-2xl border bg-white p-3.5 lg:h-16`}
             />
 
-            {/* 눈 아이콘 */}
+            {/* ✅ 눈 아이콘 */}
             <button
                type="button"
                onClick={toggleEyeIcon}

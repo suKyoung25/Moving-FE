@@ -12,6 +12,7 @@ interface Props {
    value?: string;
 }
 
+// ✅ 이용 서비스 + 지역 버튼
 export default function ProfileFieldButton({
    children,
    category,
@@ -20,16 +21,17 @@ export default function ProfileFieldButton({
    name,
    value,
 }: Props) {
-   // 스타일
+   // ✅ 스타일 모음
    const commonStyle =
       "text-14-medium lg:text-18-regular h-9 lg:h-12.5 rounded-[100px] border px-3 py-1.5 text-nowrap";
+
    const selectedStyle = isSelected
       ? "bg-primary-blue-50 border-bg-primary-blue-300 text-primary-blue-300"
       : "bg-bg-100 text-primary-blue-400 border-gray-100";
 
    return (
       <>
-         {/* UI */}
+         {/* ✅ UI */}
          {category === "서비스" && (
             <button
                type="button"
