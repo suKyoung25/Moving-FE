@@ -1,8 +1,7 @@
-import DefaultLayout from "@/components/layout/DefaultLayout";
 import Header from "@/components/layout/Header";
-import type { ReactNode } from "react";
+import DefaultLayout from "@/components/layout/DefaultLayout";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
    return (
       <>
          <Header />

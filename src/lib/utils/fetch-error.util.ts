@@ -1,4 +1,10 @@
-import { FetchError } from "../types";
+export interface FetchError {
+   status: number;
+   body: {
+      message: string;
+      [key: string]: unknown;
+   };
+}
 
 export default function isFetchError(error: unknown): error is FetchError {
    return (

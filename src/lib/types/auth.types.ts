@@ -1,3 +1,5 @@
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+
 // ✅ userType
 export type UserType = "client" | "mover";
 
@@ -31,30 +33,7 @@ interface Mover extends BaseUser {
 
 export type User = Client | Mover;
 
-// ✅ Type Guard 함수
-export function isClient(user: User): user is Client {
-   return user.userType === "client";
-}
-
-export function isMover(user: User): user is Mover {
-   return user.userType === "mover";
-}
-
-// 유효성 검사용 type 모음
-export type AuthValidationResult = {
-   success: boolean;
-   message: string;
-};
-
-// 인증 정보
-export type AuthValidation = {
-   success: boolean;
-   error?: string | Record<string, string>;
-   user?: BaseUser;
-   accessToken?: string;
-};
-
-// 회원가입 양식
+// ✅ 회원가입 양식
 export interface SignUpFormState {
    name: string;
    email: string;
@@ -63,24 +42,32 @@ export interface SignUpFormState {
    passwordConfirmation: string;
 }
 
-// 오류 상태
-export interface ErrorsState {
-   [key: string]: string;
+// ✅ 로그인 양식
+export interface LoginFormState {
+   email: string;
+   password: string;
 }
 
-// Server Action 응답
-export interface AuthActionResult {
-   success: boolean;
-   user?: BaseUser;
-   accessToken?: string;
-   fieldErrors?: Record<string, string>;
-   globalError?: string;
+// ✅ 인증 컴포넌트 props
+export interface AuthInputProps<T extends FieldValues> {
+   name: Path<T>;
+   label: string;
+   type?: "text" | "email" | "password";
+   placeholder: string;
+   register: UseFormRegister<T>;
+   error?: string;
 }
 
-export interface FetchError {
-   status: number;
+// ✅ 오류 메시지 출력
+export interface AuthFetchError {
+   status?: number;
    body: {
-      message: string;
-      [key: string]: unknown;
+      message?: string;
+      data?: {
+         email?: string;
+         password?: string;
+         phone?: string;
+         [key: string]: string | undefined;
+      };
    };
 }
