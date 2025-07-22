@@ -37,7 +37,7 @@ export type profileState = {
 };
 
 // ✅ 일반 회원 프로필 정보
-export interface ClientProfileData {
+export interface ClientProfilePostData {
    profileImage?: string;
    serviceType?: ("SMALL" | "HOME" | "OFFICE")[];
    livingArea?: string[];

@@ -9,12 +9,12 @@ import MoverProfilePostForm from "@/components/domain/profile/MoverProfilePostFo
 export default function CreateProfilePage() {
    const { user } = useAuth();
 
-   //일반으로 로그인한 회원의 경우
+   // ✅ 일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
       return (
          <div className="pt-4 pb-10 lg:pt-6">
             <div className="mx-auto max-w-82 lg:max-w-160">
-               <ClientProfileTitle type="제목" />
+               <ClientProfileTitle type="생성" />
                <ClientProfilePostForm />
             </div>
          </div>

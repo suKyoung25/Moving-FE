@@ -13,17 +13,17 @@ interface Prop {
    userType: UserType;
 }
 
-// 여기서부터 시작
 export default function SignUpForm({ userType }: Prop) {
+   // ✅ 함수 모음
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
       useSignUpForm();
 
-   // ✅ 본문
    return (
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
          className="flex w-full flex-col gap-4"
       >
+         {/* ✅ Input */}
          <AuthInput<SignUpFormValues>
             type="text"
             name="name"
@@ -63,7 +63,7 @@ export default function SignUpForm({ userType }: Prop) {
             error={errors.passwordConfirmation?.message}
          />
 
-         {/* 회원가입 버튼 */}
+         {/* ✅ 회원가입 버튼 */}
          <section className="mt-4 lg:mt-10">
             <SolidButton type="submit" disabled={!isValid || isLoading}>
                {isLoading ? "로딩 중..." : "시작하기"}
