@@ -14,7 +14,7 @@ import SolidButton from "@/components/common/SolidButton";
 export default function Step1() {
    const { state, dispatch, goToNextStep } = useFormWizard();
    const { moveType } = state;
-   const [selected, setSelected] = useState<Request["moveType"]>();
+   const [selected, setSelected] = useState<Request["moveType"] | undefined>(state.moveType);
    const [isEditing, setIsEditing] = useState<boolean>(false);
 
    const selectOptions = [
@@ -56,6 +56,7 @@ export default function Step1() {
             />
          ) : (
             // 선택값이 없거나 수정하기 버튼 클릭 시
+            <>
             <ChatWrapper>
                <div className="flex flex-col gap-2 lg:gap-4">
                   {selectOptions.map((option) => (
@@ -84,10 +85,13 @@ export default function Step1() {
                      </button>
                   ))}
                </div>
+               
                <SolidButton onClick={handleSubmit} disabled={!selected}>
                   선택완료
                </SolidButton>
             </ChatWrapper>
+            {isEditing && <button type="button" className="text-gray-500 font-medium underline max-lg:text-xs text-right mr-2" onClick={() => setIsEditing(false)}>수정취소</button>}
+            </>
          )}
       </>
    );

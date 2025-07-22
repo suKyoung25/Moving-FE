@@ -68,11 +68,9 @@ export default function AddressSearch({
                <>
                   {/* 검색 입력창 */}
                   <div className="relative flex items-center">
-                     <input
-                        type="text"
-                        className="bg-bg-200 w-full rounded-2xl px-4 py-3 text-sm lg:text-base"
-                        placeholder="다시 선택하려면 검색 아이콘을 눌러주세요."
-                     />
+                     <div className="bg-bg-200 w-full rounded-2xl px-4 py-3 text-sm lg:text-base text-gray-400">
+                     다시 선택하려면 검색 아이콘을 눌러주세요.
+                     </div>
                      <button
                         className="absolute right-3"
                         onClick={() => setSelectedAddr(null)}

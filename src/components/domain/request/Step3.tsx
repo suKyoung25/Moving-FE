@@ -120,6 +120,7 @@ export default function Step3() {
                onClose={() => setShowModal(false)}
             />
          )}
+         {currentStep === 3 && <button type="button" onClick={() => dispatch({ type: "RESET"})} className="text-gray-500 mr-2 font-medium underline max-lg:text-xs text-right">처음부터 다시 선택</button>}
          {showToast && <ToastPopup>견적 요청이 완료되었습니다.</ToastPopup>}
       </>
    );

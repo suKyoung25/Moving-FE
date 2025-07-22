@@ -13,6 +13,7 @@ import {
    useEffect,
    useReducer,
 } from "react";
+import { useAuth } from "./AuthContext";
 
 // Context 초기 상태 정의
 const initialState: FormWizardState = {
@@ -54,6 +55,14 @@ function reducer(
             toAddress: undefined,
             currentStep: 4, // 요청 완료 시 완료 단계로 이동
          };
+      case "RESET":
+         return {
+            moveType: undefined,
+            moveDate: undefined,
+            fromAddress: undefined,
+            toAddress: undefined,
+            currentStep: 0, 
+         }; 
       default:
          return state; // 정의되지 않은 액션 타입일 경우 기존 상태 반환
    }
@@ -76,30 +85,36 @@ export const useFormWizard = () => {
 export const FormWizardProvider = ({ children }: { children: ReactNode }) => {
    const [state, dispatch] = useReducer(reducer, initialState);
    const goToNextStep = () => dispatch({ type: "NEXT_STEP" });
+   const { user } = useAuth() // 유저 ID 기반 로컬스토리지 저장
+   const storageKey = user ? `requestData_${user.id}` : null;
 
    // 새로고침 시에도 이전 입력값 유지
    useEffect(() => {
-      const saved = localStorage.getItem("requestData");
+      if (!storageKey) return;
+      const saved = localStorage.getItem(storageKey);
       if (saved) {
          dispatch({ type: "INIT_FROM_STORAGE", payload: JSON.parse(saved) });
       }
-   }, []);
+   }, [storageKey]);
 
    // 상태가 바뀔 때마다 로컬스토리지에 저장
    useEffect(() => {
+      if (!storageKey) return;
+
       // 초기 상태일 경우 저장하지 않음
-      if (
+      const isEmpty =
          state.currentStep === 0 &&
          !state.moveType &&
          !state.moveDate &&
          !state.fromAddress &&
          !state.toAddress
-      ) {
-         localStorage.removeItem("requestData");
+
+      if (isEmpty) {
+         localStorage.removeItem(storageKey);
       } else {
-         localStorage.setItem("requestData", JSON.stringify(state));
+         localStorage.setItem(storageKey, JSON.stringify(state));
       }
-   }, [state]);
+   }, [state, storageKey]);
 
    return (
       <FormWizardContext.Provider value={{ state, dispatch, goToNextStep }}>

@@ -48,6 +48,7 @@ export default function Step2() {
                onEditClick={() => setIsEditing(true)}
             />
          ) : (
+            <>
             <ChatWrapper className="gap-6 rounded-tr-3xl p-[14px] lg:p-6">
                {/* 날짜 선택용 달력 라이브러리 */}
                <DayPicker
@@ -89,6 +90,8 @@ export default function Step2() {
                   선택완료
                </SolidButton>
             </ChatWrapper>
+            {isEditing && <button type="button" className="text-gray-500 font-medium underline max-lg:text-xs text-right mr-2" onClick={() => setIsEditing(false)}>수정취소</button>}
+            </>
          )}
       </>
    );

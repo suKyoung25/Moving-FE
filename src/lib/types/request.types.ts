@@ -29,7 +29,8 @@ export type FormWizardAction =
    | { type: "SET_TO_ADDRESS"; payload: string }
    | { type: "INIT_FROM_STORAGE"; payload: FormWizardState }
    | { type: "NEXT_STEP" }
-   | { type: "RESET_FORM_ONLY" };
+   | { type: "RESET_FORM_ONLY" }
+   | { type: "RESET" }
 
 // 컨텍스트의 value 타입
 export interface FormWizardContextType {

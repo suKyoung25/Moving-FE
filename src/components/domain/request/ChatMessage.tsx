@@ -38,7 +38,7 @@ export default function ChatMessage({
         {message}
       </div>
       <button
-        className="text-gray-500 font-medium underline max-lg:text-xs"
+        className="text-gray-500 font-medium underline max-lg:text-xs mr-2"
         onClick={onEditClick}
       >
         수정하기
