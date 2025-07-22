@@ -2,16 +2,17 @@
 
 import Pending from "@/components/my-quotes/pages/Pending";
 import Received from "@/components/my-quotes/pages/Received";
-import { useMyQuotes } from "@/lib/hooks/useMyQuotes";
+import { useSearchParams } from "next/navigation";
 
 export default function MyQuotes() {
-  const { activeTab } = useMyQuotes();
+   const searchParams = useSearchParams();
+   const path = searchParams.get("path");
+   console.log(path);
+   if (path === "pending") {
+      return <Pending />;
+   } else if (path === "received") {
+      return <Received />;
+   }
 
-  if (activeTab === "pending") {
-    return <Pending />;
-  } else if (activeTab === "received") {
-    return <Received />;
-  }
-
-  return null;
+   return null;
 }
