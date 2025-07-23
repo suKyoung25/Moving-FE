@@ -63,6 +63,15 @@ export interface AuthInputProps<T extends FieldValues> {
    error?: string;
 }
 
+//기사님 기본정보 수정 시 사용
+export interface BasicInfoInputProps<T extends FieldValues> {
+   name: Path<T>;
+   text: string;
+   placeholder: string;
+   register: UseFormRegister<T>;
+   error?: string;
+}
+
 // ✅ 오류 메시지 출력
 export interface AuthFetchError {
    status?: number;
@@ -75,13 +84,4 @@ export interface AuthFetchError {
          [key: string]: string | undefined;
       };
    };
-}
-
-//기사님 기본정보 수정 시 사용 //TODO:기본정보 타입 정리할 것
-export interface BasicInfoInputProps<T extends FieldValues> {
-   name: Path<T>;
-   text: string;
-   placeholder: string;
-   register: UseFormRegister<T>;
-   error?: string;
 }

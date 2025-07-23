@@ -14,9 +14,6 @@ function MoverProfilePostForm() {
    const { user } = useAuth();
    const router = useRouter();
 
-   //디버깅
-   console.log("현재 로그인한 유저", user);
-
    //프로필 등록을 이미 한 유저의 경우 프로필 수정으로 리다이렉트
    if (user?.isProfileCompleted) {
       alert("이미 프로필이 등록되어 있습니다"); //TODO: 토스트 알람으로 리펙터링

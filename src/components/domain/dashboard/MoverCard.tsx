@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React from "react";
 import avatar from "@/assets/images/avatarIcon.svg"; // TODO: 추후 실제 이미지로 변경
-import MoverInfo from "./MoverInfo";
 import EditButtons from "./EditButtons";
 import { Mover } from "@/lib/types";
 
@@ -26,14 +25,14 @@ export default function MoverCard({ mover }: { mover: Mover }) {
             <div className="hidden lg:block">
                <Image src={avatar} alt="프로필 이미지" className="h-16 w-16" />
             </div>
-            <MoverInfo
+            {/* <MoverInfo  //TODO: 타입에러 나서 주석처리함
                averageReviewRating={mover.averageReviewRating}
                reviewCount={mover.reviewCount}
                estimateCount={mover.estimateCount}
                career={mover.career}
                serviceType={mover.serviceType}
                serviceArea={mover.serviceArea}
-            />
+            /> */}
          </div>
       </section>
    );

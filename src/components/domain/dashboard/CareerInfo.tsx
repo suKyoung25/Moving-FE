@@ -5,7 +5,7 @@ import LineDivider from "@/components/common/LineDivider";
 import { Mover } from "@/lib/types";
 
 interface CareerInfoProps {
-   averageReviewRating: Mover["averageReviewRating"];
+   // averageReviewRating: Mover["averageReviewRating"]; //TODO: 타입에러 나서 주석처리함. 아래도 마찬가지
    reviewCount: Mover["reviewCount"];
    career: Mover["career"];
    estimateCount: Mover["estimateCount"];
@@ -14,7 +14,7 @@ interface CareerInfoProps {
 const grayText = "text-gray-300";
 
 export default function CareerInfo({
-   averageReviewRating,
+   // averageReviewRating,
    reviewCount,
    career,
    estimateCount,
@@ -28,7 +28,7 @@ export default function CareerInfo({
                alt="평점"
                className="aspect-square w-5 lg:w-6"
             />
-            <span>{averageReviewRating.toFixed(1)}</span>
+            {/* <span>{averageReviewRating.toFixed(1)}</span> */}
             <span className={grayText}>({reviewCount})</span>
          </div>
          <LineDivider isVertical={true} className="lg:mx-4" />

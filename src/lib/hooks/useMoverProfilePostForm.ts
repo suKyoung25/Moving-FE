@@ -9,8 +9,8 @@ import {
    MoverProfileInput,
    MoverProfileSchema,
 } from "../schemas/profile.schema";
-import createProfile from "../api/auth/requests/createProfile";
 import { useAuth } from "@/context/AuthContext";
+import { createProfile } from "../api/auth/requests/profile";
 
 function useMoverProfilePostForm() {
    const router = useRouter();
@@ -23,8 +23,6 @@ function useMoverProfilePostForm() {
       setError,
       control,
       formState: { errors, isValid },
-      setValue,
-      watch,
    } = useForm<MoverProfileInput>({
       resolver: zodResolver(MoverProfileSchema),
       mode: "onChange",
@@ -41,9 +39,6 @@ function useMoverProfilePostForm() {
       try {
          const res = await createProfile(processedData);
 
-         //디버깅
-         console.log("ㅑㅑㅑ프로필 등록 응답 res", res);
-
          await refreshUser();
 
          if (res.isProfileCompleted) {
@@ -54,6 +49,7 @@ function useMoverProfilePostForm() {
 
          const customError = error as AuthFetchError;
 
+         // 프론트로 에러 전달
          if (customError?.status) {
             Object.entries(customError.body.data!).forEach(([key, message]) => {
                setError(key as keyof MoverProfileInput, {
@@ -73,8 +69,6 @@ function useMoverProfilePostForm() {
       register,
       errors,
       control,
-      setValue,
-      watch,
       isValid,
       isLoading,
       handleSubmit,

@@ -14,15 +14,13 @@ function MoverProfileUpdateForm() {
    const { user } = useAuth();
    const router = useRouter();
 
-   if (!user) return null;
-
    //프로필 등록을 안했으면 등록으로 리다이렉트
    useEffect(() => {
-      if (!user.isProfileCompleted) {
-         alert("프로필 등록을 먼저 해주세요");
+      if (!user?.isProfileCompleted) {
+         alert("프로필 등록을 먼저 해주세요"); //TODO: 토스트 알림으로 리펙터링
          router.push("/profile/create");
       }
-   }, [user]);
+   }, [user, router]);
 
    const {
       register,
@@ -33,6 +31,8 @@ function MoverProfileUpdateForm() {
       handleSubmit,
       onSubmit,
    } = useMoverProfileUpdateForm();
+
+   if (!user) return null;
 
    return (
       <form

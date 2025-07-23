@@ -10,7 +10,7 @@ import {
    MoverBasicInfoInput,
    MoverBasicInfoSchema,
 } from "../schemas/dashboard.schema";
-import { updateMoverInfo } from "../api/auth/requests/update";
+import { updateMoverInfo } from "../api/auth/requests/profile";
 
 function useMoverBasicInfo() {
    const { user, refreshUser } = useAuth();

@@ -2,7 +2,6 @@
 
 import ClientProfileTitle from "@/components/domain/profile/ClientProfileTitle";
 import ClientProfileUpdateForm from "@/components/domain/profile/ClientProfileUpdateForm";
-import MoverProfilePostForm from "@/components/domain/profile/MoverProfilePostForms";
 import MoverProfileUpdateForm from "@/components/domain/profile/MoverProfileUpdateForms";
 import { useAuth } from "@/context/AuthContext";
 

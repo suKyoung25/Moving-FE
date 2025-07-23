@@ -16,15 +16,13 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
    isArea,
    error,
 }: InputFieldProps<T>) {
+   //각 버튼들 상수화
    const serviceTypes = moveType;
    const areaOptions = regions;
 
    const options = isServiceType ? serviceTypes : isArea ? areaOptions : [];
 
    if (!control) return null;
-
-   //디버깅
-   console.log("ㅏㅐㅡ 영어로 된 에러", error);
 
    return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-6 leading-8">
@@ -39,33 +37,28 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
             control={control}
             render={({ field }) => {
                const selectedValues = Array.isArray(field.value)
-                  ? isServiceType // 서비스 종류의 경우, enum 값("SMALL") → 한글 라벨("소형이사")로 변환
+                  ? isServiceType // 서비스 종류의 경우, enum("SMALL") > 한글 라벨("소형이사")로 변환
                      ? (field.value as string[]).map(
                           (value) =>
                              serviceTypeMap[
                                 value as keyof typeof serviceTypeMap
                              ],
                        )
-                     : (field.value as string[]) // 서비스 지역의 경우, 이미 한글임
+                     : (field.value as string[]) // 서비스 지역의 경우, 변환 필요 없이 이미 한글임
                   : [];
 
-               //버튼 선택/해제
                const toggleOption = (option: string) => {
+                  // 버튼 토클
                   const updatedLabels = selectedValues.includes(option)
                      ? selectedValues.filter((item) => item !== option)
                      : [...selectedValues, option];
 
+                  // 백엔드와 통신을 위해 enum으로 다시 변환
                   const updatedValue = isServiceType
-                     ? updatedLabels.map((label) => labelToEnumMap[label]) // 백엔드와 통신을 위해 enum으로 다시 변환
+                     ? updatedLabels.map((label) => labelToEnumMap[label])
                      : updatedLabels;
 
                   field.onChange(updatedValue);
-
-                  //디버깅
-                  console.log(
-                     "ㅐㅐㅓ,버튼 선택된 후 셀렉티드 값: ",
-                     updatedValue,
-                  );
                };
 
                return (

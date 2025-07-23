@@ -10,7 +10,7 @@ import {
    MoverProfileSchema,
 } from "../schemas/profile.schema";
 import { useAuth } from "@/context/AuthContext";
-import { updateMoverProfile } from "../api/auth/requests/update";
+import { updateMoverProfile } from "../api/auth/requests/profile";
 import { extractRegionNames } from "../utils/profile.util";
 
 function useMoverProfileUpdateForm() {
@@ -24,7 +24,6 @@ function useMoverProfileUpdateForm() {
       setError,
       control,
       formState: { errors, isValid },
-      setValue,
       reset,
    } = useForm<MoverProfileInput>({
       resolver: zodResolver(MoverProfileSchema),
@@ -53,9 +52,6 @@ function useMoverProfileUpdateForm() {
             serviceArea: extractRegionNames(mover.serviceArea),
          };
 
-         //디버깅
-         console.log("초기화할 기본값", defaultValues);
-
          reset(defaultValues);
       }
    }, [user, reset]);
@@ -71,19 +67,13 @@ function useMoverProfileUpdateForm() {
       try {
          const res = await updateMoverProfile(processedData);
 
-         //디버깅
-         console.log("ㅏㅏㅜㅏ수정된 프로필 응답", res);
-
          if (res) {
             await refreshUser();
-            alert("프로필이 정상적으로 수정되었습니다.");
+            alert("프로필이 정상적으로 수정되었습니다."); //TODO: 토스트 알림으로 바꾸기
             router.push("/dashboard"); //TODO: 제대로 이동하는지 확인
          }
       } catch (error) {
          console.error("기사님 프로필 수정 실패: ", error);
-
-         //디버깅
-         console.log("ㅏㅜㅜㅑㅑ프로필 수정 실패 에러", error);
 
          const customError = error as AuthFetchError;
 
@@ -106,7 +96,6 @@ function useMoverProfileUpdateForm() {
       register,
       errors,
       control,
-      setValue,
       isValid,
       isLoading,
       handleSubmit,
