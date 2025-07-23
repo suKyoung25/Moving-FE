@@ -26,7 +26,7 @@ export interface Client extends BaseUser {
 
 export interface Mover extends BaseUser {
    nickName?: string;
-   career?: string;
+   career?: string | number; //TODO: string으로 통일할 것
    introduction?: string;
    description?: string;
    serviceType: string[];
@@ -34,6 +34,8 @@ export interface Mover extends BaseUser {
    favoriteCount: number;
    estimateCount: number;
    reviewCount: number;
+   averageReviewRating: number;
+   isFavorite?: boolean;
 }
 
 export type User = Client | Mover;
