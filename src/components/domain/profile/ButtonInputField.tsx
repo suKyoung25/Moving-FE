@@ -23,6 +23,9 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
 
    if (!control) return null;
 
+   //디버깅
+   console.log("ㅏㅐㅡ 영어로 된 에러", error);
+
    return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-6 leading-8">
          <div>
@@ -35,16 +38,33 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
             name={name}
             control={control}
             render={({ field }) => {
+               const serviceTypeMap = {
+                  SMALL: "소형이사",
+                  HOME: "가정이사",
+                  OFFICE: "사무실이사",
+               } as const;
+
+               // 라벨 > enum (역매핑용)
+               const labelToEnumMap = Object.fromEntries(
+                  Object.entries(serviceTypeMap).map(([key, value]) => [
+                     value,
+                     key,
+                  ]),
+               );
+
                const selectedValues = Array.isArray(field.value)
                   ? typeof field.value[0] === "object" // 서비스 지역인 경우 Region[] > string[]
                      ? (field.value as unknown as Region[]).map(
                           (region) => region.regionName,
                        )
-                     : (field.value as string[]) //서비스 종류인 경우
+                     : (field.value as string[]).map((value) =>
+                          isServiceType
+                             ? serviceTypeMap[
+                                  value as keyof typeof serviceTypeMap
+                               ]
+                             : value,
+                       )
                   : [];
-
-               //디버깅
-               console.log("ㅐㅐㅓ,셀렉티드 벨류 값: ", selectedValues);
 
                //버튼 선택/해제
                const toggleOption = (option: string) => {
@@ -54,9 +74,17 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
 
                   const updatedValue = isArea
                      ? updatedStrings.map((regionName) => ({ regionName })) // Region[]
-                     : updatedStrings; // string[]
+                     : updatedStrings.map((label) =>
+                          isServiceType ? labelToEnumMap[label] : label,
+                       ); // string[] (enum 값으로)
 
                   field.onChange(updatedValue);
+
+                  //디버깅
+                  console.log(
+                     "ㅐㅐㅓ,버튼 선택된 후 셀렉티드 값: ",
+                     updatedValue,
+                  );
                };
 
                return (
