@@ -6,9 +6,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-white">
          {/*  bg-bg-100 */}
          <Header>
-            <div>
-               <button>1</button>
-               <button>2</button>
+            <div className="flex gap-2">
+               <button>나의 견적 확인</button>
+               <button>반려한 견적 확인</button>
             </div>
          </Header>
 

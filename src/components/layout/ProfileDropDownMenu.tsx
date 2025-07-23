@@ -1,20 +1,12 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function ProfileDropDownMenu() {
-   const { user, logout } = useAuth();
-   const router = useRouter();
-
-   const handleLogout = () => {
-      logout();
-      router.replace("/mover-search");
-   };
+   const user = { name: "홍길동", userType: "client" };
 
    const menuItems =
-      user!.userType === "client"
+      user.userType === "client"
          ? [
               { label: "프로필 수정", href: "/profile/edit" },
               { label: "찜한 기사님", href: "/favorite-movers" },
@@ -26,11 +18,11 @@ export default function ProfileDropDownMenu() {
            ];
 
    return (
-      <div className="border-line-200 absolute top-10 left-1/2 h-auto min-w-38 -translate-x-1/2 rounded-2xl border-1 bg-white px-4 py-2.5 text-nowrap lg:top-12 lg:min-w-50">
+      <div className="border-line-200 absolute top-8 left-1/2 h-auto min-w-38 -translate-x-1/2 rounded-2xl border-1 bg-white px-4 py-2.5 text-nowrap lg:top-12 lg:min-w-50">
          <h2 className="text-16-semibold lg:text-18-semibold py-2 lg:py-2.5">
-            {user!.name +
+            {user.name +
                " " +
-               (user!.userType === "client" ? "고객님" : "기사님")}
+               (user.userType === "client" ? "고객님" : "기사님")}
          </h2>
          <ul>
             {menuItems.map(({ label, href }) => (
@@ -46,9 +38,7 @@ export default function ProfileDropDownMenu() {
          </ul>
          <div className="bg-line-100 h-0.25 w-full"></div>
          <div className="text-14-regular lg:text-16-regular flex justify-center pt-2 text-gray-500">
-            <button onClick={handleLogout} className="block w-full">
-               로그아웃
-            </button>
+            <button className="block w-full">로그아웃</button>
          </div>
       </div>
    );
