@@ -14,18 +14,23 @@ interface BaseUser {
    isProfileCompleted: boolean;
 }
 
+export interface Region {
+   id: string;
+   regionName: string;
+}
+
 export interface Client extends BaseUser {
    serviceType: string[];
    livingArea: string[];
 }
 
-interface Mover extends BaseUser {
+export interface Mover extends BaseUser {
    nickName?: string;
-   career?: number;
+   career?: string;
    introduction?: string;
    description?: string;
    serviceType: string[];
-   serviceArea: string[];
+   serviceArea: Region[];
    favoriteCount: number;
    estimateCount: number;
    reviewCount: number;

@@ -5,6 +5,7 @@ import { FieldValue, InputFieldProps } from "@/lib/types/profile.types";
 import { regions } from "@/constants";
 import { Controller, Path } from "react-hook-form";
 import ErrorText from "../auth/ErrorText";
+import { Region } from "@/lib/types";
 
 //주석: serviceType인지 Area인지 boolean으로 분기처리
 function ButtonInputField<T extends Record<string, FieldValue>>({
@@ -34,14 +35,28 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
             name={name}
             control={control}
             render={({ field }) => {
-               const selectedValues = (field.value as string[]) || [];
+               const selectedValues = Array.isArray(field.value)
+                  ? typeof field.value[0] === "object" // 서비스 지역인 경우 Region[] > string[]
+                     ? (field.value as unknown as Region[]).map(
+                          (region) => region.regionName,
+                       )
+                     : (field.value as string[]) //서비스 종류인 경우
+                  : [];
 
+               //디버깅
+               console.log("ㅐㅐㅓ,셀렉티드 벨류 값: ", selectedValues);
+
+               //버튼 선택/해제
                const toggleOption = (option: string) => {
-                  const updated = selectedValues.includes(option)
-                     ? selectedValues.filter((item) => item !== option)
-                     : [...selectedValues, option];
+                  const updatedStrings = selectedValues.includes(option)
+                     ? selectedValues.filter((item) => item !== option) // 버튼이 선택된 상태라면 제거
+                     : [...selectedValues, option]; //선택되지 않았다면 추가
 
-                  field.onChange(updated);
+                  const updatedValue = isArea
+                     ? updatedStrings.map((regionName) => ({ regionName })) // Region[]
+                     : updatedStrings; // string[]
+
+                  field.onChange(updatedValue);
                };
 
                return (

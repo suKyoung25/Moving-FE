@@ -10,7 +10,7 @@ import {
    MoverBasicInfoInput,
    MoverBasicInfoSchema,
 } from "../schemas/dashboard.schema";
-import updateInfo from "../api/auth/requests/updateInfo";
+import { updateMoverInfo } from "../api/auth/requests/update";
 
 function useMoverBasicInfo() {
    const { user, refreshUser } = useAuth();
@@ -70,7 +70,7 @@ function useMoverBasicInfo() {
             });
          }
 
-         const res = await updateInfo(payload);
+         const res = await updateMoverInfo(payload);
 
          refreshUser();
 
