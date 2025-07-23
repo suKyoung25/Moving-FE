@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import ReviewTabs from "./HeaderTabs";
+import HeaderTabs from "./HeaderTabs";
 
 type TabsProps = {
    tab1Label: string;
@@ -10,7 +10,7 @@ type TabsProps = {
 export default function SomeHeader({ tab1Label, tab2Label }: TabsProps) {
    return (
       <Suspense fallback={null}>
-         <ReviewTabs tab1Label={tab1Label} tab2Label={tab2Label} />
+         <HeaderTabs tab1Label={tab1Label} tab2Label={tab2Label} />
       </Suspense>
    );
 }
