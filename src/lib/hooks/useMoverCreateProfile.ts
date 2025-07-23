@@ -10,10 +10,12 @@ import {
    MoverProfileSchema,
 } from "../schemas/profile.schema";
 import createProfile from "../api/auth/requests/createProfile";
+import { useAuth } from "@/context/AuthContext";
 
 function useMoverCreateProfile() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
+   const { refreshUser } = useAuth();
 
    const {
       register,
@@ -39,11 +41,19 @@ function useMoverCreateProfile() {
       try {
          const res = await createProfile(processedData);
 
+         //디버깅
+         console.log("ㅏㅏㅜㅏ생성된 프로필 응답", res);
+
+         refreshUser();
+
          if (res.data.user) {
-            router.push("/dashboard"); //TODO: 마이페이지로 이동하는지 확인
+            router.push("/dashboard"); //디버깅: 마이페이지로 이동하는지 확인
          }
       } catch (error) {
          console.error("기사님 프로필 등록 실패: ", error);
+
+         //디버깅
+         console.log("ㅏㅜㅜㅑㅑ프로필 등록 실패 에러", error);
 
          const customError = error as AuthFetchError;
 
