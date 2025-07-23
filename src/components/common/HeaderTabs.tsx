@@ -10,7 +10,7 @@ type TabsProps = {
    tab2Label: string;
 };
 
-export default function ReviewTabs({
+export default function HeaderTabs({
    tab1Label = "작성 가능한 리뷰",
    tab2Label = "내가 작성한 리뷰",
 }: TabsProps) {
@@ -24,12 +24,12 @@ export default function ReviewTabs({
    };
 
    return (
-      <div className="relative flex gap-6 lg:gap-10">
+      <div className="relative flex gap-6 lg:gap-8">
          <div className="flex items-center">
             <button
-               className={`text-14-bold lg:text-24-semibold py-4 lg:py-8 ${
+               className={`text-14-bold md:text-16-bold py-3 lg:py-4 ${
                   activeTab === 1
-                     ? "text-black-400 border-primary-blue-400 border-b-2 lg:border-b-4"
+                     ? "text-black-400 border-primary-blue-400 border-b-3"
                      : "text-gray-400"
                }`}
                onClick={() => handleTab(1)}
@@ -39,9 +39,9 @@ export default function ReviewTabs({
          </div>
          <div className="flex items-center">
             <button
-               className={`text-14-bold lg:text-24-semibold py-4 lg:py-8 ${
+               className={`text-14-bold md:text-16-bold py-3 lg:py-4 ${
                   activeTab === 2
-                     ? "text-black-400 border-primary-blue-400 border-b-2 lg:border-b-4"
+                     ? "text-black-400 border-primary-blue-400 border-b-3"
                      : "text-gray-400"
                }`}
                onClick={() => handleTab(2)}
