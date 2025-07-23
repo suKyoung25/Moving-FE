@@ -9,13 +9,11 @@ import {
    MoverProfileInput,
    MoverProfileSchema,
 } from "../schemas/profile.schema";
-import { useAuth } from "@/context/AuthContext";
 import { createProfile } from "../api/auth/requests/profile";
 
 function useMoverProfilePostForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
-   const { refreshUser } = useAuth();
 
    const {
       register,
@@ -39,10 +37,8 @@ function useMoverProfilePostForm() {
       try {
          const res = await createProfile(processedData);
 
-         await refreshUser();
-
          if (res.isProfileCompleted) {
-            router.push("/dashboard"); //TODO: 마이페이지로 이동하는지 확인
+            router.push("/dashboard");
          }
       } catch (error) {
          console.error("기사님 프로필 등록 실패: ", error);

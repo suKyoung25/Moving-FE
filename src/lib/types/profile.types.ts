@@ -42,3 +42,9 @@ export interface ClientProfilePostData {
    serviceType?: ("SMALL" | "HOME" | "OFFICE")[];
    livingArea?: string[];
 }
+
+export enum MoveType {
+   "가정이사" = "HOUSE",
+   "사무실이사" = "OFFICE",
+   "소형이사" = "SMALL",
+}

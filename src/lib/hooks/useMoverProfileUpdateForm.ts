@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthFetchError, Mover } from "../types";
+import { AuthFetchError, Mover, MoveType } from "../types";
 import {
    MoverProfileInput,
    MoverProfileSchema,
@@ -62,6 +62,7 @@ function useMoverProfileUpdateForm() {
       const processedData = {
          ...data,
          career: Number(data.career), // string > number로 변환
+         serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
       };
 
       try {
@@ -70,7 +71,7 @@ function useMoverProfileUpdateForm() {
          if (res) {
             await refreshUser();
             alert("프로필이 정상적으로 수정되었습니다."); //TODO: 토스트 알림으로 바꾸기
-            router.push("/dashboard"); //TODO: 제대로 이동하는지 확인
+            router.push("/dashboard");
          }
       } catch (error) {
          console.error("기사님 프로필 수정 실패: ", error);
