@@ -272,6 +272,15 @@
    font-weight: 400;
 }
 
+@layer utilities {
+   .scrollbar-hide {
+      &::-webkit-scrollbar {
+         display: none;
+      }
+      scrollbar-width: none;
+   }
+}
+
 body {
    color: var(--color-black-400);
    font-family: "Pretendard", sans-serif;
