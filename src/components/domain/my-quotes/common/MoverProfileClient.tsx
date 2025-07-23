@@ -5,7 +5,7 @@ import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoverProfile from "@/components/common/MoverProfile";
 
 interface MoverProfileclientProps {
-   moveType: ChipType;
+   moveType: ChipType | null;
    isDesignated: boolean;
    moverName: string;
    profileImage: string | null;
@@ -17,6 +17,7 @@ interface MoverProfileclientProps {
    estimateCount: number;
    favoriteCount: number;
    quotesStatus: "pending" | "received";
+   comment?: string;
 }
 
 export default function MoverProfileclient(props: MoverProfileclientProps) {
@@ -30,7 +31,7 @@ export default function MoverProfileclient(props: MoverProfileclientProps) {
          <p
             className={`text-14-semibold text-black-300 lg:text-20-semibold ${props.quotesStatus === "pending" ? "hidden" : "block"}`}
          >
-            고객님의 물품을 안전하게 운송해 드립니다.
+            {props.comment}
          </p>
          <MoverProfile
             nickName={props.moverName}

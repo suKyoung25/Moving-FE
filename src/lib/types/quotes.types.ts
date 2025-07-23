@@ -4,6 +4,13 @@ export interface Favorite {
    moverId: string;
 }
 
+export interface DesignatedRequest {
+   id: string;
+   createdAt: Date;
+   moverId: string;
+   requestId: string;
+}
+
 export interface Estimate {
    estimateId: string;
    moverId: string;
@@ -20,6 +27,7 @@ export interface Estimate {
    favoriteCount: number;
    reviewCount: number;
    reviewRating: number;
+   isConfirmed: boolean;
 }
 
 export interface pendingQuote {
@@ -28,5 +36,7 @@ export interface pendingQuote {
    toAddress: string;
    moveDate: string;
    moveType: string;
+   requestedAt: string;
    estimates: Estimate[];
+   designatedRequest: DesignatedRequest[];
 }

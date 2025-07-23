@@ -4,14 +4,13 @@ import React, { useEffect, useState } from "react";
 import profile from "@/assets/images/profileIcon.svg";
 import MoveDateCard from "../common/MoveDateCard";
 import { useRouter } from "next/navigation";
-import emptyQuotes from "@/assets/images/emptyBlueFolderIcon.svg";
-import Image from "next/image";
 import MoverProfileclient from "../common/MoverProfileClient";
 import { ChipType } from "@/components/common/MoveChip";
 import SolidButton from "@/components/common/SolidButton";
 import OutlinedButton from "@/components/common/OutlinedButton";
 import { fetchClientPendingQuotes } from "@/lib/api/estimate/getClientMyQuotes";
 import { pendingQuote } from "@/lib/types/quotes.types";
+import QuotesLoading from "../common/QuotesLoading";
 
 export default function Pending() {
    const [data, setData] = useState<pendingQuote[]>();
@@ -26,16 +25,7 @@ export default function Pending() {
       getMyPendingQuotes();
    }, []);
 
-   if (!Array.isArray(data) || data.length === 0)
-      return (
-         <div className="mt-32 flex flex-col items-center justify-center gap-8">
-            <Image src={emptyQuotes} alt="대기중인 견적 없음" />
-            <p className="text-16-regular md:text-24-regular text-center text-gray-400">
-               기사님들이 열심히 확인 중이에요!
-               <br />곧 견적이 도착할 거에요!
-            </p>
-         </div>
-      );
+   if (!Array.isArray(data) || data.length === 0) return <QuotesLoading />;
 
    return (
       <div className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">

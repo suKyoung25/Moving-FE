@@ -1,8 +1,17 @@
 "use client";
 
+import { DesignatedRequest, Estimate } from "@/lib/types/quotes.types";
 import MoverProfileclient from "./MoverProfileClient";
 
-export default function ReceivedCard() {
+interface ReceivedCardProps {
+   estimate: Estimate;
+   designated: DesignatedRequest[];
+}
+
+export default function ReceivedCard({
+   estimate,
+   designated,
+}: ReceivedCardProps) {
    return (
       <div
          style={{
@@ -12,21 +21,24 @@ export default function ReceivedCard() {
          className="flex w-full cursor-pointer flex-col gap-2 rounded-2xl bg-white px-3.5 pt-5 pb-3.5 lg:px-6 lg:pt-7 lg:pb-5.5"
       >
          <MoverProfileclient
-            moveType="HOME"
-            isDesignated={true}
-            moverName="홍길동 이사님"
-            profileImage={null}
+            moveType={estimate.isConfirmed ? "DONE" : null}
+            isDesignated={designated ? true : false}
+            moverName={estimate.moverName}
+            profileImage={estimate.profileImage}
             isFavorited={false}
-            averageReviewRating={4.8}
-            reviewCount={12}
-            career={5}
-            estimateCount={120}
-            favoriteCount={30}
+            averageReviewRating={estimate.reviewRating}
+            reviewCount={estimate.reviewCount}
+            career={estimate.career}
+            estimateCount={estimate.estimateCount}
+            favoriteCount={estimate.favoriteCount}
             quotesStatus="received"
+            comment={estimate.comment}
          />
          <div className="flex items-center justify-end gap-2">
             <p className="text-14-medium lg:text-18-medium">견적금액</p>
-            <p className="text-18-bold lg:text-24-bold">180,000원</p>
+            <p className="text-18-bold lg:text-24-bold">
+               {estimate.price.toLocaleString()}원
+            </p>
          </div>
       </div>
    );
