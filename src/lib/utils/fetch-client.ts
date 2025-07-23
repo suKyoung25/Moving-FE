@@ -118,6 +118,9 @@ export async function tokenFetch(
 
    // ★ 요청
    try {
+      //디버깅
+      console.log("패치 클라이언트 시작");
+
       let response = await fetch(url, {
          ...options,
          headers,
@@ -126,6 +129,9 @@ export async function tokenFetch(
          cache: "no-store",
          next: { revalidate: 0 },
       });
+
+      //디버깅
+      console.log("패치 결과", response);
 
       // 401 오류면 토큰 재발급 시도
       if (response.status === 401) {

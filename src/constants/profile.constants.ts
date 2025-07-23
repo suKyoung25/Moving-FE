@@ -26,3 +26,10 @@ export const MOVE_TYPES = {
    가정이사: "HOME",
    사무실이사: "OFFICE",
 } as const;
+
+//역변환
+export const serviceTypeMap = {
+   SMALL: "소형이사",
+   HOME: "가정이사",
+   OFFICE: "사무실이사",
+} as const;

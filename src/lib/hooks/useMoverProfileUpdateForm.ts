@@ -11,6 +11,7 @@ import {
 } from "../schemas/profile.schema";
 import { useAuth } from "@/context/AuthContext";
 import { updateMoverProfile } from "../api/auth/requests/update";
+import { extractRegionNames } from "../utils/profile.util";
 
 function useMoverProfileUpdateForm() {
    const router = useRouter();
@@ -49,8 +50,7 @@ function useMoverProfileUpdateForm() {
             introduction: mover.introduction ?? "",
             description: mover.description ?? "",
             serviceType: mover.serviceType ?? [],
-            serviceArea:
-               mover.serviceArea?.map((area) => area.regionName) ?? [],
+            serviceArea: extractRegionNames(mover.serviceArea),
          };
 
          //디버깅

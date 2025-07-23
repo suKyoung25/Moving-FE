@@ -41,6 +41,11 @@ function useMoverProfilePostForm() {
       try {
          const res = await createProfile(processedData);
 
+         //디버깅
+         console.log("ㅑㅑㅑ프로필 등록 응답 res", res);
+
+         await refreshUser();
+
          if (res.isProfileCompleted) {
             router.push("/dashboard"); //TODO: 마이페이지로 이동하는지 확인
          }
