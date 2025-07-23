@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Mover } from "@/lib/types/mover.types";
-import { getMoverById } from "@/lib/api/mover";
+import { getMoverById } from "@/lib/api/mover/getMover";
 import ActionButtons from "./ActionButtons";
 import MainMoverCard from "./MainMoverCard";
 import DetailSections from "./DetailSections";

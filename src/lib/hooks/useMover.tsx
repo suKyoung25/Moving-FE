@@ -1,6 +1,6 @@
 // useMover.ts
 import { useContext } from "react";
-import { MoverContext } from "./MoverContext";
+import { MoverContext } from "../../context/MoverContext";
 
 export const useMover = () => {
   const context = useContext(MoverContext);

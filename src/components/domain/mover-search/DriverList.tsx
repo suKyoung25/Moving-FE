@@ -1,7 +1,7 @@
 "use client";
 
 import DriverCard from "./DriverCard";
-import { useMover } from "@/context/mover";
+import { useMover } from "@/lib/hooks/useMover";
 import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
 
 // ✅ sortBy prop 제거 - Context에서 직접 상태 관리

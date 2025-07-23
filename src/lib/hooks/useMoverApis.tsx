@@ -1,10 +1,12 @@
 // moverActions.ts
 import { Dispatch, useCallback, useEffect } from "react";
 import { MoverAction, MoverState } from "@/lib/types/mover.types";
-import { getMovers, toggleFavoriteMover, GetMoversParams } from "@/lib/api/mover";
+import { getMovers } from "@/lib/api/mover/getMover";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
+import { GetMoversParams } from "@/lib/types/mover.types";
 import { areaMapping } from "@/constants/mover.constants";
 
-export const useMoverActions = (
+export const useMoverApis = (
   state: MoverState,
   dispatch: Dispatch<MoverAction>,
   pendingFavoriteRequests: React.MutableRefObject<Set<string>>

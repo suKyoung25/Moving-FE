@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Mover } from "@/lib/types/mover.types";
-import { toggleFavoriteMover } from "@/lib/api/mover";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { tokenSettings } from "@/lib/utils/auth.util";
 
 export default function ActionButtons({ mover }: { mover: Mover }) {

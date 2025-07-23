@@ -1,4 +1,4 @@
-import MoverDetail from "@/components/domain/mover-search/detail/MoverDetail";
+import MoverDetail from "@/components/domain/detail/MoverDetail";
 
 export default async function MoverDetailPage() {
    return (

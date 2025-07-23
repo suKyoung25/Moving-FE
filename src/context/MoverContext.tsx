@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, useReducer, ReactNode, useRef } from "react";
-import { moverReducer } from "./moverReducer";
+import { moverReducer } from "../../reducers/moverReducer";
 import { initialState, MoverState } from "@/lib/types/mover.types";
-import { useMoverActions } from "./moverActions";
+import { useMoverApis } from "../lib/hooks/useMoverApis";
 
 interface MoverContextType {
   state: MoverState;
@@ -19,7 +19,7 @@ export const MoverContext = createContext<MoverContextType | undefined>(undefine
 export const MoverProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(moverReducer, initialState);
   const pendingFavoriteRequests = useRef<Set<string>>(new Set());
-  const actions = useMoverActions(state, dispatch, pendingFavoriteRequests);
+  const actions = useMoverApis(state, dispatch, pendingFavoriteRequests);
 
   return (
     <MoverContext.Provider value={{ state, ...actions }}>
