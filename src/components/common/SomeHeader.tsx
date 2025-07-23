@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import ReviewTabs from "./ReviewTabs";
+import ReviewTabs from "./HeaderTabs";
 
 type TabsProps = {
    tab1Label: string;

@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import Header from "@/components/layout/Header";
-import SomeHeader from "@/components/domain/reviews/SomeHeader";
+import SomeHeader from "@/components/common/SomeHeader";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
    return (
