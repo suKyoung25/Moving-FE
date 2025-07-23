@@ -15,7 +15,7 @@ import close from "@/assets/images/xIcon.svg";
 import HamburgerMenu from "./HamburgerMenu";
 import alarmIcon from "@/assets/images/alarmIcon.svg";
 import profileIcon from "@/assets/images/profileIcon.svg";
-import ProfileDropDownMenu from "./ProfileDropDownMenu";
+import ProfileDropDownMenu from "@/components/common/ProfileDropdownMenu";
 import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
 
