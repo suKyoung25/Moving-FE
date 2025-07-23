@@ -45,19 +45,21 @@ export default function Dropdown({ dropdownName, setDropdownName }: Dropdown) {
             onClick={() => setIsDropdownOpen((prev) => !prev)}
             className="border-line-100 bg-gray50 flex h-9 cursor-pointer items-center justify-between rounded-lg border px-3 py-1.5 lg:h-16 lg:rounded-2xl lg:px-6 lg:py-4"
          >
-            <p className="text-14-medium lg:text-18-medium">{dropdownName}</p>
+            <p className="text-14-medium lg:text-18-medium">
+               {dropdownName === "all" ? "전체" : "확정된 견적"}
+            </p>
             <Image src={chervronDown} alt="카테고리" width={20} height={20} />
          </div>
          {isDropdownOpen && (
             <ul className="border-line-100 absolute w-full rounded-lg border bg-white">
                <li
-                  onClick={() => handleDropdownItemClick("전체")}
+                  onClick={() => handleDropdownItemClick("all")}
                   className="text-14-medium lg:text-18-medium flex h-9 cursor-pointer items-center px-3.5 py-4 lg:h-16"
                >
                   전체
                </li>
                <li
-                  onClick={() => handleDropdownItemClick("확정한 견적서")}
+                  onClick={() => handleDropdownItemClick("confirmed")}
                   className="text-14-medium lg:text-18-medium flex h-9 cursor-pointer items-center px-3.5 py-4 lg:h-16"
                >
                   확정한 견적서

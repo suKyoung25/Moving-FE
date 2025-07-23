@@ -10,13 +10,13 @@ import QuotesLoading from "../common/QuotesLoading";
 
 // 받았던 견적
 export default function Received() {
-   const [dropdownName, setDropdownName] = useState("전체");
+   const [dropdownName, setDropdownName] = useState("all");
    const [data, setData] = useState<pendingQuote[]>();
 
    useEffect(() => {
       async function getMyReceivedQuotes() {
          try {
-            const result = await fetchClientReceivedQuotes();
+            const result = await fetchClientReceivedQuotes(dropdownName);
             setData(result.data);
          } catch (e) {
             throw e;
@@ -24,7 +24,7 @@ export default function Received() {
       }
 
       getMyReceivedQuotes();
-   }, []);
+   }, [dropdownName]);
 
    if (!data) return <QuotesLoading />;
 
