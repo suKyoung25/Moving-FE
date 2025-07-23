@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import type { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { User } from "@/lib/types";
 
 const listVariants = {
    hidden: {},
@@ -27,7 +28,7 @@ export default function HamburgerMenu({
    isHamburgerOpen,
    setIsHamburgerOpen,
 }: {
-   user: any | null;
+   user: User | null;
    isHamburgerOpen: boolean;
    setIsHamburgerOpen: Dispatch<SetStateAction<boolean>>;
 }) {
