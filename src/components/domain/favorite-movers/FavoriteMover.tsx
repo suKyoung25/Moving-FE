@@ -64,7 +64,7 @@ export default function FavoriteMover() {
          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {movers.map((mover) => (
                <div
-                  key={mover.nickName} // 추후 id로 수정 예정
+                  key={mover.id}
                   className="border-line-100 h-37.5 w-full rounded-2xl border bg-white px-3.5 py-4 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 lg:mb-6 lg:h-50.5 lg:px-6 lg:py-5"
                >
                   <div className="mb-3.5 flex gap-2 lg:gap-3">

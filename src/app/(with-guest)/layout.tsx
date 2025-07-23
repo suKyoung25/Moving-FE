@@ -1,11 +1,12 @@
+import GuestLayout from "@/components/layout/GuestLayout";
 import Header from "@/components/layout/Header";
-import DefaultLayout from "@/components/layout/DefaultLayout";
+import type { ReactNode } from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
    return (
       <>
          <Header />
-         <DefaultLayout>{children}</DefaultLayout>
+         <GuestLayout>{children}</GuestLayout>
       </>
    );
 }
