@@ -68,7 +68,7 @@ export default function SearchBar() {
          {/* ✅ 현재 적용된 검색어 표시 (선택적) */}
          {state.filters.search && (
             <div className="mt-2 text-sm text-gray-500">
-               검색 중: <span className="font-medium">"{state.filters.search}"</span>
+               검색 중: <span className="font-medium">&quot;{state.filters.search}&quot;</span>
             </div>
          )}
       </form>

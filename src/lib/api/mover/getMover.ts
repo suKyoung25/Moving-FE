@@ -26,7 +26,7 @@ export const getMovers = async (
   if (!res.ok) throw new Error("Failed to fetch movers");
 
   const data = await res.json();
-  const movers = (data.movers || []).map((mover: any) => ({
+  const movers = (data.movers || []).map((mover: Mover) => ({
     ...mover,
     favoriteCount: mover.favoriteCount ?? 0,
     region: mover.serviceArea ?? [],
