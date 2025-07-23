@@ -1,18 +1,18 @@
 import Pending from "@/components/domain/my-quotes/pages/Pending";
 import Received from "@/components/domain/my-quotes/pages/Received";
 
-// 내 견적 관리
-export default async function Page({
-   searchParams,
-}: {
-   searchParams: { [key: string]: string | string[] | undefined };
-}) {
-   const params = await searchParams;
-   const path = params.path;
+type PageProps = {
+   searchParams: Promise<{ tab?: string }>;
+};
 
-   if (path === "pending") {
+// 내 견적 관리
+export default async function Page({ searchParams }: PageProps) {
+   const { tab } = await searchParams;
+   const activeTab = tab === "2" ? "2" : "1";
+
+   if (activeTab === "1") {
       return <Pending />;
-   } else if (path === "received") {
+   } else if (activeTab === "2") {
       return <Received />;
    }
 
