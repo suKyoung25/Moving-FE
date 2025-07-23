@@ -8,11 +8,11 @@ type PageProps = {
 
 export default async function ReviewsPage({ searchParams }: PageProps) {
    const { tab } = await searchParams;
-   const activeTab = tab === "my" ? "my" : "writable";
+   const activeTab = tab === "2" ? "2" : "1";
 
    return (
       <div className="pt-10">
-         {activeTab === "writable" ? <WritableReviews /> : <MyReviews />}
+         {activeTab === "1" ? <WritableReviews /> : <MyReviews />}
       </div>
    );
 }
