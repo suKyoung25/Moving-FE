@@ -64,7 +64,13 @@ export default async function Page() {
                   </div>
                </article>
                <hr className="bg-line-100 h-px border-0 lg:hidden" />
-               <QuotaionInfo />
+               <QuotaionInfo
+                  fromAddress="ex1"
+                  moveDate="2025-07-17T11:22:10.755Z"
+                  moveType="SMALL"
+                  requestedAt="2025-07-19T11:22:10.755Z"
+                  toAddress="ex5"
+               />
             </section>
             <div
                style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.16)" }}
