@@ -1,17 +1,22 @@
+import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
 import { User } from "./auth.types";
 
+//바로 아래+기사님 프로필 컴포넌트에서 사용
+export type FieldValue = string | string[] | undefined;
+
 //기사님 프로필 컴포넌트 모음집
-export interface InputFieldProps {
-   name: string; //useActionsState로 매핑하기 위한
+export interface InputFieldProps<T extends Record<string, FieldValue>> {
+   name: Path<T>;
    text: string;
    placeholder?: string;
 
    isServiceType?: boolean; //제공 서비스인지
    isArea?: boolean; //서비스 가능 지역인지
+   options?: string[];
 
-   defaultValue?: string | string[];
-   onValidChange?: (name: string, value: boolean) => void;
-   validator?: (value: string | string[]) => ValidationResult; // 유효성 검사 함수
+   control?: Control<T>;
+   register?: UseFormRegister<T>;
+   error?: FieldError;
 }
 
 //기사님 프로필 유효성 함수 관련
@@ -32,7 +37,7 @@ export type profileState = {
 };
 
 // ✅ 일반 회원 프로필 정보
-export interface ClientProfileData {
+export interface ClientProfilePostData {
    profileImage?: string;
    serviceType?: ("SMALL" | "HOME" | "OFFICE")[];
    livingArea?: string[];

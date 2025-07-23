@@ -21,7 +21,7 @@ export default function useSignInForm() {
       handleSubmit,
       setError,
       formState: { errors, isValid },
-   } = useForm({
+   } = useForm<SignInFormValues>({
       mode: "onChange",
       resolver: zodResolver(SignInFormSchema),
    });
@@ -32,13 +32,16 @@ export default function useSignInForm() {
 
       try {
          const res = await createSignIn(type, data);
+         await getUser(res.data.user, res.data.accessToken);
 
-         if (res.data.user && res.data.accessToken) {
-            await getUser(res.data.user, res.data.accessToken);
-            router.replace("/mover-search");
-         }
+         // ★ 프로필 등록 안 했으면 프로필 등록, 아니면 기사님 찾기로 이동
+         // if (!res.data.user.isProfileCompleted) {
+         //    router.replace("/profile/create");
+         // } else {
+         router.replace("/mover-search");
+         // }
       } catch (error) {
-         console.error("일반 로그인 실패: ", error);
+         console.error("로그인 실패: ", error);
 
          // 오류 처리: 메시지로
          const customError = error as AuthFetchError;

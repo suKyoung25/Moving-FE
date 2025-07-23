@@ -13,16 +13,16 @@ interface Prop {
 }
 
 export default function SignInForm({ userType }: Prop) {
-   // 상태 모음
+   // ✅ 함수 모음
    const { register, errors, isValid, onSubmit, isLoading, handleSubmit } =
       useSignInForm();
-
-   // 본문
+      
    return (
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
          className="flex w-full flex-col gap-4"
       >
+         {/* ✅ Input */}
          <AuthInput
             type="email"
             name="email"
@@ -39,7 +39,7 @@ export default function SignInForm({ userType }: Prop) {
             error={errors.password?.message}
          />
 
-         {/* 로그인 버튼 */}
+         {/* ✅ 로그인 버튼 */}
          <section className="mt-4 lg:mt-10">
             <SolidButton type="submit" disabled={!isValid || isLoading}>
                {isLoading ? "로딩 중..." : "로그인"}

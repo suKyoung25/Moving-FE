@@ -1,11 +1,12 @@
 import React from "react";
 
 interface Prop {
-   type: "제목" | "서비스" | "지역" | "수정";
+   type: "생성" | "서비스" | "지역" | "수정";
 }
 
 export default function ClientProfileTitle({ type }: Prop) {
-   if (type === "제목") {
+   // ✅ 프로필 생성 제목
+   if (type === "생성") {
       return (
          <section>
             <h2 className="text-black-400 text-18-bold lg:text-32-medium mb-4 lg:mb-7">
@@ -19,6 +20,7 @@ export default function ClientProfileTitle({ type }: Prop) {
       );
    }
 
+   // ✅ 이용 서비스
    if (type === "서비스") {
       return (
          <>
@@ -32,6 +34,7 @@ export default function ClientProfileTitle({ type }: Prop) {
       );
    }
 
+   // ✅ 지역
    if (type === "지역") {
       return (
          <>
@@ -45,6 +48,7 @@ export default function ClientProfileTitle({ type }: Prop) {
       );
    }
 
+   // ✅ 프로필 수정 제목
    if (type === "수정") {
       return (
          <section>
