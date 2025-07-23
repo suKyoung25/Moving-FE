@@ -24,7 +24,7 @@ function TextAreaInputField<T extends Record<string, FieldValue>>({
             placeholder={placeholder}
          />
 
-         {error && <ErrorText error={error.message} />}
+         {error && <ErrorText error={error.message} position="left" />}
       </div>
    );
 }

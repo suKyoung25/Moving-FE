@@ -44,9 +44,7 @@ function useMoverCreateProfile() {
          //디버깅
          console.log("ㅏㅏㅜㅏ생성된 프로필 응답", res);
 
-         refreshUser();
-
-         if (res.data.user) {
+         if (res.isProfileCompleted) {
             router.push("/dashboard"); //디버깅: 마이페이지로 이동하는지 확인
          }
       } catch (error) {

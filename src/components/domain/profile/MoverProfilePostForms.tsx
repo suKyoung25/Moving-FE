@@ -72,11 +72,11 @@ function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <GeneralInputField
-                  name="onelineIntroduction"
+                  name="introduction"
                   text="한 줄 소개"
                   placeholder="한 줄 소개를 입력해주세요"
                   register={register}
-                  error={errors.onelineIntroduction}
+                  error={errors.introduction}
                />
 
                <hr className="border-line-100 m-0 my-8 border-t p-0 lg:hidden" />
@@ -84,11 +84,11 @@ function MoverProfilePostForm() {
 
             <div className="flex-1">
                <TextAreaInputField
-                  name="detailDescription"
+                  name="description"
                   text="상세 설명"
                   placeholder="상세 내용을 입력해주세요"
                   register={register}
-                  error={errors.detailDescription}
+                  error={errors.description}
                />
 
                <hr className="border-line-100 m-0 my-8 border-t p-0" />
@@ -108,12 +108,14 @@ function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <ButtonInputField
-                  name="area"
+                  name="serviceArea"
                   text="서비스 가능 지역"
                   isArea={true}
                   control={control}
                   error={
-                     Array.isArray(errors.area) ? errors.area[0] : errors.area
+                     Array.isArray(errors.serviceArea)
+                        ? errors.serviceArea[0]
+                        : errors.serviceArea
                   }
                />
             </div>
