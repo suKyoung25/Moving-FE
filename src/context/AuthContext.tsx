@@ -14,6 +14,7 @@ import {
    useState,
 } from "react";
 import { delay } from "../../delay";
+import Spinner from "@/components/common/Spinner";
 
 // ✅ type 등
 interface AuthContextType {
@@ -59,7 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-         await delay(100);
+         await delay(200);
 
          const response = await authApi.getMe();
 
@@ -96,7 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    );
 
    // 로딩 시 불러올 화면
-   // if (isLoading) return <AuthSpinner />;
+   if (isLoading) return <Spinner />;
 
    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
