@@ -1,10 +1,10 @@
-// moverActions.ts
 import { Dispatch, useCallback, useEffect } from "react";
 import { MoverAction, MoverState } from "@/lib/types/mover.types";
 import { getMovers } from "@/lib/api/mover/getMover";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { GetMoversParams } from "@/lib/types/mover.types";
 import { areaMapping } from "@/constants/mover.constants";
+import { tokenSettings } from "@/lib/utils/auth.util";
 
 export const useMoverApis = (
   state: MoverState,
@@ -36,8 +36,9 @@ export const useMoverApis = (
           sortBy: state.filters.sortBy,
         };
 
-        const token = localStorage.getItem("token") ?? undefined;
-        const response = await getMovers(params, token);
+        // 로그인 여부 확인 (token이 있으면 true, 없으면 false)
+        const hasToken = Boolean(tokenSettings.get());
+        const response = await getMovers(params, hasToken);
 
         if (reset) {
           dispatch({ type: "SET_MOVERS", payload: response.movers });
@@ -78,8 +79,9 @@ export const useMoverApis = (
         sortBy: state.filters.sortBy,
       };
 
-      const token = localStorage.getItem("token") ?? undefined;
-      const response = await getMovers(params, token);
+      // 로그인 여부 확인 (token이 있으면 true, 없으면 false)
+      const hasToken = Boolean(tokenSettings.get());
+      const response = await getMovers(params, hasToken);
 
       dispatch({ type: "SET_CURRENT_PAGE", payload: nextPage });
       dispatch({ type: "APPEND_MOVERS", payload: response.movers });
@@ -99,7 +101,8 @@ export const useMoverApis = (
     dispatch({ type: "RESET_FILTERS" });
   }, []);
 
-  const toggleFavorite = useCallback(async (moverId: string, token: string) => {
+  // tokenFetch를 사용하므로 token 매개변수 제거
+  const toggleFavorite = useCallback(async (moverId: string) => {
     if (pendingFavoriteRequests.current.has(moverId)) return;
 
     const mover = state.movers.find((m) => m.id === moverId);
@@ -108,7 +111,7 @@ export const useMoverApis = (
     pendingFavoriteRequests.current.add(moverId);
 
     try {
-      const result = await toggleFavoriteMover(moverId, token);
+      const result = await toggleFavoriteMover(moverId);
       dispatch({
         type: "UPDATE_MOVER_FAVORITE",
         payload: {
@@ -124,7 +127,7 @@ export const useMoverApis = (
     }
   }, [state.movers]);
 
-  // 필터 변경 시 자동 재로딩 (디바운스 적용은 최상단에서 직접 useEffect 사용)
+  // 필터 변경 시 자동 재로딩 (디바운스 적용)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       loadMovers(true);

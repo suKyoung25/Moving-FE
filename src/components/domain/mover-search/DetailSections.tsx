@@ -1,5 +1,8 @@
 import { Mover } from "@/lib/types/mover.types";
-import LineDivider from "./LineDivider";
+import LineDivider from "../../common/LineDivider";
+import { SERVICE_TYPE_LABELS } from "@/constants/mover.constants";
+
+const serviceMap = SERVICE_TYPE_LABELS;
 
 export default function DetailSections({ mover }: { mover: Mover }) {
    return (
@@ -38,12 +41,7 @@ export default function DetailSections({ mover }: { mover: Mover }) {
 // 서비스 태그 컴포넌트
 function ServiceTags({ services }: { services?: string[] }) {
    const getServiceTypeLabel = (type: string) => {
-      const serviceMap: { [key: string]: string } = {
-         SMALL: "소형이사",
-         HOME: "가정이사",
-         OFFICE: "사무실이사",
-      };
-      return serviceMap[type] || type;
+      return SERVICE_TYPE_LABELS[type] || type;
    };
 
    if (!services || services.length === 0) {

@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import chevronDownIcon from "@/assets/images/chevronDownIcon.svg";
+import { SORT_OPTIONS } from "@/constants/mover.constants";
+
+const sortOptions = SORT_OPTIONS;
 
 interface DropdownOption {
   label: string;
@@ -14,12 +17,6 @@ interface SortDropdownProps {
   onSelect: (option: DropdownOption) => void;
 }
 
-const sortOptions: DropdownOption[] = [
-  { label: "리뷰 많은순", value: "mostReviewed" },
-  { label: "평점 높은순", value: "highRating" },
-  { label: "경력 높은순", value: "highExperience" },
-  { label: "확정 많은순", value: "mostBooked" },
-];
 
 export default function SortDropdown({ selected, onSelect }: SortDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);

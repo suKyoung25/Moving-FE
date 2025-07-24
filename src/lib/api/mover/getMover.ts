@@ -1,14 +1,10 @@
-// getMover.api.ts
+import { tokenFetch, defaultFetch } from "@/lib/utils/fetch-client";
 import { Mover } from "@/lib/types";
 import { GetMoversParams, GetMoversResponse } from "@/lib/types/mover.types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL
-  ? `${process.env.NEXT_PUBLIC_API_URL}/movers`
-  : "http://localhost:4000/movers";
-
 export const getMovers = async (
   params: GetMoversParams = {},
-  token?: string
+  withAuth: boolean = false
 ): Promise<GetMoversResponse> => {
   const queryParams = new URLSearchParams();
   queryParams.append("page", String(params.page ?? 1));
@@ -19,13 +15,13 @@ export const getMovers = async (
     queryParams.append("serviceType", params.serviceType);
   if (params.sortBy) queryParams.append("sortBy", params.sortBy);
 
-  const res = await fetch(`${API_BASE}?${queryParams.toString()}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  });
+  const endpoint = `/movers?${queryParams.toString()}`;
+  
+  // 인증이 필요한 경우 tokenFetch, 아닌 경우 defaultFetch 사용
+  const data = withAuth 
+    ? await tokenFetch(endpoint, { method: 'GET' })
+    : await defaultFetch(endpoint, { method: 'GET' });
 
-  if (!res.ok) throw new Error("Failed to fetch movers");
-
-  const data = await res.json();
   const movers = (data.movers || []).map((mover: Mover) => ({
     ...mover,
     favoriteCount: mover.favoriteCount ?? 0,
@@ -44,14 +40,12 @@ export const getMovers = async (
 
 export const getMoverById = async (
   id: string,
-  token?: string
+  withAuth: boolean = false
 ): Promise<Mover> => {
-  const res = await fetch(`${API_BASE}/${id}`, {
-    method: "GET",
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  });
-
-  if (!res.ok) throw new Error("기사 상세 조회 실패");
-
-  return res.json();
+  const endpoint = `/movers/${id}`;
+  
+  // 인증이 필요한 경우 tokenFetch, 아닌 경우 defaultFetch 사용
+  return withAuth 
+    ? await tokenFetch(endpoint, { method: 'GET' })
+    : await defaultFetch(endpoint, { method: 'GET' });
 };

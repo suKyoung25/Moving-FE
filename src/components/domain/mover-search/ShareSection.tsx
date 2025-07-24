@@ -1,5 +1,5 @@
 import ShareButtons from "./ShareButton";
-import LineDivider from "./LineDivider";
+import LineDivider from "../../common/LineDivider";
 
 export default function ShareSection() {
    return (

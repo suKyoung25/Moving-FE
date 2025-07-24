@@ -37,6 +37,12 @@ export const SORT_OPTIONS: DropdownOption[] = [
    { label: "확정 많은순", value: "mostBooked" },
 ];
 
+export const SERVICE_TYPE_LABELS: { [key: string]: string } = {
+   SMALL: "소형이사",
+   HOME: "가정이사", 
+   OFFICE: "사무실이사",
+};
+
 // 지역 코드 → 실제 이름 매핑
 export const areaMapping: { [key: string]: string[] } = {
   seoul: ["서울"],
