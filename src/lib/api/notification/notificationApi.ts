@@ -9,6 +9,13 @@ export async function getNotifications() {
    return await tokenFetch("/notifications");
 }
 
+// 알림 읽기
+export async function readNotification(notificationId: string) {
+   return await tokenFetch(`/notifications/${notificationId}`, {
+      method: "PATCH",
+   });
+}
+
 // SSE 실시간 연결
 export function connectSSE(
    onMessage: (data: Notification) => void,
