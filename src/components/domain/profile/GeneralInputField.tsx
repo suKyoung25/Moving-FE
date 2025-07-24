@@ -49,7 +49,10 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
          <input
             type="text"
             {...register?.(name)}
-            ref={inputRef}
+            ref={(el) => {
+               register?.(name).ref(el); // react-hook-form에게 ref를 넘겨줌 (없으면 ref랑 react-hook-form이랑 충돌남)
+               inputRef.current = el;
+            }}
             onBlur={handleBlur}
             onFocus={handleFocus}
             className={`mg:h-13 bg-bg-200 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:h-16 ${error ? "border border-red-500" : ""}`}

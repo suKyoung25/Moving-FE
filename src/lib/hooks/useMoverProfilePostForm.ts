@@ -36,7 +36,7 @@ function useMoverProfilePostForm() {
       };
 
       try {
-         const res = await updateMoverProfile(processedData);
+         const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
          if (res.isProfileCompleted) {
             router.push("/dashboard");
