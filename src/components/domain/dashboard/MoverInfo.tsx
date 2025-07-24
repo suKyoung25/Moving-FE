@@ -10,7 +10,7 @@ interface MoverInfoProps {
    estimateCount: Mover["estimateCount"];
    career: Mover["career"];
    serviceType: Mover["serviceType"];
-   serviceArea: Mover["serviceArea"];
+   serviceArea: string[];
 }
 
 const serviceClass =

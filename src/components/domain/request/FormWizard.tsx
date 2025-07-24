@@ -19,7 +19,7 @@ export default function FormWizard() {
    // Step 4: 견적 요청 진행중 화면 렌더링
    if (currentStep === 4) {
       return (
-         <div className="mt-[127px] flex flex-col items-center justify-center gap-8 lg:mt-[194px]">
+         <div className="mt-60 flex flex-col items-center gap-8 lg:mt-[194px]">
             <Image
                src={carImage}
                alt="자동차 이미지"

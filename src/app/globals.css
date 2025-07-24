@@ -272,6 +272,44 @@
    font-weight: 400;
 }
 
+@layer utilities {
+   .scrollbar-hide {
+      &::-webkit-scrollbar {
+         display: none;
+      }
+      scrollbar-width: none;
+   }
+
+   .animate-fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+   }
+   .animate-fade-out {
+      animation: fadeOut 0.3s ease-in forwards;
+   }
+
+   @keyframes fadeIn {
+      from {
+         opacity: 0;
+         transform: translateY(-4px);
+      }
+      to {
+         opacity: 1;
+         transform: translateY(0);
+      }
+   }
+
+   @keyframes fadeOut {
+      from {
+         opacity: 1;
+         transform: translateY(0);
+      }
+      to {
+         opacity: 0;
+         transform: translateY(-4px);
+      }
+   }
+}
+
 html {
    /* 브라우저 전체 움찔하는 부분 막기 */
    scrollbar-gutter: stable;
