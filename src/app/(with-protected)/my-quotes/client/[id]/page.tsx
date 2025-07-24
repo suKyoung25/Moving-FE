@@ -4,12 +4,12 @@ import shareKakao from "@/assets/images/shareKakaoIcon.svg";
 import shareFacebook from "@/assets/images/shareFaceBookIcon.svg";
 import likeIcon from "@/assets/images/likeFilledIcon.svg";
 import PageTitle from "@/components/layout/PageTitle";
-import MoverProfileclient from "@/components/domain/my-quotes/common/MoverProfileClient";
-import QuotaionInfo from "@/components/domain/my-quotes/common/QuotaionInfo";
 import SolidButton from "@/components/common/SolidButton";
+import MoverProfileclient from "@/components/domain/my-quotes/MoverProfileClient";
+import QuotaionInfo from "@/components/domain/my-quotes/QuotaionInfo";
 
 // 견적 관리 상세
-export default async function Page() {
+export default async function MyQuoetesDetailPage() {
    return (
       <div>
          <PageTitle title="견적 상세" />

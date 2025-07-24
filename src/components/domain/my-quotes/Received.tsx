@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import QuotaionInfo from "../common/QuotaionInfo";
-import Dropdown from "../common/Dropdown";
-import ReceivedCard from "../common/ReceivedCard";
-import { fetchClientReceivedQuotes } from "@/lib/api/estimate/getClientMyQuotes";
-import { pendingQuote } from "@/lib/types/quotes.types";
-import QuotesLoading from "../common/QuotesLoading";
+import { Quotes } from "@/lib/types";
+import { fetchClientReceivedQuotes } from "@/lib/api/estimate/getClientReceivedQuote";
+import QuotesLoading from "./QuotesLoading";
+import QuotaionInfo from "./QuotaionInfo";
+import ReceivedCard from "./ReceivedCard";
+import Dropdown from "./Dropdown";
 
 // 받았던 견적
 export default function Received() {
    const [dropdownName, setDropdownName] = useState("all");
-   const [data, setData] = useState<pendingQuote[]>();
+   const [data, setData] = useState<Quotes[]>();
 
    useEffect(() => {
       async function getMyReceivedQuotes() {

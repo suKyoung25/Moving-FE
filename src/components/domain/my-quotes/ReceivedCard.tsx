@@ -1,7 +1,8 @@
 "use client";
 
-import { DesignatedRequest, Estimate } from "@/lib/types/quotes.types";
+import { DesignatedRequest, Estimate } from "@/lib/types";
 import MoverProfileclient from "./MoverProfileClient";
+import { useRouter } from "next/navigation";
 
 interface ReceivedCardProps {
    estimate: Estimate;
@@ -12,8 +13,11 @@ export default function ReceivedCard({
    estimate,
    designated,
 }: ReceivedCardProps) {
+   const router = useRouter();
+
    return (
       <div
+         onClick={() => router.push(`client/${estimate.estimateId}`)}
          style={{
             boxShadow:
                "-2px -2px 10px rgba(220, 220, 220, 0.2), 2px 2px 10px rgba(220, 220, 220, 0.14)",
@@ -34,7 +38,7 @@ export default function ReceivedCard({
             quotesStatus="received"
             comment={estimate.comment}
          />
-         <div className="flex items-center justify-end gap-2">
+         <div className="mt-4 flex items-center justify-end gap-2">
             <p className="text-14-medium lg:text-18-medium">견적금액</p>
             <p className="text-18-bold lg:text-24-bold">
                {estimate.price.toLocaleString()}원

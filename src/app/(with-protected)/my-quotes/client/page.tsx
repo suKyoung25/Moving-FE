@@ -1,5 +1,5 @@
-import Pending from "@/components/domain/my-quotes/pages/Pending";
-import Received from "@/components/domain/my-quotes/pages/Received";
+import Pending from "@/components/domain/my-quotes/Pending";
+import Received from "@/components/domain/my-quotes/Received";
 
 type PageProps = {
    searchParams: Promise<{ tab?: string }>;
@@ -15,6 +15,4 @@ export default async function Page({ searchParams }: PageProps) {
    } else if (activeTab === "2") {
       return <Received />;
    }
-
-   return null;
 }

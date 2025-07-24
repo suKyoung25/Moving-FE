@@ -2,24 +2,28 @@
 
 import React, { useEffect, useState } from "react";
 import profile from "@/assets/images/profileIcon.svg";
-import MoveDateCard from "../common/MoveDateCard";
 import { useRouter } from "next/navigation";
-import MoverProfileclient from "../common/MoverProfileClient";
 import { ChipType } from "@/components/common/MoveChip";
 import SolidButton from "@/components/common/SolidButton";
 import OutlinedButton from "@/components/common/OutlinedButton";
-import { fetchClientPendingQuotes } from "@/lib/api/estimate/getClientMyQuotes";
-import { pendingQuote } from "@/lib/types/quotes.types";
-import QuotesLoading from "../common/QuotesLoading";
+import { Quotes } from "@/lib/types";
+import { fetchClientPendingQuotes } from "@/lib/api/estimate/getClientPendingQuote";
+import MoveDateCard from "./MoveDateCard";
+import MoverProfileclient from "./MoverProfileClient";
+import QuotesLoading from "./QuotesLoading";
 
 export default function Pending() {
-   const [data, setData] = useState<pendingQuote[]>();
+   const [data, setData] = useState<Quotes[]>();
    const router = useRouter();
 
    useEffect(() => {
       async function getMyPendingQuotes() {
-         const result = await fetchClientPendingQuotes();
-         setData(result.data);
+         try {
+            const result = await fetchClientPendingQuotes();
+            setData(result.data);
+         } catch (e) {
+            throw e;
+         }
       }
 
       getMyPendingQuotes();
