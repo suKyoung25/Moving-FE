@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FieldValue, InputFieldProps } from "@/lib/types/profile.types";
+import { FieldValue, InputFieldProps } from "@/lib/types/mover.types";
 import { moveType, regions, serviceTypeMap } from "@/constants";
 import { Controller, Path } from "react-hook-form";
 import ErrorText from "../auth/ErrorText";

@@ -10,7 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import useMoverProfileUpdateForm from "@/lib/hooks/useMoverProfileUpdateForm";
 
-function MoverProfileUpdateForm() {
+export default function MoverProfileUpdateForm() {
    const { user } = useAuth();
    const router = useRouter();
 
@@ -130,5 +130,3 @@ function MoverProfileUpdateForm() {
       </form>
    );
 }
-
-export default MoverProfileUpdateForm;

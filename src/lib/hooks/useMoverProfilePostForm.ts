@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthFetchError } from "../types";
+import { AuthFetchError, MoveType } from "../types";
 import {
    MoverProfileInput,
    MoverProfileSchema,
 } from "../schemas/profile.schema";
-import { createProfile } from "../api/auth/requests/profile";
+import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 
 function useMoverProfilePostForm() {
    const router = useRouter();
@@ -32,10 +32,11 @@ function useMoverProfilePostForm() {
       const processedData = {
          ...data,
          career: Number(data.career), // string > number로 변환
+         serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
       };
 
       try {
-         const res = await createProfile(processedData);
+         const res = await updateMoverProfile(processedData);
 
          if (res.isProfileCompleted) {
             router.push("/dashboard");

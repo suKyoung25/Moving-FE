@@ -10,8 +10,8 @@ import {
    MoverProfileSchema,
 } from "../schemas/profile.schema";
 import { useAuth } from "@/context/AuthContext";
-import { updateMoverProfile } from "../api/auth/requests/profile";
 import { extractRegionNames } from "../utils/profile.util";
+import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 
 function useMoverProfileUpdateForm() {
    const router = useRouter();

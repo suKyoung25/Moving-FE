@@ -10,7 +10,7 @@ import SolidButton from "@/components/common/SolidButton";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
-function MoverProfilePostForm() {
+export default function MoverProfilePostForm() {
    const { user } = useAuth();
    const router = useRouter();
 
@@ -126,5 +126,3 @@ function MoverProfilePostForm() {
       </form>
    );
 }
-
-export default MoverProfilePostForm;
