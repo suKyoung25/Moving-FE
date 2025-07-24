@@ -21,11 +21,13 @@ export default function ClientProfileUpdateForm() {
       selectedRegions,
       handleServiceToggle,
       handleRegionToggle,
+      onSubmit,
+      handleSubmit,
    } = useClientProfileUpdateForm();
 
    return (
-      <form>
-         <div className="flex flex-col gap-14 lg:flex-row lg:justify-baseline">
+      <form onSubmit={handleSubmit(onSubmit)}>
+         <div className="flex flex-col lg:flex-row lg:justify-baseline lg:gap-14">
             {/* ✅ 입력창 모음 */}
             <div className="flex-1">
                <ProfileInput<ClientProfileValue>

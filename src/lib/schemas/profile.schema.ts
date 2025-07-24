@@ -1,4 +1,5 @@
 import z from "zod";
+import { emailSchema, passwordSchema, phoneSchema } from "./auth.schema";
 
 //기사님 프로필 관련 사용 (career가 string)
 export const MoverProfileSchema = z.object({
@@ -27,53 +28,37 @@ export const MoverProfileRequestSchema = z.object({
    serviceArea: z.array(z.string()),
 });
 
-// ✅ 일반 회원 프로필 수정 스키마
+// ✅ 개별 스키마
+export const profileImageSchema = z.string().url().optional();
+
+export const serviceTypeSchema = z
+   .array(z.enum(["SMALL", "HOME", "OFFICE"]))
+   .min(1, "서비스 유형을 1개 이상 선택해야 합니다.");
+
+export const livingAreaSchema = z
+   .array(z.string())
+   .min(1, "지역을 1개 이상 선택해야 합니다.")
+   .max(3, "지역은 3개까지 선택할 수 있습니다.");
+
+//  프로필 수정 스키마
 const baseProfileSchema = z.string().trim();
 
 export const nameSchema = baseProfileSchema
    .min(2, "성함을 입력해 주세요.")
    .max(4, "4자 이내로 입력해 주세요.");
 
-export const emailSchema =
-   baseProfileSchema.email("올바른 이메일 형식이 아닙니다.");
-
-export const phoneSchema = baseProfileSchema
-   .min(9, "9자 이상 입력해주세요.")
-   .regex(
-      /^(\+82\s?1[016789]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$/,
-      "유효한 전화번호를 입력해주세요.",
-   );
-
-export const passwordSchema = baseProfileSchema
-   .min(8, "비밀번호를 8자리 이상 입력해 주세요.")
-   .regex(
-      /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/,
-      "문자와 숫자를 섞어 사용해 주세요.",
-   );
-
-export const newPasswordSchema = baseProfileSchema
-   .min(8, "비밀번호를 8자리 이상 입력해 주세요.")
-   .regex(
-      /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/,
-      "문자와 숫자를 섞어 사용해 주세요.",
-   );
-
-export const newPasswordConfirmationSchema = baseProfileSchema
-   .min(8, "비밀번호를 8자리 이상 입력해 주세요.")
-   .regex(
-      /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/,
-      "문자와 숫자를 섞어 사용해 주세요.",
-   );
-
 // ✅ 일반 프로필 수정 페이지 스키마
 export const clientProfileSchema = z
    .object({
-      name: nameSchema,
-      email: emailSchema,
-      phone: phoneSchema,
+      name: nameSchema.optional(),
+      email: emailSchema.optional(),
+      phone: phoneSchema.optional(),
       password: passwordSchema,
-      newPassword: newPasswordSchema,
-      newPasswordConfirmation: baseProfileSchema,
+      newPassword: passwordSchema.optional(),
+      newPasswordConfirmation: z.string().optional().or(z.literal("")),
+      profileImage: profileImageSchema,
+      serviceType: serviceTypeSchema.optional(),
+      livingArea: livingAreaSchema.optional(),
    })
    .refine((data) => data.password !== data.newPassword, {
       message: "현재 비밀번호와 새 비밀번호를 다르게 설정해 주세요.",

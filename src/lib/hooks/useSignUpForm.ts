@@ -29,7 +29,6 @@ export default function useSignUpForm() {
    // ✅ 제출
    const onSubmit = (type: UserType) => async (data: SignUpFormValues) => {
       setIsLoading(true);
-      console.log("찍히고 있음");
 
       try {
          const res = await createSignUp(type, data);
@@ -50,7 +49,7 @@ export default function useSignUpForm() {
                });
             });
          } else {
-            console.error("예상치 못한 오류 발생: ", customError?.body.message);
+            console.error("예기치 못한 오류 발생: ", customError?.body.message);
          }
       } finally {
          setIsLoading(false);

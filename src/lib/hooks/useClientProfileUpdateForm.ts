@@ -3,12 +3,18 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { clientProfileSchema } from "../schemas/profile.schema";
+import {
+   clientProfileSchema,
+   ClientProfileValue,
+} from "../schemas/profile.schema";
+import { MOVE_TYPES } from "@/constants";
+import { AuthFetchError } from "../types";
+import { tokenFetch } from "../utils";
 
 export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
    const router = useRouter();
-   const { getUser } = useAuth();
+   const { user, getUser } = useAuth();
    const [selectedServices, setSelectedServices] = useState<string[]>([]);
    const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
    const [isLoading, setIsLoading] = useState(false);
@@ -44,16 +50,53 @@ export default function useClientProfileUpdateForm() {
    } = useForm({
       mode: "onChange",
       resolver: zodResolver(clientProfileSchema),
-      // defaultValues: {
-      //    name: getUser.user?.name
-      // }
+      defaultValues: {
+         name: user?.name,
+         email: user?.email,
+         phone: user?.phone,
+      },
    });
 
-   // ✅ 버튼 활성화 여부: 나중에 이미지 조건도 넣어야 함
-
-   // ✅ 보낼 자료
-
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
+   const onSubmit = async (formData: ClientProfileValue) => {
+      try {
+         setIsLoading(true);
+
+         const payload = {
+            ...formData,
+            // profileImage: profileImage,
+            serviceType: selectedServices.map(
+               (type) => MOVE_TYPES[type as keyof typeof MOVE_TYPES],
+            ),
+            livingArea: selectedRegions,
+         };
+
+         await tokenFetch("/profile/clients", {
+            method: "PATCH",
+            body: JSON.stringify(payload),
+         });
+
+         router.replace("/mover-search");
+      } catch (error) {
+         console.error("일반 프로필 수정 실패: ", error);
+
+         // 서버 오류 처리
+         const customError = error as AuthFetchError;
+
+         if (customError?.status) {
+            Object.entries(customError.body.data!).forEach(([key, message]) => {
+               setError(key as keyof ClientProfileValue, {
+                  type: "server",
+                  message: String(message),
+               });
+            });
+         } else {
+            console.error("예기치 못한 오류 발생: ", customError?.body.message);
+         }
+      } finally {
+         setIsLoading(false);
+      }
+   };
 
    return {
       register,
@@ -64,5 +107,7 @@ export default function useClientProfileUpdateForm() {
       selectedRegions,
       handleServiceToggle,
       handleRegionToggle,
+      onSubmit,
+      handleSubmit,
    };
 }
