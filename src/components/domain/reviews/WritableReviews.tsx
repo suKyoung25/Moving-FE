@@ -6,12 +6,12 @@ import Image from "next/image";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
 import ReviewModal from "./ReviewModal";
-import blueFolder from "@/assets/images/emptyBlueFolderIcon.svg";
 import { WritableReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { getWritableReviews } from "@/lib/api/review/getWritableReviews";
 import Pagination from "@/components/common/pagination";
+import EmptyState from "@/components/common/EmptyState";
 
 export default function WritableReviews() {
    // 작성 가능한 리뷰 목록
@@ -88,7 +88,7 @@ export default function WritableReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {writableReview.moverNickName} 기사님
+                              {writableReview.moverNickname} 기사님
                            </span>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
@@ -123,16 +123,7 @@ export default function WritableReviews() {
          />
          {writableReviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
-               <Image
-                  src={blueFolder}
-                  width={184}
-                  height={136}
-                  alt="빈 화면"
-                  className="h-20.5 w-27.5 lg:h-34 lg:w-46"
-               />
-               <div className="text-16-regular lg:text-24-regular my-6 text-gray-400 lg:my-8">
-                  작성 가능한 리뷰가 없어요
-               </div>
+               <EmptyState message="작성 가능한 리뷰가 없어요" />
             </div>
          )}
          {selectedId && selectedEstimate && (

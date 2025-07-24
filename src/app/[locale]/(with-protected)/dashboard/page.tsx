@@ -2,6 +2,7 @@ import PageTitle from "@/components/layout/PageTitle";
 import LineDivider from "@/components/common/LineDivider";
 import EditButtons from "@/components/domain/dashboard/EditButtons";
 import ReviewSection from "@/components/domain/dashboard/ReviewSection";
+import MoverCard from "@/components/domain/dashboard/MoverCard";
 
 const moverMock = {
    id: "mover1",
@@ -23,7 +24,7 @@ export default function MoverMyPage() {
       <div className="min-h-screen">
          <PageTitle title="마이페이지" />
          <LineDivider className="my-6" />
-         {/* <MoverCard mover={moverMock} /> //TODO: 타입 에러 나서 주석 처리함 */}
+         <MoverCard mover={moverMock} />
          <div className="flex gap-2 max-lg:mt-2.5 max-md:flex-col lg:hidden">
             <EditButtons />
          </div>
