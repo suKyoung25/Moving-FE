@@ -83,7 +83,7 @@ export default function MyReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {review.moverNickname} 기사님
+                              {review.moverNickName} 기사님
                            </span>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-1.5 flex items-center text-gray-300 lg:mt-2">

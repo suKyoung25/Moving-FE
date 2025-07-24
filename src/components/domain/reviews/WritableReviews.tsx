@@ -88,7 +88,7 @@ export default function WritableReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {writableReview.moverNickname} 기사님
+                              {writableReview.moverNickName} 기사님
                            </span>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
