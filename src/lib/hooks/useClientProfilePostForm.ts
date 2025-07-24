@@ -8,7 +8,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { tokenFetch } from "../utils/fetch-client";
 import { MOVE_TYPES } from "@/constants";
 import createClientProfile from "../api/auth/requests/createClientProfile";
 

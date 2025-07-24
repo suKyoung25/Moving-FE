@@ -26,3 +26,8 @@ export const MoverProfileRequestSchema = z.object({
    serviceType: z.array(z.string()),
    serviceArea: z.array(z.string()),
 });
+
+export type MoverProfileRequestInput = z.infer<
+   typeof MoverProfileRequestSchema
+>;
+export type MoverProfileInput = z.infer<typeof MoverProfileSchema>;

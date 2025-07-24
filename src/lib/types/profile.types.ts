@@ -1,10 +1,4 @@
-import {
-   Control,
-   FieldError,
-   FieldValues,
-   Path,
-   UseFormRegister,
-} from "react-hook-form";
+import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
 import { User } from "./auth.types";
 
 //바로 아래+기사님 프로필 컴포넌트에서 사용

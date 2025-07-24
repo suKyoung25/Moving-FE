@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MOVE_TYPES } from "@/constants";
 import { AuthFetchError } from "../types";
-import { tokenFetch } from "../utils";
 import {
    clientProfileUpdateSchema,
    ClientProfileUpdateValue,
@@ -15,7 +14,7 @@ import updateClientProfile from "../api/auth/requests/updateClientProfile";
 export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
    const router = useRouter();
-   const { user, getUser } = useAuth();
+   const { user } = useAuth();
    const [selectedServices, setSelectedServices] = useState<string[]>([]);
    const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
    const [isLoading, setIsLoading] = useState(false);
