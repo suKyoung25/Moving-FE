@@ -27,17 +27,11 @@ export const MoverProfileRequestSchema = z.object({
    serviceArea: z.array(z.string()),
 });
 
-export type MoverProfileRequestInput = z.infer<
-   typeof MoverProfileRequestSchema
->;
-export type MoverProfileInput = z.infer<typeof MoverProfileSchema>;
-
-// ✅ 공통 스키마
+// ✅ 일반 회원 프로필 수정 스키마
 const baseProfileSchema = z.string().trim();
 
-// ✅ 개별 스키마
 export const nameSchema = baseProfileSchema
-   .min(1, "성함을 입력해 주세요.")
+   .min(2, "성함을 입력해 주세요.")
    .max(4, "4자 이내로 입력해 주세요.");
 
 export const emailSchema =
@@ -92,3 +86,7 @@ export const clientProfileSchema = z
 
 // ✅ 타입 반출
 export type ClientProfileValue = z.infer<typeof clientProfileSchema>;
+export type MoverProfileRequestInput = z.infer<
+   typeof MoverProfileRequestSchema
+>;
+export type MoverProfileInput = z.infer<typeof MoverProfileSchema>;

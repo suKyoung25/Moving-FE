@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpFormSchema } from "../schemas";
+import { clientProfileSchema } from "../schemas/profile.schema";
 
 export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
@@ -43,7 +43,10 @@ export default function useClientProfileUpdateForm() {
       formState: { errors, isValid },
    } = useForm({
       mode: "onChange",
-      resolver: zodResolver(signUpFormSchema),
+      resolver: zodResolver(clientProfileSchema),
+      // defaultValues: {
+      //    name: getUser.user?.name
+      // }
    });
 
    // ✅ 버튼 활성화 여부: 나중에 이미지 조건도 넣어야 함

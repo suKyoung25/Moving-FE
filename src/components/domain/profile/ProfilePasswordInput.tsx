@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ErrorText from "./../auth/ErrorText";
+import ErrorText from "../auth/ErrorText";
 import Image from "next/image";
 import openedEye from "@/assets/images/visibilityIcon.svg";
 import closedEye from "@/assets/images/visibilityOffIcon.svg";
@@ -22,7 +22,7 @@ export default function ProfilePasswordInput<T extends FieldValues>({
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
 
    return (
-      <section className="flex w-full flex-col gap-2 lg:gap-4">
+      <section className="flex w-full flex-col gap-2 lg:max-w-160 lg:gap-4">
          <label
             htmlFor={name}
             className="text-black-300 text-16-semibold lg:text-20-semibold"

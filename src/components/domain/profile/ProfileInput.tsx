@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ErrorText from "./../auth/ErrorText";
+import ErrorText from "../auth/ErrorText";
 import { FieldValues } from "react-hook-form";
 import { ClientProfileUpdateData } from "@/lib/types";
 
@@ -15,7 +15,7 @@ export default function ProfileInput<T extends FieldValues>({
    error,
 }: ClientProfileUpdateData<T>) {
    return (
-      <section className="flex w-full flex-col gap-2 lg:gap-4">
+      <section className="flex w-full flex-col gap-2 lg:max-w-160 lg:gap-4">
          <label
             htmlFor={name}
             className="text-black-300 text-16-semibold lg:text-20-semibold"
