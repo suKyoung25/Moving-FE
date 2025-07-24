@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { Quotes } from "@/lib/types";
 import { fetchClientReceivedQuotes } from "@/lib/api/estimate/getClientReceivedQuote";
-import QuotesLoading from "./QuotesLoading";
 import QuotaionInfo from "./QuotaionInfo";
 import ReceivedCard from "./ReceivedCard";
 import Dropdown from "./Dropdown";
+import EmptyState from "@/components/common/EmptyState";
 
 // 받았던 견적
 export default function Received() {
@@ -26,7 +26,7 @@ export default function Received() {
       getMyReceivedQuotes();
    }, [dropdownName]);
 
-   if (!data) return <QuotesLoading />;
+   if (!data) return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
 
    return (
       <div className="flex flex-col gap-2 md:gap-4 lg:gap-8">

@@ -10,7 +10,7 @@ import { Quotes } from "@/lib/types";
 import { fetchClientPendingQuotes } from "@/lib/api/estimate/getClientPendingQuote";
 import MoveDateCard from "./MoveDateCard";
 import MoverProfileclient from "./MoverProfileClient";
-import QuotesLoading from "./QuotesLoading";
+import EmptyState from "@/components/common/EmptyState";
 
 export default function Pending() {
    const [data, setData] = useState<Quotes[]>();
@@ -29,7 +29,8 @@ export default function Pending() {
       getMyPendingQuotes();
    }, []);
 
-   if (!Array.isArray(data) || data.length === 0) return <QuotesLoading />;
+   if (!Array.isArray(data) || data.length === 0)
+      return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
 
    return (
       <div className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">
