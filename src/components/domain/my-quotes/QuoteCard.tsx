@@ -1,10 +1,15 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import MoveChip from "@/components/common/MoveChip";
+import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoveTextCard from "@/components/domain/my-quotes/MoveTextCard";
+import { MyEstimateDetail } from "@/lib/types";
 
-export default function QuoteCard({ estimate }: { estimate: any }) {
+export default function QuoteCard({
+   estimate,
+}: {
+   estimate: MyEstimateDetail;
+}) {
    const router = useRouter();
    const pathname = usePathname();
    const searchParams = useSearchParams();
@@ -22,7 +27,7 @@ export default function QuoteCard({ estimate }: { estimate: any }) {
 
    const isPastMoveDate = new Date(moveDate) < new Date();
    const isDesignated = designatedRequest.some(
-      (d: any) => d.moverId === moverId,
+      (d: { moverId: string }) => d.moverId === moverId,
    );
    const handleClick = () => {
       router.push(`${pathname}/${id}`);
@@ -47,7 +52,8 @@ export default function QuoteCard({ estimate }: { estimate: any }) {
                   </span>
                </div>
             )}
-            <MoveChip type={moveType ?? "PENDING"} />
+            <MoveChip type={(moveType as ChipType) ?? "PENDING"} />
+
             {isDesignated && <MoveChip type="DESIGNATED" />}
          </div>
 

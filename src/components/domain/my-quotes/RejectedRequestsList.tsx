@@ -1,6 +1,7 @@
 import EmptyState from "@/components/common/EmptyState";
 import { getRejectedEstimates } from "@/lib/api/estimate/requests/getRejectedEstimates";
 import QuoteCard from "./QuoteCard";
+import { MyEstimateDetail } from "@/lib/types";
 
 export default async function RejectedRequestsList() {
    const estimate = await getRejectedEstimates();
@@ -11,7 +12,7 @@ export default async function RejectedRequestsList() {
       <div>
          {hasEstimates ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
-               {estimate.data.map((est: any) => (
+               {estimate.data.map((est: MyEstimateDetail) => (
                   <QuoteCard key={est.id} estimate={est} />
                ))}
             </div>
