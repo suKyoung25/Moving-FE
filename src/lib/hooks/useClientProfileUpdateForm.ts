@@ -3,13 +3,14 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-   clientProfileSchema,
-   ClientProfileValue,
-} from "../schemas/profile.schema";
 import { MOVE_TYPES } from "@/constants";
 import { AuthFetchError } from "../types";
 import { tokenFetch } from "../utils";
+import {
+   clientProfileUpdateSchema,
+   ClientProfileUpdateValue,
+} from "../schemas";
+import updateClientProfile from "../api/auth/requests/updateClientProfile";
 
 export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
@@ -49,7 +50,7 @@ export default function useClientProfileUpdateForm() {
       formState: { errors, isValid },
    } = useForm({
       mode: "onChange",
-      resolver: zodResolver(clientProfileSchema),
+      resolver: zodResolver(clientProfileUpdateSchema),
       defaultValues: {
          name: user?.name,
          email: user?.email,
@@ -58,7 +59,7 @@ export default function useClientProfileUpdateForm() {
    });
 
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
-   const onSubmit = async (formData: ClientProfileValue) => {
+   const onSubmit = async (formData: ClientProfileUpdateValue) => {
       try {
          setIsLoading(true);
 
@@ -71,10 +72,7 @@ export default function useClientProfileUpdateForm() {
             livingArea: selectedRegions,
          };
 
-         await tokenFetch("/profile/clients", {
-            method: "PATCH",
-            body: JSON.stringify(payload),
-         });
+         await updateClientProfile(payload);
 
          router.replace("/mover-search");
       } catch (error) {
@@ -85,7 +83,7 @@ export default function useClientProfileUpdateForm() {
 
          if (customError?.status) {
             Object.entries(customError.body.data!).forEach(([key, message]) => {
-               setError(key as keyof ClientProfileValue, {
+               setError(key as keyof ClientProfileUpdateValue, {
                   type: "server",
                   message: String(message),
                });

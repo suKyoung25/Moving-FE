@@ -6,9 +6,9 @@ import SolidButton from "@/components/common/SolidButton";
 import { moveType, regions } from "@/constants";
 import useClientProfileUpdateForm from "@/lib/hooks/useClientProfileUpdateForm";
 import ProfilePasswordInput from "./ProfilePasswordInput";
-import { ClientProfileValue } from "@/lib/schemas/profile.schema";
 import ProfileImage from "./ProfileImage";
 import OutlinedButton from "@/components/common/OutlinedButton";
+import { ClientProfileUpdateValue } from "@/lib/schemas";
 
 export default function ClientProfileUpdateForm() {
    // ✅ 함수 모음
@@ -30,7 +30,7 @@ export default function ClientProfileUpdateForm() {
          <div className="flex flex-col lg:flex-row lg:justify-baseline lg:gap-14">
             {/* ✅ 입력창 모음 */}
             <div className="flex-1">
-               <ProfileInput<ClientProfileValue>
+               <ProfileInput<ClientProfileUpdateValue>
                   type="text"
                   label="이름"
                   name="name"
@@ -39,7 +39,7 @@ export default function ClientProfileUpdateForm() {
                   error={errors.name?.message}
                />
                <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
-               <ProfileInput<ClientProfileValue>
+               <ProfileInput<ClientProfileUpdateValue>
                   type="email"
                   label="이메일"
                   name="email"
@@ -48,7 +48,7 @@ export default function ClientProfileUpdateForm() {
                   error={errors.email?.message}
                />
                <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
-               <ProfileInput<ClientProfileValue>
+               <ProfileInput<ClientProfileUpdateValue>
                   type="text"
                   label="전화번호"
                   name="phone"
@@ -57,7 +57,7 @@ export default function ClientProfileUpdateForm() {
                   error={errors.phone?.message}
                />
                <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
-               <ProfilePasswordInput<ClientProfileValue>
+               <ProfilePasswordInput<ClientProfileUpdateValue>
                   label="현재 비밀번호"
                   name="password"
                   placeholder="현재 비밀번호를 입력해 주세요."
@@ -65,7 +65,7 @@ export default function ClientProfileUpdateForm() {
                   error={errors.password?.message}
                />
                <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
-               <ProfilePasswordInput<ClientProfileValue>
+               <ProfilePasswordInput<ClientProfileUpdateValue>
                   label="새 비밀번호"
                   name="newPassword"
                   placeholder="현재 비밀번호를 입력해 주세요."
@@ -73,7 +73,7 @@ export default function ClientProfileUpdateForm() {
                   error={errors.newPassword?.message}
                />
                <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
-               <ProfilePasswordInput<ClientProfileValue>
+               <ProfilePasswordInput<ClientProfileUpdateValue>
                   label="새 비밀번호 확인"
                   name="newPasswordConfirmation"
                   placeholder="새 비밀번호를 다시 한번 입력해 주세요."

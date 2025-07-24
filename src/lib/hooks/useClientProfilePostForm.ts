@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { tokenFetch } from "../utils/fetch-client";
 import { MOVE_TYPES } from "@/constants";
+import createClientProfile from "../api/auth/requests/createClientProfile";
 
 export default function useClientProfilePostForm() {
    // ✅ 상태 모음
@@ -60,10 +61,7 @@ export default function useClientProfilePostForm() {
       setIsLoading(true);
 
       try {
-         await tokenFetch("/profile/clients", {
-            method: "PATCH",
-            body: JSON.stringify(payload),
-         });
+         await createClientProfile(payload);
 
          router.replace("/mover-search");
       } catch (error) {
