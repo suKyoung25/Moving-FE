@@ -28,13 +28,17 @@ export default function NotificationModal({
          try {
             const data = await getNotifications();
             setNotifications(data.notifications);
-         } catch (err: any) {
-            console.error("알림 목록 조회 실패:", err);
+         } catch (err: unknown) {
+            if (err instanceof Error) {
+               console.error("알림 목록 조회 실패:", err.message);
+            } else {
+               console.error("알림 목록 조회 실패:", err);
+            }
          }
       };
 
       fetchNotifications();
-   }, []);
+   }, [setHasUnread]);
 
    // SSE 연결
    useEffect(() => {

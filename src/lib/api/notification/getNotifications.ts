@@ -1,3 +1,4 @@
+import { Notification } from "@/lib/types";
 import { tokenFetch, tokenSettings } from "@/lib/utils";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
@@ -10,7 +11,7 @@ export async function getNotifications() {
 
 // SSE 실시간 연결
 export function connectSSE(
-   onMessage: (data: any) => void,
+   onMessage: (data: Notification) => void,
 ): EventSourcePolyfill {
    const accessToken = tokenSettings.get("accessToken");
 
