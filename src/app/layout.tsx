@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
    title: "무빙 - 스마트한 이사 비교 플랫폼",
@@ -18,6 +19,7 @@ export default function RootLayout({
          <body className="h-full min-h-screen">
             <AuthProvider>
                <main>{children}</main>
+               <Toaster position="top-center" />
             </AuthProvider>
          </body>
       </html>
