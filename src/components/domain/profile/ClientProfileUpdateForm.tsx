@@ -79,6 +79,7 @@ export default function ClientProfileUpdateForm() {
                   error={errors.newPasswordConfirmation?.message}
                />
             </div>
+
             <hr className="border-line-100 my-5 lg:my-8 lg:hidden" />
 
             <div className="flex-1">

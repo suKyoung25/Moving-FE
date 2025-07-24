@@ -36,13 +36,6 @@ export type profileState = {
    message?: string;
 };
 
-// ✅ 일반 회원 프로필 정보 //TODO 타입 옮기실 예정
-export interface ClientProfilePostData {
-   profileImage?: string;
-   serviceType?: ("SMALL" | "HOME" | "OFFICE")[];
-   livingArea?: string[];
-}
-
 export enum MoveType {
    "가정이사" = "HOUSE",
    "사무실이사" = "OFFICE",
