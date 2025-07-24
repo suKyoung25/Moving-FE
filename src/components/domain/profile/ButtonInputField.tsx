@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { FieldValue, InputFieldProps } from "@/lib/types/profile.types";
-import { regions } from "@/constants";
+import { FieldValue, InputFieldProps } from "@/lib/types/mover.types";
+import { moveType, regions, serviceTypeMap } from "@/constants";
 import { Controller, Path } from "react-hook-form";
 import ErrorText from "../auth/ErrorText";
+import { labelToEnumMap } from "@/lib/utils/profile.util";
 
-//주석: serviceType인지 Area인지 boolean으로 분기처리
+//주석: serviceType인지 serviceArea인지 boolean으로 분기처리
 function ButtonInputField<T extends Record<string, FieldValue>>({
    name,
    text,
@@ -15,7 +16,8 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
    isArea,
    error,
 }: InputFieldProps<T>) {
-   const serviceTypes = ["소형이사", "가정이사", "사무실이사"];
+   //각 버튼들 상수화
+   const serviceTypes = moveType;
    const areaOptions = regions;
 
    const options = isServiceType ? serviceTypes : isArea ? areaOptions : [];
@@ -27,21 +29,36 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
          <div>
             {text}
             <span className="text-blue-300"> *</span>
-            {error && <ErrorText error={error.message} />}
+            {error && <ErrorText error={error.message} position="left" />}
          </div>
 
          <Controller<T, Path<T>>
             name={name}
             control={control}
             render={({ field }) => {
-               const selectedValues = (field.value as string[]) || [];
+               const selectedValues = Array.isArray(field.value)
+                  ? isServiceType // 서비스 종류의 경우, enum("SMALL") > 한글 라벨("소형이사")로 변환
+                     ? (field.value as string[]).map(
+                          (value) =>
+                             serviceTypeMap[
+                                value as keyof typeof serviceTypeMap
+                             ],
+                       )
+                     : (field.value as string[]) // 서비스 지역의 경우, 변환 필요 없이 이미 한글임
+                  : [];
 
                const toggleOption = (option: string) => {
-                  const updated = selectedValues.includes(option)
+                  // 버튼 토클
+                  const updatedLabels = selectedValues.includes(option)
                      ? selectedValues.filter((item) => item !== option)
                      : [...selectedValues, option];
 
-                  field.onChange(updated);
+                  // 백엔드와 통신을 위해 enum으로 다시 변환
+                  const updatedValue = isServiceType
+                     ? updatedLabels.map((label) => labelToEnumMap[label])
+                     : updatedLabels;
+
+                  field.onChange(updatedValue);
                };
 
                return (
