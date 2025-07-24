@@ -1,18 +1,52 @@
-export interface Mover {
-   id: string;
-   name?: string;
+import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
+import { User } from "./auth.types";
+
+//바로 아래+기사님 프로필 컴포넌트에서 사용
+export type FieldValue = string | string[] | undefined;
+
+//기사님 프로필 컴포넌트 모음집
+export interface InputFieldProps<T extends Record<string, FieldValue>> {
+   name: Path<T>;
+   text: string;
+   placeholder?: string;
+
+   isServiceType?: boolean; //제공 서비스인지
+   isArea?: boolean; //서비스 가능 지역인지
+   options?: string[];
+
+   control?: Control<T>;
+   register?: UseFormRegister<T>;
+   error?: FieldError;
+}
+
+//기사님 프로필 유효성 함수 관련
+export type ValidationResult = {
+   success: boolean;
+   message: string;
+};
+
+//기사님 프로필 관련
+export type profileState = {
+   success: boolean;
+   user?: User;
+   error?: string;
+   accessToken?: string;
+   fieldErrors?: Record<string, string>;
+   globalError?: string;
+   message?: string;
+};
+
+// ✅ 일반 회원 프로필 정보 //TODO 타입 옮기실 예정
+export interface ClientProfilePostData {
    profileImage?: string;
-   nickName: string;
-   career: number;
-   introduction?: string;
-   description?: string;
-   serviceType?: string[];
-   serviceArea?: string[];
-   favoriteCount: number;
-   estimateCount: number;
-   averageReviewRating: number;
-   reviewCount: number;
-   isFavorite?: boolean;
+   serviceType?: ("SMALL" | "HOME" | "OFFICE")[];
+   livingArea?: string[];
+}
+
+export enum MoveType {
+   "가정이사" = "HOUSE",
+   "사무실이사" = "OFFICE",
+   "소형이사" = "SMALL",
 }
 
 export interface DropdownOption {

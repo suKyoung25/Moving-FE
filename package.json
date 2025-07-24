@@ -1,59 +1,64 @@
 {
-  "name": "dev",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^5.1.1",
-    "animate.css": "^4.1.1",
-    "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
-    "framer-motion": "^12.23.6",
-    "lodash": "^4.17.21",
-    "lottie-react": "^2.4.1",
-    "next": "15.3.4",
-    "nodemailer": "^7.0.5",
-    "react": "^19.0.0",
-    "react-daum-postcode": "^3.2.0",
-    "react-day-picker": "^9.7.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.60.0",
-    "react-icons": "^5.5.0",
-    "react-multi-carousel": "^2.8.6",
-    "tailwindcss-animated": "^2.0.0",
-    "zod": "^3.25.71"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/lodash": "^4.17.20",
-    "@types/node": "^20",
-    "@types/nodemailer": "^6.4.17",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.4",
-    "prettier": "^3.6.2",
-    "prettier-plugin-tailwindcss": "^0.6.13",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  },
-  "description": "고객이 견적을 요청하고, 비교 및 예약할 수 있도록 돕는 웹 기반 이사 서비스 플랫폼입니다.",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/az0319h/6th-Moving-4Team-FE.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/az0319h/6th-Moving-4Team-FE/issues"
-  },
-  "homepage": "https://github.com/az0319h/6th-Moving-4Team-FE#readme"
+   "name": "dev",
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint"
+   },
+   "dependencies": {
+      "@hookform/resolvers": "^5.1.1",
+      "animate.css": "^4.1.1",
+      "clsx": "^2.1.1",
+      "date-fns": "^4.1.0",
+      "dompurify": "^3.2.6",
+      "event-source-polyfill": "^1.0.31",
+      "framer-motion": "^12.23.6",
+      "lodash": "^4.17.21",
+      "lottie-react": "^2.4.1",
+      "next": "15.3.4",
+      "next-intl": "^4.3.4",
+      "nodemailer": "^7.0.5",
+      "react": "^19.0.0",
+      "react-daum-postcode": "^3.2.0",
+      "react-day-picker": "^9.7.0",
+      "react-dom": "^19.0.0",
+      "react-hook-form": "^7.60.0",
+      "react-hot-toast": "^2.5.2",
+      "react-icons": "^5.5.0",
+      "react-multi-carousel": "^2.8.6",
+      "tailwindcss-animated": "^2.0.0",
+      "zod": "^3.25.71"
+   },
+   "devDependencies": {
+      "@eslint/eslintrc": "^3",
+      "@tailwindcss/postcss": "^4",
+      "@types/event-source-polyfill": "^1.0.5",
+      "@types/lodash": "^4.17.20",
+      "@types/node": "^20",
+      "@types/nodemailer": "^6.4.17",
+      "@types/react": "^19",
+      "@types/react-dom": "^19",
+      "eslint": "^9",
+      "eslint-config-next": "15.3.4",
+      "prettier": "^3.6.2",
+      "prettier-plugin-tailwindcss": "^0.6.13",
+      "tailwindcss": "^4",
+      "typescript": "^5"
+   },
+   "description": "고객이 견적을 요청하고, 비교 및 예약할 수 있도록 돕는 웹 기반 이사 서비스 플랫폼입니다.",
+   "main": "index.js",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/az0319h/6th-Moving-4Team-FE.git"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/az0319h/6th-Moving-4Team-FE/issues"
+   },
+   "homepage": "https://github.com/az0319h/6th-Moving-4Team-FE#readme"
 }

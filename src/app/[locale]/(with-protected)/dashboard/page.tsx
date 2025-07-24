@@ -1,8 +1,8 @@
 import PageTitle from "@/components/layout/PageTitle";
 import LineDivider from "@/components/common/LineDivider";
 import EditButtons from "@/components/domain/dashboard/EditButtons";
-import MoverCard from "@/components/domain/dashboard/MoverCard";
 import ReviewSection from "@/components/domain/dashboard/ReviewSection";
+import MoverCard from "@/components/domain/dashboard/MoverCard";
 
 const moverMock = {
    id: "mover1",

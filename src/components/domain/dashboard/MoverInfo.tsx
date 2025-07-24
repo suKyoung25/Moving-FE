@@ -2,9 +2,7 @@ import React from "react";
 import { Mover } from "@/lib/types";
 import CareerInfo from "./CareerInfo";
 import LineDivider from "@/components/common/LineDivider";
-import { SERVICE_OPTIONS } from "@/constants/mover.constants";
-
-const serviceTypeMap = SERVICE_OPTIONS;
+import { MOVE_TYPES } from "@/constants";
 
 interface MoverInfoProps {
    averageReviewRating: Mover["averageReviewRating"];
@@ -12,7 +10,7 @@ interface MoverInfoProps {
    estimateCount: Mover["estimateCount"];
    career: Mover["career"];
    serviceType: Mover["serviceType"];
-   serviceArea: Mover["serviceArea"];
+   serviceArea: string[];
 }
 
 const serviceClass =
@@ -26,6 +24,10 @@ export default function MoverInfo({
    serviceType,
    serviceArea,
 }: MoverInfoProps) {
+   const serviceTypeMap = Object.entries(MOVE_TYPES).map(([label, value]) => ({
+      label,
+      value,
+   }));
 
    return (
       <div className="text-black-300 flex flex-col gap-[14px] font-medium max-lg:text-sm lg:gap-4">

@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthFetchError } from "../types";
+import { AuthFetchError, MoveType } from "../types";
 import {
    MoverProfileInput,
    MoverProfileSchema,
 } from "../schemas/profile.schema";
-import createProfile from "../api/auth/requests/createProfile";
+import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 
-function useMoverCreateProfile() {
+function useMoverProfilePostForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
 
@@ -21,8 +21,6 @@ function useMoverCreateProfile() {
       setError,
       control,
       formState: { errors, isValid },
-      setValue,
-      watch,
    } = useForm<MoverProfileInput>({
       resolver: zodResolver(MoverProfileSchema),
       mode: "onChange",
@@ -34,19 +32,21 @@ function useMoverCreateProfile() {
       const processedData = {
          ...data,
          career: Number(data.career), // string > number로 변환
+         serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
       };
 
       try {
-         const res = await createProfile(processedData);
+         const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
-         if (res.data.user) {
-            router.push("/dashboard"); //TODO: 마이페이지로 이동하는지 확인
+         if (res.isProfileCompleted) {
+            router.push("/dashboard");
          }
       } catch (error) {
          console.error("기사님 프로필 등록 실패: ", error);
 
          const customError = error as AuthFetchError;
 
+         // 프론트로 에러 전달
          if (customError?.status) {
             Object.entries(customError.body.data!).forEach(([key, message]) => {
                setError(key as keyof MoverProfileInput, {
@@ -66,8 +66,6 @@ function useMoverCreateProfile() {
       register,
       errors,
       control,
-      setValue,
-      watch,
       isValid,
       isLoading,
       handleSubmit,
@@ -75,4 +73,4 @@ function useMoverCreateProfile() {
    };
 }
 
-export default useMoverCreateProfile;
+export default useMoverProfilePostForm;
