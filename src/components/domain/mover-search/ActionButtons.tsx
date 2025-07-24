@@ -1,6 +1,6 @@
 "use client";
 
-import { Mover } from "@/lib/types/mover.types";
+import { Mover } from "@/lib/types";
 import { FavoriteButton } from "./FavoriteButton";
 import { EstimateRequestButton } from "./EstimateRequestButton";
 

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-export default function Page() {
-   return <>Page</>;
-=======
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import SentQuoteDetail from "@/components/domain/my-quotes/SentQuoteDetail";
@@ -20,5 +16,4 @@ export default async function Page({
          <SentQuoteDetail id={id} />
       </Suspense>
    );
->>>>>>> 81d22fa89286e4d8d7a6d771417cad7f7e78c781
 }

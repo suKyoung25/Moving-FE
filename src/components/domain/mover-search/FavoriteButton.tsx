@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Mover } from "@/lib/types/mover.types";
+import { Mover } from "@/lib/types";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
@@ -10,11 +10,9 @@ import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 export function FavoriteButton({ mover }: { mover: Mover }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isFavorite, setIsFavorite] = useState(mover.isFavorite ?? false);
-  const [favoriteCount, setFavoriteCount] = useState(mover.favoriteCount ?? 0);
 
   useEffect(() => {
     setIsFavorite(mover.isFavorite ?? false);
-    setFavoriteCount(mover.favoriteCount ?? 0);
   }, [mover.isFavorite, mover.favoriteCount]);
 
   const handleClick = async () => {
@@ -28,7 +26,6 @@ export function FavoriteButton({ mover }: { mover: Mover }) {
       
       // 서버 응답으로 UI 업데이트
       setIsFavorite(result.isFavorite);
-      setFavoriteCount(result.favoriteCount);
       
       const message = result.action === 'added' ? '찜 목록에 추가되었습니다.' : '찜 목록에서 제거되었습니다.';
       console.log(message);

@@ -1,9 +1,9 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import chevronDownBlackIcon from "@/assets/images/chevronDownBlackIcon.svg";
 import chevronDownBlueIcon from "@/assets/images/chevronDownBlueIcon.svg";
 import { DropdownOption } from "@/lib/types/mover.types"
-import Image from "next/image";
 
 interface DropdownProps {
    label: string;

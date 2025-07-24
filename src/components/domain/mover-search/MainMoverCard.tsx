@@ -1,4 +1,4 @@
-import { Mover } from "@/lib/types/mover.types";
+import { Mover } from "@/lib/types";
 import MoverProfile from "./MoverProfile";
 
 export default function MainMoverCard({ mover }: { mover: Mover }) {

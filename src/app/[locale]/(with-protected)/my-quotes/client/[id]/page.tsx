@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-export default function Page() {
-   return <>Page</>;
-=======
 import Image from "next/image";
 import shareLink from "@/assets/images/shareLinkIcon.svg";
 import shareKakao from "@/assets/images/shareKakaoIcon.svg";
@@ -122,5 +118,4 @@ export default async function MyQuoetesDetailPage() {
          </div>
       </div>
    );
->>>>>>> 81d22fa89286e4d8d7a6d771417cad7f7e78c781
 }

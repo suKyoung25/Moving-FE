@@ -3,10 +3,8 @@
 import { useRouter } from "next/navigation";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip from "@/components/common/MoveChip";
-import { useMover } from "@/lib/hooks/useMover";
-
-import { tokenSettings } from "@/lib/utils/auth.util";
-import type { Mover } from "@/lib/types/mover.types";
+import { useMover } from "./MoverStateControll";
+import type { Mover } from "@/lib/types";
 import { validateServiceTypes } from "@/lib/utils/moveChip.util";
 
 interface DriverCardProps {
@@ -23,15 +21,14 @@ export default function DriverCard({ mover }: DriverCardProps) {
    };
 
    const handleLikedClick = async (e: React.MouseEvent) => {
-      e.stopPropagation();
+  e.stopPropagation();
 
-      const token = tokenSettings.get();
-      if (!token) {
-         alert("로그인이 필요합니다.");
-         return;
-      }
-      await toggleFavorite(mover.id, token as string);
-   };
+  try {
+    await toggleFavorite(mover.id); 
+  } catch (error) {
+    console.error("찜 처리 중 오류:", error);
+  }
+};
 
    const validServiceTypes = validateServiceTypes(mover.serviceType!);
 
@@ -57,11 +54,11 @@ export default function DriverCard({ mover }: DriverCardProps) {
                   big={false}
                   isLiked={mover.isFavorite ?? false}
                   handleLikedClick={handleLikedClick}
-                  nickName={mover.nickName}
+                  nickName={mover.nickName ?? " "}
                   favoriteCount={mover.favoriteCount}
                   averageReviewRating={mover.averageReviewRating}
                   reviewCount={mover.reviewCount}
-                  career={mover.career}
+                  career={Number(mover.career) || 0}
                   estimateCount={mover.estimateCount}
                   profileImage={mover.profileImage}
                />

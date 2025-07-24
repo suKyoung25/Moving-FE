@@ -1,4 +1,4 @@
-import { Mover } from "@/lib/types/mover.types";
+import { Mover } from "@/lib/types";
 import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 import star from "@/assets/images/starFilledIcon.svg";

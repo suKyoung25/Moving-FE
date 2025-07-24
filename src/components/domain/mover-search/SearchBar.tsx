@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Search from "@/assets/images/searchIcon.svg";
-import { useMover } from "@/lib/hooks/useMover";
+import { useMover } from "./MoverStateControll";
 
 export default function SearchBar() {
    const { state, setFilters } = useMover();

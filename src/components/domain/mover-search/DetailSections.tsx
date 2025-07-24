@@ -1,8 +1,6 @@
-import { Mover } from "@/lib/types/mover.types";
+import { Mover, Region } from "@/lib/types";
 import LineDivider from "../../common/LineDivider";
-import { SERVICE_TYPE_LABELS } from "@/constants/mover.constants";
-
-const serviceMap = SERVICE_TYPE_LABELS;
+import { serviceTypeMap } from "@/constants/profile.constants";
 
 export default function DetailSections({ mover }: { mover: Mover }) {
    return (
@@ -41,7 +39,7 @@ export default function DetailSections({ mover }: { mover: Mover }) {
 // 서비스 태그 컴포넌트
 function ServiceTags({ services }: { services?: string[] }) {
    const getServiceTypeLabel = (type: string) => {
-      return SERVICE_TYPE_LABELS[type] || type;
+      return serviceTypeMap[type as keyof typeof serviceTypeMap] || type;
    };
 
    if (!services || services.length === 0) {
@@ -63,7 +61,7 @@ function ServiceTags({ services }: { services?: string[] }) {
 }
 
 // 지역 태그 컴포넌트
-function RegionTags({ regions }: { regions?: string[] }) {
+function RegionTags({ regions }: { regions?: Region[] }) {
    if (!regions || regions.length === 0) {
       return <p className="text-sm text-gray-400">등록된 지역이 없습니다.</p>;
    }
@@ -72,10 +70,10 @@ function RegionTags({ regions }: { regions?: string[] }) {
       <div className="flex flex-wrap gap-2">
          {regions.map((region) => (
             <span
-               key={region}
+               key={region.id}
                className="inline-block rounded-full border border-gray-200 bg-gray-100 px-3 py-1.5 text-sm text-gray-700"
             >
-               {region}
+               {region.regionName}
             </span>
          ))}
       </div>

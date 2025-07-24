@@ -1,5 +1,6 @@
 import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
-import { User } from "./auth.types";
+import { User, Mover } from "./auth.types";
+
 
 //바로 아래+기사님 프로필 컴포넌트에서 사용
 export type FieldValue = string | string[] | undefined;
