@@ -60,7 +60,7 @@ export default function NotificationModal({
    // 알림을 열면 읽음 처리
    useEffect(() => {
       setHasUnread(false);
-   }, []);
+   }, [setHasUnread]);
 
    return (
       <div className="border-line-200 scrollbar-hide absolute top-12 right-4 h-[314px] w-78 overflow-auto rounded-3xl border bg-white px-4 py-2.5 shadow-[2px_2px_16px_0px_rgba(0,0,0,0.06)] lg:h-88 lg:w-[359px]">

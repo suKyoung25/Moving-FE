@@ -5,50 +5,49 @@ import { useRouter, usePathname } from "next/navigation";
 
 type LanguageCode = "KR" | "EN" | "ZH";
 
+// mapping 정의 (locale와 버튼 선택값 간)
+const localeToSelected = (locale: string): LanguageCode => {
+   switch (locale) {
+      case "ko":
+         return "KR";
+      case "en":
+         return "EN";
+      case "zh":
+         return "ZH";
+      default:
+         return "KR";
+   }
+};
+
+const selectedToLocale = (selected: LanguageCode): string => {
+   switch (selected) {
+      case "KR":
+         return "ko";
+      case "EN":
+         return "en";
+      case "ZH":
+         return "zh";
+   }
+};
+
+// locale 추출
+function getCurrentLocale(pathname: string): string {
+   const matched = pathname.match(/^\/(ko|en|zh)(\/|$)/);
+   return matched ? matched[1] : "ko";
+}
+
 export default function LanguageSwitcher() {
    const router = useRouter();
    const pathname = usePathname();
 
-   // mapping 정의 (locale와 버튼 선택값 간)
-   const localeToSelected = (locale: string): LanguageCode => {
-      switch (locale) {
-         case "ko":
-            return "KR";
-         case "en":
-            return "EN";
-         case "zh":
-            return "ZH";
-         default:
-            return "KR";
-      }
-   };
-
-   const selectedToLocale = (selected: LanguageCode): string => {
-      switch (selected) {
-         case "KR":
-            return "ko";
-         case "EN":
-            return "en";
-         case "ZH":
-            return "zh";
-      }
-   };
-
-   // locale 추출
-   const getCurrentLocale = (): string => {
-      const matched = pathname.match(/^\/(ko|en|zh)(\/|$)/);
-      if (matched) return matched[1];
-      return "ko";
-   };
-
    // 선택한 언어 상태 관리
    const [selected, setSelected] = useState<LanguageCode>(
-      localeToSelected(getCurrentLocale()),
+      localeToSelected(getCurrentLocale(pathname)),
    );
 
    // pathname 변경에 따른 selected 동기화
    useEffect(() => {
-      setSelected(localeToSelected(getCurrentLocale()));
+      setSelected(localeToSelected(getCurrentLocale(pathname)));
    }, [pathname]);
 
    // 언어 변경 핸들러
