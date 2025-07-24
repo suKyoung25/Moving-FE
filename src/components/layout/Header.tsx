@@ -18,7 +18,20 @@ import profileIcon from "@/assets/images/profileIcon.svg";
 import ProfileDropDownMenu from "@/components/common/ProfileDropdownMenu";
 import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
+import { routing } from "@/i18n/routing"; // locales 배열 접근용
 import { getNotifications } from "@/lib/api/notification/getNotifications";
+
+function getPathnameWithoutLocale(
+   pathname: string,
+   locales: readonly string[],
+) {
+   for (const locale of locales) {
+      if (pathname.startsWith(`/${locale}`)) {
+         return pathname.slice(locale.length + 1) || "/";
+      }
+   }
+   return pathname;
+}
 
 export default function Header({ children }: { children?: React.ReactNode }) {
    const { user } = useAuth();
@@ -34,12 +47,17 @@ export default function Header({ children }: { children?: React.ReactNode }) {
    const linkClass = (path: string) =>
       clsx(isActive(path) && "!text-black-400");
 
+   const pathnameWithoutLocale = getPathnameWithoutLocale(
+      pathname,
+      routing.locales,
+   );
+
    const isSubHeader =
-      pathname.startsWith("/request") ||
-      pathname.startsWith("/reviews") ||
-      pathname.startsWith("/favorite-movers") ||
-      pathname === "/my-quotes/client" ||
-      pathname === "/my-quotes/mover";
+      pathnameWithoutLocale.startsWith("/request") ||
+      pathnameWithoutLocale.startsWith("/reviews") ||
+      pathnameWithoutLocale.startsWith("/favorite-movers") ||
+      pathnameWithoutLocale === "/my-quotes/client" ||
+      pathnameWithoutLocale === "/my-quotes/mover";
 
    useOutsideClick(profileRef, () => setIsProfileDropDownOpen(false));
 

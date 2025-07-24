@@ -5,7 +5,7 @@ export interface WritableReview {
    moveDate: string;
    isDesignatedEstimate: boolean;
    moverProfileImage: string | null;
-   moverNickName: string;
+   moverNickname: string;
 }
 
 export interface MyReview extends WritableReview {

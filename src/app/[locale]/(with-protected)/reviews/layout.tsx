@@ -6,10 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
    return (
       <div className="bg-bg-100 min-h-screen">
          <Header>
-            <SomeHeader
-               tab1Label="작성 가능한 리뷰"
-               tab2Label="내가 작성한 리뷰"
-            />
+            <SomeHeader page="Reviews" />
          </Header>
          <DefaultLayout>{children}</DefaultLayout>
       </div>
