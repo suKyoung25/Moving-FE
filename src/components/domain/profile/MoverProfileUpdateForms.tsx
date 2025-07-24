@@ -1,7 +1,6 @@
 "use client";
 
-import useMoverProfilePostForm from "@/lib/hooks/useMoverProfilePostForm";
-import React from "react";
+import React, { useEffect } from "react";
 import ImageInputField from "./ImageInputField";
 import GeneralInputField from "./GeneralInputField";
 import TextAreaInputField from "./TextAreaInputField";
@@ -9,16 +8,19 @@ import ButtonInputField from "./ButtonInputField";
 import SolidButton from "@/components/common/SolidButton";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import useMoverProfileUpdateForm from "@/lib/hooks/useMoverProfileUpdateForm";
 
-export default function MoverProfilePostForm() {
+export default function MoverProfileUpdateForm() {
    const { user } = useAuth();
    const router = useRouter();
 
-   //프로필 등록을 이미 한 유저의 경우 프로필 수정으로 리다이렉트
-   if (user?.isProfileCompleted) {
-      alert("이미 프로필이 등록되어 있습니다"); //TODO: 토스트 알람으로 리펙터링
-      router.push("/profile/edit");
-   }
+   //프로필 등록을 안했으면 등록으로 리다이렉트
+   useEffect(() => {
+      if (!user?.isProfileCompleted) {
+         alert("프로필 등록을 먼저 해주세요"); //TODO: 토스트 알림으로 리펙터링
+         router.push("/profile/create");
+      }
+   }, [user, router]);
 
    const {
       register,
@@ -28,7 +30,9 @@ export default function MoverProfilePostForm() {
       isLoading,
       handleSubmit,
       onSubmit,
-   } = useMoverProfilePostForm();
+   } = useMoverProfileUpdateForm();
+
+   if (!user) return null;
 
    return (
       <form
@@ -120,7 +124,7 @@ export default function MoverProfilePostForm() {
 
          <div className="mt-17 lg:pl-185">
             <SolidButton disabled={!isValid || isLoading} type="submit">
-               {isLoading ? "등록 중..." : "시작하기"}
+               {isLoading ? "수정 중..." : "수정하기"}
             </SolidButton>
          </div>
       </form>

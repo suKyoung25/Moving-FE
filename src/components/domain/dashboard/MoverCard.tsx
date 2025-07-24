@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
 import avatar from "@/assets/images/avatarIcon.svg"; // TODO: 추후 실제 이미지로 변경
-import MoverInfo from "./MoverInfo";
 import EditButtons from "./EditButtons";
 import { Mover } from "@/lib/types";
+import MoverInfo from "./MoverInfo";
 
 export default function MoverCard({ mover }: { mover: Mover }) {
    return (

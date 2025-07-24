@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FieldValue, InputFieldProps } from "@/lib/types/profile.types";
+import { FieldValue, InputFieldProps } from "@/lib/types/mover.types";
 import ErrorText from "../auth/ErrorText";
 
 //상세 설명 (textArea) input인 경우
@@ -24,7 +24,7 @@ function TextAreaInputField<T extends Record<string, FieldValue>>({
             placeholder={placeholder}
          />
 
-         {error && <ErrorText error={error.message} />}
+         {error && <ErrorText error={error.message} position="left" />}
       </div>
    );
 }

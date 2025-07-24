@@ -31,7 +31,7 @@ export default function CreateProfilePage() {
                </div>
 
                <div className="lg:text-20-regular text-12-regular text-black-200 leading-8">
-                  추가 정보를 입력하여 회원가입을 완료해주세요
+                  추가 정보를 입력하여 프로필 등록을 완료해주세요
                </div>
             </div>
 
