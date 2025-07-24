@@ -1,15 +1,12 @@
+import SomeHeader from "@/components/common/SomeHeader";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import Header from "@/components/layout/Header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
    return (
       <div className="min-h-screen bg-white">
-         {/*  bg-bg-100 */}
          <Header>
-            <div className="flex gap-2">
-               <button>나의 견적 확인</button>
-               <button>반려한 견적 확인</button>
-            </div>
+            <SomeHeader tab1Label="대기 중인 견적" tab2Label="받았던 견적" />
          </Header>
 
          <DefaultLayout>{children}</DefaultLayout>
