@@ -1,0 +1,39 @@
+{
+   "Reviews": {
+      "writableReviews": "Writable Reviews",
+      "myReviews": "My Reviews",
+      "writeReview": "Write a Review",
+      "modalTitle": "Write Review",
+      "selectRating": "Please select a rating",
+      "detailReview": "Please write a detailed review",
+      "placeholder": "Please enter at least 10 characters",
+      "registerReview": "Submit Review",
+      "createdAt": "Date Created",
+      "mover": "Mover"
+   },
+   "MyQuotes": {
+      "Client": {
+         "pendingQuotes": "Pending Quotes",
+         "receivedQuotes": "Received Quotes"
+      },
+      "Mover": {
+         "sentQuotes": "Sent Quotes",
+         "rejectedRequests": "Rejected Requests"
+      }
+   },
+   "Chips": {
+      "small": "Small Move",
+      "home": "Home Move",
+      "office": "Office Move",
+      "designated": "Designated Quote Request",
+      "pending": "Quote Pending",
+      "done": "Confirmed Quote"
+   },
+   "MoverCards": {
+      "mover": "Mover",
+      "moveDate": "Moving Date",
+      "price": "Price",
+      "career": "Experience",
+      "estimateCount": "Confirmed Cases"
+   }
+}

@@ -1,0 +1,39 @@
+{
+   "Reviews": {
+      "writableReviews": "작성 가능한 리뷰",
+      "myReviews": "내가 작성한 리뷰",
+      "writeReview": "리뷰 작성하기",
+      "modalTitle": "리뷰 쓰기",
+      "selectRating": "평점을 선택해 주세요",
+      "detailReview": "상세 후기를 작성해 주세요",
+      "placeholder": "최소 10자 이상 입력해주세요",
+      "registerReview": "리뷰 등록",
+      "createdAt": "작성일",
+      "mover": "기사님"
+   },
+   "MyQuotes": {
+      "Client": {
+         "pendingQuotes": "대기 중인 견적",
+         "receivedQuotes": "받았던 견적"
+      },
+      "Mover": {
+         "sentQuotes": "보낸 견적 조회",
+         "rejectedRequests": "반려요청"
+      }
+   },
+   "Chips": {
+      "small": "소형이사",
+      "home": "가정이사",
+      "office": "사무실이사",
+      "designated": "지정 견적 요청",
+      "pending": "견적 대기",
+      "done": "확정 견적"
+   },
+   "MoverCards": {
+      "mover": "기사님",
+      "moveDate": "이사일",
+      "price": "견적가",
+      "career": "경력",
+      "estimateCount": "건 확정"
+   }
+}

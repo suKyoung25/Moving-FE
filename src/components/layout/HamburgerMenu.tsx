@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { User } from "@/lib/types";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const listVariants = {
    hidden: {},
@@ -33,7 +34,6 @@ export default function HamburgerMenu({
    setIsHamburgerOpen: Dispatch<SetStateAction<boolean>>;
 }) {
    const router = useRouter();
-   const [selected, setSelected] = useState<"KR" | "EN" | "ZH">("KR");
    const [isMenuVisible, setIsMenuVisible] = useState(false);
 
    const menuItems = user
@@ -107,29 +107,7 @@ export default function HamburgerMenu({
                ))}
             </motion.ul>
          </div>
-         {/* 버튼 UI 예시 나중에 context 및 컴포넌트화 */}
-         <div className="text-18-regular md:text-20-regular absolute bottom-6 left-6 flex items-center md:bottom-16 md:left-16 [&_*]:text-gray-400">
-            <button
-               onClick={() => setSelected("KR")}
-               className={selected === "KR" ? "!text-black-400" : ""}
-            >
-               KR
-            </button>
-            <span className="mx-2 h-3 w-0.25 bg-gray-400 md:mx-3"></span>
-            <button
-               onClick={() => setSelected("EN")}
-               className={selected === "EN" ? "!text-black-400" : ""}
-            >
-               EN
-            </button>
-            <span className="mx-2 h-3 w-0.25 bg-gray-400 md:mx-3"></span>
-            <button
-               onClick={() => setSelected("ZH")}
-               className={selected === "ZH" ? "!text-black-400" : ""}
-            >
-               ZH
-            </button>
-         </div>
+         <LanguageSwitcher />
       </motion.div>
    );
 }

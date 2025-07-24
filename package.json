@@ -17,6 +17,7 @@
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.1",
     "next": "15.3.4",
+    "next-intl": "^4.3.4",
     "nodemailer": "^7.0.5",
     "react": "^19.0.0",
     "react-daum-postcode": "^3.2.0",
