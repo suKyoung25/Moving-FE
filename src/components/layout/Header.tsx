@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 import Link from "next/link";
 import logo from "@/assets/images/logo.svg";
@@ -18,30 +18,17 @@ import profileIcon from "@/assets/images/profileIcon.svg";
 import ProfileDropDownMenu from "@/components/common/ProfileDropdownMenu";
 import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
+import { getNotifications } from "@/lib/api/notification/getNotifications";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
    const { user } = useAuth();
    const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
    const [isProfileDropDownOpen, setIsProfileDropDownOpen] = useState(false);
-   const [isNotificationModalOepn, setIsNotificationModalOepn] =
-      useState(false);
-
-   const profileRef = useRef<HTMLDivElement>(null!);
-   const notificationRef = useRef<HTMLDivElement>(null!);
-
-   useOutsideClick(
-      profileRef,
-      () => setIsProfileDropDownOpen(false),
-      isProfileDropDownOpen,
-   );
-
-   useOutsideClick(
-      notificationRef,
-      () => setIsNotificationModalOepn(false),
-      isNotificationModalOepn,
-   );
-
+   const [isNotiModalOpen, setIsNotiModalOpen] = useState(false);
+   const [hasUnread, setHasUnread] = useState(false);
    const pathname = usePathname();
+   const profileRef = useRef<HTMLDivElement>(null);
+   const notificationRef = useRef<HTMLDivElement>(null);
 
    const isActive = (path: string) => pathname.startsWith(path);
    const linkClass = (path: string) =>
@@ -53,6 +40,19 @@ export default function Header({ children }: { children?: React.ReactNode }) {
       pathname.startsWith("/favorite-movers") ||
       pathname === "/my-quotes/client" ||
       pathname === "/my-quotes/mover";
+
+   useOutsideClick(profileRef, () => setIsProfileDropDownOpen(false));
+
+   useOutsideClick(notificationRef, () => setIsNotiModalOpen(false));
+
+   useEffect(() => {
+      const checkUnread = async () => {
+         const data = await getNotifications();
+         setHasUnread(data.hasUnread);
+      };
+
+      if (user) checkUnread();
+   }, [user]);
 
    return (
       <header className="border-line-100 sticky top-0 left-0 z-20 w-full border-b bg-white">
@@ -162,21 +162,24 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         className="relative h-6 w-6 lg:h-8 lg:w-8"
                      >
                         <button
-                           onClick={() =>
-                              setIsNotificationModalOepn((prev) => !prev)
-                           }
+                           onClick={() => setIsNotiModalOpen((prev) => !prev)}
                         >
                            <Image
                               src={alarmIcon}
                               alt="alarm"
                               className="lg:w-full"
                            />
+                           {hasUnread && (
+                              <span className="absolute top-0 right-0 flex size-2.5">
+                                 <span className="bg-secondary-yellow-100 absolute top-0 inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+                                 <span className="bg-secondary-yellow-100 relative inline-flex size-2.5 rounded-full"></span>
+                              </span>
+                           )}
                         </button>
-                        {isNotificationModalOepn && (
+                        {isNotiModalOpen && (
                            <NotificationModal
-                              setIsNotificationModalOepn={
-                                 setIsNotificationModalOepn
-                              }
+                              setIsNotiModalOpen={setIsNotiModalOpen}
+                              setHasUnread={setHasUnread}
                            />
                         )}
                      </div>
