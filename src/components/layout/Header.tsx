@@ -43,7 +43,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
    const profileRef = useRef<HTMLDivElement>(null);
    const notificationRef = useRef<HTMLDivElement>(null);
 
-   const isActive = (path: string) => pathname.startsWith(path);
+   const isActive = (path: string) => pathnameWithoutLocale.startsWith(path);
    const linkClass = (path: string) =>
       clsx(isActive(path) && "!text-black-400");
 
