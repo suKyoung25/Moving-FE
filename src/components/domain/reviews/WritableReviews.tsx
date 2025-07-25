@@ -32,6 +32,8 @@ export default function WritableReviews() {
    const [selectedId, setSelectedId] = useState<string | null>(null);
    // 리뷰 작성 성공 여부
    const [reviewSubmitted, setReviewSubmitted] = useState(false);
+   // 로딩 상태
+   const [loading, setLoading] = useState(false);
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
@@ -40,6 +42,7 @@ export default function WritableReviews() {
    useEffect(() => {
       async function fetchData() {
          try {
+            setLoading(true);
             const res = await getWritableReviews(
                pagination.page,
                pagination.limit,
@@ -48,6 +51,8 @@ export default function WritableReviews() {
             setPagination(res.data.pagination);
          } catch (error) {
             console.error(error);
+         } finally {
+            setLoading(false);
          }
       }
       fetchData();
@@ -121,7 +126,15 @@ export default function WritableReviews() {
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
          />
-         {writableReviews.length === 0 && (
+         {/* 로딩 중일 때 */}
+         {loading && (
+            <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
+               로딩 중...
+            </div>
+         )}
+
+         {/* 로딩 중이 아니고, 리뷰 목록이 비었을 때 */}
+         {!loading && writableReviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <EmptyState message="작성 가능한 리뷰가 없어요" />
             </div>

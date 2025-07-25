@@ -30,6 +30,8 @@ export default function MyReviews() {
          totalPages: 1,
       };
    });
+   // 로딩 상태
+   const [loading, setLoading] = useState(false);
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
@@ -38,11 +40,14 @@ export default function MyReviews() {
    useEffect(() => {
       async function fetchData() {
          try {
+            setLoading(true);
             const res = await getMyReviews(pagination.page, pagination.limit);
             setReviews(res.data.reviews);
             setPagination(res.data.pagination);
          } catch (error) {
             console.error(error);
+         } finally {
+            setLoading(false);
          }
       }
       fetchData();
@@ -138,7 +143,13 @@ export default function MyReviews() {
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
          />
-         {reviews.length === 0 && (
+         {/* 로딩 중일 때 */}
+         {loading && (
+            <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
+               로딩 중...
+            </div>
+         )}
+         {!loading && reviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <EmptyState message="아직 등록한 리뷰가 없어요!" />
                <SolidButton

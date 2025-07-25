@@ -15,17 +15,6 @@ export interface MyReview extends WritableReview {
    createdAt: Date;
 }
 
-export type ReviewFormState = {
-   success: boolean;
-   message: string;
-};
-
-export type ReviewPayload = {
-   estimateId: string;
-   rating: number;
-   content: string;
-};
-
 // TODO: schemas로 이동?
 export interface Review {
    id: string;
