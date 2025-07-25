@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-export default function Page() {
-   return <>Page</>;
-=======
-
 import RejectedRequestsTab from "@/components/domain/my-quotes/RejectedRequestsTab";
 import SentQuotesTab from "@/components/domain/my-quotes/SentQuotesTab";
 import { redirect } from "next/navigation";
@@ -26,5 +21,4 @@ export default async function Page({
          )}
       </>
    );
->>>>>>> 559b5f421498632aef4ac725f509f42bb6a57a6f
 }
