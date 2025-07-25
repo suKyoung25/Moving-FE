@@ -52,10 +52,10 @@ export default function ClientProfileTitle({ type }: Prop) {
    if (type === "수정") {
       return (
          <section>
-            <h2 className="text-black-400 text-18-bold lg:text-32-medium mb-8 lg:mb-10">
+            <h2 className="text-black-400 text-18-bold lg:text-32-medium mb-8 lg:mb-5">
                프로필 수정
             </h2>
-            <hr className="border-line-100 mb-5 lg:mb-16" />
+            <hr className="border-line-100 mb-5 lg:mb-10" />
          </section>
       );
    }
