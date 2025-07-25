@@ -27,7 +27,8 @@
       "**/*.ts",
       "**/*.tsx",
       ".next/types/**/*.ts",
-      "src/app/[locale]/(with-guest)/login/client-login"
+      "src/app/[locale]/(with-guest)/login/client-login",
+      "src/lib/globals"
    ],
    "exclude": ["node_modules"]
 }
