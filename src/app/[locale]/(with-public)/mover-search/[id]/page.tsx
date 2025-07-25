@@ -1,3 +1,9 @@
-export default function Page() {
-   return <div>detail</div>;
+import MoverDetail from "@/components/domain/mover-search/MoverDetail";
+
+export default async function MoverDetailPage() {
+   return (
+      <div>
+         <MoverDetail />
+      </div>
+   );
 }
