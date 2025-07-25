@@ -11,6 +11,7 @@ import {
 } from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createReview } from "@/lib/api/review/createReview";
+import { extractErrorMessage } from "@/lib/utils";
 
 interface ReviewModalProps {
    isOpen: boolean;
@@ -69,17 +70,15 @@ export default function ReviewModal({
       try {
          await createReview(data);
          handleSuccess();
-      } catch (error: any) {
+      } catch (error: unknown) {
          setApiMessage(
-            error?.body?.message ||
-               error?.message ||
-               "리뷰 등록 중 오류가 발생했습니다.",
+            extractErrorMessage(error, "리뷰 등록 중 오류가 발생했습니다."),
          );
       }
    };
 
-   const rating = watch("rating");
-   const content = watch("content");
+   const rating = watch("rating") ?? 0;
+   const content = watch("content") ?? "";
 
    if (!isOpen || !selectedEstimate) return null;
 

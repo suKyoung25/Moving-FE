@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ReviewFormBody } from "./ReviewFormBody";
+import { extractErrorMessage } from "@/lib/utils";
 
 interface EditDeleteReviewModalProps {
    isOpen: boolean;
@@ -26,7 +27,6 @@ export default function EditDeleteReviewModal({
    onSuccess,
 }: EditDeleteReviewModalProps) {
    const {
-      register,
       handleSubmit,
       setValue,
       reset,
@@ -58,10 +58,8 @@ export default function EditDeleteReviewModal({
          await updateReview(review.id, data);
          onClose();
          onSuccess?.();
-      } catch (error: any) {
-         setApiMessage(
-            error?.body?.message || error?.message || "리뷰 수정 실패",
-         );
+      } catch (error: unknown) {
+         setApiMessage(extractErrorMessage(error, "리뷰 수정 실패"));
       }
    };
 
@@ -74,10 +72,8 @@ export default function EditDeleteReviewModal({
          await deleteReview(review.id);
          onClose();
          onSuccess?.();
-      } catch (error: any) {
-         setApiMessage(
-            error?.body?.message || error?.message || "리뷰 삭제 실패",
-         );
+      } catch (error: unknown) {
+         setApiMessage(extractErrorMessage(error, "리뷰 삭제 실패"));
       } finally {
          setDeleteLoading(false);
       }
