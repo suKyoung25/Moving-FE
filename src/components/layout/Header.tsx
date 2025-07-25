@@ -19,7 +19,7 @@ import ProfileDropDownMenu from "@/components/common/ProfileDropdownMenu";
 import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
 import { routing } from "@/i18n/routing"; // locales 배열 접근용
-import { getNotifications } from "@/lib/api/notification/getNotifications";
+import { getNotifications } from "@/lib/api/notification/notificationApi";
 
 function getPathnameWithoutLocale(
    pathname: string,
