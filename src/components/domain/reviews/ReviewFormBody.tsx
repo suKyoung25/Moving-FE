@@ -16,6 +16,8 @@ type ReviewFormBodyProps = {
    setHovered: (n: number | null) => void;
    content: string;
    setContent: (v: string) => void;
+   errorRating: string | undefined;
+   errorContent: string | undefined;
 };
 
 export function ReviewFormBody({
@@ -26,6 +28,8 @@ export function ReviewFormBody({
    setHovered,
    content,
    setContent,
+   errorRating,
+   errorContent,
 }: ReviewFormBodyProps) {
    return (
       <>
@@ -102,6 +106,9 @@ export function ReviewFormBody({
                      />
                   </button>
                ))}
+               {errorRating && (
+                  <p className="mt-2 text-sm text-red-500">{errorRating}</p>
+               )}
             </div>
             <hr className="bg-line-100 my-5 h-px w-full border-0 lg:my-8" />
          </div>
@@ -116,6 +123,9 @@ export function ReviewFormBody({
                value={content}
                onChange={(e) => setContent(e.target.value)}
             />
+            {errorContent && (
+               <p className="mt-2 text-sm text-red-500">{errorContent}</p>
+            )}
          </div>
       </>
    );

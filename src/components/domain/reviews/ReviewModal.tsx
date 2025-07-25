@@ -1,10 +1,16 @@
 "use client";
 
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReviewFormBody } from "./ReviewFormBody";
-import { ReviewFormState, WritableReview } from "@/lib/types";
+import { WritableReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
-import { createReviewAction } from "@/lib/actions/review.action";
+import { useForm } from "react-hook-form";
+import {
+   CreateReviewDto,
+   createReviewSchema,
+} from "@/lib/schemas/reviews.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createReview } from "@/lib/api/review/createReview";
 
 interface ReviewModalProps {
    isOpen: boolean;
@@ -19,47 +25,72 @@ export default function ReviewModal({
    selectedEstimate,
    onReviewSuccess,
 }: ReviewModalProps) {
-   // 별점
-   const [rating, setRating] = useState(0);
+   const {
+      handleSubmit,
+      setValue,
+      register,
+      reset,
+      watch,
+      formState: { errors, isSubmitting },
+   } = useForm<CreateReviewDto>({
+      resolver: zodResolver(createReviewSchema),
+      defaultValues: {
+         rating: 0,
+         content: "",
+         estimateId: selectedEstimate?.estimateId ?? "",
+      },
+   });
+
+   const [apiMessage, setApiMessage] = useState("");
    // 별점 호버링
    const [hovered, setHovered] = useState<number | null>(null);
-   // 리뷰 내용
-   const [content, setContent] = useState("");
+
+   useEffect(() => {
+      if (isOpen && selectedEstimate) {
+         reset({
+            rating: 0,
+            content: "",
+            estimateId: selectedEstimate.estimateId,
+         });
+         setHovered(null);
+         setApiMessage("");
+      }
+   }, [isOpen, selectedEstimate, reset]);
+
+   const handleSuccess = () => {
+      onClose();
+      reset();
+      setHovered(null);
+      onReviewSuccess?.();
+   };
+
+   const onSubmit = async (data: CreateReviewDto) => {
+      setApiMessage("");
+      try {
+         await createReview(data);
+         handleSuccess();
+      } catch (error: any) {
+         setApiMessage(
+            error?.body?.message ||
+               error?.message ||
+               "리뷰 등록 중 오류가 발생했습니다.",
+         );
+      }
+   };
+
+   const rating = watch("rating");
+   const content = watch("content");
+
+   if (!isOpen || !selectedEstimate) return null;
 
    // 버튼 활성화
    const isActive = rating > 0 && content.trim().length >= 10;
 
-   const createReviewInitialState: ReviewFormState = {
-      success: false,
-      message: "",
-   };
-
-   const [state, formAction] = useActionState(
-      createReviewAction,
-      createReviewInitialState,
-   );
-
-   const resetState = () => {
-      setRating(0);
-      setHovered(null);
-      setContent("");
-   };
-
-   useEffect(() => {
-      if (state.success) {
-         onClose();
-         resetState();
-         onReviewSuccess?.();
-      }
-   }, [state.success, onClose, onReviewSuccess]);
-
-   if (!isOpen || !selectedEstimate) return null;
-
    return (
-      <form action={formAction}>
+      <form onSubmit={handleSubmit(onSubmit)}>
          <input
-            hidden
-            name="estimateId"
+            type="hidden"
+            {...register("estimateId")}
             value={selectedEstimate.estimateId}
             readOnly
          />
@@ -69,23 +100,31 @@ export default function ReviewModal({
             isOpen={isOpen}
             onClose={() => {
                onClose();
-               resetState();
+               reset();
+               setHovered(null);
+               setApiMessage("");
             }}
             title="리뷰 쓰기"
-            buttonTitle="리뷰 등록"
-            isActive={isActive}
+            buttonTitle={isSubmitting ? "등록 중..." : "리뷰 등록"}
+            isActive={isActive && !isSubmitting}
          >
             <ReviewFormBody
                estimate={selectedEstimate}
                rating={rating}
-               setRating={setRating}
+               setRating={(v: number) =>
+                  setValue("rating", v, { shouldValidate: true })
+               }
                hovered={hovered}
                setHovered={setHovered}
                content={content}
-               setContent={setContent}
+               setContent={(val: string) =>
+                  setValue("content", val, { shouldValidate: true })
+               }
+               errorRating={errors.rating?.message}
+               errorContent={errors.content?.message}
             />
-            {!state.success && state.message && (
-               <p className="mt-2 text-sm text-red-500">{state.message}</p>
+            {apiMessage && (
+               <p className="mt-2 text-sm text-red-500">{apiMessage}</p>
             )}
          </InputModal>
       </form>
