@@ -154,7 +154,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                {!user && (
                   <div className="bg-primary-blue-300 [&_*]:text-18-medium relative hidden min-h-11 min-w-32 rounded-2xl p-4 lg:block [&_*]:text-nowrap [&_*]:text-white [&_*]:transition-all [&_*]:duration-500 hover:[&>div]:opacity-100 hover:[&>span]:opacity-0">
                      <span className="absolute top-1/2 left-1/2 -translate-1/2 opacity-100">
-                        서비스 로그인
+                        로그인
                      </span>
                      <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center gap-2 opacity-0">
                         <Link

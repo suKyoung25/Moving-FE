@@ -6,8 +6,8 @@
  * - cookieFetch("/경로", 옵션인데 안 써도 됨22)
  */
 
-import { tokenSettings } from "../utils/auth.util";
-import isFetchError from "../utils/fetch-error.util";
+import { tokenSettings } from "./auth.util";
+import isFetchError from "./fetch-error.util";
 
 // ✅ 기본 url : 환경 변수 설정해서 쓰세요.
 export const BASE_URL =
