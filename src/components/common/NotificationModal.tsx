@@ -77,7 +77,7 @@ export default function NotificationModal({
    }, [setHasUnread]);
 
    return (
-      <div className="border-line-200 absolute top-10 -left-6 z-100 flex h-80 w-78 -translate-x-1/2 flex-col rounded-3xl border bg-white px-4 py-2.5 shadow-[2px_2px_16px_0px_rgba(0,0,0,0.06)] md:-left-8 lg:top-12 lg:-left-4 lg:h-88 lg:w-90">
+      <div className="border-line-200 absolute top-10 -left-6 z-10 flex h-80 w-78 -translate-x-1/2 flex-col rounded-3xl border bg-white px-4 py-2.5 md:-left-8 lg:top-12 lg:-left-4 lg:h-88 lg:w-90">
          <div className="flex items-center justify-between py-3.5 pr-3 pl-4 md:-left-8 lg:top-12 lg:pl-6">
             <span className="font-bold lg:text-lg">알림</span>
             <button type="button" onClick={() => setIsNotiModalOpen(false)}>
