@@ -22,8 +22,9 @@ export const checkPasswordSchema = baseAuthSchema
    );
 
 export const nameSchema = baseAuthSchema
-   .min(1, "성함을 입력해 주세요.")
-   .max(4, "4자 이내로 입력해 주세요.");
+   .min(2, "성함을 입력해 주세요.")
+   .max(4, "4자 이내로 입력해 주세요.")
+   .trim();
 
 export const phoneSchema = baseAuthSchema
    .min(9, "9자 이상 입력해주세요.")
