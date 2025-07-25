@@ -11,9 +11,12 @@ import { fetchClientPendingQuotes } from "@/lib/api/estimate/getClientPendingQuo
 import MoveDateCard from "./MoveDateCard";
 import MoverProfileclient from "./MoverProfileClient";
 import EmptyState from "@/components/common/EmptyState";
+import { postClientConfirmedQuote } from "@/lib/api/estimate/postClientConfirmedQuote";
+import ResultModal from "@/components/common/ResultModal";
 
 export default function Pending() {
    const [data, setData] = useState<Quotes[]>();
+   const [isModal, setIsModal] = useState<boolean>(false);
    const router = useRouter();
 
    useEffect(() => {
@@ -22,6 +25,7 @@ export default function Pending() {
             const result = await fetchClientPendingQuotes();
             setData(result.data);
          } catch (e) {
+            console.log(e);
             throw e;
          }
       }
@@ -29,8 +33,33 @@ export default function Pending() {
       getMyPendingQuotes();
    }, []);
 
+   const handleClickConfirmed = async (estimateId: string) => {
+      try {
+         const result = await postClientConfirmedQuote(estimateId);
+
+         setIsModal(true);
+         return result;
+      } catch (e) {
+         throw e;
+      }
+   };
+
+   const handleClickModal = () => {
+      setIsModal(false);
+      location.reload();
+   };
+
    if (!Array.isArray(data) || data.length === 0)
       return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
+
+   if (isModal)
+      return (
+         <ResultModal
+            isOpen={isModal}
+            message="견적이 확정 되었습니다."
+            onClose={handleClickModal}
+         />
+      );
 
    return (
       <div className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">
@@ -84,10 +113,16 @@ export default function Pending() {
                      </p>
                   </div>
                   <div className="flex flex-col gap-2 md:flex-row">
-                     <SolidButton>견적 확정하기</SolidButton>
+                     <SolidButton
+                        onClick={() =>
+                           handleClickConfirmed(estimate.estimateId)
+                        }
+                     >
+                        견적 확정하기
+                     </SolidButton>
                      <OutlinedButton
                         onClick={() =>
-                           router.push(`client/${request.requestId}`)
+                           router.push(`client/${estimate.estimateId}`)
                         }
                      >
                         상세보기
