@@ -1,14 +1,25 @@
 "use client";
 
-import useMoverCreateProfile from "@/lib/hooks/useMoverCreateProfile";
+import useMoverProfilePostForm from "@/lib/hooks/useMoverProfilePostForm";
 import React from "react";
 import ImageInputField from "./ImageInputField";
 import GeneralInputField from "./GeneralInputField";
 import TextAreaInputField from "./TextAreaInputField";
 import ButtonInputField from "./ButtonInputField";
 import SolidButton from "@/components/common/SolidButton";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
-function MoverProfilePostForm() {
+export default function MoverProfilePostForm() {
+   const { user } = useAuth();
+   const router = useRouter();
+
+   //프로필 등록을 이미 한 유저의 경우 프로필 수정으로 리다이렉트
+   if (user?.isProfileCompleted) {
+      alert("이미 프로필이 등록되어 있습니다"); //TODO: 토스트 알람으로 리펙터링
+      router.push("/profile/edit");
+   }
+
    const {
       register,
       control,
@@ -17,7 +28,7 @@ function MoverProfilePostForm() {
       isLoading,
       handleSubmit,
       onSubmit,
-   } = useMoverCreateProfile();
+   } = useMoverProfilePostForm();
 
    return (
       <form
@@ -58,11 +69,11 @@ function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <GeneralInputField
-                  name="onelineIntroduction"
+                  name="introduction"
                   text="한 줄 소개"
                   placeholder="한 줄 소개를 입력해주세요"
                   register={register}
-                  error={errors.onelineIntroduction}
+                  error={errors.introduction}
                />
 
                <hr className="border-line-100 m-0 my-8 border-t p-0 lg:hidden" />
@@ -70,11 +81,11 @@ function MoverProfilePostForm() {
 
             <div className="flex-1">
                <TextAreaInputField
-                  name="detailDescription"
+                  name="description"
                   text="상세 설명"
                   placeholder="상세 내용을 입력해주세요"
                   register={register}
-                  error={errors.detailDescription}
+                  error={errors.description}
                />
 
                <hr className="border-line-100 m-0 my-8 border-t p-0" />
@@ -83,6 +94,7 @@ function MoverProfilePostForm() {
                   name="serviceType"
                   text="제공 서비스"
                   isServiceType={true}
+                  control={control}
                   error={
                      Array.isArray(errors.serviceType)
                         ? errors.serviceType[0]
@@ -93,12 +105,14 @@ function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 my-8 border-t p-0" />
 
                <ButtonInputField
-                  name="area"
+                  name="serviceArea"
                   text="서비스 가능 지역"
                   isArea={true}
                   control={control}
                   error={
-                     Array.isArray(errors.area) ? errors.area[0] : errors.area
+                     Array.isArray(errors.serviceArea)
+                        ? errors.serviceArea[0]
+                        : errors.serviceArea
                   }
                />
             </div>
@@ -112,5 +126,3 @@ function MoverProfilePostForm() {
       </form>
    );
 }
-
-export default MoverProfilePostForm;

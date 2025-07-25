@@ -6,7 +6,6 @@ import MoveChip from "@/components/common/MoveChip";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import yellowStar from "@/assets/images/starFilledIcon.svg";
 import grayStar from "@/assets/images/starOutlineIcon.svg";
-import blueFolder from "@/assets/images/emptyBlueFolderIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
 import { MyReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
@@ -14,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { getMyReviews } from "@/lib/api/review/getMyReviews";
 import Pagination from "@/components/common/pagination";
 import { isChipType } from "@/lib/utils/moveChip.util";
+import EmptyState from "@/components/common/EmptyState";
 
 export default function MyReviews() {
    const router = useRouter();
@@ -83,7 +83,7 @@ export default function MyReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {review.moverNickName} 기사님
+                              {review.moverNickname} 기사님
                            </span>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-1.5 flex items-center text-gray-300 lg:mt-2">
@@ -140,18 +140,9 @@ export default function MyReviews() {
          />
          {reviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
-               <Image
-                  src={blueFolder}
-                  width={184}
-                  height={136}
-                  alt="빈 화면"
-                  className="h-20.5 w-27.5 lg:h-34 lg:w-46"
-               />
-               <div className="text-16-regular lg:text-24-regular my-6 text-gray-400 lg:my-8">
-                  아직 등록한 리뷰가 없어요!
-               </div>
+               <EmptyState message="아직 등록한 리뷰가 없어요!" />
                <SolidButton
-                  className="max-w-45"
+                  className="my-6 max-w-45 lg:my-8"
                   onClick={() => router.replace("?tab=writable")}
                >
                   리뷰 작성하러 가기

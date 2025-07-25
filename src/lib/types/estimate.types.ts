@@ -40,3 +40,24 @@ export interface Quotes {
    estimates: Estimate[];
    designatedRequest: DesignatedRequest[];
 }
+
+export interface MyEstimateDetail {
+   id: string;
+   price: number;
+   comment: string;
+   createdAt: string;
+   isClientConfirmed: boolean;
+   moverId: string;
+   request: {
+      moveDate: string;
+      fromAddress: string;
+      toAddress: string;
+      moveType: "HOME" | "OFFICE" | "ETC";
+      client: {
+         name: string;
+      };
+      designatedRequest: {
+         moverId: string;
+      }[];
+   };
+}

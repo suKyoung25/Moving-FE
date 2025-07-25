@@ -14,21 +14,28 @@ interface BaseUser {
    isProfileCompleted: boolean;
 }
 
+export interface Region {
+   id: string;
+   regionName: string;
+}
+
 export interface Client extends BaseUser {
    serviceType: string[];
    livingArea: string[];
 }
 
-interface Mover extends BaseUser {
+export interface Mover extends BaseUser {
    nickName?: string;
-   career?: number;
+   career?: string | number; //TODO: string으로 통일할 것
    introduction?: string;
    description?: string;
    serviceType: string[];
-   serviceArea: string[];
+   serviceArea: Region[];
    favoriteCount: number;
    estimateCount: number;
    reviewCount: number;
+   averageReviewRating: number;
+   isFavorite?: boolean;
 }
 
 export type User = Client | Mover;
@@ -58,6 +65,15 @@ export interface AuthInputProps<T extends FieldValues> {
    error?: string;
 }
 
+//기사님 기본정보 수정 시 사용
+export interface BasicInfoInputProps<T extends FieldValues> {
+   name: Path<T>;
+   text: string;
+   placeholder: string;
+   register: UseFormRegister<T>;
+   error?: string;
+}
+
 // ✅ 오류 메시지 출력
 export interface AuthFetchError {
    status?: number;
@@ -70,13 +86,4 @@ export interface AuthFetchError {
          [key: string]: string | undefined;
       };
    };
-}
-
-//기사님 기본정보 수정 시 사용 //TODO:기본정보 타입 정리할 것
-export interface BasicInfoInputProps<T extends FieldValues> {
-   name: Path<T>;
-   text: string;
-   placeholder: string;
-   register: UseFormRegister<T>;
-   error?: string;
 }

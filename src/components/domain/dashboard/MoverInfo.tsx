@@ -2,6 +2,7 @@ import React from "react";
 import { Mover } from "@/lib/types";
 import CareerInfo from "./CareerInfo";
 import LineDivider from "@/components/common/LineDivider";
+import { MOVE_TYPES } from "@/constants";
 
 interface MoverInfoProps {
    averageReviewRating: Mover["averageReviewRating"];
@@ -9,7 +10,7 @@ interface MoverInfoProps {
    estimateCount: Mover["estimateCount"];
    career: Mover["career"];
    serviceType: Mover["serviceType"];
-   serviceArea: Mover["serviceArea"];
+   serviceArea: string[];
 }
 
 const serviceClass =
@@ -23,12 +24,10 @@ export default function MoverInfo({
    serviceType,
    serviceArea,
 }: MoverInfoProps) {
-   // TODO: 상수 폴더로 이동
-   const serviceTypeMap = [
-      { label: "소형이사", value: "SMALL" },
-      { label: "가정이사", value: "HOME" },
-      { label: "사무실이사", value: "OFFICE" },
-   ];
+   const serviceTypeMap = Object.entries(MOVE_TYPES).map(([label, value]) => ({
+      label,
+      value,
+   }));
 
    return (
       <div className="text-black-300 flex flex-col gap-[14px] font-medium max-lg:text-sm lg:gap-4">

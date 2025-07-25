@@ -1,0 +1,39 @@
+{
+   "Reviews": {
+      "writableReviews": "可撰写的评论",
+      "myReviews": "我的评论",
+      "writeReview": "撰写评论",
+      "modalTitle": "撰写评论",
+      "selectRating": "请选择评分",
+      "detailReview": "请撰写详细评价",
+      "placeholder": "请输入至少10个字符",
+      "registerReview": "提交评论",
+      "createdAt": "撰写日期",
+      "mover": "搬运工"
+   },
+   "MyQuotes": {
+      "Client": {
+         "pendingQuotes": "待处理报价",
+         "receivedQuotes": "收到的报价"
+      },
+      "Mover": {
+         "sentQuotes": "已发送报价",
+         "rejectedRequests": "被拒绝的请求"
+      }
+   },
+   "Chips": {
+      "small": "小型搬家",
+      "home": "家庭搬家",
+      "office": "办公室搬家",
+      "designated": "指定报价请求",
+      "pending": "报价待处理",
+      "done": "确认报价"
+   },
+   "MoverCards": {
+      "mover": "搬运工",
+      "moveDate": "搬家日期",
+      "price": "报价",
+      "career": "经验",
+      "estimateCount": "确认案例数"
+   }
+}
