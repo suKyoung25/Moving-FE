@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "이사업체 견적을 한눈에 비교하고, 합리적인 선택을 돕는 스마트한 이사 플랫폼 '무빙'",
 };
 
+
 export default async function RootLayout({
    children,
    params,
