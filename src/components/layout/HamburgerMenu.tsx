@@ -107,7 +107,7 @@ export default function HamburgerMenu({
                ))}
             </motion.ul>
          </div>
-         <LanguageSwitcherMobile />
+         <LanguageSwitcherMobile setIsHamburgerOpen={setIsHamburgerOpen} />
       </motion.div>
    );
 }

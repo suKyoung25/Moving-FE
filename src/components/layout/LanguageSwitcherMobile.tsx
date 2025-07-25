@@ -1,10 +1,15 @@
+// LanguageSwitcherMobile.tsx
 "use client";
 
 import React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcherMobile({
+   setIsHamburgerOpen,
+}: {
+   setIsHamburgerOpen: (val: boolean) => void;
+}) {
    const router = useRouter();
    const pathname = usePathname();
    const locale = useLocale();
@@ -13,7 +18,11 @@ export default function LanguageSwitcher() {
       const segments = pathname.split("/");
       segments[1] = newLocale;
       const newPath = segments.join("/");
-      router.push(newPath);
+
+      setIsHamburgerOpen(false);
+      setTimeout(() => {
+         router.push(newPath);
+      }, 400);
    };
 
    return (
