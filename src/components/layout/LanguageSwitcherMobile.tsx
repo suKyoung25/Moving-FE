@@ -1,45 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
 import { useRouter, usePathname } from "next/navigation";
-import {
-   LanguageCode,
-   localeToSelected,
-   selectedToLocale,
-   getCurrentLocale,
-   getReplacedLocalePath,
-} from "@/lib/utils/language.utils";
+import { useLocale } from "next-intl";
 
-export default function LanguageSwitcherMobile() {
+export default function LanguageSwitcher() {
    const router = useRouter();
    const pathname = usePathname();
+   const locale = useLocale();
 
-   const [selected, setSelected] = useState<LanguageCode>(
-      localeToSelected(getCurrentLocale(pathname)),
-   );
-
-   useEffect(() => {
-      setSelected(localeToSelected(getCurrentLocale(pathname)));
-   }, [pathname]);
-
-   const handleChangeLanguage = (langSelected: LanguageCode) => {
-      if (langSelected === selected) return;
-      const newLocale = selectedToLocale(langSelected);
-      router.replace(getReplacedLocalePath(pathname, newLocale));
-      setSelected(langSelected);
+   const changeLocale = (newLocale: string) => {
+      const segments = pathname.split("/");
+      segments[1] = newLocale;
+      const newPath = segments.join("/");
+      router.push(newPath);
    };
 
    return (
-      <div className="md:text-18-medium text-16-medium absolute bottom-6 left-6 flex items-center text-gray-400 md:bottom-14 md:left-16">
-         {(["KR", "EN", "ZH"] as LanguageCode[]).map((lang, idx) => (
-            <div key={lang} className="flex items-center">
+      <div className="md:text-18-medium text-16-medium absolute bottom-6 left-6 flex items-center text-gray-400 md:bottom-14 md:left-14">
+         {[
+            { label: "KO", code: "ko" },
+            { label: "EN", code: "en" },
+            { label: "ZH", code: "zh" },
+         ].map(({ label, code }, idx) => (
+            <div key={label} className="flex items-center">
                <button
-                  onClick={() => handleChangeLanguage(lang)}
-                  className={
-                     selected === lang ? "!text-black-400 font-semibold" : ""
-                  }
+                  disabled={locale === code}
+                  onClick={() => changeLocale(code)}
+                  className="disabled:!text-black-400 disabled:font-semibold"
+                  type="button"
                >
-                  {lang}
+                  {label}
                </button>
                {idx < 2 && (
                   <span className="mx-2 h-3 w-0.25 bg-gray-400 md:mx-3" />
