@@ -21,7 +21,7 @@ export async function checkMoverProfileExists(): Promise<boolean> {
   try {
     await getMoverProfile();
     return true;
-  } catch (error) {
+  } catch { 
     return false;
   }
 }

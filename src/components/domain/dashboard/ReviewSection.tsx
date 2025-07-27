@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import ReviewBreakdown from "./ReviewBreakdown";
 import ReviewStar from "./ReviewStar";
 import ReviewList from "./ReviewList";
+import { Review } from "@/lib/types";
 
 export default function DashboardReviewSection() {
   const [reviews, setReviews] = useState([]);
@@ -17,7 +18,7 @@ export default function DashboardReviewSection() {
   // 리뷰 데이터에서 평균 평점과 총 개수 계산
   const reviewCount = reviews.length;
   const averageReviewRating = reviewCount > 0 
-    ? reviews.reduce((sum, review: any) => sum + review.rating, 0) / reviewCount 
+    ? reviews.reduce((sum, review: Review) => sum + review.rating, 0) / reviewCount 
     : 0;
 
   useEffect(() => {
