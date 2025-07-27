@@ -16,6 +16,8 @@ type ReviewFormBodyProps = {
    setHovered: (n: number | null) => void;
    content: string;
    setContent: (v: string) => void;
+   errorRating: string | undefined;
+   errorContent: string | undefined;
 };
 
 export function ReviewFormBody({
@@ -26,6 +28,8 @@ export function ReviewFormBody({
    setHovered,
    content,
    setContent,
+   errorRating,
+   errorContent,
 }: ReviewFormBodyProps) {
    return (
       <>
@@ -50,7 +54,7 @@ export function ReviewFormBody({
             <div className="flex-1">
                <div className="flex items-center justify-between">
                   <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                     {estimate.moverNickname} 기사님
+                     {estimate.moverNickName} 기사님
                   </span>
                </div>
                <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
@@ -102,6 +106,9 @@ export function ReviewFormBody({
                      />
                   </button>
                ))}
+               {errorRating && (
+                  <p className="mt-2 text-sm text-red-500">{errorRating}</p>
+               )}
             </div>
             <hr className="bg-line-100 my-5 h-px w-full border-0 lg:my-8" />
          </div>
@@ -116,6 +123,9 @@ export function ReviewFormBody({
                value={content}
                onChange={(e) => setContent(e.target.value)}
             />
+            {errorContent && (
+               <p className="mt-2 text-sm text-red-500">{errorContent}</p>
+            )}
          </div>
       </>
    );

@@ -19,7 +19,8 @@ import ProfileDropDownMenu from "@/components/common/ProfileDropdownMenu";
 import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
 import { routing } from "@/i18n/routing"; // locales 배열 접근용
-import { getNotifications } from "@/lib/api/notification/getNotifications";
+import { getNotifications } from "@/lib/api/notification/notificationApi";
+import LanguageSwitcherDesktop from "./LanguageSwitcherDesktop";
 
 function getPathnameWithoutLocale(
    pathname: string,
@@ -43,7 +44,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
    const profileRef = useRef<HTMLDivElement>(null);
    const notificationRef = useRef<HTMLDivElement>(null);
 
-   const isActive = (path: string) => pathname.startsWith(path);
+   const isActive = (path: string) => pathnameWithoutLocale.startsWith(path);
    const linkClass = (path: string) =>
       clsx(isActive(path) && "!text-black-400");
 
@@ -203,7 +204,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      </div>
                      <div
                         ref={profileRef}
-                        className="relative h-6 w-6 lg:h-8 lg:w-8"
+                        className="relative size-6 lg:size-8"
                      >
                         <button
                            onClick={() =>
@@ -221,6 +222,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      <span className="text-18-medium hidden lg:block">
                         {user.name}님
                      </span>
+                     <LanguageSwitcherDesktop />
                   </div>
                )}
             </div>

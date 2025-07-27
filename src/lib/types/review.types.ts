@@ -5,7 +5,7 @@ export interface WritableReview {
    moveDate: string;
    isDesignatedEstimate: boolean;
    moverProfileImage: string | null;
-   moverNickname: string;
+   moverNickName: string;
 }
 
 export interface MyReview extends WritableReview {
@@ -14,17 +14,6 @@ export interface MyReview extends WritableReview {
    content: string;
    createdAt: Date;
 }
-
-export type ReviewFormState = {
-   success: boolean;
-   message: string;
-};
-
-export type ReviewPayload = {
-   estimateId: string;
-   rating: number;
-   content: string;
-};
 
 // TODO: schemas로 이동?
 export interface Review {

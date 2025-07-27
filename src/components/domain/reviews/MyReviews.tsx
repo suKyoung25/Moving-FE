@@ -14,6 +14,8 @@ import { getMyReviews } from "@/lib/api/review/getMyReviews";
 import Pagination from "@/components/common/pagination";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import EmptyState from "@/components/common/EmptyState";
+import more from "@/assets/images/moreGrayIcon.svg";
+import EditDeleteReviewModal from "./EditDeleteReviewModal";
 
 export default function MyReviews() {
    const router = useRouter();
@@ -30,6 +32,11 @@ export default function MyReviews() {
          totalPages: 1,
       };
    });
+   // 로딩 상태
+   const [loading, setLoading] = useState(false);
+   const [editModalOpen, setEditModalOpen] = useState(false);
+   const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
+   const [refreshFlag, setRefreshFlag] = useState(false);
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
@@ -38,15 +45,18 @@ export default function MyReviews() {
    useEffect(() => {
       async function fetchData() {
          try {
+            setLoading(true);
             const res = await getMyReviews(pagination.page, pagination.limit);
             setReviews(res.data.reviews);
             setPagination(res.data.pagination);
          } catch (error) {
             console.error(error);
+         } finally {
+            setLoading(false);
          }
       }
       fetchData();
-   }, [pagination.page, pagination.limit]);
+   }, [pagination.page, pagination.limit, refreshFlag]);
 
    return (
       <div>
@@ -65,7 +75,7 @@ export default function MyReviews() {
                         <MoveChip type={"DESIGNATED"} />
                      )}
                   </div>
-                  <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
+                  <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 h-fit gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
                      <span>작성일</span>
                      <span>{formatIsoToYMD(review.createdAt)}</span>
                   </div>
@@ -83,8 +93,22 @@ export default function MyReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {review.moverNickname} 기사님
+                              {review.moverNickName} 기사님
                            </span>
+                           <button
+                              onClick={() => {
+                                 setEditModalOpen(true);
+                                 setSelectedReview(review);
+                              }}
+                              className="h-6 w-6"
+                           >
+                              <Image
+                                 src={more}
+                                 width={24}
+                                 height={24}
+                                 alt="수정 및 삭제"
+                              />
+                           </button>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-1.5 flex items-center text-gray-300 lg:mt-2">
                            <span className="flex items-center gap-1.5 lg:gap-3">
@@ -138,7 +162,13 @@ export default function MyReviews() {
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
          />
-         {reviews.length === 0 && (
+         {/* 로딩 중일 때 */}
+         {loading && (
+            <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
+               로딩 중...
+            </div>
+         )}
+         {!loading && reviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <EmptyState message="아직 등록한 리뷰가 없어요!" />
                <SolidButton
@@ -148,6 +178,22 @@ export default function MyReviews() {
                   리뷰 작성하러 가기
                </SolidButton>
             </div>
+         )}
+         {/* 수정/삭제 모달 */}
+         {selectedReview && (
+            <EditDeleteReviewModal
+               isOpen={editModalOpen}
+               onClose={() => {
+                  setEditModalOpen(false);
+                  setSelectedReview(null);
+               }}
+               review={selectedReview}
+               onSuccess={() => {
+                  setEditModalOpen(false);
+                  setSelectedReview(null);
+                  setRefreshFlag((prev) => !prev); // 성공 시 목록 새로고침
+               }}
+            />
          )}
       </div>
    );

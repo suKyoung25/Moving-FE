@@ -3,6 +3,7 @@ import { Mover } from "@/lib/types";
 import CareerInfo from "./CareerInfo";
 import LineDivider from "@/components/common/LineDivider";
 import { MOVE_TYPES } from "@/constants";
+import { Region } from '@/lib/types'
 
 interface MoverInfoProps {
    averageReviewRating: Mover["averageReviewRating"];
@@ -10,7 +11,7 @@ interface MoverInfoProps {
    estimateCount: Mover["estimateCount"];
    career: Mover["career"];
    serviceType: Mover["serviceType"];
-   serviceArea: string[];
+   serviceArea: Region[];
 }
 
 const serviceClass =
