@@ -198,16 +198,6 @@ export default function MoverCard() {
                serviceArea={mover.serviceArea || []}
             />
          </div>
-         
-         {/* 개발자용 디버깅 정보 (프로덕션에서는 제거) */}
-         {process.env.NODE_ENV === 'development' && (
-           <details className="mt-4 p-2 bg-gray-100 rounded text-xs">
-             <summary className="cursor-pointer">디버깅 정보</summary>
-             <pre className="mt-2 overflow-auto">
-               {JSON.stringify(mover, null, 2)}
-             </pre>
-           </details>
-         )}
       </section>
    );
 }
