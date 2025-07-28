@@ -2,10 +2,7 @@ import InputModal from "@/components/common/InputModal";
 import SolidButton from "@/components/common/SolidButton";
 import { deleteReview } from "@/lib/api/review/deleteReview";
 import { updateReview } from "@/lib/api/review/updateReview";
-import {
-   UpdateReviewDto,
-   updateReviewSchema,
-} from "@/lib/schemas/reviews.schema";
+import { UpdateReviewDto } from "@/lib/schemas/reviews.schema";
 import { MyReview } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";

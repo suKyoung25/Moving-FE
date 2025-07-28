@@ -5,10 +5,7 @@ import { ReviewFormBody } from "./ReviewFormBody";
 import { WritableReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
 import { useForm } from "react-hook-form";
-import {
-   CreateReviewDto,
-   createReviewSchema,
-} from "@/lib/schemas/reviews.schema";
+import { CreateReviewDto } from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createReview } from "@/lib/api/review/createReview";
 import { extractErrorMessage } from "@/lib/utils";
