@@ -6,14 +6,17 @@ import Image from "next/image";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
 import ReviewModal from "./ReviewModal";
-import blueFolder from "@/assets/images/emptyBlueFolderIcon.svg";
 import { WritableReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { getWritableReviews } from "@/lib/api/review/getWritableReviews";
 import Pagination from "@/components/common/pagination";
+import EmptyState from "@/components/common/EmptyState";
+import { useTranslations } from "next-intl";
 
 export default function WritableReviews() {
+   const t = useTranslations("Reviews");
+
    // 작성 가능한 리뷰 목록
    const [writableReviews, setWritableReviews] = useState<WritableReview[]>([]);
    // 페이지네이션
@@ -32,6 +35,8 @@ export default function WritableReviews() {
    const [selectedId, setSelectedId] = useState<string | null>(null);
    // 리뷰 작성 성공 여부
    const [reviewSubmitted, setReviewSubmitted] = useState(false);
+   // 로딩 상태
+   const [loading, setLoading] = useState(false);
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
@@ -40,6 +45,7 @@ export default function WritableReviews() {
    useEffect(() => {
       async function fetchData() {
          try {
+            setLoading(true);
             const res = await getWritableReviews(
                pagination.page,
                pagination.limit,
@@ -48,6 +54,8 @@ export default function WritableReviews() {
             setPagination(res.data.pagination);
          } catch (error) {
             console.error(error);
+         } finally {
+            setLoading(false);
          }
       }
       fetchData();
@@ -88,21 +96,22 @@ export default function WritableReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {writableReview.moverNickName} 기사님
+                              {writableReview.moverNickName} {t("mover")}
                            </span>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
                            <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>이사일</span>
+                              <span>{t("moveDate")}</span>
                               <span className="text-black-300">
                                  {formatIsoToYMD(writableReview.moveDate)}
                               </span>
                            </span>
                            <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
                            <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>견적가</span>
+                              <span>{t("price")}</span>
                               <span className="text-black-300">
-                                 {writableReview.price.toLocaleString()}원
+                                 {writableReview.price.toLocaleString()}
+                                 {t("money")}
                               </span>
                            </span>
                         </div>
@@ -111,7 +120,7 @@ export default function WritableReviews() {
                   <SolidButton
                      onClick={() => setSelectedId(writableReview.estimateId)}
                   >
-                     리뷰 작성하기
+                     {t("writeReview")}
                   </SolidButton>
                </div>
             ))}
@@ -121,18 +130,17 @@ export default function WritableReviews() {
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
          />
-         {writableReviews.length === 0 && (
+         {/* 로딩 중일 때 */}
+         {loading && (
+            <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
+               {t("loading")}
+            </div>
+         )}
+
+         {/* 로딩 중이 아니고, 리뷰 목록이 비었을 때 */}
+         {!loading && writableReviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
-               <Image
-                  src={blueFolder}
-                  width={184}
-                  height={136}
-                  alt="빈 화면"
-                  className="h-20.5 w-27.5 lg:h-34 lg:w-46"
-               />
-               <div className="text-16-regular lg:text-24-regular my-6 text-gray-400 lg:my-8">
-                  작성 가능한 리뷰가 없어요
-               </div>
+               <EmptyState message={t("noWritableReviews")} />
             </div>
          )}
          {selectedId && selectedEstimate && (

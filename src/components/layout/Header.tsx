@@ -18,7 +18,21 @@ import profileIcon from "@/assets/images/profileIcon.svg";
 import ProfileDropDownMenu from "@/components/common/ProfileDropdownMenu";
 import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
-import { getNotifications } from "@/lib/api/notification/getNotifications";
+import { routing } from "@/i18n/routing"; // locales 배열 접근용
+import { getNotifications } from "@/lib/api/notification/notificationApi";
+import LanguageSwitcherDesktop from "./LanguageSwitcherDesktop";
+
+function getPathnameWithoutLocale(
+   pathname: string,
+   locales: readonly string[],
+) {
+   for (const locale of locales) {
+      if (pathname.startsWith(`/${locale}`)) {
+         return pathname.slice(locale.length + 1) || "/";
+      }
+   }
+   return pathname;
+}
 
 export default function Header({ children }: { children?: React.ReactNode }) {
    const { user } = useAuth();
@@ -30,16 +44,21 @@ export default function Header({ children }: { children?: React.ReactNode }) {
    const profileRef = useRef<HTMLDivElement>(null);
    const notificationRef = useRef<HTMLDivElement>(null);
 
-   const isActive = (path: string) => pathname.startsWith(path);
+   const isActive = (path: string) => pathnameWithoutLocale.startsWith(path);
    const linkClass = (path: string) =>
       clsx(isActive(path) && "!text-black-400");
 
+   const pathnameWithoutLocale = getPathnameWithoutLocale(
+      pathname,
+      routing.locales,
+   );
+
    const isSubHeader =
-      pathname.startsWith("/request") ||
-      pathname.startsWith("/reviews") ||
-      pathname.startsWith("/favorite-movers") ||
-      pathname === "/my-quotes/client" ||
-      pathname === "/my-quotes/mover";
+      pathnameWithoutLocale.startsWith("/request") ||
+      pathnameWithoutLocale.startsWith("/reviews") ||
+      pathnameWithoutLocale.startsWith("/favorite-movers") ||
+      pathnameWithoutLocale === "/my-quotes/client" ||
+      pathnameWithoutLocale === "/my-quotes/mover";
 
    useOutsideClick(profileRef, () => setIsProfileDropDownOpen(false));
 
@@ -136,7 +155,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                {!user && (
                   <div className="bg-primary-blue-300 [&_*]:text-18-medium relative hidden min-h-11 min-w-32 rounded-2xl p-4 lg:block [&_*]:text-nowrap [&_*]:text-white [&_*]:transition-all [&_*]:duration-500 hover:[&>div]:opacity-100 hover:[&>span]:opacity-0">
                      <span className="absolute top-1/2 left-1/2 -translate-1/2 opacity-100">
-                        서비스 로그인
+                        로그인
                      </span>
                      <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center gap-2 opacity-0">
                         <Link
@@ -185,7 +204,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      </div>
                      <div
                         ref={profileRef}
-                        className="relative h-6 w-6 lg:h-8 lg:w-8"
+                        className="relative size-6 lg:size-8"
                      >
                         <button
                            onClick={() =>
@@ -203,6 +222,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      <span className="text-18-medium hidden lg:block">
                         {user.name}님
                      </span>
+                     <LanguageSwitcherDesktop />
                   </div>
                )}
             </div>

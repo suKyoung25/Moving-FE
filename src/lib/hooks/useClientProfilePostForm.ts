@@ -8,8 +8,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { tokenFetch } from "../utils/fetch-client";
 import { MOVE_TYPES } from "@/constants";
+import createClientProfile from "../api/auth/requests/createClientProfile";
 
 export default function useClientProfilePostForm() {
    // ✅ 상태 모음
@@ -43,7 +43,8 @@ export default function useClientProfilePostForm() {
    // ✅ 버튼 활성화 여부: 나중에 이미지 조건도 넣어야 함
    const isDisabled =
       isLoading ||
-      (selectedServices.length === 0 && selectedRegions.length === 0);
+      selectedServices.length === 0 ||
+      selectedRegions.length === 0;
 
    // ✅ 보낼 자료
    const payload = {
@@ -59,10 +60,8 @@ export default function useClientProfilePostForm() {
       setIsLoading(true);
 
       try {
-         await tokenFetch("/profile/clients", {
-            method: "PATCH",
-            body: JSON.stringify(payload),
-         });
+         await createClientProfile(payload);
+
          router.replace("/mover-search");
       } catch (error) {
          console.error("일반 프로필 등록 실패: ", error);

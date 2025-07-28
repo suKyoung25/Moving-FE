@@ -1,0 +1,62 @@
+{
+   "Reviews": {
+      "writableReviews": "작성 가능한 리뷰",
+      "noWritableReviews": "작성 가능한 리뷰가 없어요",
+      "myReviews": "내가 작성한 리뷰",
+      "writeReview": "리뷰 작성하기",
+      "modalTitle": "리뷰 쓰기",
+      "selectRating": "평점을 선택해 주세요",
+      "detailReview": "상세 후기를 작성해 주세요",
+      "placeholder": "최소 10자 이상 입력해주세요",
+      "registerReview": "리뷰 등록",
+      "createdAt": "작성일",
+      "mover": "기사님",
+      "moveDate": "이사일",
+      "price": "견적가",
+      "career": "경력",
+      "loading": "로딩 중 ...",
+      "money": "원",
+      "reviewError": "리뷰 등록 중 오류가 발생했습니다.",
+      "noReview": "아직 등록한 리뷰가 없어요!",
+      "goToWrite": "리뷰 작성하러 가기",
+      "editError": "리뷰 수정 실패",
+      "deleteConfirm": "리뷰를 정말 삭제하시겠습니까?",
+      "deleteError": "리뷰 삭제 실패",
+      "editDelete": "리뷰 수정/삭제",
+      "registering": "등록 중...",
+      "editting": "수정 중...",
+      "editReview": "수정 완료",
+      "deleting": "삭제 중...",
+      "deleteReview": "리뷰 삭제",
+      "confirmed": "확정",
+      "year": "년",
+      "cases": "건"
+   },
+   "FavoriteMovers": {
+      "title": "찜한 기사님"
+   },
+   "MyQuotes": {
+      "Client": {
+         "pendingQuotes": "대기 중인 견적",
+         "receivedQuotes": "받았던 견적"
+      },
+      "Mover": {
+         "sentQuotes": "보낸 견적 조회",
+         "rejectedRequests": "반려요청"
+      }
+   },
+   "Chips": {
+      "small": "소형이사",
+      "home": "가정이사",
+      "office": "사무실이사",
+      "designated": "지정 견적 요청",
+      "pending": "견적 대기",
+      "done": "확정 견적"
+   },
+   "Validations": {
+      "invalidRequest": "잘못된 요청입니다.",
+      "selectRating": "별점을 선택해 주세요",
+      "maxRating": "5점 만점 입니다.",
+      "minContent": "리뷰 내용을 최소 10자 이상 입력해 주세요"
+   }
+}

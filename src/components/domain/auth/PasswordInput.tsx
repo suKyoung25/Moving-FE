@@ -23,7 +23,12 @@ export default function PasswordInput<T extends FieldValues>({
 
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
-         <label htmlFor={name}>{label}</label>
+         <label
+            htmlFor={name}
+            className="text-black-400 text-14-regular lg:text-20-regular"
+         >
+            {label}
+         </label>
 
          <div className="relative w-full">
             {/* ✅ 입력창 */}

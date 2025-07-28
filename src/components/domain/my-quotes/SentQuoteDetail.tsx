@@ -1,9 +1,9 @@
-// components/my-quotes/DetailSection.tsx
 import MoveChip from "@/components/common/MoveChip";
 import PageTitle from "@/components/layout/PageTitle";
 import { getSentEstimateDetail } from "@/lib/api/estimate/requests/getSentEstimateDetail";
 import { notFound } from "next/navigation";
 import MoveTextCard from "./MoveTextCard";
+import SocialShareGroup from "@/components/common/SocialShareGroup";
 
 export default async function SentQuoteDetail({ id }: { id: string }) {
    const estimate = await getSentEstimateDetail(id);
@@ -80,6 +80,10 @@ export default async function SentQuoteDetail({ id }: { id: string }) {
                      </div>
                   </div>
                </div>
+               <div className="border-line-100 border lg:hidden"></div>
+               <div className="lg:hidden">
+                  <SocialShareGroup text="견적서 공유하기" />
+               </div>
                <div className="border-line-100 border"></div>
                <div className="flex flex-col gap-4 lg:gap-6">
                   <span className="text-16-semibold lg:text-24-semibold">
@@ -112,8 +116,8 @@ export default async function SentQuoteDetail({ id }: { id: string }) {
                   </ul>
                </div>
             </article>
-            <article className="hidden w-60 bg-white lg:block">
-               <div>견적서 공유하기</div>
+            <article className="hidden h-fit w-60 lg:block">
+               <SocialShareGroup text="견적서 공유하기" />
             </article>
          </div>
       </div>

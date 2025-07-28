@@ -6,7 +6,6 @@ import MoveChip from "@/components/common/MoveChip";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import yellowStar from "@/assets/images/starFilledIcon.svg";
 import grayStar from "@/assets/images/starOutlineIcon.svg";
-import blueFolder from "@/assets/images/emptyBlueFolderIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
 import { MyReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
@@ -14,8 +13,13 @@ import { useRouter } from "next/navigation";
 import { getMyReviews } from "@/lib/api/review/getMyReviews";
 import Pagination from "@/components/common/pagination";
 import { isChipType } from "@/lib/utils/moveChip.util";
+import EmptyState from "@/components/common/EmptyState";
+import more from "@/assets/images/moreGrayIcon.svg";
+import EditDeleteReviewModal from "./EditDeleteReviewModal";
+import { useTranslations } from "next-intl";
 
 export default function MyReviews() {
+   const t = useTranslations("Reviews");
    const router = useRouter();
    const [reviews, setReviews] = useState<MyReview[]>([]);
    const [pagination, setPagination] = useState(() => {
@@ -30,6 +34,11 @@ export default function MyReviews() {
          totalPages: 1,
       };
    });
+   // 로딩 상태
+   const [loading, setLoading] = useState(false);
+   const [editModalOpen, setEditModalOpen] = useState(false);
+   const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
+   const [refreshFlag, setRefreshFlag] = useState(false);
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
@@ -38,15 +47,18 @@ export default function MyReviews() {
    useEffect(() => {
       async function fetchData() {
          try {
+            setLoading(true);
             const res = await getMyReviews(pagination.page, pagination.limit);
             setReviews(res.data.reviews);
             setPagination(res.data.pagination);
          } catch (error) {
             console.error(error);
+         } finally {
+            setLoading(false);
          }
       }
       fetchData();
-   }, [pagination.page, pagination.limit]);
+   }, [pagination.page, pagination.limit, refreshFlag]);
 
    return (
       <div>
@@ -65,8 +77,8 @@ export default function MyReviews() {
                         <MoveChip type={"DESIGNATED"} />
                      )}
                   </div>
-                  <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
-                     <span>작성일</span>
+                  <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 h-fit gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
+                     <span>{t("createdAt")} </span>
                      <span>{formatIsoToYMD(review.createdAt)}</span>
                   </div>
                   <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md border-b-1 bg-white pb-2.5 shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
@@ -83,21 +95,37 @@ export default function MyReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {review.moverNickName} 기사님
+                              {review.moverNickName} {t("mover")}
                            </span>
+                           <button
+                              onClick={() => {
+                                 setEditModalOpen(true);
+                                 setSelectedReview(review);
+                              }}
+                              className="h-6 w-6"
+                           >
+                              <Image
+                                 src={more}
+                                 width={24}
+                                 height={24}
+                                 alt="수정 및 삭제"
+                                 style={{ transform: "rotate(90deg)" }}
+                              />
+                           </button>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-1.5 flex items-center text-gray-300 lg:mt-2">
                            <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>이사일</span>
+                              <span>{t("moveDate")}</span>
                               <span className="text-black-300">
                                  {formatIsoToYMD(review.moveDate)}
                               </span>
                            </span>
                            <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
                            <span className="flex items-center gap-0.5 lg:gap-1">
-                              <span>견적가</span>
+                              <span>{t("price")} </span>
                               <span className="text-black-300">
-                                 {review.price.toLocaleString()}원
+                                 {review.price.toLocaleString()}
+                                 {t("money")}
                               </span>
                            </span>
                         </div>
@@ -138,25 +166,38 @@ export default function MyReviews() {
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
          />
-         {reviews.length === 0 && (
+         {/* 로딩 중일 때 */}
+         {loading && (
+            <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
+               {t("loading")}
+            </div>
+         )}
+         {!loading && reviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
-               <Image
-                  src={blueFolder}
-                  width={184}
-                  height={136}
-                  alt="빈 화면"
-                  className="h-20.5 w-27.5 lg:h-34 lg:w-46"
-               />
-               <div className="text-16-regular lg:text-24-regular my-6 text-gray-400 lg:my-8">
-                  아직 등록한 리뷰가 없어요!
-               </div>
+               <EmptyState message={t("noReview")} />
                <SolidButton
-                  className="max-w-45"
+                  className="my-6 max-w-45 lg:my-8"
                   onClick={() => router.replace("?tab=writable")}
                >
-                  리뷰 작성하러 가기
+                  {t("goToWrite")}
                </SolidButton>
             </div>
+         )}
+         {/* 수정/삭제 모달 */}
+         {selectedReview && (
+            <EditDeleteReviewModal
+               isOpen={editModalOpen}
+               onClose={() => {
+                  setEditModalOpen(false);
+                  setSelectedReview(null);
+               }}
+               review={selectedReview}
+               onSuccess={() => {
+                  setEditModalOpen(false);
+                  setSelectedReview(null);
+                  setRefreshFlag((prev) => !prev); // 성공 시 목록 새로고침
+               }}
+            />
          )}
       </div>
    );

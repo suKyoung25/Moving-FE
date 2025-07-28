@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpFormSchema, SignUpFormValues } from "./../schemas/auth.schema";
+import { signUpFormSchema, SignUpFormValues } from "../schemas/auth.schema";
 import { AuthFetchError, UserType } from "../types";
 import createSignUp from "../api/auth/requests/createSignUp";
 
@@ -29,7 +29,6 @@ export default function useSignUpForm() {
    // ✅ 제출
    const onSubmit = (type: UserType) => async (data: SignUpFormValues) => {
       setIsLoading(true);
-      console.log("찍히고 있음");
 
       try {
          const res = await createSignUp(type, data);
@@ -50,7 +49,7 @@ export default function useSignUpForm() {
                });
             });
          } else {
-            console.error("예상치 못한 오류 발생: ", customError?.body.message);
+            console.error("예기치 못한 오류 발생: ", customError?.body.message);
          }
       } finally {
          setIsLoading(false);

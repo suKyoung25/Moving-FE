@@ -1,5 +1,3 @@
-// 도메인 단위
-
 import z from "zod";
 
 //기사님 프로필 관련 사용 (career가 string)
