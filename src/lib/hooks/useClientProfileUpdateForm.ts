@@ -54,6 +54,7 @@ export default function useClientProfileUpdateForm() {
          name: user?.name,
          email: user?.email,
          phone: user?.phone,
+         serviceType: user?.serviceType,
       },
    });
 
