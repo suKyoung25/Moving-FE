@@ -1,10 +1,10 @@
 import { Dispatch, useCallback, useEffect } from "react";
 import { MoverAction, MoverState } from "@/lib/types/mover.types";
 import { getMovers } from "@/lib/api/mover/getMover";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { GetMoversParams } from "@/lib/types/mover.types";
 import { areaMapping } from "@/constants/mover.constants";
 import { tokenSettings } from "@/lib/utils/auth.util";
+import { toggleFavoriteMover } from "../api/estimate/requests/favoriteMover";
 
 export const useMoverApis = (
   state: MoverState,

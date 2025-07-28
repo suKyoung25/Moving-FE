@@ -61,7 +61,7 @@ export default function MoverDetail() {
       <MoverProvider>
       <div className="flex w-full flex-col gap-4 lg:gap-6">
          {/* Mobile Layout - Stack vertically */}
-         <div className="flex flex-col gap-4 lg:hidden">
+         <div className="w-80 md:w-[36rem] lg:w-[60rem] mx-auto flex flex-col gap-4 lg:hidden">
             <DriverCard mover={mover} />
             <LineDivider />
             <ShareSection />
@@ -70,7 +70,7 @@ export default function MoverDetail() {
          </div>
 
          {/* Desktop Layout - Side by side */}
-         <div className="hidden lg:flex lg:flex-row lg:justify-between lg:gap-6">
+         <div className="hidden  lg:flex lg:flex-row lg:justify-between lg:gap-6">
             <div className="flex w-full flex-col gap-6 lg:w-2/3">
                <DriverCard mover={mover} />
                <LineDivider />
