@@ -1,15 +1,22 @@
 import Image from "next/image";
-import shareLink from "@/assets/images/shareLinkIcon.svg";
-import shareKakao from "@/assets/images/shareKakaoIcon.svg";
-import shareFacebook from "@/assets/images/shareFaceBookIcon.svg";
 import likeIcon from "@/assets/images/likeFilledIcon.svg";
 import PageTitle from "@/components/layout/PageTitle";
 import SolidButton from "@/components/common/SolidButton";
 import MoverProfileclient from "@/components/domain/my-quotes/MoverProfileClient";
 import QuotaionInfo from "@/components/domain/my-quotes/QuotaionInfo";
+import { fetchClientQuoteDetail } from "@/lib/api/estimate/getClientQuoteDetail";
+import SocialShareGroup from "@/components/common/SocialShareGroup";
 
 // 견적 관리 상세
-export default async function MyQuoetesDetailPage() {
+export default async function MyQuoetesDetailPage({
+   params,
+}: {
+   params: Promise<{ id: string }>;
+}) {
+   const { id } = await params;
+
+   const { data } = await fetchClientQuoteDetail(id);
+
    return (
       <div>
          <PageTitle title="견적 상세" />
@@ -17,17 +24,17 @@ export default async function MyQuoetesDetailPage() {
             <section className="items mt-2 mb-27 flex w-full flex-col gap-6 lg:mt-6 lg:max-w-238.5 lg:gap-10">
                <article className="border-line-100 rounded-2xl border bg-white px-3.5 py-4 lg:px-6 lg:py-5">
                   <MoverProfileclient
-                     moveType="HOME"
-                     isDesignated={true}
-                     moverName="홍길동 이사님"
-                     profileImage={null}
-                     isFavorited={false}
-                     averageReviewRating={4.8}
-                     reviewCount={12}
-                     career={5}
-                     estimateCount={120}
-                     favoriteCount={30}
-                     quotesStatus="received"
+                     moveType={data.request.moveType}
+                     isDesignated={false}
+                     moverName={data.mover.name}
+                     profileImage={data.mover.profileImage}
+                     isFavorited={data.isFavorite}
+                     averageReviewRating={data.mover.averageReviewRating}
+                     reviewCount={data.mover.reviewCount}
+                     career={data.mover.career}
+                     estimateCount={data.mover.estimateCount}
+                     favoriteCount={data.mover.favoriteCount}
+                     quotesStatus={data.status}
                   />
                </article>
                <hr className="bg-line-100 h-px border-0" />
@@ -35,41 +42,21 @@ export default async function MyQuoetesDetailPage() {
                   <p className="text-16-semibold lg:text-24-semibold mb-4">
                      견적가
                   </p>
-                  <p className="text-20-bold lg:text-32-bold">180,000원</p>
+                  <p className="text-20-bold lg:text-32-bold">
+                     {data.price.toLocaleString()}원
+                  </p>
                </article>
                <hr className="bg-line-100 h-px border-0" />
                <article className="lg:hidden">
-                  <p className="text-14-semibold md:text-16-semibold mb-4">
-                     견적서 공유하기
-                  </p>
-                  <div className="flex items-center gap-4">
-                     <Image
-                        src={shareLink}
-                        alt="링크 공유"
-                        width={40}
-                        height={40}
-                     />
-                     <Image
-                        src={shareKakao}
-                        alt="카카오 공유"
-                        width={40}
-                        height={40}
-                     />
-                     <Image
-                        src={shareFacebook}
-                        alt="페이스북 공유 공유"
-                        width={40}
-                        height={40}
-                     />
-                  </div>
+                  <SocialShareGroup text="견적서 공유하기" />
                </article>
                <hr className="bg-line-100 h-px border-0 lg:hidden" />
                <QuotaionInfo
-                  fromAddress="ex1"
-                  moveDate="2025-07-17T11:22:10.755Z"
-                  moveType="SMALL"
-                  requestedAt="2025-07-19T11:22:10.755Z"
-                  toAddress="ex5"
+                  fromAddress={data.request.fromAddress}
+                  moveDate={data.request.moveDate}
+                  moveType={data.request.moveType}
+                  requestedAt={data.request.requestedAt}
+                  toAddress={data.request.toAddress}
                />
             </section>
             <div
@@ -84,35 +71,20 @@ export default async function MyQuoetesDetailPage() {
                      height={24}
                   />
                </div>
-               <SolidButton>견적 확정하기</SolidButton>
+               {data.status === "pending" && (
+                  <SolidButton>견적 확정하기</SolidButton>
+               )}
             </div>
             <div className="hidden w-82 lg:block">
-               <SolidButton>견적 확정하기</SolidButton>
-               <hr className="bg-line-100 my-10 h-px border-0" />
+               {data.status === "pending" && (
+                  <>
+                     <SolidButton>견적 확정하기</SolidButton>
+                     <hr className="bg-line-100 my-10 h-px border-0" />
+                  </>
+               )}
+
                <article>
-                  <p className="text-14-semibold md:text-16-semibold lg:text-20-semibold mb-4">
-                     견적서 공유하기
-                  </p>
-                  <div className="flex items-center gap-4">
-                     <Image
-                        src={shareLink}
-                        alt="링크 공유"
-                        width={64}
-                        height={64}
-                     />
-                     <Image
-                        src={shareKakao}
-                        alt="카카오 공유"
-                        width={64}
-                        height={64}
-                     />
-                     <Image
-                        src={shareFacebook}
-                        alt="페이스북 공유 공유"
-                        width={64}
-                        height={64}
-                     />
-                  </div>
+                  <SocialShareGroup text="견적서 공유하기" />
                </article>
             </div>
          </div>
