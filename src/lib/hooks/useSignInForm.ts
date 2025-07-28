@@ -12,7 +12,7 @@ import createSignIn from "../api/auth/requests/createSignIn";
 export default function useSignInForm() {
    // ✅ 상태 모음
    const router = useRouter();
-   const { getUser } = useAuth();
+   const { getUser, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
 
    // ✅ react-hook-form
@@ -32,12 +32,16 @@ export default function useSignInForm() {
 
       try {
          const res = await createSignIn(type, data);
+
          console.log("!!!", res);
          await getUser(res.data.user, res.data.accessToken);
 
+         // 가져온 유저정보 업데이트
+         await refreshUser();
+
          // ★ 프로필 등록 안 했으면 프로필 등록, 아니면 기사님 찾기로 이동
          if (!res.data?.isProfileCompleted) {
-            router.push("/profile/create"); //TODO: 로컬에선 동작 확인함. 다른 분들도 동작하는지 확인 필요
+            router.push("/profile/create");
          } else {
             router.push("/mover-search");
          }

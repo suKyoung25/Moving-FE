@@ -10,10 +10,18 @@ import {
    MoverProfileSchema,
 } from "../schemas/profile.schema";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
+import { useAuth } from "@/context/AuthContext";
 
 function useMoverProfilePostForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
+   const { user } = useAuth();
+
+   // 프로필 등록을 한 상태라면
+   if (user?.isProfileCompleted) {
+      alert("프로필 등록이 이미 되어있습니다"); //TODO: 토스트 알림으로 리펙터링
+      router.push("/profile/edit");
+   }
 
    const {
       register,
@@ -39,6 +47,8 @@ function useMoverProfilePostForm() {
          const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
          if (res.isProfileCompleted) {
+            alert("프로필이 정상적으로 등록되었습니다."); //TODO: 토스트 알림으로 바꾸기
+
             router.push("/dashboard");
          }
       } catch (error) {
