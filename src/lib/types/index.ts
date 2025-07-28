@@ -6,3 +6,4 @@ export * from "./estimate.types";
 export * from "./mover.types";
 export * from "./client.types";
 export * from "./notification.types";
+export * from "./favorite.types";
