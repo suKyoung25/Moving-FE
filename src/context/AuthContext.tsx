@@ -17,6 +17,7 @@ import { delay } from "../../delay";
 import Spinner from "@/components/common/Spinner";
 
 // ✅ type 등
+
 interface AuthContextType {
    user: User | null;
    isLoading: boolean;
@@ -33,6 +34,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
    const [user, setUser] = useState<User | null>(null);
    const [isLoading, setIsLoading] = useState(true); // 기본값 true로 시작
+
+   console.log(user);
 
    const getUser = useCallback((user: User, accessToken: string) => {
       try {

@@ -26,10 +26,10 @@ export default function ReceivedCard({
       >
          <MoverProfileclient
             moveType={estimate.isConfirmed ? "DONE" : null}
-            isDesignated={designated ? true : false}
+            isDesignated={designated.length === 0 ? true : false}
             moverName={estimate.moverName}
             profileImage={estimate.profileImage}
-            isFavorited={false}
+            isFavorited={!!estimate.isFavorited}
             averageReviewRating={estimate.reviewRating}
             reviewCount={estimate.reviewCount}
             career={estimate.career}

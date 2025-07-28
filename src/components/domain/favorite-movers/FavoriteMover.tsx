@@ -6,22 +6,11 @@ import MoveChip from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import Pagination from "@/components/common/pagination";
-
-interface FavoriteMover {
-   id: string;
-   nickName: string;
-   profileImage: string | null;
-   favoriteCount: number;
-   averageReviewRating: number;
-   reviewCount: number;
-   career: number | null;
-   estimateCount: number;
-   serviceType: string[];
-}
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
+import { FavoriteMoverState } from "@/lib/types";
 
 export default function FavoriteMover() {
-   const [movers, setMovers] = useState<FavoriteMover[]>([]);
-   const [isLiked, setIsLiked] = useState(true);
+   const [movers, setMovers] = useState<FavoriteMoverState[]>([]);
    // 페이지네이션
    const [pagination, setPagination] = useState(() => {
       let initialLimit = 6;
@@ -35,8 +24,25 @@ export default function FavoriteMover() {
       };
    });
 
-   const handleLikedClick = () => {
-      setIsLiked((prev) => !prev);
+   const handleLikedClick = async (moverId: string) => {
+      try {
+         const res = await toggleFavoriteMover(moverId);
+         // API 응답에서 직접 최신 상태값을 반영
+         setMovers((prevMovers) =>
+            prevMovers.map((mover) =>
+               mover.id === moverId
+                  ? {
+                       ...mover,
+                       isLiked: res.isFavorite, // 백엔드에서 정확한 현재 상태값 받기
+                       favoriteCount: res.favoriteCount, // 백엔드에서 계산한 찜 개수 반영
+                    }
+                  : mover,
+            ),
+         );
+      } catch (error) {
+         alert("찜 처리 중 오류가 발생했습니다.");
+         console.error(error);
+      }
    };
 
    const handlePageChange = (page: number) => {
@@ -76,8 +82,8 @@ export default function FavoriteMover() {
                   </div>
                   <MoverProfile
                      big={true}
-                     isLiked={isLiked}
-                     handleLikedClick={handleLikedClick}
+                     isLiked={mover.isLiked}
+                     handleLikedClick={() => handleLikedClick(mover.id)}
                      nickName={mover.nickName}
                      favoriteCount={mover.favoriteCount}
                      averageReviewRating={mover.averageReviewRating}
