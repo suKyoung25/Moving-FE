@@ -1,101 +1,126 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { getMyReviews } from "@/lib/api/review/getMyReviews";
+import { getMoverReviews } from "@/lib/api/review/getMoverReviews";
+import { useAuth } from "@/context/AuthContext";
 import ReviewBreakdown from "./ReviewBreakdown";
 import ReviewStar from "./ReviewStar";
 import ReviewList from "./ReviewList";
+import { Review } from "@/lib/types";
 
-const reviewMocks = [
-   {
-      id: "review1",
-      rating: 5,
-      content: `듣던대로 정말 친절하시고 물건도 잘 옮겨주셨어요~~
-나중에 또 집 옮길 일 있으면 김코드 기사님께 부탁드릴 예정입니다!!
-비 오는데 꼼꼼히 잘 해주셔서 감사드립니다 :)`,
-      createdAt: "2025-07-17T11:22:24.419Z",
-      clientId: "client1",
-      clientName: "김수경",
-   },
-   {
-      id: "review2",
-      rating: 5,
-      content:
-         "기사님 덕분에 안전하고 신속한 이사를 했습니다! 정말 감사합니다~",
-      createdAt: "2025-07-13T11:22:24.419Z",
-      clientId: "client2",
-      clientName: "양성경",
-   },
-   {
-      id: "review3",
-      rating: 4,
-      content:
-         "비오는 날에도 친절하고 신속하게 이사를 도와주셔서 너무 만족했습니다. 하지만 날씨 때문에 1점 깎습니다..",
-      createdAt: "2025-07-10T11:22:24.419Z",
-      clientId: "client3",
-      clientName: "심유빈",
-   },
-   {
-      id: "review4",
-      rating: 1,
-      content:
-         "이사하는 집에 엘레베이터가 없다고 짐을 그냥 1층에 두고 가셨어요. 서비스 정신이 너무 없으신 듯 합니다.",
-      createdAt: "2025-07-13T11:22:24.419Z",
-      clientId: "client4",
-      clientName: "홍성훈",
-   },
-   {
-      id: "review5",
-      rating: 5,
-      content:
-         "만족스러운 서비스였습니다. 다음에도 기사님께 이사를 부탁드리고 싶습니다.",
-      createdAt: "2025-07-15T11:22:24.419Z",
-      clientId: "client5",
-      clientName: "임정빈",
-   },
-   {
-      id: "review6",
-      rating: 5,
-      content:
-         "무빙 사이트 처음 이용해봤는데 좋은 기사님 만나서 무사히 이사를 할 수 있었습니다~",
-      createdAt: "2025-07-09T11:22:24.419Z",
-      clientId: "client2",
-      clientName: "신수민",
-   },
-   {
-      id: "review7",
-      rating: 5,
-      content: "기사님 최고",
-      createdAt: "2025-07-11T11:22:24.419Z",
-      clientId: "client2",
-      clientName: "오하영",
-   },
-];
+export default function DashboardReviewSection() {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
-export default function ReviewSection({
-   averageReviewRating,
-   reviewCount,
-}: {
-   averageReviewRating: number;
-   reviewCount: number;
-}) {
-   return (
+  // 리뷰 데이터에서 평균 평점과 총 개수 계산
+  const reviewCount = reviews.length;
+  const averageReviewRating = reviewCount > 0 
+    ? reviews.reduce((sum, review: Review) => sum + review.rating, 0) / reviewCount 
+    : 0;
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        let response;
+        
+        // 사용자 타입에 따라 다른 API 호출
+        if (user?.userType === 'mover') {
+          // 기사님: 본인에게 달린 리뷰 조회
+          response = await getMoverReviews(1, 20);
+        } else {
+          // 고객: 본인이 작성한 리뷰 조회
+          response = await getMyReviews(1, 20);
+        }
+        
+        // API 응답 구조에 따라 데이터 추출
+        const reviewsData = response.data?.reviews || response.reviews || [];
+        setReviews(reviewsData);
+      } catch (err) {
+        console.error('리뷰 조회 실패:', err);
+        setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.userType) {
+      fetchReviews();
+    }
+  }, [user?.userType]);
+
+  if (loading) {
+    return (
       <section>
-         <h1 className="font-bold lg:text-2xl">리뷰 ({reviewCount})</h1>
-         <div className="lg:bg-bg-200 flex max-md:flex-col max-md:items-center md:mt-8 md:justify-center md:gap-14 lg:mb-10 lg:items-center lg:gap-[83px] lg:rounded-4xl lg:py-10">
+        <h1 className="font-bold lg:text-2xl">리뷰</h1>
+        <div className="animate-pulse mt-8 h-64 bg-gray-200 rounded-lg"></div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section>
+        <h1 className="font-bold lg:text-2xl">리뷰</h1>
+        <div className="mt-8 p-4 bg-red-100 text-red-700 rounded-lg">
+          리뷰를 불러오는데 실패했습니다.
+        </div>
+      </section>
+    );
+  }
+
+  // 제목 텍스트를 사용자 타입에 따라 변경
+  const sectionTitle = user?.userType === 'mover' 
+    ? `받은 리뷰 (${reviewCount})` 
+    : `작성한 리뷰 (${reviewCount})`;
+
+  return (
+    <section>
+      <h1 className="font-bold lg:text-2xl">{sectionTitle}</h1>
+      
+      {reviewCount > 0 ? (
+        <>
+          <div className="lg:bg-bg-200 flex max-md:flex-col max-md:items-center md:mt-8 md:justify-center md:gap-14 lg:mb-10 lg:items-center lg:gap-[83px] lg:rounded-4xl lg:py-10">
             <div className="mt-8 mb-10 flex flex-col gap-[15px]">
-               <div className="flex items-center justify-center gap-2 font-bold">
-                  <div className="text-4xl lg:text-6xl">
-                     {averageReviewRating.toFixed(1)}
-                  </div>
-                  <div className="justify-start text-2xl text-gray-100 lg:text-4xl">
-                     / 5
-                  </div>
-               </div>
-               <ReviewStar rating={averageReviewRating} />
+              <div className="flex items-center justify-center gap-2 font-bold">
+                <div className="text-4xl lg:text-6xl">
+                  {averageReviewRating.toFixed(1)}
+                </div>
+                <div className="justify-start text-2xl text-gray-100 lg:text-4xl">
+                  / 5
+                </div>
+              </div>
+              <ReviewStar rating={averageReviewRating} />
             </div>
             <div className="bg-bg-200 flex w-80 justify-center rounded-3xl px-[18px] py-4 max-md:mb-[43px] lg:w-fit">
-               <ReviewBreakdown reviews={reviewMocks} />
+              <ReviewBreakdown reviews={reviews} />
             </div>
-         </div>
-         <ReviewList reviews={reviewMocks} />
-      </section>
-   );
+          </div>
+          <ReviewList reviews={reviews} isMoverView={user?.userType === 'mover'} />
+        </>
+      ) : (
+        <div className="mt-8 p-8 text-center bg-gray-50 rounded-lg">
+          <p className="text-gray-500 mb-4">
+            {user?.userType === 'mover' 
+              ? '아직 받은 리뷰가 없습니다.' 
+              : '아직 작성한 리뷰가 없습니다.'
+            }
+          </p>
+          {user?.userType === 'client' && (
+            <button 
+              onClick={() => window.location.href = '/reviews/writable'}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              리뷰 작성하러 가기
+            </button>
+          )}
+        </div>
+      )}
+    </section>
+  );
 }

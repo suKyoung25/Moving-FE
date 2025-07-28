@@ -24,3 +24,15 @@ export interface Review {
    clientId: string;
    clientName: string;
 }
+
+export interface MoverReview {
+  id: string;
+  rating: number;
+  content: string;
+  createdAt: Date | string;
+  clientName: string;
+  price: number;
+  moveType: string;
+  moveDate: string;
+  isDesignatedEstimate: boolean;
+}

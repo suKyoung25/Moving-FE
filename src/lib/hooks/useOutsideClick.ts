@@ -5,16 +5,17 @@ export function useOutsideClick<T extends HTMLElement>(
    handler: (event: MouseEvent) => void,
 ) {
    useEffect(() => {
-      const handleClick = (event: MouseEvent) => {
-         if (ref.current && !ref.current.contains(event.target as Node)) {
-            handler(event);
-         }
+      const listener = (event: MouseEvent) => {
+         const path = event.composedPath() as HTMLElement[];
+
+         if (!ref.current || path.includes(ref.current)) return;
+         handler(event);
       };
 
-      document.addEventListener("mousedown", handleClick);
+      document.addEventListener("mousedown", listener);
 
       return () => {
-         document.removeEventListener("mousedown", handleClick);
+         document.removeEventListener("mousedown", listener);
       };
    }, [ref, handler]);
 }
