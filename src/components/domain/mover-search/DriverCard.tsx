@@ -45,7 +45,7 @@ export default function DriverCard({ mover }: DriverCardProps) {
             </div>
 
             <p className="text-14-semibold md:text-14-semibold lg:text-24-semibold mb-3 text-gray-700">
-               {mover.description ||
+               {mover.introduction ||
                   "고객님의 물품을 안전하게 운송해 드립니다."}
             </p>
 

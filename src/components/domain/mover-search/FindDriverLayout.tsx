@@ -7,7 +7,7 @@ import SearchBar from "./SearchBar";
 import { DropdownOption } from "@/lib/types/mover.types"
 import FavoriteDriverList from "./FavoriteDriverList";
 import { useMover } from "./MoverStateControll";
-import { MoverProvider } from "@/components/domain/mover-search/MoverStateControll"
+import { MoverProvider } from "./MoverStateControll"
 
 import {
   AREA_OPTIONS,
