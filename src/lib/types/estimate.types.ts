@@ -61,3 +61,16 @@ export interface MyEstimateDetail {
       }[];
    };
 }
+
+export interface SendEstimateParams {
+   price: number;
+   comment: string;
+   clientId: string;
+   requestId: string;
+}
+
+export interface RejectEstimateParams {
+   comment: string;
+   clientId: string;
+   requestId: string;
+}
