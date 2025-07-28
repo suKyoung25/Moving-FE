@@ -12,8 +12,11 @@ import { isChipType } from "@/lib/utils/moveChip.util";
 import { getWritableReviews } from "@/lib/api/review/getWritableReviews";
 import Pagination from "@/components/common/pagination";
 import EmptyState from "@/components/common/EmptyState";
+import { useTranslations } from "next-intl";
 
 export default function WritableReviews() {
+   const t = useTranslations("Reviews");
+
    // 작성 가능한 리뷰 목록
    const [writableReviews, setWritableReviews] = useState<WritableReview[]>([]);
    // 페이지네이션
@@ -93,21 +96,22 @@ export default function WritableReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {writableReview.moverNickName} 기사님
+                              {writableReview.moverNickName} {t("mover")}
                            </span>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
                            <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>이사일</span>
+                              <span>{t("moveDate")}</span>
                               <span className="text-black-300">
                                  {formatIsoToYMD(writableReview.moveDate)}
                               </span>
                            </span>
                            <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
                            <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>견적가</span>
+                              <span>{t("price")}</span>
                               <span className="text-black-300">
-                                 {writableReview.price.toLocaleString()}원
+                                 {writableReview.price.toLocaleString()}
+                                 {t("money")}
                               </span>
                            </span>
                         </div>
@@ -116,7 +120,7 @@ export default function WritableReviews() {
                   <SolidButton
                      onClick={() => setSelectedId(writableReview.estimateId)}
                   >
-                     리뷰 작성하기
+                     {t("writeReview")}
                   </SolidButton>
                </div>
             ))}
@@ -129,14 +133,14 @@ export default function WritableReviews() {
          {/* 로딩 중일 때 */}
          {loading && (
             <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
-               로딩 중...
+               {t("loading")}
             </div>
          )}
 
          {/* 로딩 중이 아니고, 리뷰 목록이 비었을 때 */}
          {!loading && writableReviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
-               <EmptyState message="작성 가능한 리뷰가 없어요" />
+               <EmptyState message={t("noWritableReviews")} />
             </div>
          )}
          {selectedId && selectedEstimate && (

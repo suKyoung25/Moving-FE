@@ -7,6 +7,7 @@ import grayStar from "@/assets/images/starOutlineIcon.svg";
 import { WritableReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
 import { isChipType } from "@/lib/utils/moveChip.util";
+import { useTranslations } from "next-intl";
 
 type ReviewFormBodyProps = {
    estimate: WritableReview;
@@ -31,6 +32,7 @@ export function ReviewFormBody({
    errorRating,
    errorContent,
 }: ReviewFormBodyProps) {
+   const t = useTranslations("Reviews");
    return (
       <>
          {/* 카드 정보 */}
@@ -54,13 +56,13 @@ export function ReviewFormBody({
             <div className="flex-1">
                <div className="flex items-center justify-between">
                   <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                     {estimate.moverNickName} 기사님
+                     {estimate.moverNickName} {t("mover")}
                   </span>
                </div>
                <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
                   <span className="flex items-center gap-1.5 lg:gap-3">
                      <span className="bg-bg-400 rounded-sm px-1 py-0.5 lg:px-1.5 lg:py-1">
-                        이사일
+                        {t("moveDate")}
                      </span>
                      <span className="text-black-300">
                         {formatIsoToYMD(estimate.moveDate)}
@@ -69,10 +71,11 @@ export function ReviewFormBody({
                   <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
                   <span className="flex items-center gap-1.5 lg:gap-3">
                      <span className="bg-bg-400 rounded-sm px-1 py-0.5 lg:px-1.5 lg:py-1">
-                        견적가
+                        {t("price")}
                      </span>
                      <span className="text-black-300">
-                        {estimate.price.toLocaleString()}원
+                        {estimate.price.toLocaleString()}
+                        {t("money")}
                      </span>
                   </span>
                </div>
@@ -82,7 +85,7 @@ export function ReviewFormBody({
          {/* 별점 */}
          <div>
             <span className="text-16-semibold lg:text-20-semibold">
-               평점을 선택해 주세요
+               {t("selectRating")}
             </span>
             <div className="mt-4 mb-6 flex gap-1">
                {[1, 2, 3, 4, 5].map((star) => (
@@ -115,11 +118,11 @@ export function ReviewFormBody({
          {/* 후기 입력 */}
          <div>
             <div className="text-16-semibold lg:text-20-semibold mb-4">
-               상세 후기를 작성해 주세요
+               {t("detailReview")}
             </div>
             <textarea
                className="bg-bg-200 h-40 w-full resize-none rounded-2xl px-4 py-3.5"
-               placeholder="최소 10자 이상 입력해 주세요"
+               placeholder={t("placeholder")}
                value={content}
                onChange={(e) => setContent(e.target.value)}
             />

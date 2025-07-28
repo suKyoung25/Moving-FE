@@ -12,6 +12,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createReview } from "@/lib/api/review/createReview";
 import { extractErrorMessage } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
 
 interface ReviewModalProps {
    isOpen: boolean;
@@ -26,6 +28,10 @@ export default function ReviewModal({
    selectedEstimate,
    onReviewSuccess,
 }: ReviewModalProps) {
+   const t = useTranslations("Reviews");
+
+   const { createSchema } = useValidationSchema();
+
    const {
       handleSubmit,
       setValue,
@@ -34,7 +40,7 @@ export default function ReviewModal({
       watch,
       formState: { errors, isSubmitting },
    } = useForm<CreateReviewDto>({
-      resolver: zodResolver(createReviewSchema),
+      resolver: zodResolver(createSchema),
       defaultValues: {
          rating: 0,
          content: "",
@@ -71,9 +77,7 @@ export default function ReviewModal({
          await createReview(data);
          handleSuccess();
       } catch (error: unknown) {
-         setApiMessage(
-            extractErrorMessage(error, "리뷰 등록 중 오류가 발생했습니다."),
-         );
+         setApiMessage(extractErrorMessage(error, t("reviewError")));
       }
    };
 
@@ -103,8 +107,8 @@ export default function ReviewModal({
                setHovered(null);
                setApiMessage("");
             }}
-            title="리뷰 쓰기"
-            buttonTitle={isSubmitting ? "등록 중..." : "리뷰 등록"}
+            title={t("modalTitle")}
+            buttonTitle={isSubmitting ? t("registering") : t("registerReview")}
             isActive={isActive && !isSubmitting}
          >
             <ReviewFormBody

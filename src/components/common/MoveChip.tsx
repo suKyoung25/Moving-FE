@@ -3,6 +3,7 @@ import solidBoxIcon from "@/assets/images/solidBoxIcon.svg";
 import solidHomeIcon from "@/assets/images/solidHomeIcon.svg";
 import solidCompanyIcon from "@/assets/images/solidCompanyIcon.svg";
 import solidDocumentIcon from "@/assets/images/solidDocumentIcon.svg";
+import { useTranslations } from "next-intl";
 
 export type ChipType =
    | "SMALL"
@@ -17,37 +18,37 @@ const CHIP_CONFIG: Record<
    { label: string; bg: string; text: string; icon?: string | StaticImageData }
 > = {
    SMALL: {
-      label: "소형이사",
+      label: "small",
       bg: "bg-primary-blue-100",
       text: "text-primary-blue-300",
       icon: solidBoxIcon,
    },
    HOME: {
-      label: "가정이사",
+      label: "home",
       bg: "bg-primary-blue-100",
       text: "text-primary-blue-300",
       icon: solidHomeIcon,
    },
    OFFICE: {
-      label: "사무실이사",
+      label: "office",
       bg: "bg-primary-blue-100",
       text: "text-primary-blue-300",
       icon: solidCompanyIcon,
    },
    DESIGNATED: {
-      label: "지정 견적 요청",
+      label: "designated",
       bg: "bg-secondary-red-100",
       text: "text-secondary-red-200",
       icon: solidDocumentIcon,
    },
    PENDING: {
-      label: "견적 대기",
+      label: "pending",
       bg: "bg-gray-100",
       text: "text-primary-blue-400",
       icon: undefined,
    },
    DONE: {
-      label: "확정 견적",
+      label: "done",
       bg: "bg-gray-100",
       text: "text-primary-blue-400",
       icon: undefined,
@@ -64,6 +65,7 @@ interface MoveChipProps {
 // mini는 글자없는 칩사용하실 때 true로 프롭스 내려주면 사용 가능합니다
 export default function MoveChip({ type, mini = false }: MoveChipProps) {
    const config = CHIP_CONFIG[type];
+   const t = useTranslations("Chips");
 
    return (
       <div
@@ -80,7 +82,7 @@ export default function MoveChip({ type, mini = false }: MoveChipProps) {
             <span
                className={`${config.text} text-13-semibold lg:text-16-semibold ml-1`}
             >
-               {config.label}
+               {t(config.label)}
             </span>
          )}
       </div>

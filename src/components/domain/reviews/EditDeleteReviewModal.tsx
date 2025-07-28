@@ -12,6 +12,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ReviewFormBody } from "./ReviewFormBody";
 import { extractErrorMessage } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
 
 interface EditDeleteReviewModalProps {
    isOpen: boolean;
@@ -26,6 +28,9 @@ export default function EditDeleteReviewModal({
    review,
    onSuccess,
 }: EditDeleteReviewModalProps) {
+   const t = useTranslations("Reviews");
+
+   const { updateSchema } = useValidationSchema();
    const {
       handleSubmit,
       setValue,
@@ -33,7 +38,7 @@ export default function EditDeleteReviewModal({
       formState: { errors, isSubmitting },
       watch,
    } = useForm<UpdateReviewDto>({
-      resolver: zodResolver(updateReviewSchema),
+      resolver: zodResolver(updateSchema),
       defaultValues: {
          rating: review.rating,
          content: review.content,
@@ -59,13 +64,13 @@ export default function EditDeleteReviewModal({
          onClose();
          onSuccess?.();
       } catch (error: unknown) {
-         setApiMessage(extractErrorMessage(error, "리뷰 수정 실패"));
+         setApiMessage(extractErrorMessage(error, t("editError")));
       }
    };
 
    //삭제
    const handleDelete = async () => {
-      if (!window.confirm("리뷰를 정말 삭제하시겠습니까?")) return;
+      if (!window.confirm(t("deleteConfirm"))) return;
       setDeleteLoading(true);
       setApiMessage("");
       try {
@@ -73,7 +78,7 @@ export default function EditDeleteReviewModal({
          onClose();
          onSuccess?.();
       } catch (error: unknown) {
-         setApiMessage(extractErrorMessage(error, "리뷰 삭제 실패"));
+         setApiMessage(extractErrorMessage(error, t("deleteError")));
       } finally {
          setDeleteLoading(false);
       }
@@ -94,8 +99,8 @@ export default function EditDeleteReviewModal({
                reset();
                setApiMessage("");
             }}
-            title="리뷰 수정/삭제"
-            buttonTitle={isSubmitting ? "수정 중..." : "수정 완료"}
+            title={t("editDelete")}
+            buttonTitle={isSubmitting ? t("editting") : t("editReview")}
             isActive={isActive && !isSubmitting}
          >
             <ReviewFormBody
@@ -122,7 +127,7 @@ export default function EditDeleteReviewModal({
                disabled={isSubmitting || deleteLoading}
                onClick={handleDelete}
             >
-               {deleteLoading ? "삭제 중..." : "리뷰 삭제"}
+               {deleteLoading ? t("deleting") : t("deleteReview")}
             </SolidButton>
          </InputModal>
       </form>
