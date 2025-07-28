@@ -6,6 +6,7 @@ import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import star from "@/assets/images/starFilledIcon.svg";
+import { useTranslations } from "next-intl";
 
 type MoverProfileProps = {
    profileImage?: string;
@@ -34,6 +35,8 @@ export default function MoverProfile({
    career,
    estimateCount, // 스키마 필드명 그대로 사용했습니다
 }: MoverProfileProps) {
+   const t = useTranslations("Reviews");
+
    const isBig = big && !forceMobileStyle;
 
    const containerClass = [
@@ -75,7 +78,7 @@ export default function MoverProfile({
                         : "text-14-semibold lg:text-18-semibold text-black-300"
                   }
                >
-                  {nickName} 기사님
+                  {nickName} {t("mover")}
                </span>
                <div className="flex items-center">
                   <button onClick={handleLikedClick}>
@@ -120,8 +123,11 @@ export default function MoverProfile({
                   }
                ></span>
                <span className="flex items-center gap-0.5">
-                  <span>경력</span>
-                  <span className="text-black-300">{career}년</span>
+                  <span>{t("career")}</span>
+                  <span className="text-black-300">
+                     {career}
+                     {t("year")}
+                  </span>
                </span>
                <span
                   className={
@@ -131,8 +137,11 @@ export default function MoverProfile({
                   }
                ></span>
                <span className="flex items-center gap-0.5">
-                  <span className="text-black-300">{estimateCount}건</span>
-                  <span>확정</span>
+                  <span className="text-black-300">
+                     {estimateCount}
+                     {t("cases")}
+                  </span>
+                  <span>{t("confirmed")}</span>
                </span>
             </div>
          </div>

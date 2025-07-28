@@ -16,8 +16,10 @@ import { isChipType } from "@/lib/utils/moveChip.util";
 import EmptyState from "@/components/common/EmptyState";
 import more from "@/assets/images/moreGrayIcon.svg";
 import EditDeleteReviewModal from "./EditDeleteReviewModal";
+import { useTranslations } from "next-intl";
 
 export default function MyReviews() {
+   const t = useTranslations("Reviews");
    const router = useRouter();
    const [reviews, setReviews] = useState<MyReview[]>([]);
    const [pagination, setPagination] = useState(() => {
@@ -76,7 +78,7 @@ export default function MyReviews() {
                      )}
                   </div>
                   <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 h-fit gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
-                     <span>작성일</span>
+                     <span>{t("createdAt")} </span>
                      <span>{formatIsoToYMD(review.createdAt)}</span>
                   </div>
                   <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md border-b-1 bg-white pb-2.5 shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
@@ -93,7 +95,7 @@ export default function MyReviews() {
                      <div className="flex-1">
                         <div className="flex items-center justify-between">
                            <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {review.moverNickName} 기사님
+                              {review.moverNickName} {t("mover")}
                            </span>
                            <button
                               onClick={() => {
@@ -107,21 +109,23 @@ export default function MyReviews() {
                                  width={24}
                                  height={24}
                                  alt="수정 및 삭제"
+                                 style={{ transform: "rotate(90deg)" }}
                               />
                            </button>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-1.5 flex items-center text-gray-300 lg:mt-2">
                            <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>이사일</span>
+                              <span>{t("moveDate")}</span>
                               <span className="text-black-300">
                                  {formatIsoToYMD(review.moveDate)}
                               </span>
                            </span>
                            <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
                            <span className="flex items-center gap-0.5 lg:gap-1">
-                              <span>견적가</span>
+                              <span>{t("price")} </span>
                               <span className="text-black-300">
-                                 {review.price.toLocaleString()}원
+                                 {review.price.toLocaleString()}
+                                 {t("money")}
                               </span>
                            </span>
                         </div>
@@ -165,17 +169,17 @@ export default function MyReviews() {
          {/* 로딩 중일 때 */}
          {loading && (
             <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
-               로딩 중...
+               {t("loading")}
             </div>
          )}
          {!loading && reviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
-               <EmptyState message="아직 등록한 리뷰가 없어요!" />
+               <EmptyState message={t("noReview")} />
                <SolidButton
                   className="my-6 max-w-45 lg:my-8"
                   onClick={() => router.replace("?tab=writable")}
                >
-                  리뷰 작성하러 가기
+                  {t("goToWrite")}
                </SolidButton>
             </div>
          )}

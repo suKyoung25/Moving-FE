@@ -1,15 +1,39 @@
 {
    "Reviews": {
-      "writableReviews": "可撰写的评论",
-      "myReviews": "我的评论",
+      "writableReviews": "可写评论",
+      "noWritableReviews": "没有可撰写的评价。",
+      "myReviews": "我写的评论",
       "writeReview": "撰写评论",
-      "modalTitle": "撰写评论",
+      "modalTitle": "写评论",
       "selectRating": "请选择评分",
-      "detailReview": "请撰写详细评价",
-      "placeholder": "请输入至少10个字符",
+      "detailReview": "请撰写详细评论",
+      "placeholder": "请输入至少10个字",
       "registerReview": "提交评论",
-      "createdAt": "撰写日期",
-      "mover": "搬运工"
+      "createdAt": "创建时间",
+      "mover": "搬运工",
+      "moveDate": "搬家日期",
+      "price": "报价",
+      "career": "经验",
+      "loading": "加载中...",
+      "money": "元",
+      "reviewError": "提交评论时发生错误。",
+      "noReview": "你还没有注册任何评论！",
+      "goToWrite": "去写评论",
+      "editError": "评论修改失败",
+      "deleteConfirm": "确定要删除这条评论吗？",
+      "deleteError": "评论删除失败",
+      "editDelete": "修改/删除评论",
+      "registering": "注册中...",
+      "editting": "修改中...",
+      "editReview": "修改完成",
+      "deleting": "删除中...",
+      "deleteReview": "删除评论",
+      "confirmed": "已确认",
+      "year": "年",
+      "cases": "例"
+   },
+   "FavoriteMovers": {
+      "title": "收藏的搬运工"
    },
    "MyQuotes": {
       "Client": {
@@ -17,23 +41,22 @@
          "receivedQuotes": "收到的报价"
       },
       "Mover": {
-         "sentQuotes": "已发送报价",
-         "rejectedRequests": "被拒绝的请求"
+         "sentQuotes": "发送的报价",
+         "rejectedRequests": "被拒请求"
       }
    },
    "Chips": {
-      "small": "小型搬家",
+      "small": "小件搬家",
       "home": "家庭搬家",
       "office": "办公室搬家",
       "designated": "指定报价请求",
-      "pending": "报价待处理",
-      "done": "确认报价"
+      "pending": "报价等待",
+      "done": "已确认报价"
    },
-   "MoverCards": {
-      "mover": "搬运工",
-      "moveDate": "搬家日期",
-      "price": "报价",
-      "career": "经验",
-      "estimateCount": "确认案例数"
+   "Validations": {
+      "invalidRequest": "无效的请求。",
+      "selectRating": "请选择评分。",
+      "maxRating": "最高评分为5分。",
+      "minContent": "请在评论中输入至少10个字符。"
    }
 }
