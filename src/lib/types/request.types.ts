@@ -30,11 +30,43 @@ export type FormWizardAction =
    | { type: "INIT_FROM_STORAGE"; payload: FormWizardState }
    | { type: "NEXT_STEP" }
    | { type: "RESET_FORM_ONLY" }
-   | { type: "RESET" }
+   | { type: "RESET" };
 
 // 컨텍스트의 value 타입
 export interface FormWizardContextType {
    state: FormWizardState;
    dispatch: React.Dispatch<FormWizardAction>;
    goToNextStep: () => void;
+}
+
+// 받은 요청 필터 타입
+export interface Params {
+   moveType?: string;
+   serviceArea?: string;
+   isDesignated?: string;
+   keyword?: string;
+   sort?: "moveDate-asc" | "moveDate-desc";
+   limit?: number;
+   cursor?: string;
+}
+
+// 받은 요청 데이터 타입
+export interface ReceivedRequest {
+   id: string;
+   clientId: string;
+   clientName: string;
+   fromAddress: string;
+   toAddress: string;
+   moveType: "SMALL" | "HOME" | "OFFICE";
+   moveDate: string; // ISO 문자열 (Date로 변환하려면 별도 처리)
+   requestedAt: string;
+   isDesignated: boolean;
+   isPending: boolean;
+}
+
+export interface ReceivedRequestsProps {
+   moveType: string[];
+   isDesignated: boolean;
+   keyword: string;
+   sort: "moveDate-asc" | "moveDate-desc";
 }
