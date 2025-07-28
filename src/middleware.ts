@@ -69,30 +69,30 @@ export async function middleware(req: NextRequest) {
    const isAuthenticated = !!token;
    console.log(decoded);
 
-   // 프로필 미완료인데 다른 페이지 접근 시
-   if (
-      isAuthenticated &&
-      !decoded.isProfileCompleted &&
-      path !== PROFILE_CREATE_PATH &&
-      !path.startsWith(PROFILE_CREATE_PATH + "/")
-   ) {
-      return NextResponse.redirect(new URL(PROFILE_CREATE_PATH, req.url));
-   }
+   // // 프로필 미완료인데 다른 페이지 접근 시
+   // if (
+   //    isAuthenticated &&
+   //    !decoded.isProfileCompleted &&
+   //    path !== PROFILE_CREATE_PATH &&
+   //    !path.startsWith(PROFILE_CREATE_PATH + "/")
+   // ) {
+   //    return NextResponse.redirect(new URL(PROFILE_CREATE_PATH, req.url));
+   // }
 
-   // 프로필 완료인데 /profile/create 접근 시
-   if (
-      isAuthenticated &&
-      decoded.isProfileCompleted &&
-      (path === PROFILE_CREATE_PATH ||
-         path.startsWith(PROFILE_CREATE_PATH + "/"))
-   ) {
-      return NextResponse.redirect(new URL("/profile/edit", req.url));
-   }
+   // // 프로필 완료인데 /profile/create 접근 시
+   // if (
+   //    isAuthenticated &&
+   //    decoded.isProfileCompleted &&
+   //    (path === PROFILE_CREATE_PATH ||
+   //       path.startsWith(PROFILE_CREATE_PATH + "/"))
+   // ) {
+   //    return NextResponse.redirect(new URL("/mover-search", req.url));
+   // }
 
-   // 인증된 사용자가 GuestRoute 접근 시 기사님 찾기 페이지로 리디렉션
-   if (isAuthenticated && isGuestRoute) {
-      return NextResponse.redirect(new URL("/mover-search", req.url));
-   }
+   // // 인증된 사용자가 GuestRoute 접근 시 기사님 찾기 페이지로 리디렉션
+   // if (isAuthenticated && isGuestRoute) {
+   //    return NextResponse.redirect(new URL("/mover-search", req.url));
+   // }
 
    // intl 처리된 response 이어서 전달
    return intlRespone;
