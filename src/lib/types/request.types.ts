@@ -39,6 +39,11 @@ export interface FormWizardContextType {
    goToNextStep: () => void;
 }
 
+export interface ReceivedRequestsResponse {
+   requests: ReceivedRequest[];
+   nextCursor: string | null;
+}
+
 // 받은 요청 필터 타입
 export interface Params {
    moveType?: string;

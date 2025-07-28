@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getReceivedRequests } from "./requests/getAllRequests";
-import { ReceivedRequestsProps } from "@/lib/types";
+import { ReceivedRequestsProps, ReceivedRequestsResponse } from "@/lib/types";
 
 export const receivedRequestsQueryKey = "receivedRequests";
 
@@ -10,7 +10,7 @@ export function useReceivedRequestsQuery({
    keyword,
    sort,
 }: ReceivedRequestsProps) {
-   return useInfiniteQuery({
+   return useInfiniteQuery<ReceivedRequestsResponse>({
       queryKey: [
          receivedRequestsQueryKey,
          { moveType, isDesignated, keyword, sort },
@@ -21,9 +21,12 @@ export function useReceivedRequestsQuery({
             isDesignated: isDesignated.toString(),
             keyword,
             sort,
-            cursor: pageParam,
+            cursor: pageParam as string | undefined,
+
             limit: 6,
          }),
+      initialPageParam: undefined,
+
       getNextPageParam: (lastPage) => lastPage?.nextCursor ?? null,
    });
 }

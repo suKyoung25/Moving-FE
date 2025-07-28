@@ -39,7 +39,7 @@ export default function ReceivedRequestsList({
    return (
       <>
          {data?.pages.map((page) =>
-            page.requests.map((req: ReceivedRequest) => (
+            (page as { requests: ReceivedRequest[] }).requests.map((req) => (
                <RequestCard key={req.id} req={req} />
             )),
          )}
