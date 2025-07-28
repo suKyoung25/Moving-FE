@@ -35,7 +35,7 @@ export default function useSignInForm() {
          await getUser(res.data.user, res.data.accessToken);
 
          // ★ 프로필 등록 안 했으면 프로필 등록, 아니면 기사님 찾기로 이동
-         if (!res.data?.user?.isProfileCompleted) {
+         if (!res.data?.isProfileCompleted) {
             router.push("/profile/create"); //TODO: 로컬에선 동작 확인함. 다른 분들도 동작하는지 확인 필요
          } else {
             router.push("/mover-search");
