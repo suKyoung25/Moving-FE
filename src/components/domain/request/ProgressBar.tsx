@@ -1,12 +1,9 @@
 "use client";
 
-import { useFormWizard } from "@/context/FormWizardContext";
 import React, { useEffect, useState } from "react";
 
 // 견적 요청 진행 상태 표시 바
-export default function ProgressBar() {
-   const { state } = useFormWizard();
-   const { currentStep } = state;
+export default function ProgressBar({ currentStep }: { currentStep: number }) {
    const [progress, setProgress] = useState(0);
 
    // 현재 단계에 따라 ProgressBar 업데이트

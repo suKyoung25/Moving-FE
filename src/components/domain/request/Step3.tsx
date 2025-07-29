@@ -13,16 +13,28 @@ import { useAuth } from "@/context/AuthContext";
 import ToastPopup from "@/components/common/ToastPopup";
 import toast from "react-hot-toast";
 
+interface Step3Props {
+   from?: Request["fromAddress"];
+   to?: Request["toAddress"];
+   onFromChange: (val: string) => void;
+   onToChange: (val: string) => void;
+   onSubmit: () => void;
+}
+
 // 출발지/도착지 주소 입력 단계
-export default function Step3() {
+export default function Step3({
+   from,
+   to,
+   onFromChange,
+   onToChange,
+   onSubmit,
+}: Step3Props) {
    const { user } = useAuth();
-   const { state, dispatch, goToNextStep } = useFormWizard();
-   const { currentStep } = state;
    const [fromAddress, setFromAddress] = useState<
       Request["fromAddress"] | undefined
-   >(state.fromAddress);
+   >(from);
    const [toAddress, setToAddress] = useState<Request["toAddress"] | undefined>(
-      state.toAddress,
+      to,
    );
    const [targetField, setTargetField] = useState<"from" | "to" | null>(null); // 현재 열려있는 주소 필드
    const [showModal, setShowModal] = useState<boolean>(false);
@@ -31,10 +43,10 @@ export default function Step3() {
    const handleComplete = (addr: string) => {
       if (targetField === "from") {
          setFromAddress(addr);
-         dispatch({ type: "SET_FROM_ADDRESS", payload: addr });
+         onFromChange(addr);
       } else if (targetField === "to") {
          setToAddress(addr);
-         dispatch({ type: "SET_TO_ADDRESS", payload: addr });
+         onToChange(addr);
       }
       setShowModal(false);
    };
@@ -55,11 +67,6 @@ export default function Step3() {
       try {
          await createRequestAction(rest);
 
-         // 요청 성공 시 localStorage 초기화
-         dispatch({ type: "RESET_FORM_ONLY" });
-         localStorage.removeItem("requestData");
-
-         // 성공 알림
          toast.custom((t) => (
             <ToastPopup
                className={`${
@@ -72,7 +79,6 @@ export default function Step3() {
       } catch (err) {
          console.error("견적 요청 실패:", err);
 
-         // 에러 알림
          toast.custom((t) => (
             <ToastPopup
                className={`${
@@ -85,12 +91,11 @@ export default function Step3() {
       }
    };
 
-   // 출발지/도착지 둘 다 입력되면 다음 단계(폼 완성 상태)로 이동
    useEffect(() => {
-      if (currentStep === 2 && fromAddress && toAddress) {
-         goToNextStep();
+      if (fromAddress && toAddress) {
+         // FormWizard에서 currentStep >= 2 조건으로 진입
       }
-   }, [fromAddress, toAddress, currentStep, goToNextStep]);
+   }, [fromAddress, toAddress]);
 
    return (
       <>
@@ -133,10 +138,10 @@ export default function Step3() {
                onClose={() => setShowModal(false)}
             />
          )}
-         {currentStep === 3 && (
+         {fromAddress && toAddress && (
             <button
                type="button"
-               onClick={() => dispatch({ type: "RESET" })}
+               onClick={onSubmit}
                className="mr-2 text-right font-medium text-gray-500 underline max-lg:text-xs"
             >
                처음부터 다시 선택
