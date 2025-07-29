@@ -80,7 +80,7 @@ export default function Pending() {
                         moverName={estimate.moverName}
                         profileImage={estimate.profileImage || profile}
                         isFavorited={!!estimate.isFavorited}
-                        handleLikedClick={() => console.log("찜 토글")}
+                        moverId={estimate.moverId}
                         averageReviewRating={estimate.reviewRating}
                         reviewCount={estimate.reviewCount}
                         career={estimate.career | 0}

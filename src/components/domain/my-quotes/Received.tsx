@@ -26,7 +26,8 @@ export default function Received() {
       getMyReceivedQuotes();
    }, [dropdownName]);
 
-   if (!data) return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
+   if (!data || data.length === 0)
+      return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
 
    return (
       <div className="flex flex-col gap-2 md:gap-4 lg:gap-8">
@@ -56,6 +57,7 @@ export default function Received() {
                            key={estimate.estimateId}
                            estimate={estimate}
                            designated={d.designatedRequest}
+                           serviceType={d.moveType}
                         />
                      ))}
                   </main>

@@ -3,6 +3,8 @@
 import profile from "@/assets/images/profileIcon.svg";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoverProfile from "@/components/common/MoverProfile";
+import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
+import { useState } from "react";
 
 interface MoverProfileclientProps {
    moveType: ChipType | null;
@@ -10,7 +12,6 @@ interface MoverProfileclientProps {
    moverName: string;
    profileImage: string | null;
    isFavorited: boolean;
-   handleLikedClick?: () => void;
    averageReviewRating: number;
    reviewCount: number;
    career: number;
@@ -18,15 +19,41 @@ interface MoverProfileclientProps {
    favoriteCount: number;
    quotesStatus: "pending" | "received";
    comment?: string;
+   moverId: string;
+   serviceType?: string;
 }
 
 export default function MoverProfileclient(props: MoverProfileclientProps) {
+   const [isFavorited, setIsFavorited] = useState(props.isFavorited);
+   const [favoriteCount, setFavoriteCount] = useState(props.favoriteCount);
+   const [loading, setLoading] = useState(false);
+
+   const handleLikedClick = async (e: React.MouseEvent) => {
+      e.preventDefault();
+      if (loading) return;
+      setLoading(true);
+
+      try {
+         const result = await toggleFavoriteMover(props.moverId);
+
+         setIsFavorited(result.isFavorite);
+         setFavoriteCount(result.favoriteCount);
+      } catch (error) {
+         console.error("좋아요 토글 실패:", error);
+      } finally {
+         setLoading(false);
+      }
+   };
+
    return (
       <article className="flex flex-col gap-3.5">
          <div className="flex items-center gap-2">
             {props.quotesStatus === "pending" && <MoveChip type="PENDING" />}
             {props.moveType && <MoveChip type={props.moveType as ChipType} />}
             {props.isDesignated && <MoveChip type="DESIGNATED" />}
+            {props.serviceType && (
+               <MoveChip type={props.serviceType as ChipType} />
+            )}
          </div>
          <p
             className={`text-14-semibold text-black-300 lg:text-20-semibold ${props.quotesStatus === "pending" ? "hidden" : "block"}`}
@@ -36,13 +63,13 @@ export default function MoverProfileclient(props: MoverProfileclientProps) {
          <MoverProfile
             nickName={props.moverName}
             profileImage={props.profileImage || profile}
-            isLiked={!!props.isFavorited}
-            handleLikedClick={() => console.log("찜 토글")}
+            isLiked={isFavorited}
+            handleLikedClick={handleLikedClick}
             averageReviewRating={props.averageReviewRating}
             reviewCount={props.reviewCount}
             career={props.career | 0}
             estimateCount={props.estimateCount}
-            favoriteCount={props.favoriteCount}
+            favoriteCount={favoriteCount}
          />
       </article>
    );
