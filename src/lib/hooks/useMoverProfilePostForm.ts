@@ -10,12 +10,10 @@ import {
    MoverProfileSchema,
 } from "../schemas/profile.schema";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
-import { useAuth } from "@/context/AuthContext";
 
 function useMoverProfilePostForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
-   const { user } = useAuth();
 
    const {
       register,
