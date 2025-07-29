@@ -5,13 +5,11 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthFetchError, Client, ClientMoveType } from "../types";
+import { AuthFetchError, Client } from "../types";
 import {
    clientProfileUpdateSchema,
    ClientProfileUpdateValue,
 } from "../schemas";
-import { serviceTypeMap } from "@/constants";
-import { extractRegionNames, labelToEnumMap } from "../utils/profile.util";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { MoveType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
@@ -99,6 +97,7 @@ export default function useClientProfileUpdateForm() {
          // 2. 보낼 자료
          const payload = {
             ...data,
+            profileImage: imageUrl, // 업로드된 이미지 URL 또는 undefined
             serviceType: watch("serviceType") || [],
             livingArea: watch("livingArea") || [],
          };
