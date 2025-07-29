@@ -16,9 +16,10 @@ interface DriverListProps {
     serviceType: string;
     sortBy: string;
   };
+  onFavoriteChange?: (moverId: string, isFavorite: boolean, favoriteCount: number) => void;
 }
 
-export default function DriverList({ filters }: DriverListProps) {
+export default function DriverList({ filters, onFavoriteChange }: DriverListProps) {
   const [movers, setMovers] = useState<Mover[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -77,7 +78,7 @@ export default function DriverList({ filters }: DriverListProps) {
     loadMovers(false);
   }, [hasMore, loading, loadMovers]);
 
-  // 🔥 useInfiniteScroll 훅 사용
+  // useInfiniteScroll 훅 사용
   const { setLoadingRef } = useInfiniteScroll({
     hasMore,
     isLoading: loading,
@@ -93,7 +94,10 @@ export default function DriverList({ filters }: DriverListProps) {
         ? { ...mover, isFavorite, favoriteCount }
         : mover
     ));
-  }, []);
+    
+    // 부모 컴포넌트에 알림
+    onFavoriteChange?.(moverId, isFavorite, favoriteCount);
+  }, [onFavoriteChange]);
 
   // 필터 변경 시 데이터 리셋
   useEffect(() => {
@@ -127,7 +131,7 @@ export default function DriverList({ filters }: DriverListProps) {
     <div className="space-y-4">
       {movers.map((mover, index) => (
         <DriverCard 
-          key={`${mover.id}-${index}`} 
+          key={mover.id} 
           mover={mover} 
           onFavoriteChange={handleFavoriteChange}
         />

@@ -55,14 +55,8 @@ export default function MoverCard() {
    }, [retryCount, fetchMoverData]);
 
    useEffect(() => {
-     // 인증이 완료되고 사용자가 기사님인 경우에만 데이터 조회
-     if (!authLoading && user?.userType === 'mover') {
-       fetchMoverData();
-     } else if (!authLoading && user?.userType !== 'mover') {
-       setError('기사님 전용 페이지입니다.');
-       setLoading(false);
-     }
-   }, [authLoading, user, fetchMoverData]);
+     fetchMoverData();
+   }, [fetchMoverData]);
 
    // 인증 로딩 중
    if (authLoading) {

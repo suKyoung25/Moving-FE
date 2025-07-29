@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip from "@/components/common/MoveChip";
@@ -16,9 +16,17 @@ interface DriverCardProps {
 
 export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps) {
    const router = useRouter();
+   const pathname = usePathname();
    const { user } = useAuth();
    
-   const [currentFavoriteState, setCurrentFavoriteState] = useState(mover.isFavorite ?? false);
+   // 🔥 찜 목록 페이지인지 확인
+   const isFavoritePage = pathname.includes('favorite-movers');
+   
+   // 🔥 찜 목록 페이지에서는 항상 true, 아니면 API 값 사용
+   const [currentFavoriteState, setCurrentFavoriteState] = useState(
+     isFavoritePage ? true : (mover.isFavorite ?? false)
+   );
+   
    const [isInitialized, setIsInitialized] = useState(false);
 
    // 🔥 초기 렌더링 시에만 디버깅 로그
@@ -26,14 +34,19 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
       console.log(`=== DriverCard Debug for ${mover.nickName || mover.id} ===`);
       console.log('Mover data:', mover);
       console.log('mover.isFavorite:', mover.isFavorite);
+      console.log('isFavoritePage:', isFavoritePage);
+      console.log('currentFavoriteState:', currentFavoriteState);
+      console.log('pathname:', pathname);
       console.log('User:', user);
-   }, []); // 빈 의존성 배열로 한 번만 실행
+   }, [pathname, isFavoritePage, currentFavoriteState]);
 
-   // 🔥 mover.isFavorite가 변경될 때마다 상태 동기화
+   // 🔥 mover.isFavorite가 변경될 때마다 상태 동기화 (찜 목록 페이지 제외)
    useEffect(() => {
-      console.log(`[${mover.nickName}] isFavorite changed:`, mover.isFavorite);
-      setCurrentFavoriteState(mover.isFavorite ?? false);
-   }, [mover.isFavorite]); // mover.nickName 제거
+      if (!isFavoritePage) {
+         console.log(`[${mover.nickName}] isFavorite changed:`, mover.isFavorite);
+         setCurrentFavoriteState(mover.isFavorite ?? false);
+      }
+   }, [mover.isFavorite, isFavoritePage]);
 
    // 🔥 user 로딩 완료 시 초기화 플래그 설정
    useEffect(() => {
@@ -41,12 +54,12 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
          console.log(`[${mover.nickName}] User loaded, setting initialized to true`);
          setIsInitialized(true);
       }
-   }, [user]); // mover.nickName 제거
+   }, [user]);
 
    // 🔥 currentFavoriteState 변경 추적
    useEffect(() => {
       console.log(`[${mover.nickName}] currentFavoriteState changed to:`, currentFavoriteState);
-   }, [currentFavoriteState]); // mover.nickName 제거
+   }, [currentFavoriteState]);
 
    const handleCardClick = () => {
       router.push(`/mover-search/${mover.id}`);
