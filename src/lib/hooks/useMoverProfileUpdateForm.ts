@@ -12,6 +12,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { extractRegionNames } from "../utils/profile.util";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
+import updateMoverProfileImage from "../api/auth/requests/updataMoverProfileImage";
 
 function useMoverProfileUpdateForm() {
    const router = useRouter();
@@ -44,6 +45,7 @@ function useMoverProfileUpdateForm() {
          const mover = user as Mover;
 
          const defaultValues = {
+            image: mover.profileImage ?? "",
             nickName: mover.nickName ?? "",
             career: mover.career?.toString() ?? "",
             introduction: mover.introduction ?? "",
@@ -59,13 +61,27 @@ function useMoverProfileUpdateForm() {
    const onSubmit = async (data: MoverProfileInput) => {
       setIsLoading(true);
 
-      const processedData = {
-         ...data,
-         career: Number(data.career), // string > number로 변환
-         serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
-      };
-
       try {
+         // 이미지가 있으면 먼저 업로드
+         let imageUrl: string | undefined;
+
+         if (data.image instanceof File) {
+            const formData = new FormData();
+            formData.append("image", data.image);
+
+            const res = await updateMoverProfileImage(formData);
+
+            imageUrl = res.url; // 백엔드에서 반환한 s3 URL
+         }
+
+         // 이미지 처리 후 나머지 데이터 처리
+         const processedData = {
+            ...data,
+            image: imageUrl, // 업로드된 이미지 URL 또는 undefined
+            career: Number(data.career), // string > number로 변환
+            serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
+         };
+
          const res = await updateMoverProfile(processedData);
 
          if (res) {
