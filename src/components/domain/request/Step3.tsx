@@ -57,7 +57,7 @@ export default function Step3({
       if (fromAddress && toAddress) {
          onNext();
       }
-   }, [fromAddress, toAddress]);
+   }, [fromAddress, toAddress, onNext]);
 
    return (
       <>
