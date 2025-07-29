@@ -159,7 +159,6 @@ export default function FavoriteDriverList() {
           />
         </div>
       ))}
-      
     </div>
   );
 }

@@ -26,40 +26,13 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
    const [currentFavoriteState, setCurrentFavoriteState] = useState(
      isFavoritePage ? true : (mover.isFavorite ?? false)
    );
-   
-   const [isInitialized, setIsInitialized] = useState(false);
-
-   // 🔥 초기 렌더링 시에만 디버깅 로그
-   useEffect(() => {
-      console.log(`=== DriverCard Debug for ${mover.nickName || mover.id} ===`);
-      console.log('Mover data:', mover);
-      console.log('mover.isFavorite:', mover.isFavorite);
-      console.log('isFavoritePage:', isFavoritePage);
-      console.log('currentFavoriteState:', currentFavoriteState);
-      console.log('pathname:', pathname);
-      console.log('User:', user);
-   }, [pathname, isFavoritePage, currentFavoriteState]);
 
    // 🔥 mover.isFavorite가 변경될 때마다 상태 동기화 (찜 목록 페이지 제외)
    useEffect(() => {
       if (!isFavoritePage) {
-         console.log(`[${mover.nickName}] isFavorite changed:`, mover.isFavorite);
          setCurrentFavoriteState(mover.isFavorite ?? false);
       }
    }, [mover.isFavorite, isFavoritePage]);
-
-   // 🔥 user 로딩 완료 시 초기화 플래그 설정
-   useEffect(() => {
-      if (user !== undefined) {
-         console.log(`[${mover.nickName}] User loaded, setting initialized to true`);
-         setIsInitialized(true);
-      }
-   }, [user]);
-
-   // 🔥 currentFavoriteState 변경 추적
-   useEffect(() => {
-      console.log(`[${mover.nickName}] currentFavoriteState changed to:`, currentFavoriteState);
-   }, [currentFavoriteState]);
 
    const handleCardClick = () => {
       router.push(`/mover-search/${mover.id}`);
@@ -80,12 +53,8 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
          return;
       }
 
-      console.log(`[${mover.nickName}] Toggle favorite clicked, current state:`, currentFavoriteState);
-
       try {
          const result = await toggleFavoriteMover(mover.id);
-         
-         console.log(`[${mover.nickName}] API response:`, result);
          
          // 로컬 상태 업데이트
          setCurrentFavoriteState(result.isFavorite);
@@ -94,10 +63,10 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
          onFavoriteChange?.(mover.id, result.isFavorite, result.favoriteCount || mover.favoriteCount);
          
          const message = result.action === 'added' ? '찜 목록에 추가되었습니다.' : '찜 목록에서 제거되었습니다.';
-         console.log(`[${mover.nickName}] ${message}`);
+         console.log(message);
          
       } catch (error) {
-         console.error(`[${mover.nickName}] 찜 처리 중 오류:`, error);
+         console.error("찜 처리 중 오류:", error);
          
          let errorMessage = "찜 처리 중 오류가 발생했습니다.";
          if (error instanceof Error) {

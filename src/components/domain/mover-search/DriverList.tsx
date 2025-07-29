@@ -104,8 +104,42 @@ export default function DriverList({ filters, onFavoriteChange }: DriverListProp
     setCurrentPage(1);
     setHasMore(true);
     
+    // 🔥 loadMovers 로직을 내부로 이동
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        let area = filters.area !== "all" ? filters.area : undefined;
+        if (area && areaMapping[area]) {
+          area = areaMapping[area][0];
+        }
+
+        const params: GetMoversParams = {
+          page: 1,
+          limit: 10,
+          search: filters.search || undefined,
+          area,
+          serviceType: filters.serviceType !== "all" ? filters.serviceType : undefined,
+          sortBy: filters.sortBy,
+        };
+
+        const hasToken = Boolean(tokenSettings.get());
+        const response = await getMovers(params, hasToken);
+
+        setMovers(response.movers);
+        setCurrentPage(2);
+        setHasMore(response.hasMore);
+      } catch (err) {
+        console.error('Load movers error:', err);
+        setError("기사님 목록을 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
     const timeoutId = setTimeout(() => {
-      loadMovers(true);
+      loadData();
     }, 300);
 
     return () => clearTimeout(timeoutId);
@@ -129,7 +163,7 @@ export default function DriverList({ filters, onFavoriteChange }: DriverListProp
 
   return (
     <div className="space-y-4">
-      {movers.map((mover, index) => (
+      {movers.map((mover) => (
         <DriverCard 
           key={mover.id} 
           mover={mover} 
@@ -137,7 +171,6 @@ export default function DriverList({ filters, onFavoriteChange }: DriverListProp
         />
       ))}
 
-      {/* 🔥 useInfiniteScroll 훅의 setLoadingRef 사용 */}
       {hasMore && (
         <div ref={setLoadingRef} className="flex justify-center p-4">
           {loading ? (
