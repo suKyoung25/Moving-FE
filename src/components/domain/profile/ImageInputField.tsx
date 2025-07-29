@@ -2,7 +2,7 @@
 
 import { FieldValue, InputFieldProps } from "@/lib/types";
 import React, { useRef, useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import profileUploader from "@/assets/images/profileUploaderIcon.svg";
 import Image from "next/image";
 
@@ -15,6 +15,14 @@ function ImageInputField<T extends Record<string, FieldValue>>({
    const fileInputRef = useRef<HTMLInputElement | null>(null);
    const [previewUrl, setPreviewUrl] = useState<string | null>(null); //이미지 미리보기
 
+   const watchedValue = useWatch({ name, control });
+
+   React.useEffect(() => {
+      if (typeof watchedValue === "string" && watchedValue !== previewUrl) {
+         setPreviewUrl(watchedValue);
+      }
+   }, [watchedValue]);
+
    return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-4">
          <div>{text}</div>
@@ -23,16 +31,6 @@ function ImageInputField<T extends Record<string, FieldValue>>({
             name={name}
             control={control}
             render={({ field, fieldState }) => {
-               // field.value가 string (기존 url)이면 previewUrl 업데이트
-               React.useEffect(() => {
-                  if (
-                     typeof field.value === "string" &&
-                     field.value !== previewUrl
-                  ) {
-                     setPreviewUrl(field.value);
-                  }
-               }, [field.value]);
-
                return (
                   <>
                      {/* UI 상에선 숨기기 input */}
