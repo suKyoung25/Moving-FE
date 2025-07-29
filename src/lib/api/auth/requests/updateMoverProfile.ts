@@ -8,12 +8,8 @@ export default async function updateMoverProfile(
    const url = "/profile/mover";
    const res = await tokenFetch(url, {
       method: "PATCH",
-      headers: {
-         "Content-Type": "application/json",
-      },
       body: JSON.stringify(data),
    });
-   console.log(res);
 
    tokenSettings.set(res.accessToken);
 
