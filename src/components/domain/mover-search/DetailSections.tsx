@@ -7,7 +7,7 @@ export default function DetailSections({ mover }: { mover: Mover }) {
       <div className="space-y-6">
          {/* 상세설명 */}
          <div className="p-4 lg:p-5">
-            <h3 className="mb-4 text-lg font-bold text-gray-900">상세설명</h3>
+            <h3 className="mb-4 text-18-semibold lg:text-20-bold">상세설명</h3>
             <div className="text-sm leading-relaxed whitespace-pre-line text-gray-700 lg:text-base">
                {mover.description || "소개글이 없습니다."}
             </div>
@@ -17,7 +17,7 @@ export default function DetailSections({ mover }: { mover: Mover }) {
 
          {/* 제공 서비스 */}
          <div className="p-4 lg:p-5">
-            <h3 className="mb-4 text-lg font-bold text-gray-900">
+            <h3 className="mb-4 text-18-semibold lg:text-20-bold">
                제공 서비스
             </h3>
             <ServiceTags services={mover.serviceType} />
@@ -27,7 +27,7 @@ export default function DetailSections({ mover }: { mover: Mover }) {
 
          {/* 서비스 가능 지역 */}
          <div className="p-4 lg:p-5">
-            <h3 className="mb-4 text-lg font-bold text-gray-900">
+            <h3 className="mb-4 text-18-semibold lg:text-20-bold">
                서비스 가능 지역
             </h3>
             <RegionTags regions={mover.serviceArea} />

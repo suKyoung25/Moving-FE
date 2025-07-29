@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ProfileFieldButton from "./ProfileFieldButton";
 import ClientProfileTitle from "./ClientProfileTitle";
@@ -94,18 +96,24 @@ export default function ClientProfileUpdateForm() {
                <section>
                   <ClientProfileTitle type="서비스" />
 
-                  {moveType.map((service) => (
-                     <ProfileFieldButton
-                        category="서비스"
-                        name="serviceType"
-                        key={service}
-                        value={service}
-                        isSelected={selectedServices.includes(service)}
-                        onClick={() => handleServiceToggle(service)}
-                     >
-                        {service}
-                     </ProfileFieldButton>
-                  ))}
+                  {moveType.map((service) => {
+                     const selectedIndex = selectedServices?.indexOf(service);
+                     return (
+                        <ProfileFieldButton
+                           category="서비스"
+                           name="serviceType"
+                           key={service}
+                           value={service}
+                           isSelected={selectedServices?.includes(service)}
+                           onClick={() => handleServiceToggle(service)}
+                           index={
+                              selectedIndex >= 0 ? selectedIndex : undefined
+                           }
+                        >
+                           {service}
+                        </ProfileFieldButton>
+                     );
+                  })}
                </section>
 
                <hr className="border-line-100 mb-5 lg:mb-8 lg:w-160" />
@@ -115,18 +123,24 @@ export default function ClientProfileUpdateForm() {
                   <ClientProfileTitle type="지역" />
 
                   <div className="grid w-70 grid-cols-5 gap-x-2 gap-y-3 lg:w-104 lg:gap-x-3.5 lg:gap-y-4.5">
-                     {regions.map((region) => (
-                        <ProfileFieldButton
-                           category="지역"
-                           name="livingArea"
-                           key={region}
-                           value={region}
-                           isSelected={selectedRegions.includes(region)}
-                           onClick={() => handleRegionToggle(region)}
-                        >
-                           {region}
-                        </ProfileFieldButton>
-                     ))}
+                     {regions.map((region) => {
+                        const selectedIndex = selectedRegions?.indexOf(region);
+                        return (
+                           <ProfileFieldButton
+                              category="지역"
+                              name="livingArea"
+                              key={region}
+                              value={region}
+                              isSelected={selectedRegions?.includes(region)}
+                              onClick={() => handleRegionToggle(region)}
+                              index={
+                                 selectedIndex >= 0 ? selectedIndex : undefined
+                              }
+                           >
+                              {region}
+                           </ProfileFieldButton>
+                        );
+                     })}
                   </div>
                </section>
             </div>

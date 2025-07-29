@@ -12,7 +12,7 @@ export default function MoverSignInPage() {
          <SignInForm userType="mover" />
 
          {/* 간편 회원가입 */}
-         <EasyLoginForm />
+         <EasyLoginForm userType="mover" />
       </section>
    );
 }

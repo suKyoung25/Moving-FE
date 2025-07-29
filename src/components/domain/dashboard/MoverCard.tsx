@@ -46,7 +46,7 @@ export default function MoverCard() {
 
    // 재시도 함수
    const handleRetry = useCallback(() => {
-     if (retryCount < 3) { // 최대 3회까지만 재시도
+     if (retryCount < 1) { // 최대 3회까지만 재시도
        setRetryCount(prev => prev + 1);
        fetchMoverData();
      } else {
@@ -108,19 +108,19 @@ export default function MoverCard() {
      return (
        <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
          <div className="text-center py-8">
-           <div className="text-red-500 mb-4">
+           <div className="text-blue-500 mb-4">
              <p className="mb-2 font-medium">프로필 정보를 불러올 수 없습니다.</p>
-             {error && <p className="text-sm text-gray-600">{error}</p>}
+             {error && <p className="text-sm text-gray-500">{error}</p>}
            </div>
            
            <div className="flex gap-2 justify-center">
-             {retryCount < 3 ? (
+             {retryCount < 1 ? (
                <button 
                  onClick={handleRetry}
                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                  disabled={loading}
                >
-                 {loading ? '재시도 중...' : `다시 시도 (${retryCount + 1}/3)`}
+                 {loading ? '재시도 중...' : `다시 시도`}
                </button>
              ) : (
                <button 
@@ -131,17 +131,6 @@ export default function MoverCard() {
                </button>
              )}
            </div>
-           
-           {error?.includes('로그인') && (
-             <div className="mt-4">
-               <button 
-                 onClick={() => window.location.href = '/login'}
-                 className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-               >
-                 로그인 페이지로 이동
-               </button>
-             </div>
-           )}
          </div>
        </section>
      );
@@ -154,8 +143,6 @@ export default function MoverCard() {
                <Image 
                  src={mover.profileImage || avatar} 
                  alt="프로필 이미지" 
-                 width={64}
-                 height={64}
                  className="h-16 w-16 rounded-full object-cover" 
                  onError={(e) => {
                    // 이미지 로드 실패 시 기본 아바타로 대체
@@ -165,10 +152,10 @@ export default function MoverCard() {
             </div>
             <div className="lg:space-y-2 flex-1">
                <p className="font-semibold lg:text-2xl">
-                 {mover.nickName || mover.name || '이름 없음'}
+                 {mover.nickName || mover.name || ''}
                </p>
                <p className="text-sm font-normal text-gray-400 lg:text-xl">
-                  {mover.introduction || mover.description || '소개글이 없습니다.'}
+                  {mover.introduction || '소개글이 없습니다.'}
                </p>
             </div>
             <div className="flex w-144 gap-4 max-lg:hidden lg:inline-flex">
