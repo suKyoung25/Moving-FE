@@ -39,6 +39,8 @@ function useMoverProfilePostForm() {
          const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
          if (res.isProfileCompleted) {
+            alert("프로필이 정상적으로 등록되었습니다."); //TODO: 토스트 알림으로 바꾸기
+
             router.push("/dashboard");
          }
       } catch (error) {

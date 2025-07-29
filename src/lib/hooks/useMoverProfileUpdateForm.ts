@@ -71,6 +71,9 @@ function useMoverProfileUpdateForm() {
          if (res) {
             await refreshUser();
             alert("프로필이 정상적으로 수정되었습니다."); //TODO: 토스트 알림으로 바꾸기
+
+            refreshUser();
+
             router.push("/dashboard");
          }
       } catch (error) {
