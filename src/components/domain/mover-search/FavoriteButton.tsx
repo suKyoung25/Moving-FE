@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Mover } from "@/lib/types";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
+import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
 
 export function FavoriteButton({ mover }: { mover: Mover }) {
   const [isLoading, setIsLoading] = useState(false);
