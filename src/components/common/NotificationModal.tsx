@@ -11,15 +11,12 @@ import { useRouter } from "next/navigation";
 import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
 import { useQueryClient } from "@tanstack/react-query";
-import usePreventScroll from "@/lib/hooks/usePreventScroll";
 
 export default function NotificationModal({
    setIsNotiModalOpen,
 }: {
    setIsNotiModalOpen: (val: boolean) => void;
 }) {
-   usePreventScroll(true);
-
    const { realtimeNotifications, setHasUnread } = useNotification();
    const router = useRouter();
    const queryClient = useQueryClient();
