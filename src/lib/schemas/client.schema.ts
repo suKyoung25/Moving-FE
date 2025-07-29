@@ -16,7 +16,7 @@ export const serviceTypeSchema = z
 export const livingAreaSchema = z
    .array(z.string())
    .min(1, "지역을 1개 이상 선택해야 합니다.")
-   .max(3, "지역은 3개까지 선택할 수 있습니다.");
+   .max(5, "지역은 5개까지 선택할 수 있습니다.");
 
 // ✅ 일반 프로필 등록 페이지 스키마
 export const ClientProfilePostSchema = z.object({

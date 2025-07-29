@@ -12,7 +12,7 @@ export default function ClientSignInPage() {
          <SignInForm userType="client" />
 
          {/* 간편 회원가입 */}
-         <EasyLoginForm />
+         <EasyLoginForm userType="client" />
       </section>
    );
 }
