@@ -35,7 +35,10 @@ export default function ClientProfilePostForm() {
 
          {/* ✅ 이용 서비스 */}
          <section>
-            <ClientProfileTitle type="서비스" />
+            <ClientProfileTitle
+               type="서비스"
+               error={errors.serviceType?.message}
+            />
 
             {moveType.map((service) => {
                const value = MOVE_TYPES[service as keyof typeof MOVE_TYPES]; // "소형이사" → "SMALL"
@@ -59,7 +62,10 @@ export default function ClientProfilePostForm() {
 
          {/* ✅ 내가 사는 지역 */}
          <section className="mb-8 lg:mb-14">
-            <ClientProfileTitle type="지역" />
+            <ClientProfileTitle
+               type="지역"
+               error={errors.livingArea?.message}
+            />
 
             <div className="grid w-70 grid-cols-5 gap-x-2 gap-y-3 lg:w-104 lg:gap-x-3.5 lg:gap-y-4.5">
                {regions.map((region) => (

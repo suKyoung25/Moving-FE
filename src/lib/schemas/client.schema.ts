@@ -13,12 +13,12 @@ export const profileImageSchema = z
 
 export const serviceTypeSchema = z
    .array(z.enum(["SMALL", "HOME", "OFFICE"]))
-   .min(1, "서비스 유형을 1개 이상 선택해야 합니다.");
+   .min(1, "* 서비스 유형을 1개 이상 선택해야 합니다.");
 
 export const livingAreaSchema = z
    .array(z.string())
-   .min(1, "지역을 1개 이상 선택해야 합니다.")
-   .max(5, "지역은 5개까지 선택할 수 있습니다.");
+   .min(1, "* 지역을 1개 이상 선택해야 합니다.")
+   .max(5, "* 지역은 5개까지 선택할 수 있습니다.");
 
 // ✅ 일반 프로필 등록 페이지 스키마
 export const ClientProfilePostSchema = z.object({

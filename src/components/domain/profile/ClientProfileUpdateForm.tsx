@@ -5,7 +5,7 @@ import ProfileFieldButton from "./ProfileFieldButton";
 import ClientProfileTitle from "./ClientProfileTitle";
 import ProfileInput from "./ProfileInput";
 import SolidButton from "@/components/common/SolidButton";
-import { moveType, regions } from "@/constants";
+import { MOVE_TYPES, moveType, regions } from "@/constants";
 import useClientProfileUpdateForm from "@/lib/hooks/useClientProfileUpdateForm";
 import ProfilePasswordInput from "./ProfilePasswordInput";
 import ProfileImage from "./ProfileImage";
@@ -19,12 +19,11 @@ export default function ClientProfileUpdateForm() {
       errors,
       isValid,
       isLoading,
-      selectedServices,
-      selectedRegions,
       handleServiceToggle,
       handleRegionToggle,
       onSubmit,
       handleSubmit,
+      watch,
    } = useClientProfileUpdateForm();
 
    return (
@@ -94,21 +93,25 @@ export default function ClientProfileUpdateForm() {
 
                {/* ✅ 이용 서비스 */}
                <section>
-                  <ClientProfileTitle type="서비스" />
+                  <ClientProfileTitle
+                     type="서비스"
+                     error={errors.serviceType?.message}
+                  />
 
                   {moveType.map((service) => {
-                     const selectedIndex = selectedServices?.indexOf(service);
+                     const value =
+                        MOVE_TYPES[service as keyof typeof MOVE_TYPES]; // "소형이사" → "SMALL"
+
                      return (
                         <ProfileFieldButton
                            category="서비스"
                            name="serviceType"
                            key={service}
                            value={service}
-                           isSelected={selectedServices?.includes(service)}
-                           onClick={() => handleServiceToggle(service)}
-                           index={
-                              selectedIndex >= 0 ? selectedIndex : undefined
-                           }
+                           isSelected={(watch("serviceType") || []).includes(
+                              value,
+                           )}
+                           onClick={() => handleServiceToggle(value)}
                         >
                            {service}
                         </ProfileFieldButton>
@@ -120,27 +123,26 @@ export default function ClientProfileUpdateForm() {
 
                {/* ✅ 내가 사는 지역 */}
                <section className="mb-8 lg:mb-14">
-                  <ClientProfileTitle type="지역" />
+                  <ClientProfileTitle
+                     type="지역"
+                     error={errors.livingArea?.message}
+                  />
 
                   <div className="grid w-70 grid-cols-5 gap-x-2 gap-y-3 lg:w-104 lg:gap-x-3.5 lg:gap-y-4.5">
-                     {regions.map((region) => {
-                        const selectedIndex = selectedRegions?.indexOf(region);
-                        return (
-                           <ProfileFieldButton
-                              category="지역"
-                              name="livingArea"
-                              key={region}
-                              value={region}
-                              isSelected={selectedRegions?.includes(region)}
-                              onClick={() => handleRegionToggle(region)}
-                              index={
-                                 selectedIndex >= 0 ? selectedIndex : undefined
-                              }
-                           >
-                              {region}
-                           </ProfileFieldButton>
-                        );
-                     })}
+                     {regions.map((region) => (
+                        <ProfileFieldButton
+                           category="지역"
+                           name="livingArea"
+                           key={region}
+                           value={region}
+                           isSelected={(watch("livingArea") || []).includes(
+                              region,
+                           )}
+                           onClick={() => handleRegionToggle(region)}
+                        >
+                           {region}
+                        </ProfileFieldButton>
+                     ))}
                   </div>
                </section>
             </div>

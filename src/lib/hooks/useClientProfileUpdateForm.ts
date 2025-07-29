@@ -13,6 +13,7 @@ import {
 import { serviceTypeMap } from "@/constants";
 import { labelToEnumMap } from "../utils/profile.util";
 import clientProfile from "../api/auth/requests/updateClientProfile";
+import { MoveType } from "../types/client.types";
 
 export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
@@ -29,8 +30,10 @@ export default function useClientProfileUpdateForm() {
       handleSubmit,
       setError,
       setValue,
+      watch,
+      control,
       formState: { errors, isValid },
-   } = useForm({
+   } = useForm<ClientProfileUpdateValue>({
       mode: "onChange",
       resolver: zodResolver(clientProfileUpdateSchema),
       defaultValues: {
@@ -76,40 +79,24 @@ export default function useClientProfileUpdateForm() {
    }, [user, setValue, isInitialized]);
 
    // ✅ 이용 서비스 선택
-   const handleServiceToggle = (service: string) => {
-      setSelectedServices((prev) => {
-         const isSelected = prev?.includes(service);
+   const handleServiceToggle = (service: MoveType) => {
+      const current = watch("serviceType") || [];
 
-         // 선택
-         const newServices = isSelected
-            ? prev.filter((s) => s !== service)
-            : [...prev, service];
+      const updated = current.includes(service)
+         ? current.filter((s) => s !== service)
+         : [...current, service];
 
-         // 가정이사 -> HOME
-         const enumServices = newServices
-            .map((label) => labelToEnumMap[label])
-            .filter((v): v is ClientMoveType => !!v);
-
-         // react-hook-form에 업데이트
-         setValue("serviceType", enumServices, { shouldValidate: true });
-
-         return newServices;
-      });
+      setValue("serviceType", updated, { shouldValidate: true });
    };
-
    // ✅ 내가 사는 지역 선택
    const handleRegionToggle = (region: string) => {
-      setSelectedRegions((prev) => {
-         const isSelected = prev?.includes(region);
-         const newRegions = isSelected
-            ? prev.filter((r) => r !== region)
-            : [...prev, region];
+      const current = watch("livingArea") || [];
 
-         // react-hook-form에 업데이트
-         setValue("livingArea", newRegions, { shouldValidate: true });
+      const updated = current.includes(region)
+         ? current.filter((r) => r !== region)
+         : [...current, region];
 
-         return newRegions;
-      });
+      setValue("livingArea", updated, { shouldValidate: true });
    };
 
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
@@ -166,5 +153,7 @@ export default function useClientProfileUpdateForm() {
       handleRegionToggle,
       onSubmit,
       handleSubmit,
+      watch,
+      control,
    };
 }

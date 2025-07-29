@@ -13,7 +13,6 @@ const clientProfile = {
 
       tokenSettings.set(res.data.accessToken);
 
-      console.log("!!!", res);
       return res;
    },
 

@@ -100,7 +100,7 @@ export default function useClientProfilePostForm() {
                });
             });
          } else {
-            console.error("예기치 못한 에러: ", customError?.body.message);
+            console.error("예기치 못한 오류 발생: ", customError?.body.message);
          }
       } finally {
          setIsLoading(false);
