@@ -26,8 +26,8 @@ export const MoverProfileRequestSchema = z.object({
    career: z.number().min(0, "경력은 0 이상이어야 합니다."),
    introduction: z.string(),
    description: z.string(),
-   serviceType: z.array(z.string()),
-   serviceArea: z.array(z.string()),
+   serviceType: z.array(z.string()).min(1, "서비스를 선택해주세요"),
+   livingArea: z.array(z.string()).min(1, "지역을 선택해주세요"),
 });
 
 export type MoverProfileRequestInput = z.infer<
