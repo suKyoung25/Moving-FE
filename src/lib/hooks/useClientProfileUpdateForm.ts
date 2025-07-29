@@ -37,7 +37,6 @@ export default function useClientProfileUpdateForm() {
          name: user?.name,
          email: user?.email,
          phone: user?.phone,
-         newPasswordConfirmation: "",
          serviceType: [],
          livingArea: [],
       },
@@ -129,7 +128,7 @@ export default function useClientProfileUpdateForm() {
 
          await updateClientProfile(payload);
 
-         // user 상태 즉각 반영
+         // ✅ user 상태 즉각 반영
          if (refreshUser) {
             await refreshUser();
          }

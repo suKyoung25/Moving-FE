@@ -1,15 +1,10 @@
-/**
- * - TODO:
- * - 프로필 등록 안 하면 페이지 이동 못 하게 해야 함
- * - 이건 middleware 만들어지면 작업 예정이고
- * - 작업할 때 헤더도 같이 건드려야 함
- * - 추가) 이미지 설정 = AWS 설정 끝나고 나서 해야 함
- */
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { MOVE_TYPES } from "@/constants";
 import createClientProfile from "../api/auth/requests/createClientProfile";
+import { useAuth } from "@/context/AuthContext";
 
 export default function useClientProfilePostForm() {
    // ✅ 상태 모음
@@ -17,6 +12,7 @@ export default function useClientProfilePostForm() {
    const [selectedServices, setSelectedServices] = useState<string[]>([]);
    const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
    const [isLoading, setIsLoading] = useState(false);
+   const { refreshUser } = useAuth();
 
    // ✅ 이용 서비스 선택
    const handleServiceToggle = (service: string) => {
@@ -61,6 +57,11 @@ export default function useClientProfilePostForm() {
 
       try {
          await createClientProfile(payload);
+
+         // ✅ user 상태 즉각 반영
+         if (refreshUser) {
+            await refreshUser();
+         }
 
          router.replace("/mover-search");
       } catch (error) {
