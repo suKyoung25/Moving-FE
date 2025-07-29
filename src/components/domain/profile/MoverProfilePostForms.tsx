@@ -7,19 +7,8 @@ import GeneralInputField from "./GeneralInputField";
 import TextAreaInputField from "./TextAreaInputField";
 import ButtonInputField from "./ButtonInputField";
 import SolidButton from "@/components/common/SolidButton";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 
 export default function MoverProfilePostForm() {
-   const { user } = useAuth();
-   const router = useRouter();
-
-   //프로필 등록을 이미 한 유저의 경우 프로필 수정으로 리다이렉트
-   if (user?.isProfileCompleted) {
-      alert("이미 프로필이 등록되어 있습니다"); //TODO: 토스트 알람으로 리펙터링
-      router.push("/profile/edit");
-   }
-
    const {
       register,
       control,

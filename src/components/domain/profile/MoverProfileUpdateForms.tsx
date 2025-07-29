@@ -1,27 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import ImageInputField from "./ImageInputField";
 import GeneralInputField from "./GeneralInputField";
 import TextAreaInputField from "./TextAreaInputField";
 import ButtonInputField from "./ButtonInputField";
 import SolidButton from "@/components/common/SolidButton";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import useMoverProfileUpdateForm from "@/lib/hooks/useMoverProfileUpdateForm";
 
 export default function MoverProfileUpdateForm() {
-   const { user } = useAuth();
-   const router = useRouter();
-
-   //프로필 등록을 안했으면 등록으로 리다이렉트
-   useEffect(() => {
-      if (!user?.isProfileCompleted) {
-         alert("프로필 등록을 먼저 해주세요"); //TODO: 토스트 알림으로 리펙터링
-         router.push("/profile/create");
-      }
-   }, [user, router]);
-
    const {
       register,
       control,
@@ -31,8 +18,6 @@ export default function MoverProfileUpdateForm() {
       handleSubmit,
       onSubmit,
    } = useMoverProfileUpdateForm();
-
-   if (!user) return null;
 
    return (
       <form

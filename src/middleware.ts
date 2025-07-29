@@ -1,39 +1,20 @@
 import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
+import { decodeJWT, matchPath, removeLocalePrefix } from "./lib/utils";
 
 // next-intl locale 처리 미들웨어
 const intlMiddleware = createIntlMiddleware(routing);
 
-// const LOCALE_PREFIXES = ["ko", "en", "zh"];
-// const PROFILE_CREATE_PATH = "/profile/create";
-
-// const guestPaths = ["/", "/sign-in/client", "/sign-in/mover", "/sign-up"];
-// const protectedPaths = [
-//    "/dashboard",
-//    "/favorite-movers",
-//    "/my-quotes",
-//    "/profile",
-//    "/received-requests",
-//    "/request",
-//    "/reviews",
-// ];
-
-// locale prefix 제거 함수
-// function removeLocalePrefix(pathname: string) {
-//    const segments = pathname.split("/");
-//    return LOCALE_PREFIXES.includes(segments[1])
-//       ? "/" + segments.slice(2).join("/")
-//       : pathname;
-// }
-
-// JWT 디코딩
-async function decodeJWT(token: string) {
-   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-   const { payload } = await jwtVerify(token, secret);
-   return payload;
-}
+const PROFILE_CREATE_PATH = "/profile/create";
+const guestPaths = ["/", "/sign-in", "/sign-up"];
+const moverPaths = ["/dashboard", "/received-requests", "/my-quotes/mover"];
+const clientPaths = [
+   "/favorite-movers",
+   "/my-quotes/client",
+   "/request",
+   "/reviews",
+];
 
 export async function middleware(req: NextRequest) {
    // intl 미들웨어 적용
@@ -46,55 +27,56 @@ export async function middleware(req: NextRequest) {
    }
 
    // locale 적용된 url 기준으로 검사
-   // const path = removeLocalePrefix(req.nextUrl.pathname);
+   const path = removeLocalePrefix(req.nextUrl.pathname);
    const token = req.cookies.get("accessToken")?.value;
 
-   // const isGuestRoute = guestPaths.some(
-   //    (route) => path === route || path.startsWith(route + "/"),
-   // );
-   // const isProtectedRoute = protectedPaths.some(
-   //    (route) =>
-   //       path === route ||
-   //       path.startsWith(route + "/") ||
-   //       path.startsWith(route + "?"),
-   // );
+   const isGuestRoute = matchPath(path, guestPaths);
+   const isMoverRoute = matchPath(path, moverPaths);
+   const isClientRoute = matchPath(path, clientPaths);
 
-   // // 인증되지 않은 사용자가 ProtectedRoute 접근 시 로그인 페이지로 리디렉션
-   // if (!token && isProtectedRoute) {
-   //    return NextResponse.redirect(new URL("/sign-in/client", req.url));
-   // }
+   // 인증되지 않은 사용자가 보호된 경로 접근 시 로그인 페이지로 리디렉션
+   if (
+      !token &&
+      (isMoverRoute || isClientRoute || path.startsWith("/profile"))
+   ) {
+      return NextResponse.redirect(new URL("/sign-in/client", req.url));
+   }
 
+   // 인증 안된 경우 다른 제한 없음 → 통과
    if (!token) return intlRespone;
+
    const decoded = await decodeJWT(token);
-   // const isAuthenticated = !!token;
-   console.log(decoded);
+   const { isProfileCompleted, userType } = decoded;
 
-   // // 프로필 미완료인데 다른 페이지 접근 시
-   // if (
-   //    isAuthenticated &&
-   //    !decoded.isProfileCompleted &&
-   //    path !== PROFILE_CREATE_PATH &&
-   //    !path.startsWith(PROFILE_CREATE_PATH + "/")
-   // ) {
-   //    return NextResponse.redirect(new URL(PROFILE_CREATE_PATH, req.url));
-   // }
+   // 프로필 등록 미완료 시 다른 페이지 접근 불가
+   if (
+      !isProfileCompleted &&
+      path !== PROFILE_CREATE_PATH &&
+      !path.startsWith(PROFILE_CREATE_PATH + "/")
+   ) {
+      return NextResponse.redirect(new URL(PROFILE_CREATE_PATH, req.url));
+   }
 
-   // // 프로필 완료인데 /profile/create 접근 시
-   // if (
-   //    isAuthenticated &&
-   //    decoded.isProfileCompleted &&
-   //    (path === PROFILE_CREATE_PATH ||
-   //       path.startsWith(PROFILE_CREATE_PATH + "/"))
-   // ) {
-   //    return NextResponse.redirect(new URL("/mover-search", req.url));
-   // }
+   // 프로필 등록 완료 시 프로필 등록 페이지 접근 불가
+   if (isProfileCompleted && path === PROFILE_CREATE_PATH) {
+      return NextResponse.redirect(new URL("/mover-search", req.url));
+   }
 
-   // // 인증된 사용자가 GuestRoute 접근 시 기사님 찾기 페이지로 리디렉션
-   // if (isAuthenticated && isGuestRoute) {
-   //    return NextResponse.redirect(new URL("/mover-search", req.url));
-   // }
+   // 인증된 사용자가 GuestRoute 접근 시
+   if (isGuestRoute) {
+      return NextResponse.redirect(new URL("/mover-search", req.url));
+   }
 
-   // intl 처리된 response 이어서 전달
+   // 일반 유저가 MoverRoute 접근 시
+   if (userType === "client" && isMoverRoute) {
+      return NextResponse.redirect(new URL("/mover-search", req.url));
+   }
+
+   // 기사가 ClientRoute 접근 시
+   if (userType === "mover" && isClientRoute) {
+      return NextResponse.redirect(new URL("/mover-search", req.url));
+   }
+
    return intlRespone;
 }
 
