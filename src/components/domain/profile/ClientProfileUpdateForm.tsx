@@ -8,9 +8,9 @@ import SolidButton from "@/components/common/SolidButton";
 import { MOVE_TYPES, moveType, regions } from "@/constants";
 import useClientProfileUpdateForm from "@/lib/hooks/useClientProfileUpdateForm";
 import ProfilePasswordInput from "./ProfilePasswordInput";
-import ProfileImage from "./ProfileImage";
 import OutlinedButton from "@/components/common/OutlinedButton";
 import { ClientProfileUpdateValue } from "@/lib/schemas";
+import ImageInputField from "./ImageInputField";
 
 export default function ClientProfileUpdateForm() {
    // ✅ 함수 모음
@@ -24,11 +24,12 @@ export default function ClientProfileUpdateForm() {
       onSubmit,
       handleSubmit,
       watch,
+      control,
    } = useClientProfileUpdateForm();
 
    return (
       <form onSubmit={handleSubmit(onSubmit)}>
-         <div className="flex flex-col lg:flex-row lg:justify-baseline lg:gap-14">
+         <div className="flex flex-col lg:mb-14 lg:flex-row lg:justify-baseline lg:gap-14">
             {/* ✅ 입력창 모음 */}
             <div className="flex-1">
                <ProfileInput<ClientProfileUpdateValue>
@@ -87,7 +88,11 @@ export default function ClientProfileUpdateForm() {
 
             <div className="flex-1">
                {/* ✅ 프로필 이미지 */}
-               <ProfileImage />
+               <ImageInputField
+                  name="profileImage"
+                  text="프로필 이미지"
+                  control={control}
+               />
 
                <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
 

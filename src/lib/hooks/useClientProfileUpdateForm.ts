@@ -11,18 +11,16 @@ import {
    ClientProfileUpdateValue,
 } from "../schemas";
 import { serviceTypeMap } from "@/constants";
-import { labelToEnumMap } from "../utils/profile.util";
+import { extractRegionNames, labelToEnumMap } from "../utils/profile.util";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { MoveType } from "../types/client.types";
+import updateProfileImage from "../api/auth/requests/updateProfileImage";
 
 export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
    const router = useRouter();
    const { user, refreshUser } = useAuth();
-   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
    const [isLoading, setIsLoading] = useState(false);
-   const [isInitialized, setIsInitialized] = useState(false); // 선택 초기화
 
    // ✅ react-hook-form
    const {
@@ -33,6 +31,7 @@ export default function useClientProfileUpdateForm() {
       watch,
       control,
       formState: { errors, isValid },
+      reset,
    } = useForm<ClientProfileUpdateValue>({
       mode: "onChange",
       resolver: zodResolver(clientProfileUpdateSchema),
@@ -40,43 +39,23 @@ export default function useClientProfileUpdateForm() {
          name: user?.name,
          email: user?.email,
          phone: user?.phone,
-         serviceType: [],
-         livingArea: [],
       },
    });
 
-   // ✅ 버튼 초깃값 선택되어 있게
+   // ✅ 기본값 설정 추가
    useEffect(() => {
-      if (user && !isInitialized) {
-         // 기본 정보 설정
-         setValue("name", user.name || "");
-         setValue("email", user.email || "");
-         setValue("phone", user.phone || "");
+      if (user?.userType === "client") {
+         const client = user as Client;
 
-         if (user?.userType === "client") {
-            const client = user as Client;
+         const defaultValues: ClientProfileUpdateValue = {
+            profileImage: client.profileImage ?? "",
+            serviceType: client.serviceType ?? [],
+            livingArea: client.livingArea,
+         };
 
-            // 이용 서비스 BE -> FE로 이름 변환 (HOME -> 가정이사)
-            const convertedServices = client.serviceType
-               .map((type) => serviceTypeMap[type as ClientMoveType])
-               .filter(Boolean);
-
-            // 그리고 또 변환
-            const enumServices = convertedServices
-               .map((label) => labelToEnumMap[label])
-               .filter((v): v is ClientMoveType => !!v);
-
-            setSelectedServices(convertedServices);
-            setSelectedRegions(client.livingArea);
-
-            // react-hook-form에도 설정
-            setValue("serviceType", enumServices);
-            setValue("livingArea", client.livingArea);
-         }
-
-         setIsInitialized(true);
+         reset(defaultValues);
       }
-   }, [user, setValue, isInitialized]);
+   }, [user, reset]);
 
    // ✅ 이용 서비스 선택
    const handleServiceToggle = (service: MoveType) => {
@@ -100,22 +79,34 @@ export default function useClientProfileUpdateForm() {
    };
 
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
-   const onSubmit = async (formData: ClientProfileUpdateValue) => {
-      try {
-         setIsLoading(true);
+   const onSubmit = async (data: ClientProfileUpdateValue) => {
+      setIsLoading(true);
 
+      try {
+         // 1. 이미지가 있으면 먼저 업로드
+         let imageUrl: string | undefined;
+
+         if (data.profileImage instanceof File) {
+            const formData = new FormData();
+            formData.append("image", data.profileImage);
+
+            const res = await updateProfileImage(formData);
+            imageUrl = res.url;
+         } else {
+            imageUrl = data.profileImage; // 타입 = string
+         }
+
+         // 2. 보낼 자료
          const payload = {
-            ...formData,
-            // profileImage: profileImage,
-            serviceType: selectedServices
-               .map((label) => labelToEnumMap[label])
-               .filter(Boolean) as ClientMoveType[],
-            livingArea: selectedRegions,
+            ...data,
+            serviceType: watch("serviceType") || [],
+            livingArea: watch("livingArea") || [],
          };
 
          await clientProfile.update(payload);
+         alert("프로필이 수정되었습니다.");
 
-         // ✅ user 상태 즉각 반영
+         // user 상태 즉각 반영
          if (refreshUser) {
             await refreshUser();
          }
@@ -147,8 +138,6 @@ export default function useClientProfileUpdateForm() {
       errors,
       isValid,
       isLoading,
-      selectedServices,
-      selectedRegions,
       handleServiceToggle,
       handleRegionToggle,
       onSubmit,
