@@ -49,11 +49,7 @@ export async function middleware(req: NextRequest) {
    const { isProfileCompleted, userType } = decoded;
 
    // 프로필 등록 미완료 시 다른 페이지 접근 불가
-   if (
-      !isProfileCompleted &&
-      path !== PROFILE_CREATE_PATH &&
-      !path.startsWith(PROFILE_CREATE_PATH + "/")
-   ) {
+   if (!isProfileCompleted && path !== PROFILE_CREATE_PATH) {
       return NextResponse.redirect(new URL(PROFILE_CREATE_PATH, req.url));
    }
 
@@ -63,7 +59,7 @@ export async function middleware(req: NextRequest) {
    }
 
    // 인증된 사용자가 GuestRoute 접근 시
-   if (isGuestRoute) {
+   if (isProfileCompleted && isGuestRoute) {
       return NextResponse.redirect(new URL("/mover-search", req.url));
    }
 
