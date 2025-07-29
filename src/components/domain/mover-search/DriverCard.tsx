@@ -3,32 +3,34 @@
 import { useRouter } from "next/navigation";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip from "@/components/common/MoveChip";
-import { useMover } from "./MoverStateControll";
 import type { Mover } from "@/lib/types";
 import { validateServiceTypes } from "@/lib/utils/moveChip.util";
+import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
 
 interface DriverCardProps {
    mover: Mover;
+   onFavoriteChange?: (moverId: string, isFavorite: boolean, favoriteCount: number) => void;
 }
 
-export default function DriverCard({ mover }: DriverCardProps) {
-   const { toggleFavorite } = useMover();
+export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps) {
    const router = useRouter();
-
 
    const handleCardClick = () => {
       router.push(`/mover-search/${mover.id}`);
    };
 
    const handleLikedClick = async (e: React.MouseEvent) => {
-  e.stopPropagation();
+      e.stopPropagation();
 
-  try {
-    await toggleFavorite(mover.id); 
-  } catch (error) {
-    console.error("찜 처리 중 오류:", error);
-  }
-};
+      try {
+        const result = await toggleFavoriteMover(mover.id);
+        // 부모 컴포넌트에 변경사항 알림
+        onFavoriteChange?.(mover.id, result.isFavorite, result.favoriteCount);
+      } catch (error) {
+        console.error("찜 처리 중 오류:", error);
+        alert("찜 처리 중 오류가 발생했습니다.");
+      }
+   };
 
    const validServiceTypes = validateServiceTypes(mover.serviceType!);
 
@@ -66,4 +68,4 @@ export default function DriverCard({ mover }: DriverCardProps) {
          </div>
       </div>
    );
-}
+} 
