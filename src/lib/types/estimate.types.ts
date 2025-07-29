@@ -21,7 +21,7 @@ export interface Estimate {
    price: number;
    created: string;
    isDesignated: boolean;
-   isFavorited: Favorite;
+   isFavorited: Favorite | null;
    career: number;
    estimateCount: number;
    favoriteCount: number;
