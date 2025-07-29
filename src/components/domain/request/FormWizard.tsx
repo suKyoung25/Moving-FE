@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
@@ -10,8 +10,17 @@ import carImage from "@/assets/images/emptyCarIcon.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { FormWizardState } from "@/lib/types";
-import { getClientActiveRequests } from "@/lib/api/mover/getClientRequest";
+import { CreateRequestDto, FormWizardState } from "@/lib/types";
+import { getClientActiveRequests } from "@/lib/api/estimate/requests/getClientRequest";
+import {
+   getRequestDraft,
+   patchRequestDraft,
+} from "@/lib/api/request/requests/requestDraftApi";
+import { debounce } from "lodash";
+import Spinner from "@/components/common/Spinner";
+import { createRequestAction } from "@/lib/actions/request.action";
+import toast from "react-hot-toast";
+import ToastPopup from "@/components/common/ToastPopup";
 
 interface FormWizardProps {
    currentStep: number;
@@ -29,47 +38,137 @@ export default function FormWizard({
    currentStep,
    setCurrentStep,
 }: FormWizardProps) {
-   const { user } = useAuth();
+   const { user, isLoading } = useAuth();
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
-   const [loading, setLoading] = useState(true);
+   const [isPending, setIsPending] = useState(true);
+   const [isInitialized, setIsInitialized] = useState(false);
 
-   const STORAGE_KEY = user ? `requestData_${user.id}` : null;
+   const isFormValid =
+      !!formState.moveType &&
+      !!formState.moveDate &&
+      !!formState.fromAddress &&
+      !!formState.toAddress;
 
-   // 초기화: localStorage + 서버 데이터 기반
+   // 초기화: 서버에서 draft + activeRequest 상태 확인
    useEffect(() => {
+      if (isLoading) return;
+
       const init = async () => {
          if (!user) return;
 
-         const saved = localStorage.getItem(`requestData_${user.id}`);
-         if (saved) {
-            const parsed = JSON.parse(saved);
-            setFormState(parsed);
-            setCurrentStep(parsed.currentStep ?? 0);
-         }
+         try {
+            // 활성 견적 있는지 확인
+            // TODO: 활성 견적 요청 api 수정 필요 -> 활성 견적은 하나만 존재 가능
+            const data = await getClientActiveRequests();
+            const activeRequest = data.requests[0];
 
-         const activeRequest = await getClientActiveRequests();
-         if (
-            !activeRequest ||
-            new Date(activeRequest.moveDate) < new Date() ||
-            !activeRequest.isPending
-         ) {
-            setCurrentStep(0); // 요청 가능
-         } else {
-            setCurrentStep(4); // 새로운 견적 요청 불가
+            const isActive =
+               activeRequest &&
+               new Date(activeRequest.moveDate) > new Date() &&
+               activeRequest.isPending;
+
+            if (isActive) {
+               setCurrentStep(4);
+               return;
+            }
+
+            // 활성 견적 없는 경우 draft 조회
+            const draftRes = await getRequestDraft();
+            const draft = draftRes?.data;
+            console.log("draft", draft);
+
+            if (draft) {
+               const {
+                  moveType,
+                  moveDate,
+                  fromAddress,
+                  toAddress,
+                  currentStep,
+               } = draft;
+
+               setFormState({ moveType, moveDate, fromAddress, toAddress });
+               setCurrentStep(currentStep ?? 0);
+            } else {
+               // draft 없을 경우 초기화
+               setFormState(defaultState);
+               setCurrentStep(0);
+            }
+         } catch (err) {
+            console.error("초기 로딩 실패:", err);
+         } finally {
+            setIsPending(false);
+            setIsInitialized(true);
          }
       };
-
       init();
-   }, [user]);
+   }, [user, isLoading]);
 
+   // debounce로 불필요한 저장 방지
+   const debouncedSave = useMemo(
+      () =>
+         debounce(async (nextState: FormWizardState, step: number) => {
+            try {
+               await patchRequestDraft({
+                  ...nextState,
+                  fromAddress: nextState.fromAddress?.trim() || undefined,
+                  toAddress: nextState.toAddress?.trim() || undefined,
+                  currentStep: step,
+               });
+            } catch (err) {
+               console.error("중간 상태 저장 실패:", err);
+            }
+         }, 1000), // 1초 debounce
+      [],
+   );
+
+   // 중간 상태 변경 시 서버에 저장
    useEffect(() => {
-      if (!user) return;
-      const key = `requestData_${user.id}`;
-      localStorage.setItem(key, JSON.stringify({ ...formState, currentStep }));
-      setLoading(false);
-   }, [formState, currentStep, user]);
+      if (!user || !isInitialized) return;
+      if (currentStep >= 1) {
+         debouncedSave(formState, currentStep);
+         console.log("중간 저장됨:", { formState, currentStep });
+      }
+   }, [formState, currentStep, user, isInitialized]);
 
-   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
+   // 견적 확정 버튼 클릭 시 새로운 견적 생성
+   const handleConfirm = async () => {
+      if (!user || !isFormValid) return;
+
+      try {
+         await createRequestAction(formState as CreateRequestDto);
+
+         toast.custom((t) => (
+            <ToastPopup
+               className={`${
+                  t.visible ? "animate-fade-in" : "animate-fade-out"
+               }`}
+            >
+               견적 요청이 완료되었어요!
+            </ToastPopup>
+         ));
+
+         setCurrentStep(4);
+      } catch (err) {
+         console.error("견적 요청 실패:", err);
+
+         toast.custom((t) => (
+            <ToastPopup
+               className={`${
+                  t.visible ? "animate-fade-in" : "animate-fade-out"
+               }`}
+            >
+               견적 요청에 실패했어요.
+            </ToastPopup>
+         ));
+      }
+   };
+
+   if (isPending)
+      return (
+         <div className="flex justify-center">
+            <Spinner />
+         </div>
+      );
 
    if (currentStep === 4) {
       return (
@@ -119,6 +218,7 @@ export default function FormWizard({
          )}
          {currentStep >= 2 && (
             <Step3
+               isFormValid={isFormValid}
                from={formState.fromAddress}
                to={formState.toAddress}
                onFromChange={(v) =>
@@ -132,6 +232,8 @@ export default function FormWizard({
                   setCurrentStep(0);
                   localStorage.removeItem(`requestData_${user?.id}`);
                }}
+               onConfirm={handleConfirm}
+               onNext={() => setCurrentStep(3)}
             />
          )}
       </form>
