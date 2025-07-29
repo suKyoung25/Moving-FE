@@ -1,11 +1,9 @@
-import Image from "next/image";
-import likeIcon from "@/assets/images/likeFilledIcon.svg";
 import PageTitle from "@/components/layout/PageTitle";
-import SolidButton from "@/components/common/SolidButton";
 import MoverProfileclient from "@/components/domain/my-quotes/MoverProfileClient";
 import QuotaionInfo from "@/components/domain/my-quotes/QuotaionInfo";
 import { fetchClientQuoteDetail } from "@/lib/api/estimate/getClientQuoteDetail";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
+import ConfirmedButton from "@/components/domain/my-quotes/ConfirmedButton";
 
 // 견적 관리 상세
 export default async function MyQuoetesDetailPage({
@@ -35,6 +33,7 @@ export default async function MyQuoetesDetailPage({
                      estimateCount={data.mover.estimateCount}
                      favoriteCount={data.mover.favoriteCount}
                      quotesStatus={data.status}
+                     moverId={data.mover.id}
                   />
                </article>
                <hr className="bg-line-100 h-px border-0" />
@@ -63,22 +62,14 @@ export default async function MyQuoetesDetailPage({
                style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.16)" }}
                className="fixed bottom-0 left-0 flex w-full items-center gap-2 bg-white px-6 py-2.5 md:px-16 lg:hidden"
             >
-               <div className="border-line-200 flex h-13.5 w-13.5 flex-shrink-0 cursor-pointer items-center justify-center rounded-2xl border">
-                  <Image
-                     src={likeIcon}
-                     alt="좋아요 버튼"
-                     width={24}
-                     height={24}
-                  />
-               </div>
                {data.status === "pending" && (
-                  <SolidButton>견적 확정하기</SolidButton>
+                  <ConfirmedButton estimateId={data.id} />
                )}
             </div>
             <div className="hidden w-82 lg:block">
                {data.status === "pending" && (
                   <>
-                     <SolidButton>견적 확정하기</SolidButton>
+                     <ConfirmedButton estimateId={data.id} />
                      <hr className="bg-line-100 my-10 h-px border-0" />
                   </>
                )}

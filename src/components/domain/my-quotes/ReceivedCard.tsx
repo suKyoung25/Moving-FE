@@ -7,11 +7,13 @@ import { useRouter } from "next/navigation";
 interface ReceivedCardProps {
    estimate: Estimate;
    designated: DesignatedRequest[];
+   serviceType: string;
 }
 
 export default function ReceivedCard({
    estimate,
    designated,
+   serviceType,
 }: ReceivedCardProps) {
    const router = useRouter();
 
@@ -26,7 +28,7 @@ export default function ReceivedCard({
       >
          <MoverProfileclient
             moveType={estimate.isConfirmed ? "DONE" : null}
-            isDesignated={designated.length === 0 ? true : false}
+            isDesignated={designated.length === 0 ? false : true}
             moverName={estimate.moverName}
             profileImage={estimate.profileImage}
             isFavorited={!!estimate.isFavorited}
@@ -37,6 +39,8 @@ export default function ReceivedCard({
             favoriteCount={estimate.favoriteCount}
             quotesStatus="received"
             comment={estimate.comment}
+            moverId={estimate.moverId}
+            serviceType={serviceType}
          />
          <div className="mt-4 flex items-center justify-end gap-2">
             <p className="text-14-medium lg:text-18-medium">견적금액</p>

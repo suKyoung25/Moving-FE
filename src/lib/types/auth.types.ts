@@ -8,10 +8,11 @@ interface BaseUser {
    userType: UserType;
    id: string;
    email: string;
-   name: string;
+   name?: string;
    phone?: string;
    profileImage?: string;
    isProfileCompleted: boolean;
+   provider?: string;
 }
 
 export interface Region {
