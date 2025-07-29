@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthFetchError, Mover, ServiceType } from "../types";
+import { AuthFetchError, Mover, MoveType } from "../types";
 import {
    MoverProfileInput,
    MoverProfileSchema,
@@ -79,7 +79,7 @@ function useMoverProfileUpdateForm() {
             ...data,
             image: imageUrl, // 업로드된 이미지 URL 또는 undefined
             career: Number(data.career), // string > number로 변환
-            serviceType: data.serviceType.map((type) => type as ServiceType), //string[] > MoveType[]
+            serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
          };
 
          const res = await updateMoverProfile(processedData);
