@@ -11,7 +11,7 @@ import {
    ClientProfileUpdateValue,
 } from "../schemas";
 import updateClientProfile from "../api/auth/requests/updateClientProfile";
-import { MOVE_TYPES, serviceTypeMap } from "@/constants";
+import { serviceTypeMap } from "@/constants";
 import { labelToEnumMap } from "../utils/profile.util";
 
 export default function useClientProfileUpdateForm() {
