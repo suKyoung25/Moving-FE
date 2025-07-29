@@ -10,9 +10,9 @@ import {
    clientProfileUpdateSchema,
    ClientProfileUpdateValue,
 } from "../schemas";
-import updateClientProfile from "../api/auth/requests/updateClientProfile";
 import { serviceTypeMap } from "@/constants";
 import { labelToEnumMap } from "../utils/profile.util";
+import clientProfile from "../api/auth/requests/updateClientProfile";
 
 export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
@@ -126,7 +126,7 @@ export default function useClientProfileUpdateForm() {
             livingArea: selectedRegions,
          };
 
-         await updateClientProfile(payload);
+         await clientProfile.update(payload);
 
          // ✅ user 상태 즉각 반영
          if (refreshUser) {

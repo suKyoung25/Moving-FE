@@ -4,7 +4,7 @@ import React from "react";
 import ProfileFieldButton from "@/components/domain/profile/ProfileFieldButton";
 import ClientProfileTitle from "./ClientProfileTitle";
 import SolidButton from "../../common/SolidButton";
-import { moveType, regions } from "@/constants";
+import { MOVE_TYPES, moveType, regions } from "@/constants";
 import useClientProfilePostForm from "@/lib/hooks/useClientProfilePostForm";
 import ImageInputField from "./ImageInputField";
 
@@ -13,18 +13,17 @@ export default function ClientProfilePostForm() {
    const {
       isValid,
       isLoading,
-      selectedServices,
-      selectedRegions,
       handleServiceToggle,
       handleRegionToggle,
       onSubmit,
       handleSubmit,
       control,
       errors,
+      watch,
    } = useClientProfilePostForm();
 
    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
          {/* ✅ 이미지 */}
          <ImageInputField
             name="profileImage"
@@ -38,18 +37,22 @@ export default function ClientProfilePostForm() {
          <section>
             <ClientProfileTitle type="서비스" />
 
-            {moveType.map((service) => (
-               <ProfileFieldButton
-                  category="서비스"
-                  name="serviceType"
-                  key={service}
-                  value={service}
-                  isSelected={selectedServices.includes(service)}
-                  onClick={() => handleServiceToggle(service)}
-               >
-                  {service}
-               </ProfileFieldButton>
-            ))}
+            {moveType.map((service) => {
+               const value = MOVE_TYPES[service as keyof typeof MOVE_TYPES]; // "소형이사" → "SMALL"
+
+               return (
+                  <ProfileFieldButton
+                     category="서비스"
+                     name="serviceType"
+                     key={service}
+                     value={service}
+                     isSelected={(watch("serviceType") || []).includes(value)}
+                     onClick={() => handleServiceToggle(value)}
+                  >
+                     {service}
+                  </ProfileFieldButton>
+               );
+            })}
          </section>
 
          <hr className="border-line-100 mb-5 lg:mb-8" />
@@ -65,7 +68,7 @@ export default function ClientProfilePostForm() {
                      name="livingArea"
                      key={region}
                      value={region}
-                     isSelected={selectedRegions.includes(region)}
+                     isSelected={(watch("livingArea") || []).includes(region)}
                      onClick={() => handleRegionToggle(region)}
                   >
                      {region}
@@ -75,7 +78,10 @@ export default function ClientProfilePostForm() {
          </section>
 
          {/* ✅ 제출 버튼 */}
-         <SolidButton disabled={!isValid || isLoading}>
+         <SolidButton
+            disabled={!isValid || isLoading}
+            onClick={handleSubmit(onSubmit)}
+         >
             {isLoading ? "로딩 중..." : "시작하기"}
          </SolidButton>
       </form>

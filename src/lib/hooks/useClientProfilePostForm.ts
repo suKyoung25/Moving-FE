@@ -2,20 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { MOVE_TYPES } from "@/constants";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { ClientProfilePostSchema, ClientProfilePostValue } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
-import updateClientProfile from "../api/auth/requests/updateClientProfile";
 import { AuthFetchError } from "../types";
+import { MoveType } from "../types/client.types";
+import clientProfile from "../api/auth/requests/updateClientProfile";
 
 export default function useClientProfilePostForm() {
    // ✅ 상태 모음
    const router = useRouter();
-   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
    const [isLoading, setIsLoading] = useState(false);
    const { refreshUser } = useAuth();
 
@@ -23,6 +21,8 @@ export default function useClientProfilePostForm() {
    const {
       handleSubmit,
       setError,
+      setValue,
+      watch,
       control,
       formState: { errors, isValid },
    } = useForm<ClientProfilePostValue>({
@@ -31,25 +31,25 @@ export default function useClientProfilePostForm() {
    });
 
    // ✅ 이용 서비스 선택
-   const handleServiceToggle = (service: string) => {
-      setSelectedServices((prev) => {
-         const isSelected = prev.includes(service);
+   const handleServiceToggle = (service: MoveType) => {
+      const current = watch("serviceType") || [];
 
-         return isSelected
-            ? prev.filter((s) => s !== service)
-            : [...prev, service];
-      });
+      const updated = current.includes(service)
+         ? current.filter((s) => s !== service)
+         : [...current, service];
+
+      setValue("serviceType", updated, { shouldValidate: true });
    };
 
    // ✅ 내가 사는 지역 선택
    const handleRegionToggle = (region: string) => {
-      setSelectedRegions((prev) => {
-         const isSelected = prev.includes(region);
+      const current = watch("livingArea") || [];
 
-         return isSelected
-            ? prev.filter((r) => r !== region)
-            : [...prev, region];
-      });
+      const updated = current.includes(region)
+         ? current.filter((r) => r !== region)
+         : [...current, region];
+
+      setValue("livingArea", updated, { shouldValidate: true });
    };
 
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
@@ -65,23 +65,21 @@ export default function useClientProfilePostForm() {
             formData.append("image", data.profileImage);
 
             const res = await updateProfileImage(formData);
-
             imageUrl = res.url;
+         } else {
+            imageUrl = data.profileImage; // 타입 = string
          }
 
          // 2. 보낼 자료
          const payload = {
-            ...data,
             profileImage: imageUrl, // 이미지 경로 or undefined를 DB에 저장
-            serviceType: selectedServices.map(
-               (type) => MOVE_TYPES[type as keyof typeof MOVE_TYPES],
-            ),
-            livingArea: selectedRegions,
+            serviceType: watch("serviceType") || [],
+            livingArea: watch("livingArea") || [],
          };
 
-         const res = await updateClientProfile(payload);
+         const res = await clientProfile.post(payload);
 
-         if (res.isProfileCompleted) {
+         if (res.data.isProfileCompleted === true) {
             alert("프로필이 등록되었습니다.");
 
             // user 상태 즉각 반영
@@ -112,13 +110,12 @@ export default function useClientProfilePostForm() {
    return {
       isValid,
       isLoading,
-      selectedServices,
-      selectedRegions,
       handleServiceToggle,
       handleRegionToggle,
       onSubmit,
       handleSubmit,
       control,
       errors,
+      watch,
    };
 }
