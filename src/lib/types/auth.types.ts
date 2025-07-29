@@ -30,7 +30,7 @@ export interface Mover extends BaseUser {
    introduction?: string;
    description?: string;
    serviceType: string[];
-   serviceArea: string[];
+   serviceArea: Region[];
    favoriteCount: number;
    estimateCount: number;
    reviewCount: number;

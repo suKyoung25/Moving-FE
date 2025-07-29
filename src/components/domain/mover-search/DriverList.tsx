@@ -1,12 +1,13 @@
 "use client"; 
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import DriverCard from "./DriverCard";
 import { getMovers } from "@/lib/api/mover/getMover";
 import { GetMoversParams } from "@/lib/types/mover.types";
 import { areaMapping } from "@/constants/mover.constants";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import type { Mover } from "@/lib/types";
+import { useInfiniteScroll } from "./useInfiniteScroll"; 
 
 interface DriverListProps {
   filters: {
@@ -23,23 +24,14 @@ export default function DriverList({ filters }: DriverListProps) {
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  
-  // 무한스크롤을 위한 ref
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadingElementRef = useRef<HTMLDivElement | null>(null);
 
-  // loadMovers를 useCallback으로 메모이제이션하고 의존성 최적화
-  const loadMovers = useCallback(async (reset = false, pageToLoad?: number) => {
+  // 기사님 데이터 로드 함수
+  const loadMovers = useCallback(async (reset = false) => {
     try {
       setLoading(true);
       setError(null);
 
-      const targetPage = pageToLoad || (reset ? 1 : currentPage);
-
-      if (reset) {
-        setMovers([]);
-        setCurrentPage(1);
-      }
+      const targetPage = reset ? 1 : currentPage;
 
       let area = filters.area !== "all" ? filters.area : undefined;
       if (area && areaMapping[area]) {
@@ -60,62 +52,39 @@ export default function DriverList({ filters }: DriverListProps) {
 
       if (reset) {
         setMovers(response.movers);
-        setCurrentPage(1);
+        setCurrentPage(2);
       } else {
         setMovers(prev => {
           const existingIds = new Set(prev.map((m) => m.id));
           const newMovers = response.movers.filter((m) => !existingIds.has(m.id));
           return [...prev, ...newMovers];
         });
+        setCurrentPage(prev => prev + 1);
       }
 
       setHasMore(response.hasMore);
-    } catch {
+    } catch (err) {
+      console.error('Load movers error:', err);
       setError("기사님 목록을 불러오는데 실패했습니다.");
     } finally {
       setLoading(false);
     }
   }, [filters.area, filters.search, filters.serviceType, filters.sortBy, currentPage]);
 
-  // loadMore를 별도로 분리하여 의존성 최적화
-  const loadMore = useCallback(async () => {
+  // 다음 페이지 로드
+  const loadMore = useCallback(() => {
     if (!hasMore || loading) return;
+    loadMovers(false);
+  }, [hasMore, loading, loadMovers]);
 
-    const nextPage = currentPage + 1;
-    setCurrentPage(nextPage);
-    
-    try {
-      setLoading(true);
-
-      let area = filters.area !== "all" ? filters.area : undefined;
-      if (area && areaMapping[area]) {
-        area = areaMapping[area][0];
-      }
-
-      const params: GetMoversParams = {
-        page: nextPage,
-        limit: 10,
-        search: filters.search || undefined,
-        area,
-        serviceType: filters.serviceType !== "all" ? filters.serviceType : undefined,
-        sortBy: filters.sortBy,
-      };
-
-      const hasToken = Boolean(tokenSettings.get());
-      const response = await getMovers(params, hasToken);
-
-      setMovers(prev => {
-        const existingIds = new Set(prev.map((m) => m.id));
-        const newMovers = response.movers.filter((m) => !existingIds.has(m.id));
-        return [...prev, ...newMovers];
-      });
-      setHasMore(response.hasMore);
-    } catch {
-      setError("추가 데이터를 불러오는데 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, hasMore, loading, filters.area, filters.search, filters.serviceType, filters.sortBy]);
+  // 🔥 useInfiniteScroll 훅 사용
+  const { setLoadingRef } = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: loadMore,
+    rootMargin: "100px",
+    threshold: 0.1
+  });
 
   // 찜 상태 변경 핸들러
   const handleFavoriteChange = useCallback((moverId: string, isFavorite: boolean, favoriteCount: number) => {
@@ -126,47 +95,17 @@ export default function DriverList({ filters }: DriverListProps) {
     ));
   }, []);
 
-  // 무한스크롤 IntersectionObserver 설정
-  const setLoadingRef = useCallback((node: HTMLDivElement | null) => {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-
-    loadingElementRef.current = node;
-
-    if (node && hasMore && !loading) {
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          const target = entries[0];
-          if (target.isIntersecting) {
-            loadMore();
-          }
-        },
-        {
-          root: null,
-          rootMargin: '100px',
-          threshold: 0.1
-        }
-      );
-      observerRef.current.observe(node);
-    }
-  }, [hasMore, loading, loadMore]);
-
-  // 필터 변경 시 데이터 다시 로드 - loadMovers를 의존성에 포함
+  // 필터 변경 시 데이터 리셋
   useEffect(() => {
+    setCurrentPage(1);
+    setHasMore(true);
+    
     const timeoutId = setTimeout(() => {
       loadMovers(true);
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [loadMovers]); // loadMovers를 의존성에 포함
-
-  // 컴포넌트 언마운트 시 observer 정리
-  useEffect(() => {
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, []);
+  }, [filters.search, filters.area, filters.serviceType, filters.sortBy]);
 
   if (error) {
     return (
@@ -194,26 +133,26 @@ export default function DriverList({ filters }: DriverListProps) {
         />
       ))}
 
-      {/* 무한스크롤 트리거 */}
+      {/* 🔥 useInfiniteScroll 훅의 setLoadingRef 사용 */}
       {hasMore && (
         <div ref={setLoadingRef} className="flex justify-center p-4">
-          {loading && (
+          {loading ? (
             <div className="flex items-center space-x-2">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-blue-300"></div>
               <span>로딩 중...</span>
             </div>
+          ) : (
+            <span>스크롤하여 더 보기</span>
           )}
         </div>
       )}
 
-      {/* 더 이상 데이터가 없을 때 */}
       {!hasMore && movers.length > 0 && (
         <div className="text-center py-8">
           <p className="text-gray-500">모든 기사님을 확인했습니다.</p>
         </div>
       )}
 
-      {/* 데이터가 없을 때 */}
       {!loading && movers.length === 0 && (
         <div className="text-center py-8">
           <p className="text-gray-500">검색 결과가 없습니다.</p>
