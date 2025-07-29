@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthFetchError, Client } from "../types";
 import {
-   clientProfileUpdateSchema,
    ClientProfileUpdateValue,
+   updateClientProfileSchema,
 } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { MoveType } from "../types/client.types";
@@ -19,6 +19,8 @@ export default function useClientProfileUpdateForm() {
    const router = useRouter();
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
+
+   // ✅ zod 스키마 - 소셜 로그인 여부 판별
 
    // ✅ react-hook-form
    const {
@@ -32,11 +34,11 @@ export default function useClientProfileUpdateForm() {
       reset,
    } = useForm<ClientProfileUpdateValue>({
       mode: "onChange",
-      resolver: zodResolver(clientProfileUpdateSchema),
+      resolver: zodResolver(updateClientProfileSchema(user?.provider)),
       defaultValues: {
-         name: user?.name,
-         email: user?.email,
-         phone: user?.phone,
+         name: user?.name || "",
+         email: user?.email || "",
+         phone: user?.phone || "",
       },
    });
 

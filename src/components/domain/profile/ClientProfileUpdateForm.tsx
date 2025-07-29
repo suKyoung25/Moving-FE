@@ -9,9 +9,9 @@ import { MOVE_TYPES, moveType, regions } from "@/constants";
 import useClientProfileUpdateForm from "@/lib/hooks/useClientProfileUpdateForm";
 import ProfilePasswordInput from "./ProfilePasswordInput";
 import OutlinedButton from "@/components/common/OutlinedButton";
-import { ClientProfileUpdateValue } from "@/lib/schemas";
 import ImageInputField from "./ImageInputField";
 import { useAuth } from "@/context/AuthContext";
+import { ClientProfileUpdateValue } from "@/lib/schemas";
 
 export default function ClientProfileUpdateForm() {
    // ✅ 함수 등 모음
