@@ -4,7 +4,10 @@ import z from "zod";
 
 //기사님 기본정보 수정 시 사용
 const rawMoverBasicInfoSchema = {
-   name: z.string().min(2, "본명을 2자 미만으로 입력해주세요"),
+   name: z
+      .string()
+      .min(2, "본명을 2자 미만으로 입력해주세요")
+      .max(10, "별명은 10자 이하여야 합니다."),
    email: z.string().email("올바른 이메일 형식이 아닙니다."),
    phone: z
       .string()
