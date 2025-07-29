@@ -6,8 +6,8 @@ import z from "zod";
 const rawMoverBasicInfoSchema = {
    name: z
       .string()
-      .min(2, "본명을 2자 이상 입력해주세요")
-      .max(10, "별명은 10자 이하로 입력해주세요"),
+      .min(2, "본명은 2자 이상 입력해주세요")
+      .max(10, "본명은 10자 이하로 입력해주세요"),
    email: z.string().email("올바른 이메일 형식이 아닙니다."),
    phone: z
       .string()
