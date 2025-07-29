@@ -17,12 +17,6 @@ function useMoverProfilePostForm() {
    const [isLoading, setIsLoading] = useState(false);
    const { user } = useAuth();
 
-   // 프로필 등록을 한 상태라면
-   if (user?.isProfileCompleted) {
-      alert("프로필 등록이 이미 되어있습니다"); //TODO: 토스트 알림으로 리펙터링
-      router.push("/profile/edit");
-   }
-
    const {
       register,
       handleSubmit,

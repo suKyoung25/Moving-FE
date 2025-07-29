@@ -18,12 +18,6 @@ function useMoverProfileUpdateForm() {
    const [isLoading, setIsLoading] = useState(false);
    const { user, refreshUser } = useAuth();
 
-   // 프로필 등록을 안한 상태라면
-   if (user?.isProfileCompleted === false) {
-      alert("프로필 등록을 먼저 해주세요"); //TODO: 토스트 알림으로 리펙터링
-      router.push("/profile/create");
-   }
-
    const {
       register,
       handleSubmit,
