@@ -6,8 +6,8 @@ import MoveChip from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import Pagination from "@/components/common/pagination";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { FavoriteMoverState } from "@/lib/types";
+import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
 
 export default function FavoriteMover() {
    const [movers, setMovers] = useState<FavoriteMoverState[]>([]);
