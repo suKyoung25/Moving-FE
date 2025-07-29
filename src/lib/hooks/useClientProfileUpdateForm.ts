@@ -11,7 +11,7 @@ import {
    updateClientProfileSchema,
 } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
-import { MoveType } from "../types/client.types";
+import { ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 
 export default function useClientProfileUpdateForm() {
@@ -19,8 +19,6 @@ export default function useClientProfileUpdateForm() {
    const router = useRouter();
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
-
-   // ✅ zod 스키마 - 소셜 로그인 여부 판별
 
    // ✅ react-hook-form
    const {
@@ -58,7 +56,7 @@ export default function useClientProfileUpdateForm() {
    }, [user, reset]);
 
    // ✅ 이용 서비스 선택
-   const handleServiceToggle = (service: MoveType) => {
+   const handleServiceToggle = (service: ServiceType) => {
       const current = watch("serviceType") || [];
 
       const updated = current.includes(service)

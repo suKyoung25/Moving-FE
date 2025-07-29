@@ -8,7 +8,7 @@ import { ClientProfilePostSchema, ClientProfilePostValue } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { AuthFetchError } from "../types";
-import { MoveType } from "../types/client.types";
+import { ServiceType } from "../types/client.types";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 
 export default function useClientProfilePostForm() {
@@ -31,7 +31,7 @@ export default function useClientProfilePostForm() {
    });
 
    // ✅ 이용 서비스 선택
-   const handleServiceToggle = (service: MoveType) => {
+   const handleServiceToggle = (service: ServiceType) => {
       const current = watch("serviceType") || [];
 
       const updated = current.includes(service)
