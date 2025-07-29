@@ -1,31 +1,38 @@
 "use client";
 
 import React from "react";
-import ProfileImage from "@/components/domain/profile/ProfileImage";
 import ProfileFieldButton from "@/components/domain/profile/ProfileFieldButton";
 import ClientProfileTitle from "./ClientProfileTitle";
 import SolidButton from "../../common/SolidButton";
 import { moveType, regions } from "@/constants";
 import useClientProfilePostForm from "@/lib/hooks/useClientProfilePostForm";
+import ImageInputField from "./ImageInputField";
 
 export default function ClientProfilePostForm() {
    // ✅ 함수 등 모음
    const {
-      isDisabled,
+      isValid,
       isLoading,
       selectedServices,
       selectedRegions,
       handleServiceToggle,
       handleRegionToggle,
       onSubmit,
+      handleSubmit,
+      control,
+      errors,
    } = useClientProfilePostForm();
 
    return (
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
          {/* ✅ 이미지 */}
-         <ProfileImage />
+         <ImageInputField
+            name="profileImage"
+            text="프로필 이미지"
+            control={control}
+         />
 
-         <hr className="border-line-100 mb-5 lg:mb-8" />
+         <hr className="border-line-100 my-5 lg:my-8" />
 
          {/* ✅ 이용 서비스 */}
          <section>
@@ -68,7 +75,7 @@ export default function ClientProfilePostForm() {
          </section>
 
          {/* ✅ 제출 버튼 */}
-         <SolidButton disabled={isDisabled} onClick={onSubmit}>
+         <SolidButton disabled={!isValid || isLoading}>
             {isLoading ? "로딩 중..." : "시작하기"}
          </SolidButton>
       </form>

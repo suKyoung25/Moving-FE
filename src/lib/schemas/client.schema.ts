@@ -7,7 +7,9 @@ import {
 } from "./auth.schema";
 
 // ✅ 개별 스키마
-export const profileImageSchema = z.string().url().optional();
+export const profileImageSchema = z
+   .union([z.string(), z.instanceof(File)])
+   .optional();
 
 export const serviceTypeSchema = z
    .array(z.enum(["SMALL", "HOME", "OFFICE"]))
