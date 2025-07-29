@@ -15,18 +15,18 @@ export default function AddressSearch({
    onComplete,
    onClose,
 }: {
-   type: string | null;
+   type: string | undefined;
    onComplete: (addr: string) => void;
    onClose: () => void;
 }) {
    const elementRef = useRef<HTMLDivElement>(null);
-   const [selectedAddr, setSelectedAddr] = useState<DaumPostcodeData | null>(
-      null,
-   );
+   const [selectedAddr, setSelectedAddr] = useState<
+      DaumPostcodeData | undefined
+   >(undefined);
    const [isSelected, setIsSelected] = useState<boolean>(false);
 
    useEffect(() => {
-      if (selectedAddr !== null) return; // 주소 선택된 상태면 실행 안 함
+      if (selectedAddr !== undefined) return; // 주소 선택된 상태면 실행 안 함
 
       const load = async () => {
          await loadPostcodeScript();
@@ -68,12 +68,12 @@ export default function AddressSearch({
                <>
                   {/* 검색 입력창 */}
                   <div className="relative flex items-center">
-                     <div className="bg-bg-200 w-full rounded-2xl px-4 py-3 text-sm lg:text-base text-gray-400">
-                     다시 선택하려면 검색 아이콘을 눌러주세요.
+                     <div className="bg-bg-200 w-full rounded-2xl px-4 py-3 text-sm text-gray-400 lg:text-base">
+                        다시 선택하려면 검색 아이콘을 눌러주세요.
                      </div>
                      <button
                         className="absolute right-3"
-                        onClick={() => setSelectedAddr(null)}
+                        onClick={() => setSelectedAddr(undefined)}
                      >
                         <Image src={searchIcon} alt="검색" />
                      </button>

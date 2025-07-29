@@ -32,8 +32,6 @@ export default function useSignInForm() {
 
       try {
          const res = await createSignIn(type, data);
-
-         console.log("!!!", res);
          await getUser(res.data.user, res.data.accessToken);
 
          // 가져온 유저정보 업데이트

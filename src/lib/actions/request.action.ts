@@ -1,13 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-
-interface CreateRequestDto {
-   moveType: "SMALL" | "HOME" | "OFFICE";
-   moveDate: Date;
-   fromAddress: string;
-   toAddress: string;
-}
+import { CreateRequestDto } from "../types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 

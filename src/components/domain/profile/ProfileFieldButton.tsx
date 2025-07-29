@@ -10,6 +10,7 @@ interface Props {
    onClick: () => void;
    name?: string;
    value?: string;
+   index?: number;
 }
 
 // ✅ 이용 서비스 + 지역 버튼
@@ -20,6 +21,7 @@ export default function ProfileFieldButton({
    onClick,
    name,
    value,
+   index,
 }: Props) {
    // ✅ 스타일 모음
    const commonStyle =
@@ -53,8 +55,8 @@ export default function ProfileFieldButton({
          )}
 
          {/* 실제로 선택되는 것 */}
-         {isSelected && name && value && (
-            <input type="hidden" name={name} value={value} />
+         {isSelected && name && value && typeof index !== "undefined" && (
+            <input type="hidden" name={`${name}[${index}]`} value={value} />
          )}
       </>
    );

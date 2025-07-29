@@ -1,7 +1,6 @@
 import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
 import { User, Mover } from "./auth.types";
 
-
 //바로 아래+기사님 프로필 컴포넌트에서 사용
 export type FieldValue = string | string[] | undefined;
 
@@ -49,62 +48,71 @@ export interface DropdownOption {
 }
 
 export interface GetMoversParams {
-  page?: number;
-  limit?: number;
-  search?: string;
-  area?: string;
-  serviceType?: string;
-  sortBy?: string;
+   page?: number;
+   limit?: number;
+   search?: string;
+   area?: string;
+   serviceType?: string;
+   sortBy?: string;
 }
 
 export interface GetMoversResponse {
-  movers: Mover[];
-  hasMore: boolean;
-  total: number;
-  page: number;
-  limit: number;
+   movers: Mover[];
+   hasMore: boolean;
+   total: number;
+   page: number;
+   limit: number;
 }
 
-
 export interface MoverState {
-  movers: Mover[];
-  loading: boolean;
-  error: string | null;
-  hasMore: boolean;
-  currentPage: number;
-  filters: {
-    search: string;
-    area: string;
-    serviceType: string;
-    sortBy: string;
-  };
+   movers: Mover[];
+   loading: boolean;
+   error: string | null;
+   hasMore: boolean;
+   currentPage: number;
+   filters: {
+      search: string;
+      area: string;
+      serviceType: string;
+      sortBy: string;
+   };
 }
 
 export type MoverAction =
-  | { type: "SET_LOADING"; payload: boolean }
-  | { type: "SET_ERROR"; payload: string | null }
-  | { type: "SET_MOVERS"; payload: Mover[] }
-  | { type: "APPEND_MOVERS"; payload: Mover[] }
-  | { type: "SET_HAS_MORE"; payload: boolean }
-  | { type: "SET_CURRENT_PAGE"; payload: number }
-  | { type: "SET_FILTERS"; payload: Partial<MoverState["filters"]> }
-  | { type: "RESET_FILTERS" }
-  | { type: "RESET_MOVERS" }
-  | {
-      type: "UPDATE_MOVER_FAVORITE";
-      payload: { moverId: string; isFavorite: boolean; favoriteCount?: number };
-    };
+   | { type: "SET_LOADING"; payload: boolean }
+   | { type: "SET_ERROR"; payload: string | null }
+   | { type: "SET_MOVERS"; payload: Mover[] }
+   | { type: "APPEND_MOVERS"; payload: Mover[] }
+   | { type: "SET_HAS_MORE"; payload: boolean }
+   | { type: "SET_CURRENT_PAGE"; payload: number }
+   | { type: "SET_FILTERS"; payload: Partial<MoverState["filters"]> }
+   | { type: "RESET_FILTERS" }
+   | { type: "RESET_MOVERS" }
+   | {
+        type: "UPDATE_MOVER_FAVORITE";
+        payload: {
+           moverId: string;
+           isFavorite: boolean;
+           favoriteCount?: number;
+        };
+     };
 
 export const initialState: MoverState = {
-  movers: [],
-  loading: false,
-  error: null,
-  hasMore: true,
-  currentPage: 1,
-  filters: {
-    search: "",
-    area: "all",
-    serviceType: "all",
-    sortBy: "mostReviewed",
-  },
+   movers: [],
+   loading: false,
+   error: null,
+   hasMore: true,
+   currentPage: 1,
+   filters: {
+      search: "",
+      area: "all",
+      serviceType: "all",
+      sortBy: "mostReviewed",
+   },
 };
+
+export enum ClientMoveType {
+   "소형이사" = "SMALL",
+   "가정이사" = "HOME",
+   "사무실이사" = "OFFICE",
+}
