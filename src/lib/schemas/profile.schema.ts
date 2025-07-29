@@ -3,7 +3,10 @@ import z from "zod";
 //기사님 프로필 관련 사용 (career가 string)
 export const MoverProfileSchema = z.object({
    image: z.string().optional(),
-   nickName: z.string().min(1, "별명을 입력해주세요."),
+   nickName: z
+      .string()
+      .min(2, "별명은 2자 이상이어야 합니다.")
+      .max(10, "별명은 10자 이하여야 합니다."),
    career: z
       .string()
       .min(1, "숫자만 입력해주세요.") // 빈 문자열인지 체크 (처음부터 숫자로 하면 빈문자열을 0으로 인식함)

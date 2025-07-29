@@ -8,7 +8,7 @@ export default function ActionButtons({ mover }: { mover: Mover }) {
    return (
       <div className="p-4 lg:p-5">
          <div className="mb-4 hidden lg:block">
-            <p className="mb-1 text-base font-medium text-gray-900">
+            <p className="mb-1 text-14-semibold lg:text-20-bold">
                {mover.nickName} 기사님에게 지정 견적을 요청해보세요!
             </p>
          </div>
