@@ -1,4 +1,4 @@
-import { Mover, Region } from "@/lib/types";
+import { Mover } from "@/lib/types";
 import LineDivider from "../../common/LineDivider";
 import { serviceTypeMap } from "@/constants/profile.constants";
 
@@ -61,19 +61,19 @@ function ServiceTags({ services }: { services?: string[] }) {
 }
 
 // 지역 태그 컴포넌트
-function RegionTags({ regions }: { regions?: Region[] }) {
+function RegionTags({ regions }: { regions?: string[] }) {
    if (!regions || regions.length === 0) {
       return <p className="text-sm text-gray-400">등록된 지역이 없습니다.</p>;
    }
 
    return (
       <div className="flex flex-wrap gap-2">
-         {regions.map((region) => (
+         {regions.map((region, index) => (
             <span
-               key={region.id}
+               key={`region-${region}-${index}`}
                className="inline-block rounded-full border border-gray-200 bg-gray-100 px-3 py-1.5 text-sm text-gray-700"
             >
-               {region.regionName}
+               {region}
             </span>
          ))}
       </div>
