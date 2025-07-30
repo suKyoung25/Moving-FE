@@ -7,6 +7,7 @@ import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
 
+
 export function FavoriteButton({ mover }: { mover: Mover }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isFavorite, setIsFavorite] = useState(mover.isFavorite ?? false);

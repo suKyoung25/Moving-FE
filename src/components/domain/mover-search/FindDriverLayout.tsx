@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import DriverList from "./DriverList";
 import SortDropdown from "./SortDropdown";
 import FilterAreaServiceBox from "./FilterAreaServiceBox";
@@ -26,9 +26,19 @@ export default function FindDriverLayout() {
     sortBy: "mostReviewed",
   });
 
+  // 찜 상태 통합 관리
+  const [favoriteRefreshKey, setFavoriteRefreshKey] = useState(0);
+
   const handleFilterChange = (newFilters: Partial<typeof filters>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
+
+  // 찜 상태가 변경될 때 FavoriteDriverList 새로고침
+  const handleFavoriteChange = useCallback((moverId: string, isFavorite: boolean, favoriteCount: number) => {
+    console.log('FindDriverLayout - Favorite changed:', { moverId, isFavorite, favoriteCount });
+    // FavoriteDriverList 새로고침을 위한 키 변경
+    setFavoriteRefreshKey(prev => prev + 1);
+  }, []);
 
   const handleReset = () => {
     setFilters({
@@ -57,7 +67,7 @@ export default function FindDriverLayout() {
             onReset={handleReset}
             currentFilters={filters}
           />
-          <FavoriteDriverList />
+          <FavoriteDriverList key={favoriteRefreshKey} />
         </div>
 
         {/* Content Section */}
@@ -89,7 +99,10 @@ export default function FindDriverLayout() {
             />
           </div>
 
-          <DriverList filters={filters} />
+          <DriverList 
+            filters={filters} 
+            onFavoriteChange={handleFavoriteChange}
+          />
         </div>
       </div>
     </div>

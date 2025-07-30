@@ -7,14 +7,13 @@ import EditButtons from "./EditButtons";
 import MoverInfo from "./MoverInfo";
 import { getMoverProfile } from "@/lib/api/mover/getMoverProfile";
 import { Mover } from "@/lib/types/auth.types";
-import { useAuth } from "@/context/AuthContext";
 
 export default function MoverCard() {
    const [mover, setMover] = useState<Mover | null>(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
    const [retryCount, setRetryCount] = useState(0);
-   const { user, isLoading: authLoading } = useAuth();
+   //const { user, isLoading: authLoading } = useAuth();
 
    const fetchMoverData = useCallback(async () => {
      try {
@@ -55,32 +54,8 @@ export default function MoverCard() {
    }, [retryCount, fetchMoverData]);
 
    useEffect(() => {
-     // 인증이 완료되고 사용자가 기사님인 경우에만 데이터 조회
-     if (!authLoading && user?.userType === 'mover') {
-       fetchMoverData();
-     } else if (!authLoading && user?.userType !== 'mover') {
-       setError('기사님 전용 페이지입니다.');
-       setLoading(false);
-     }
-   }, [authLoading, user, fetchMoverData]);
-
-   // 인증 로딩 중
-   if (authLoading) {
-     return (
-       <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
-         <div className="animate-pulse">
-           <div className="flex items-center gap-4 lg:justify-between mb-4">
-             <div className="h-16 w-16 bg-gray-200 rounded-full lg:hidden"></div>
-             <div className="flex-1">
-               <div className="h-6 bg-gray-200 rounded mb-2"></div>
-               <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-             </div>
-           </div>
-           <div className="h-24 bg-gray-200 rounded"></div>
-         </div>
-       </section>
-     );
-   }
+     fetchMoverData();
+   }, [fetchMoverData]);
 
    // 데이터 로딩 중
    if (loading) {
