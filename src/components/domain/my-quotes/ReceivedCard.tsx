@@ -28,7 +28,9 @@ export default function ReceivedCard({
       >
          <MoverProfileclient
             moveType={estimate.isConfirmed ? "DONE" : null}
-            isDesignated={designated.length === 0 ? false : true}
+            isDesignated={designated.some(
+               (d) => d.moverId === estimate.moverId,
+            )}
             moverName={estimate.moverName}
             profileImage={estimate.profileImage}
             isFavorited={!!estimate.isFavorited}

@@ -30,6 +30,7 @@ export default function MoverProfileclient(props: MoverProfileclientProps) {
 
    const handleLikedClick = async (e: React.MouseEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       if (loading) return;
       setLoading(true);
 

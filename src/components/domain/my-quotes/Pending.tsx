@@ -12,18 +12,21 @@ import MoveDateCard from "./MoveDateCard";
 import MoverProfileclient from "./MoverProfileClient";
 import EmptyState from "@/components/common/EmptyState";
 import { postClientConfirmedQuote } from "@/lib/api/estimate/postClientConfirmedQuote";
-import ResultModal from "@/components/common/ResultModal";
+import ToastPopup from "@/components/common/ToastPopup";
 
 export default function Pending() {
    const [data, setData] = useState<Quotes[]>();
    const [isModal, setIsModal] = useState<boolean>(false);
+   const [isLoading, setIsLoading] = useState<boolean>(false);
    const router = useRouter();
 
    useEffect(() => {
       async function getMyPendingQuotes() {
          try {
+            setIsLoading(true);
             const result = await fetchClientPendingQuotes();
             setData(result.data);
+            setIsLoading(false);
          } catch (e) {
             console.log(e);
             throw e;
@@ -38,6 +41,7 @@ export default function Pending() {
          const result = await postClientConfirmedQuote(estimateId);
 
          setIsModal(true);
+         router.push("/ko/my-quotes/client?tab=2");
          return result;
       } catch (e) {
          throw e;
@@ -49,17 +53,12 @@ export default function Pending() {
       location.reload();
    };
 
+   if (isLoading) return <div>로딩중...</div>;
+
    if (!Array.isArray(data) || data.length === 0)
       return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
 
-   if (isModal)
-      return (
-         <ResultModal
-            isOpen={isModal}
-            message="견적이 확정 되었습니다."
-            onClose={handleClickModal}
-         />
-      );
+   if (isModal) return <ToastPopup>견적이 확정되었습니다</ToastPopup>;
 
    return (
       <div className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">
