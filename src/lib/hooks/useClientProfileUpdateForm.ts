@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,11 +60,6 @@ export default function useClientProfileUpdateForm() {
       resolver: zodResolver(updateClientProfileSchema(user?.provider)),
       defaultValues: initialValues, // 새로고침 해야 나옴 (취소 버튼은 상관x)
    });
-
-   // ✅ 기본값 설정 추가
-   // useEffect(() => {
-   //    reset(initialValues);
-   // }, [initialValues, reset]);
 
    // ✅ 이용 서비스 선택
    const handleServiceToggle = (service: ServiceType) => {
