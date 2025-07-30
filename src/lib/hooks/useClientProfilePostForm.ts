@@ -80,10 +80,9 @@ export default function useClientProfilePostForm() {
          const res = await clientProfile.post(payload);
 
          if (res.data.isProfileCompleted === true) {
-            alert("프로필이 등록되었습니다.");
-
             // user 상태 즉각 반영
             refreshUser();
+            alert("프로필이 등록되었습니다.");
             router.replace("/mover-search");
          }
       } catch (error) {
