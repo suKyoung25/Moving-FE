@@ -12,16 +12,32 @@ export default function ReceivedRequestsList({
    isDesignated,
    keyword,
    sort,
+   onTotalCountChange,
+   onLoadingChange,
 }: ReceivedRequestsProps) {
    const observerRef = useRef<HTMLDivElement | null>(null);
 
-   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-      useReceivedRequestsQuery({
-         moveType,
-         isDesignated,
-         keyword,
-         sort,
-      });
+   const {
+      data,
+      fetchNextPage,
+      hasNextPage,
+      isFetchingNextPage,
+      isLoading,
+      totalCount,
+   } = useReceivedRequestsQuery({
+      moveType,
+      isDesignated,
+      keyword,
+      sort,
+   });
+
+   useEffect(() => {
+      if (onTotalCountChange) onTotalCountChange(totalCount);
+   }, [totalCount, onTotalCountChange]);
+
+   useEffect(() => {
+      onLoadingChange?.(isLoading);
+   }, [isLoading]);
 
    useEffect(() => {
       const observer = new IntersectionObserver(([entry]) => {
