@@ -23,6 +23,7 @@ export default function FavoriteMover() {
          totalPages: 1,
       };
    });
+   const [loading, setLoading] = useState(false);
 
    const handleLikedClick = async (moverId: string) => {
       try {
@@ -51,6 +52,7 @@ export default function FavoriteMover() {
 
    useEffect(() => {
       async function fetchData() {
+         setLoading(true);
          try {
             const res = await getFavoriteMovers(
                pagination.page,
@@ -60,10 +62,16 @@ export default function FavoriteMover() {
             setPagination(res.data.pagination);
          } catch (error) {
             console.error(error);
+         } finally {
+            setLoading(false);
          }
       }
       fetchData();
    }, [pagination.page, pagination.limit]);
+
+   if (loading) {
+      return <div>로딩 중...</div>;
+   }
 
    return (
       <>
