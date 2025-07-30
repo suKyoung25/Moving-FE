@@ -18,4 +18,5 @@ export interface ClientProfileUpdateData<T extends FieldValues> {
    placeholder: string;
    register: UseFormRegister<T>;
    error?: string;
+   social?: boolean;
 }
