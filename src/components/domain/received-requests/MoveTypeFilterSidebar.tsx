@@ -4,7 +4,7 @@ import React from "react";
 import squareActiveIcon from "@/assets/images/squareActiveIcon.svg";
 import squareDefaultIcon from "@/assets/images/squareDefaultIcon.svg";
 
-interface Props {
+export interface Props {
    moveType: string[];
    onChangeMoveType: (value: string) => void;
    onToggleAllMoveTypes: () => void;

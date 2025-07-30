@@ -10,7 +10,7 @@ export async function getReceivedRequests(params: Params) {
       }
    });
 
-   await delay(2000);
+   await delay(1000);
    const res = await tokenFetch(`/requests?${searchParams.toString()}`, {
       method: "GET",
    });

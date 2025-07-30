@@ -30,6 +30,7 @@ export interface FormWizardState {
 export interface ReceivedRequestsResponse {
    requests: ReceivedRequest[];
    nextCursor: string | null;
+   totalCount: number;
 }
 
 // 받은 요청 필터 타입
@@ -62,4 +63,6 @@ export interface ReceivedRequestsProps {
    isDesignated: boolean;
    keyword: string;
    sort: "moveDate-asc" | "moveDate-desc";
+   onTotalCountChange?: (count: number) => void;
+   onLoadingChange?: (loading: boolean) => void;
 }

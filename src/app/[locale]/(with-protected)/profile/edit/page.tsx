@@ -12,7 +12,13 @@ export default function EditProfilePage() {
    if (user?.userType === "client") {
       return (
          <div className="pt-4 pb-10 lg:pt-6">
-            <div className="mx-auto max-w-82 lg:max-w-338">
+            <div
+               className={
+                  user?.provider === "LOCAL"
+                     ? "mx-auto max-w-82 lg:max-w-338"
+                     : "mx-auto max-w-82 lg:max-w-200"
+               }
+            >
                <ClientProfileTitle type="수정" />
                <ClientProfileUpdateForm />
             </div>

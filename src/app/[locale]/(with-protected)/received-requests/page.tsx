@@ -9,6 +9,7 @@ import filterActiveIcon from "@/assets/images/filterActiveIcon.svg";
 import usePreventScroll from "@/lib/hooks/usePreventScroll";
 import MoveTypeFilterSidebar from "@/components/domain/received-requests/MoveTypeFilterSidebar";
 import { moveTypeOptions, sortOptions } from "@/constants";
+import MoveTypeFilterModal from "@/components/domain/received-requests/MoveTypeFilterModal";
 
 export default function ReceivedRequestsPage() {
    usePreventScroll(true);
@@ -18,8 +19,11 @@ export default function ReceivedRequestsPage() {
       "HOME",
       "OFFICE",
    ]);
+   const [totalCount, setTotalCount] = useState(0);
+   const [isLoading, setIsLoading] = useState(true);
    const [isDesignated, setIsDesignated] = useState<boolean>(false);
    const [keyword, setKeyword] = useState<string>("");
+   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
    const [sort, setSort] = useState<"moveDate-asc" | "moveDate-desc">(
       "moveDate-asc",
    );
@@ -64,7 +68,12 @@ export default function ReceivedRequestsPage() {
 
             <div className="flex h-[calc(100vh-12.5rem)] w-full flex-col gap-6 overflow-hidden">
                <KeywordSearchInput value={keyword} onChange={setKeyword} />
-               <div className="flex justify-end">
+               <div className="flex items-center justify-between">
+                  <p className="lg:text-16-medium">
+                     {isLoading
+                        ? "요청 목록을 불러오는 중입니다..."
+                        : `총 ${totalCount}건의 요청이 있습니다`}
+                  </p>
                   <SortSelect
                      value={sort}
                      onChange={(v) =>
@@ -79,6 +88,8 @@ export default function ReceivedRequestsPage() {
                      isDesignated={isDesignated}
                      keyword={keyword}
                      sort={sort}
+                     onTotalCountChange={setTotalCount}
+                     onLoadingChange={setIsLoading}
                   />
                </div>
             </div>
@@ -91,7 +102,12 @@ export default function ReceivedRequestsPage() {
             </div>
             <div className="sticky top-0 z-10 flex flex-col gap-3 bg-white pb-2 md:gap-4 lg:hidden">
                <KeywordSearchInput value={keyword} onChange={setKeyword} />
-               <div className="flex items-center justify-between">
+               <div className="flex items-center gap-3">
+                  <p className="text-14-medium flex-1">
+                     {isLoading
+                        ? "요청 목록을 불러오는 중입니다..."
+                        : `총 ${totalCount}건의 요청이 있습니다`}
+                  </p>
                   <SortSelect
                      value={sort}
                      onChange={(v) =>
@@ -99,7 +115,7 @@ export default function ReceivedRequestsPage() {
                      }
                      options={sortOptions}
                   />
-                  <button>
+                  <button onClick={() => setIsFilterModalOpen(true)}>
                      <Image
                         src={filterActiveIcon}
                         alt="filterActiveIcon"
@@ -116,9 +132,22 @@ export default function ReceivedRequestsPage() {
                   isDesignated={isDesignated}
                   keyword={keyword}
                   sort={sort}
+                  onTotalCountChange={setTotalCount}
+                  onLoadingChange={setIsLoading}
                />
             </section>
          </div>
+
+         <MoveTypeFilterModal
+            moveType={moveType}
+            isDesignated={isDesignated}
+            isAllSelected={isAllSelected}
+            onChangeMoveType={handleMoveTypeChange}
+            onToggleAllMoveTypes={handleToggleAllMoveTypes}
+            onToggleDesignated={handleToggleDesignated}
+            isOpen={isFilterModalOpen}
+            onClose={() => setIsFilterModalOpen(false)}
+         />
       </div>
    );
 }

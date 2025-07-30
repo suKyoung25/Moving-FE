@@ -3,6 +3,7 @@ import { getReceivedRequests } from "./requests/getAllRequests";
 import { ReceivedRequestsProps, ReceivedRequestsResponse } from "@/lib/types";
 
 export const receivedRequestsQueryKey = "receivedRequests";
+export let totalCount = 0;
 
 export function useReceivedRequestsQuery({
    moveType,
@@ -10,7 +11,7 @@ export function useReceivedRequestsQuery({
    keyword,
    sort,
 }: ReceivedRequestsProps) {
-   return useInfiniteQuery<ReceivedRequestsResponse>({
+   const query = useInfiniteQuery<ReceivedRequestsResponse>({
       queryKey: [
          receivedRequestsQueryKey,
          { moveType, isDesignated, keyword, sort },
@@ -22,11 +23,16 @@ export function useReceivedRequestsQuery({
             keyword,
             sort,
             cursor: pageParam as string | undefined,
-
             limit: 6,
          }),
       initialPageParam: undefined,
-
       getNextPageParam: (lastPage) => lastPage?.nextCursor ?? null,
    });
+
+   totalCount = query.data?.pages?.[0]?.totalCount ?? 0;
+
+   return {
+      ...query,
+      totalCount,
+   };
 }
