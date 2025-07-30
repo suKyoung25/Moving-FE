@@ -7,14 +7,13 @@ import EditButtons from "./EditButtons";
 import MoverInfo from "./MoverInfo";
 import { getMoverProfile } from "@/lib/api/mover/getMoverProfile";
 import { Mover } from "@/lib/types/auth.types";
-import { useAuth } from "@/context/AuthContext";
 
 export default function MoverCard() {
    const [mover, setMover] = useState<Mover | null>(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
    const [retryCount, setRetryCount] = useState(0);
-   const { user, isLoading: authLoading } = useAuth();
+   //const { user, isLoading: authLoading } = useAuth();
 
    const fetchMoverData = useCallback(async () => {
       try {
@@ -59,6 +58,7 @@ export default function MoverCard() {
    }, [retryCount, fetchMoverData]);
 
    useEffect(() => {
+<<<<<<< HEAD
       // 인증이 완료되고 사용자가 기사님인 경우에만 데이터 조회
       if (!authLoading && user?.userType === "mover") {
          fetchMoverData();
@@ -85,6 +85,10 @@ export default function MoverCard() {
          </section>
       );
    }
+=======
+     fetchMoverData();
+   }, [fetchMoverData]);
+>>>>>>> dev-new
 
    // 데이터 로딩 중
    if (loading) {
@@ -149,9 +153,9 @@ export default function MoverCard() {
                <Image
                   src={mover.profileImage || avatar}
                   alt="프로필 이미지"
+                  width={64}
+                  height={64}
                   className="h-16 w-16 rounded-full object-cover"
-                  width={160} // TODO: 확인해주세요 (Image 컴포 에러떠서 추가했습니다)
-                  height={160} // TODO: 확인해주세요 (Image 컴포 에러떠서 추가했습니다)
                   onError={(e) => {
                      // 이미지 로드 실패 시 기본 아바타로 대체
                      e.currentTarget.src = avatar;
