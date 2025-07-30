@@ -13,6 +13,9 @@ import ImageInputField from "./ImageInputField";
 import { useAuth } from "@/context/AuthContext";
 import { ClientProfileUpdateValue } from "@/lib/schemas";
 
+const style1 = "lg:mb-14 lg:flex-row lg:justify-between lg:gap-14";
+const borderStyle = "border-line-100 my-5 lg:my-8";
+
 export default function ClientProfileUpdateForm() {
    // ✅ 함수 등 모음
    const { user } = useAuth();
@@ -31,9 +34,15 @@ export default function ClientProfileUpdateForm() {
 
    return (
       <form onSubmit={handleSubmit(onSubmit)}>
-         <div className="flex flex-col lg:mb-14 lg:flex-row lg:justify-baseline lg:gap-14">
+         <div
+            className={
+               user?.provider === "LOCAL"
+                  ? `flex flex-col ${style1}`
+                  : "flex flex-col"
+            }
+         >
             {/* ✅ 입력창 모음 */}
-            <div className="flex-1">
+            <div className={user?.provider === "LOCAL" ? "flex-1" : ""}>
                <ProfileInput<ClientProfileUpdateValue>
                   type="text"
                   label="이름"
@@ -42,7 +51,13 @@ export default function ClientProfileUpdateForm() {
                   register={register}
                   error={errors.name?.message}
                />
-               <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
+               <hr
+                  className={
+                     user?.provider === "LOCAL"
+                        ? `${borderStyle} lg:w-160`
+                        : `${borderStyle} lg:w-full`
+                  }
+               />
                <ProfileInput<ClientProfileUpdateValue>
                   type="email"
                   label="이메일"
@@ -51,7 +66,13 @@ export default function ClientProfileUpdateForm() {
                   register={register}
                   error={errors.email?.message}
                />
-               <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
+               <hr
+                  className={
+                     user?.provider === "LOCAL"
+                        ? `${borderStyle} lg:w-160`
+                        : `${borderStyle} lg:w-full`
+                  }
+               />
                <ProfileInput<ClientProfileUpdateValue>
                   type="text"
                   label="전화번호"
@@ -60,7 +81,13 @@ export default function ClientProfileUpdateForm() {
                   register={register}
                   error={errors.phone?.message}
                />
-               <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
+               <hr
+                  className={
+                     user?.provider === "LOCAL"
+                        ? `${borderStyle} lg:w-160`
+                        : `${borderStyle} lg:w-full`
+                  }
+               />
                {user && user.provider === "LOCAL" && (
                   <ProfilePasswordInput<ClientProfileUpdateValue>
                      label="현재 비밀번호"
@@ -100,7 +127,7 @@ export default function ClientProfileUpdateForm() {
                <hr className="border-line-100 my-5 lg:my-8 lg:hidden" />
             )}
 
-            <div className="flex-1">
+            <div className={user?.provider === "LOCAL" ? "flex-1" : ""}>
                {/* ✅ 프로필 이미지 */}
                <ImageInputField
                   name="profileImage"
@@ -108,7 +135,13 @@ export default function ClientProfileUpdateForm() {
                   control={control}
                />
 
-               <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
+               <hr
+                  className={
+                     user?.provider === "LOCAL"
+                        ? `${borderStyle} lg:w-160`
+                        : `${borderStyle} lg:w-full`
+                  }
+               />
 
                {/* ✅ 이용 서비스 */}
                <section>
@@ -138,7 +171,13 @@ export default function ClientProfileUpdateForm() {
                   })}
                </section>
 
-               <hr className="border-line-100 mb-5 lg:mb-8 lg:w-160" />
+               <hr
+                  className={
+                     user?.provider === "LOCAL"
+                        ? `${borderStyle} lg:w-160`
+                        : `${borderStyle} lg:w-full`
+                  }
+               />
 
                {/* ✅ 내가 사는 지역 */}
                <section className="mb-8 lg:mb-14">
@@ -168,17 +207,31 @@ export default function ClientProfileUpdateForm() {
          </div>
 
          {/* ✅ 제출 버튼 */}
-         <section className="flex w-full flex-col gap-2 lg:flex-row lg:justify-between lg:gap-4">
+         <section
+            className={
+               user?.provider === "LOCAL"
+                  ? "flex w-full flex-col gap-2 lg:flex-row lg:justify-between lg:gap-4"
+                  : "flex w-full flex-col gap-2"
+            }
+         >
             <SolidButton
                type="submit"
                disabled={isLoading || !isValid}
-               className="max-w-165 lg:w-auto lg:flex-1"
+               className={
+                  user?.provider === "LOCAL"
+                     ? "max-w-165 lg:w-auto lg:flex-1"
+                     : ""
+               }
             >
                {isLoading ? "로딩 중..." : "수정하기"}
             </SolidButton>
             <OutlinedButton
                type="reset"
-               className="max-w-165 !border-gray-200 !text-gray-200 lg:w-auto lg:flex-1"
+               className={
+                  user?.provider === "LOCAL"
+                     ? "max-w-165 !border-gray-200 !text-gray-200 lg:w-auto lg:flex-1"
+                     : "!border-gray-200 !text-gray-200"
+               }
             >
                취소
             </OutlinedButton>

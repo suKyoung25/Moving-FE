@@ -93,11 +93,6 @@ export const ClientProfilePostSchema = z.object({
 // ✅ 타입 반출
 export type ClientProfilePostValue = z.infer<typeof ClientProfilePostSchema>;
 
-// const clientProfileUpdateSchema = updateClientProfileSchema();
-// export type ClientProfileUpdateValue = z.infer<
-//    typeof clientProfileUpdateSchema
-// >;
-
 export type ClientProfileUpdateValue = z.infer<
    ReturnType<typeof updateClientProfileSchema>
 >;
