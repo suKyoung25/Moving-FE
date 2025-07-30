@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BasicInputField from "./BasicInputField";
 import SecretInputField from "./SecretInputField";
 import { useRouter } from "next/navigation";
@@ -8,9 +8,20 @@ import useMoverBasicInfo from "@/lib/hooks/useMoverBasicInfo";
 import { MoverBasicInfoInput } from "@/lib/schemas/dashboard.schema";
 import SolidButton from "@/components/common/SolidButton";
 import OutlinedButton from "@/components/common/OutlinedButton";
+import { useAuth } from "@/context/AuthContext";
 
 export default function BasicInfoForms() {
    const router = useRouter();
+   const { user } = useAuth();
+   const [isSocialUser, setIsSocialUser] = useState(false); // 소셜 인증자의 경우
+
+   useEffect(() => {
+      if (user?.provider !== "LOCAL") {
+         setIsSocialUser(true);
+      } else {
+         setIsSocialUser(false);
+      }
+   }, [user]);
 
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
       useMoverBasicInfo();
@@ -50,37 +61,38 @@ export default function BasicInfoForms() {
 
             <hr className="p-o border-line-100 my-8 border-t lg:hidden" />
 
-            <div className="flex-1">
-               <SecretInputField<MoverBasicInfoInput>
-                  name="existedPassword"
-                  text="현재 비밀번호"
-                  placeholder="현재 비밀번호를 입력해주세요"
-                  register={register}
-                  error={errors.existedPassword?.message}
-               />
+            {isSocialUser ? null : (
+               <>
+                  <div className="flex-1">
+                     <SecretInputField<MoverBasicInfoInput>
+                        name="existedPassword"
+                        text="현재 비밀번호"
+                        placeholder="현재 비밀번호를 입력해주세요"
+                        register={register}
+                        error={errors.existedPassword?.message}
+                     />
 
-               <hr className="p-o border-line-100 my-8 border-t" />
+                     <hr className="p-o border-line-100 my-8 border-t" />
+                     <SecretInputField<MoverBasicInfoInput>
+                        name="newPassword"
+                        text="새 비밀번호"
+                        placeholder="새 비밀번호를 입력해주세요"
+                        register={register}
+                        error={errors.newPassword?.message}
+                     />
+                     <hr className="p-o border-line-100 my-8 border-t" />
+                     <SecretInputField<MoverBasicInfoInput>
+                        name="newPasswordConfirmation"
+                        text="새 비밀번호 확인"
+                        placeholder="새 비밀번호를 다시 한번 입력해주세요"
+                        register={register}
+                        error={errors.newPasswordConfirmation?.message}
+                     />
 
-               <SecretInputField<MoverBasicInfoInput>
-                  name="newPassword"
-                  text="새 비밀번호"
-                  placeholder="새 비밀번호를 입력해주세요"
-                  register={register}
-                  error={errors.newPassword?.message}
-               />
-
-               <hr className="p-o border-line-100 my-8 border-t" />
-
-               <SecretInputField<MoverBasicInfoInput>
-                  name="newPasswordConfirmation"
-                  text="새 비밀번호 확인"
-                  placeholder="새 비밀번호를 다시 한번 입력해주세요"
-                  register={register}
-                  error={errors.newPasswordConfirmation?.message}
-               />
-
-               <hr className="p-o border-line-100 my-8 border-t lg:hidden" />
-            </div>
+                     <hr className="p-o border-line-100 my-8 border-t lg:hidden" />
+                  </div>
+               </>
+            )}
          </div>
 
          <div className="flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse lg:gap-8">

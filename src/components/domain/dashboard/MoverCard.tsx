@@ -58,7 +58,7 @@ export default function MoverCard() {
    }, [retryCount, fetchMoverData]);
 
    useEffect(() => {
-     fetchMoverData();
+      fetchMoverData();
    }, [fetchMoverData]);
 
    // 데이터 로딩 중

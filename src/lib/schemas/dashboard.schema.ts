@@ -1,6 +1,14 @@
 // 도메인 단위
 
 import z from "zod";
+import { RefinementCtx } from "zod";
+
+//스키마 분기처리를 위해
+type ExtendedRefinementCtx = RefinementCtx & {
+   context?: {
+      isLocal?: boolean;
+   };
+};
 
 //기사님 기본정보 수정 시 사용
 const rawMoverBasicInfoSchema = {
@@ -13,15 +21,31 @@ const rawMoverBasicInfoSchema = {
       .string()
       .min(10, "최소 10자리 이상이어야 합니다.")
       .regex(/^\d+$/, "숫자만 입력해주세요."),
-   existedPassword: z.string().min(8, "기존 비밀번호를 입력해주세요."),
    newPassword: z.string().optional(),
    newPasswordConfirmation: z.string().optional(),
 };
 
 //refine 로직 때문에 분리 (cheackNewPassword)
 export const MoverBasicInfoSchema = z
-   .object(rawMoverBasicInfoSchema)
+   .object({
+      ...rawMoverBasicInfoSchema,
+      existedPassword: z.string().optional(),
+   })
    .superRefine((data, ctx) => {
+      const { context } = ctx as ExtendedRefinementCtx;
+      const isLocal = context?.isLocal;
+
+      if (
+         isLocal &&
+         (!data.existedPassword || data.existedPassword.length < 8)
+      ) {
+         ctx.addIssue({
+            path: ["existedPassword"],
+            message: "기존 비밀번호를 입력해주세요.",
+            code: z.ZodIssueCode.custom,
+         });
+      }
+
       const { newPassword, newPasswordConfirmation } = data;
 
       const eitherPasswordExists = !!newPassword || !!newPasswordConfirmation;
