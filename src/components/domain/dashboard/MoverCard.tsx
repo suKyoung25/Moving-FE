@@ -13,7 +13,6 @@ export default function MoverCard() {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
    const [retryCount, setRetryCount] = useState(0);
-   //const { user, isLoading: authLoading } = useAuth();
 
    const fetchMoverData = useCallback(async () => {
       try {
