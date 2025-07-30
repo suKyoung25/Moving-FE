@@ -227,7 +227,7 @@ export default function ClientProfileUpdateForm() {
                {isLoading ? "로딩 중..." : "수정하기"}
             </SolidButton>
             <OutlinedButton
-               type="reset"
+               type="button"
                onClick={handleCancel}
                className={
                   user?.provider === "LOCAL"

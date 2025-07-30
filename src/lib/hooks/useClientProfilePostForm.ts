@@ -80,7 +80,7 @@ export default function useClientProfilePostForm() {
          const res = await clientProfile.post(payload);
 
          if (res.data.isProfileCompleted === true) {
-            // user 상태 즉각 반영
+            // user 상태 즉각 반영: refreshUser와 alert 순서 바꾸면 안 됨
             refreshUser();
             alert("프로필이 등록되었습니다.");
             router.replace("/mover-search");
