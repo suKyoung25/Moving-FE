@@ -20,8 +20,8 @@ export default function useClientProfileUpdateForm() {
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
 
-   // ✅ 기본값 설정 추가
-   const initialValues: ClientProfileUpdateValue = useMemo(() => {
+   // ✅ 초깃값 보존 용도 기본값
+   const initialValues = useMemo<ClientProfileUpdateValue>(() => {
       if (user?.userType === "client") {
          const client = user as Client;
 
@@ -58,15 +58,13 @@ export default function useClientProfileUpdateForm() {
    } = useForm<ClientProfileUpdateValue>({
       mode: "onChange",
       resolver: zodResolver(updateClientProfileSchema(user?.provider)),
-      defaultValues: initialValues,
+      defaultValues: initialValues, // 새로고침 해야 나옴 (취소 버튼은 상관x)
    });
 
-   // 기본값 초기화 설정22
-   useEffect(() => {
-      if (user?.userType === "client") {
-         reset(initialValues);
-      }
-   }, [user, reset, initialValues]);
+   // ✅ 기본값 설정 추가
+   // useEffect(() => {
+   //    reset(initialValues);
+   // }, [initialValues, reset]);
 
    // ✅ 이용 서비스 선택
    const handleServiceToggle = (service: ServiceType) => {
@@ -89,9 +87,10 @@ export default function useClientProfileUpdateForm() {
       setValue("livingArea", updated, { shouldValidate: true });
    };
 
-   // 기본값 초기화 설정333
+   // ✅ 기본값 초기화 설정333 = 이름 등을 보존하려면 현재 값 기준으로 써야 함 (취소 버튼으로 연결)
    const handleCancel = () => {
-      reset(initialValues);
+      console.log("!!!", initialValues);
+      reset({ ...initialValues });
    };
 
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
