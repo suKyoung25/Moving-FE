@@ -30,6 +30,7 @@ export default function ClientProfileUpdateForm() {
       handleSubmit,
       watch,
       control,
+      handleCancel,
    } = useClientProfileUpdateForm();
 
    return (
@@ -227,6 +228,7 @@ export default function ClientProfileUpdateForm() {
             </SolidButton>
             <OutlinedButton
                type="reset"
+               onClick={handleCancel}
                className={
                   user?.provider === "LOCAL"
                      ? "max-w-165 !border-gray-200 !text-gray-200 lg:w-auto lg:flex-1"

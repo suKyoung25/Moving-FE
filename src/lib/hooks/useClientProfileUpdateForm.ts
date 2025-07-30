@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +20,31 @@ export default function useClientProfileUpdateForm() {
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
 
+   // ✅ 기본값 설정 추가
+   const initialValues: ClientProfileUpdateValue = useMemo(() => {
+      if (user?.userType === "client") {
+         const client = user as Client;
+
+         return {
+            name: client.name ?? "",
+            email: client.email ?? "",
+            phone: client.phone ?? "",
+            profileImage: client.profileImage ?? "",
+            serviceType: client.serviceType ?? [],
+            livingArea: client.livingArea ?? [],
+         };
+      }
+
+      return {
+         name: "",
+         email: "",
+         phone: "",
+         profileImage: "",
+         serviceType: [],
+         livingArea: [],
+      };
+   }, [user]);
+
    // ✅ react-hook-form
    const {
       register,
@@ -33,27 +58,15 @@ export default function useClientProfileUpdateForm() {
    } = useForm<ClientProfileUpdateValue>({
       mode: "onChange",
       resolver: zodResolver(updateClientProfileSchema(user?.provider)),
-      defaultValues: {
-         name: user?.name || "",
-         email: user?.email || "",
-         phone: user?.phone || "",
-      },
+      defaultValues: initialValues,
    });
 
-   // ✅ 기본값 설정 추가
+   // 기본값 초기화 설정22
    useEffect(() => {
       if (user?.userType === "client") {
-         const client = user as Client;
-
-         const defaultValues: ClientProfileUpdateValue = {
-            profileImage: client.profileImage ?? "",
-            serviceType: client.serviceType ?? [],
-            livingArea: client.livingArea,
-         };
-
-         reset(defaultValues);
+         reset(initialValues);
       }
-   }, [user, reset]);
+   }, [user, reset, initialValues]);
 
    // ✅ 이용 서비스 선택
    const handleServiceToggle = (service: ServiceType) => {
@@ -74,6 +87,11 @@ export default function useClientProfileUpdateForm() {
          : [...current, region];
 
       setValue("livingArea", updated, { shouldValidate: true });
+   };
+
+   // 기본값 초기화 설정333
+   const handleCancel = () => {
+      reset(initialValues);
    };
 
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
@@ -143,5 +161,6 @@ export default function useClientProfileUpdateForm() {
       handleSubmit,
       watch,
       control,
+      handleCancel,
    };
 }
