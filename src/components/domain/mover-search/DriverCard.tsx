@@ -1,11 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip from "@/components/common/MoveChip";
 import type { Mover } from "@/lib/types";
 import { validateServiceTypes } from "@/lib/utils/moveChip.util";
 import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
+import { useAuth } from "@/context/AuthContext";
 
 interface DriverCardProps {
    mover: Mover;
@@ -14,6 +16,23 @@ interface DriverCardProps {
 
 export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps) {
    const router = useRouter();
+   const pathname = usePathname();
+   const { user } = useAuth();
+   
+   // 🔥 찜 목록 페이지인지 확인
+   const isFavoritePage = pathname.includes('favorite-movers');
+   
+   // 🔥 찜 목록 페이지에서는 항상 true, 아니면 API 값 사용
+   const [currentFavoriteState, setCurrentFavoriteState] = useState(
+     isFavoritePage ? true : (mover.isFavorite ?? false)
+   );
+
+   // 🔥 mover.isFavorite가 변경될 때마다 상태 동기화 (찜 목록 페이지 제외)
+   useEffect(() => {
+      if (!isFavoritePage) {
+         setCurrentFavoriteState(mover.isFavorite ?? false);
+      }
+   }, [mover.isFavorite, isFavoritePage]);
 
    const handleCardClick = () => {
       router.push(`/mover-search/${mover.id}`);
@@ -22,13 +41,43 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
    const handleLikedClick = async (e: React.MouseEvent) => {
       e.stopPropagation();
 
+      // 로그인하지 않은 경우
+      if (!user) {
+         alert("로그인이 필요합니다.");
+         return;
+      }
+
+      // 기사 자신은 찜할 수 없음
+      if (user.userType === 'mover' && user.id === mover.id) {
+         alert("본인을 찜할 수 없습니다.");
+         return;
+      }
+
       try {
-        const result = await toggleFavoriteMover(mover.id);
-        // 부모 컴포넌트에 변경사항 알림
-        onFavoriteChange?.(mover.id, result.isFavorite, result.favoriteCount);
+         const result = await toggleFavoriteMover(mover.id);
+         
+         // 로컬 상태 업데이트
+         setCurrentFavoriteState(result.isFavorite);
+         
+         // 부모 컴포넌트에 변경사항 알림
+         onFavoriteChange?.(mover.id, result.isFavorite, result.favoriteCount || mover.favoriteCount);
+         
+         const message = result.action === 'added' ? '찜 목록에 추가되었습니다.' : '찜 목록에서 제거되었습니다.';
+         console.log(message);
+         
       } catch (error) {
-        console.error("찜 처리 중 오류:", error);
-        alert("찜 처리 중 오류가 발생했습니다.");
+         console.error("찜 처리 중 오류:", error);
+         
+         let errorMessage = "찜 처리 중 오류가 발생했습니다.";
+         if (error instanceof Error) {
+            if (error.message.includes("로그인")) {
+               errorMessage = "로그인이 필요합니다.";
+            } else {
+               errorMessage = error.message;
+            }
+         }
+         
+         alert(errorMessage);
       }
    };
 
@@ -54,7 +103,7 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
             <div className="box-border h-20 w-72 md:w-[34rem] lg:h-24 lg:w-[56rem]">
                <MoverProfile
                   big={false}
-                  isLiked={mover.isFavorite ?? false}
+                  isLiked={currentFavoriteState}
                   handleLikedClick={handleLikedClick}
                   nickName={mover.nickName ?? " "}
                   favoriteCount={mover.favoriteCount}
@@ -68,4 +117,4 @@ export default function DriverCard({ mover, onFavoriteChange }: DriverCardProps)
          </div>
       </div>
    );
-} 
+}

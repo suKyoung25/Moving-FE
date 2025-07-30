@@ -36,7 +36,12 @@ export default function FavoriteDriverList() {
       const response = await getFavoriteMovers(1, 3);
       
       if (response?.data?.movers) {
-        setFavoriteMovers(response.data.movers);
+        // 🔥 찜한 목록이므로 모든 기사님의 isFavorite를 true로 강제 설정
+        const moversWithFavoriteTrue = response.data.movers.map((mover: Mover) => ({
+          ...mover,
+          isFavorite: true
+        }));
+        setFavoriteMovers(moversWithFavoriteTrue);
       }
     } catch (err) {
       console.error('찜한 기사님 목록 로드 실패:', err);
@@ -50,7 +55,7 @@ export default function FavoriteDriverList() {
     } finally {
       setLoading(false);
     }
-  }, [checkAuthStatus]); // checkAuthStatus를 의존성에 포함
+  }, [checkAuthStatus]);
 
   // 찜 토글 핸들러 - 독립적으로 처리
   const handleFavoriteToggle = useCallback(async (moverId: string) => {
@@ -64,7 +69,7 @@ export default function FavoriteDriverList() {
     }
   }, []);
 
-  // 컴포넌트 마운트 시 데이터 로드 - loadFavoriteMovers를 의존성에 포함
+  // 컴포넌트 마운트 시 데이터 로드
   useEffect(() => {
     loadFavoriteMovers();
   }, [loadFavoriteMovers]);
@@ -143,7 +148,7 @@ export default function FavoriteDriverList() {
             profileImage={mover.profileImage}
             forceMobileStyle={true}
             big={false}
-            isLiked={mover.isFavorite}
+            isLiked={true}
             handleLikedClick={() => handleFavoriteToggle(mover.id)}
             nickName={mover.nickName || " "}
             favoriteCount={mover.favoriteCount || 0}
@@ -154,14 +159,6 @@ export default function FavoriteDriverList() {
           />
         </div>
       ))}
-      
-      {favoriteMovers.length === 3 && (
-        <div className="text-center pt-2">
-          <button className="text-14-medium text-primary-blue-400 hover:text-primary-blue-500">
-            더 많은 찜한 기사님 보기
-          </button>
-        </div>
-      )}
     </div>
   );
 }
