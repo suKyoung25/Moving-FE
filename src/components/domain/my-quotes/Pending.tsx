@@ -48,11 +48,6 @@ export default function Pending() {
       }
    };
 
-   const handleClickModal = () => {
-      setIsModal(false);
-      location.reload();
-   };
-
    if (isLoading) return <div>로딩중...</div>;
 
    if (!Array.isArray(data) || data.length === 0)
