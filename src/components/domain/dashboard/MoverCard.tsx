@@ -58,37 +58,8 @@ export default function MoverCard() {
    }, [retryCount, fetchMoverData]);
 
    useEffect(() => {
-<<<<<<< HEAD
-      // 인증이 완료되고 사용자가 기사님인 경우에만 데이터 조회
-      if (!authLoading && user?.userType === "mover") {
-         fetchMoverData();
-      } else if (!authLoading && user?.userType !== "mover") {
-         setError("기사님 전용 페이지입니다.");
-         setLoading(false);
-      }
-   }, [authLoading, user, fetchMoverData]);
-
-   // 인증 로딩 중
-   if (authLoading) {
-      return (
-         <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
-            <div className="animate-pulse">
-               <div className="mb-4 flex items-center gap-4 lg:justify-between">
-                  <div className="h-16 w-16 rounded-full bg-gray-200 lg:hidden"></div>
-                  <div className="flex-1">
-                     <div className="mb-2 h-6 rounded bg-gray-200"></div>
-                     <div className="h-4 w-3/4 rounded bg-gray-200"></div>
-                  </div>
-               </div>
-               <div className="h-24 rounded bg-gray-200"></div>
-            </div>
-         </section>
-      );
-   }
-=======
-     fetchMoverData();
+      fetchMoverData();
    }, [fetchMoverData]);
->>>>>>> dev-new
 
    // 데이터 로딩 중
    if (loading) {
