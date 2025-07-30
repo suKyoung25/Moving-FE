@@ -9,6 +9,7 @@ import DetailSections from "./DetailSections";
 import LineDivider from "../../common/LineDivider";
 import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
+import DashboardReviewSection from "@/components/domain/dashboard/ReviewSection";
 
 export default function MoverDetail() {
   const params = useParams();
@@ -74,6 +75,10 @@ export default function MoverDetail() {
            </div>
         </div>
         <DetailSections mover={mover} />
+        <LineDivider />
+        <div className="p-4">
+          <DashboardReviewSection moverId={mover.id} />
+        </div>
         <ActionButtons mover={mover} />
       </div>
 
@@ -83,6 +88,8 @@ export default function MoverDetail() {
           <DriverCard mover={mover} onFavoriteChange={handleFavoriteChange} />
           <LineDivider />
           <DetailSections mover={mover} />
+          <LineDivider />
+          <DashboardReviewSection moverId={mover.id} />
         </div>
 
         <div className="flex w-full flex-col gap-6 lg:w-1/3">

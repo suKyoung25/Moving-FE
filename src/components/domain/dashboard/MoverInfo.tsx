@@ -3,7 +3,7 @@ import { Mover } from "@/lib/types";
 import CareerInfo from "./CareerInfo";
 import LineDivider from "@/components/common/LineDivider";
 import { MOVE_TYPES } from "@/constants";
-import { Region } from '@/lib/types'
+import { Region } from "@/lib/types";
 
 interface MoverInfoProps {
    averageReviewRating: Mover["averageReviewRating"];
