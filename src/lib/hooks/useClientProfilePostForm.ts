@@ -10,12 +10,13 @@ import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { AuthFetchError } from "../types";
 import { ServiceType } from "../types/client.types";
 import clientProfile from "../api/auth/requests/updateClientProfile";
+import { tokenSettings } from "../utils";
 
 export default function useClientProfilePostForm() {
    // ✅ 상태 모음
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
-   const { refreshUser } = useAuth();
+   const { setUser } = useAuth();
 
    // react-hook-form
    const {
@@ -79,9 +80,17 @@ export default function useClientProfilePostForm() {
 
          const res = await clientProfile.post(payload);
 
-         if (res.data.isProfileCompleted === true) {
-            // user 상태 즉각 반영: refreshUser와 alert 순서 바꾸면 안 됨
-            await refreshUser();
+         if (res.data.isProfileCompleted) {
+            // 토큰 넣음
+            if (res.data.accessToken) {
+               tokenSettings.set(res.data.accessToken);
+            }
+
+            setUser(res.data);
+            // user 상태 갱신: 미들웨어가 인식할 시간을 줌
+            setTimeout(() => {
+               router.replace("/mover-search");
+            }, 100);
             // alert("프로필이 등록되었습니다.");
             router.replace("/mover-search");
          }
