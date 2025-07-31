@@ -10,16 +10,30 @@ type ExtendedRefinementCtx = RefinementCtx & {
    };
 };
 
+const allowedDomains = ["gmail.com", "naver.com", "daum.net"];
+
 //기사님 기본정보 수정 시 사용
 const rawMoverBasicInfoSchema = {
    name: z
       .string()
       .min(2, "본명은 2자 이상 입력해주세요")
       .max(4, "본명은 4자 이하로 입력해주세요"),
-   email: z.string().email("올바른 이메일 형식이 아닙니다."),
+   email: z
+      .string()
+      .email("올바른 이메일 형식이 아닙니다.")
+      .refine(
+         (email) => {
+            const domain = email.split("@")[1];
+            return allowedDomains.includes(domain);
+         },
+         {
+            message: "test, gmail, naver, daum 도메인만 허용합니다.",
+         },
+      ),
    phone: z
       .string()
       .min(10, "최소 10자리 이상이어야 합니다.")
+      .max(11, "최대 11자리 이하여야 합니다.")
       .regex(/^\d+$/, "숫자만 입력해주세요."),
    newPassword: z.string().optional(),
    newPasswordConfirmation: z.string().optional(),
