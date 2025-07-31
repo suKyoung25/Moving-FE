@@ -35,6 +35,21 @@ export default function DriverList({
    const [hasMore, setHasMore] = useState(true);
    const [currentPage, setCurrentPage] = useState(1);
 
+   // 🔥 지정견적 성공 핸들러
+   const handleDesignatedEstimateSuccess = useCallback((moverId: string) => {
+      setMovers((prev) =>
+         prev.map((mover) =>
+            mover.id === moverId
+               ? {
+                    ...mover,
+                    hasDesignatedRequest: true,
+                    designatedEstimateStatus: undefined,
+                 }
+               : mover,
+         ),
+      );
+   }, []);
+
    // 기사님 데이터 로드 함수
    const loadMovers = useCallback(
       async (reset = false) => {
@@ -119,7 +134,6 @@ export default function DriverList({
             favoriteCount,
          });
 
-         // 로컬 상태 업데이트
          setMovers((prev) =>
             prev.map((mover) =>
                mover.id === moverId
@@ -128,21 +142,18 @@ export default function DriverList({
             ),
          );
 
-         // 🔥 부모 컴포넌트에 알림 (FavoriteDriverList 동기화용)
          onFavoriteChange?.(moverId, isFavorite, favoriteCount);
       },
       [onFavoriteChange],
    );
 
-   // 🔥 외부에서 refreshKey 변경 시 특정 기사의 찜 상태만 업데이트
+   // 외부에서 refreshKey 변경 시 특정 기사의 찜 상태만 업데이트
    useEffect(() => {
       if (refreshKey && refreshKey > 0) {
          console.log("📋 DriverList 외부 새로고침 요청:", refreshKey);
 
-         // 전체 리로드 대신 현재 데이터의 찜 상태를 다시 확인
          const refreshFavoriteStates = async () => {
             try {
-               // 현재 필터 값들을 함수 내부에서 사용 (의존성 문제 해결)
                const currentMovers = movers;
                const currentMoverIds = currentMovers.map((m) => m.id);
 
@@ -166,7 +177,6 @@ export default function DriverList({
                const hasToken = Boolean(tokenSettings.get());
                const response = await getMovers(params, hasToken);
 
-               // 기존 데이터와 새 데이터를 매핑하여 찜 상태만 업데이트
                setMovers((prev) =>
                   prev.map((existingMover) => {
                      const updatedMover = response.movers.find(
@@ -177,6 +187,11 @@ export default function DriverList({
                            ...existingMover,
                            isFavorite: updatedMover.isFavorite,
                            favoriteCount: updatedMover.favoriteCount,
+                           // 🔥 지정견적 상태도 업데이트
+                           hasDesignatedRequest:
+                              updatedMover.hasDesignatedRequest,
+                           designatedEstimateStatus:
+                              updatedMover.designatedEstimateStatus,
                         };
                      }
                      return existingMover;
@@ -196,7 +211,7 @@ export default function DriverList({
       filters.serviceType,
       filters.sortBy,
       movers,
-   ]); // 🔥 필요한 의존성 모두 포함
+   ]);
 
    // 필터 변경 시 데이터 리셋
    useEffect(() => {
@@ -269,6 +284,7 @@ export default function DriverList({
                key={mover.id}
                mover={mover}
                onFavoriteChange={handleFavoriteChange}
+               onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
             />
          ))}
 

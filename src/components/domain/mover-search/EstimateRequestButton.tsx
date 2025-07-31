@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NoRequestModal } from "./NoRequestModal";
 import { RequestSelectionModal } from "./RequestSelectionModal";
 import { getClientActiveRequests } from "@/lib/api/estimate/requests/getClientRequest";
 import { createDesignatedEstimate } from "@/lib/api/estimate/requests/createDesignatedEstimate";
+import { Mover } from "@/lib/types";
 
 interface Request {
    id: string;
@@ -15,18 +16,38 @@ interface Request {
    requestedAt: string;
 }
 
-export function EstimateRequestButton({ moverId }: { moverId: string }) {
+interface EstimateRequestButtonProps {
+   moverId: string;
+   mover: Mover;
+   onDesignatedEstimateSuccess?: (moverId: string) => void;
+}
+
+export function EstimateRequestButton({
+   moverId,
+   mover,
+   onDesignatedEstimateSuccess,
+}: EstimateRequestButtonProps) {
    const [isLoading, setIsLoading] = useState(false);
    const [showModal, setShowModal] = useState(false);
    const [showNoRequestModal, setShowNoRequestModal] = useState(false);
    const [activeRequests, setActiveRequests] = useState<Request[]>([]);
    const [selectedRequestId, setSelectedRequestId] = useState<string>("");
+   const [isRequestSuccess, setIsRequestSuccess] = useState(
+      mover.hasDesignatedRequest ?? false,
+   );
+
+   // mover 상태가 변경되면 버튼 상태도 업데이트
+   useEffect(() => {
+      setIsRequestSuccess(mover.hasDesignatedRequest ?? false);
+   }, [mover.hasDesignatedRequest]);
 
    const handleClick = async () => {
+      // 🔥 이미 성공한 경우 클릭 막기
+      if (isRequestSuccess) return;
+
       try {
          setIsLoading(true);
 
-         // tokenFetch를 사용하므로 token 매개변수 제거
          const response = await getClientActiveRequests();
          setActiveRequests(response.requests);
 
@@ -35,7 +56,6 @@ export function EstimateRequestButton({ moverId }: { moverId: string }) {
             return;
          }
 
-         // 요청이 1개면 바로 선택, 여러 개면 모달 표시
          if (response.requests.length === 1) {
             setSelectedRequestId(response.requests[0].id);
             await submitDesignatedEstimate(response.requests[0].id);
@@ -64,10 +84,15 @@ export function EstimateRequestButton({ moverId }: { moverId: string }) {
       try {
          setIsLoading(true);
 
+         // 이때 DesignatedRequest 테이블에 레코드 생성됨
          await createDesignatedEstimate(moverId, requestId);
 
          alert("지정 견적 요청이 성공적으로 전송되었습니다!");
          setShowModal(false);
+         setIsRequestSuccess(true);
+
+         // 성공 시 부모에게 알림 (DESIGNATED 칩 표시용)
+         onDesignatedEstimateSuccess?.(moverId);
       } catch (error) {
          console.error("지정 견적 요청 실패:", error);
 
@@ -80,6 +105,7 @@ export function EstimateRequestButton({ moverId }: { moverId: string }) {
                errorText.includes("Unique constraint failed")
             ) {
                errorMessage = "이미 이 기사님에게 지정 견적을 요청하셨습니다.";
+               setIsRequestSuccess(true); // 이미 요청한 경우도 성공 상태로 처리
             } else if (
                errorText.includes("진행 중인 요청을 찾을 수 없습니다")
             ) {
@@ -110,32 +136,46 @@ export function EstimateRequestButton({ moverId }: { moverId: string }) {
 
    const handleNoRequestConfirm = () => {
       setShowNoRequestModal(false);
-      // 일반 견적 요청 페이지로 이동
       window.location.href = "/request";
+   };
+
+   // 🔥 버튼 스타일과 텍스트 결정
+   const getButtonStyle = () => {
+      if (isRequestSuccess) {
+         return "cursor-not-allowed bg-gray-100 text-white";
+      }
+      if (isLoading) {
+         return "cursor-not-allowed bg-gray-400 text-white";
+      }
+      return "bg-blue-500 hover:bg-blue-600 text-white";
+   };
+
+   const getButtonText = () => {
+      if (isRequestSuccess) {
+         return "지정 견적 요청 완료";
+      }
+      if (isLoading) {
+         return "처리 중...";
+      }
+      return "지정 견적 요청하기";
    };
 
    return (
       <>
          <button
             onClick={handleClick}
-            disabled={isLoading}
-            className={`w-full rounded-lg px-4 py-3 font-medium text-white transition-colors ${
-               isLoading
-                  ? "cursor-not-allowed bg-gray-400"
-                  : "bg-blue-500 hover:bg-blue-600"
-            }`}
+            disabled={isLoading || isRequestSuccess} // 🔥 성공 시에도 비활성화
+            className={`w-full rounded-lg px-4 py-3 font-medium transition-colors ${getButtonStyle()}`}
          >
-            {isLoading ? "처리 중..." : "지정 견적 요청하기"}
+            {getButtonText()}
          </button>
 
-         {/* 이사 요청이 없을 때 모달 */}
          <NoRequestModal
             isOpen={showNoRequestModal}
             onClose={() => setShowNoRequestModal(false)}
             onConfirm={handleNoRequestConfirm}
          />
 
-         {/* 요청 선택 모달 */}
          <RequestSelectionModal
             isOpen={showModal}
             onClose={() => setShowModal(false)}

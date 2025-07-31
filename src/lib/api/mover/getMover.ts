@@ -41,17 +41,6 @@ export const getMovers = async (
    };
 };
 
-export const getMoverById = async (id: string): Promise<Mover> => {
-   const endpoint = `/movers/${id}`;
-
-   try {
-      // tokenFetch를 먼저 시도 (토큰이 있으면 찜 상태 포함)
-      return await tokenFetch(endpoint, { method: "GET" });
-   } catch (error) {
-      throw error;
-   }
-};
-
 // 명시적으로 인증된 상태로만 조회 (찜 상태 필수)
 export const getMoverByIdWithAuth = async (id: string): Promise<Mover> => {
    const endpoint = `/movers/${id}`;
