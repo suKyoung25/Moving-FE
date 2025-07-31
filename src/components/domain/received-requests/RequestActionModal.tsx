@@ -19,6 +19,10 @@ interface Props {
    isOpen: boolean;
    onClose: () => void;
    modalType: "accept" | "reject";
+   setToast: (
+      toast: { id: number; text: string; success: boolean } | null,
+   ) => void;
+
    request: ReceivedRequest;
    requestId: string;
    clientId: string;
@@ -28,6 +32,7 @@ export default function RequestActionModal({
    isOpen,
    onClose,
    modalType,
+   setToast,
    request,
    requestId,
    clientId,
@@ -74,6 +79,14 @@ export default function RequestActionModal({
       } catch (error) {
          console.error("요청 실패:", error);
       } finally {
+         setToast({
+            id: Date.now(),
+            text:
+               modalType === "accept"
+                  ? "고객님께 견적을 성공적으로 발송했습니다."
+                  : "견적 요청을 반려 처리했습니다.",
+            success: true,
+         });
          onClose();
          reset();
       }

@@ -11,26 +11,48 @@ export default function ConfirmedButton({
 }: {
    estimateId: string;
 }) {
-   const [isModal, setIsModal] = useState<boolean>(false);
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
+
    const router = useRouter();
 
    const handleClickConfirmed = async (estimateId: string) => {
       try {
-         const result = await postClientConfirmedQuote(estimateId);
+         await postClientConfirmedQuote(estimateId);
 
-         setIsModal(true);
+         setToast({
+            id: Date.now(), // 같은 메시지도 연속 노출 가능하게
+            text: "견적이 확정되었습니다",
+            success: true,
+         });
+
          router.push("/ko/my-quotes/client?tab=2");
-         return result;
       } catch (e) {
-         throw e;
+         setToast({
+            id: Date.now(),
+            text: "견적 확정에 실패했습니다",
+            success: false,
+         });
+         console.error(e);
       }
    };
 
-   if (isModal) return <ToastPopup>견적이 확정되었습니다</ToastPopup>;
-
    return (
-      <SolidButton onClick={() => handleClickConfirmed(estimateId)}>
-         견적 확정하기
-      </SolidButton>
+      <>
+         <SolidButton onClick={() => handleClickConfirmed(estimateId)}>
+            견적 확정하기
+         </SolidButton>
+
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
+            />
+         )}
+      </>
    );
 }
