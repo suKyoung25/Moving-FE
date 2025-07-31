@@ -5,16 +5,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/context/AuthContext";
 import { NotificationProvider } from "@/context/NotificationContext";
+import RouterGuardLayout from "@/components/layout/RouterGuardLayout";
 
 export function Providers({ children }: { children: ReactNode }) {
    const [queryClient] = useState(() => new QueryClient());
 
    return (
       <AuthProvider>
-         <QueryClientProvider client={queryClient}>
-            <NotificationProvider>{children}</NotificationProvider>
-            <Toaster position="top-center" />
-         </QueryClientProvider>
+         <RouterGuardLayout>
+            <QueryClientProvider client={queryClient}>
+               <NotificationProvider>{children}</NotificationProvider>
+               <Toaster position="top-center" />
+            </QueryClientProvider>
+         </RouterGuardLayout>
       </AuthProvider>
    );
 }
