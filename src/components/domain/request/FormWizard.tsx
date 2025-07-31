@@ -19,13 +19,7 @@ import {
 import { debounce } from "lodash";
 import { createRequestAction } from "@/lib/actions/request.action";
 import ToastPopup from "@/components/common/ToastPopup";
-
-interface FormWizardProps {
-   currentStep: number;
-   setCurrentStep: (val: number) => void;
-   isPending: boolean;
-   setIsPending: (val: boolean) => void;
-}
+import { useFormWizard } from "@/context/FormWizardContext";
 
 const defaultState: FormWizardState = {
    moveType: undefined,
@@ -34,13 +28,10 @@ const defaultState: FormWizardState = {
    toAddress: undefined,
 };
 
-export default function FormWizard({
-   currentStep,
-   setCurrentStep,
-   isPending,
-   setIsPending,
-}: FormWizardProps) {
+export default function FormWizard({}) {
    const { user, isLoading } = useAuth();
+   const { currentStep, setCurrentStep, isPending, setIsPending } =
+      useFormWizard();
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
    const [isInitialized, setIsInitialized] = useState(false);
 
@@ -64,7 +55,6 @@ export default function FormWizard({
 
          try {
             const data = await getClientActiveRequest();
-            console.log("활성 견적:", data.request);
 
             if (data.request) {
                setCurrentStep(4);
