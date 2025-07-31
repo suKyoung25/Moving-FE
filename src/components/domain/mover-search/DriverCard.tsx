@@ -8,7 +8,7 @@ import type { Mover } from "@/lib/types";
 import { validateServiceTypes } from "@/lib/utils/moveChip.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
-import { shouldShowDesignatedChip } from "@/lib/utils/designated.util";
+import { EstimateStatus } from "@/lib/types";
 
 interface DriverCardProps {
    mover: Mover;
@@ -17,13 +17,19 @@ interface DriverCardProps {
       isFavorite: boolean,
       favoriteCount: number,
    ) => void;
-   onDesignatedEstimateSuccess?: (moverId: string) => void;
+}
+function shouldShowDesignatedChip(mover: Mover): boolean {
+   // 지정견적 요청이 있고, 아직 처리되지 않은 경우 (CONFIRMED나 REJECTED가 아닌 경우)
+   return !!(
+      mover.hasDesignatedRequest &&
+      mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
+      mover.designatedEstimateStatus !== EstimateStatus.REJECTED
+   );
 }
 
 export default function DriverCard({
    mover,
    onFavoriteChange,
-   onDesignatedEstimateSuccess,
 }: DriverCardProps) {
    const router = useRouter();
    const pathname = usePathname();
@@ -36,18 +42,11 @@ export default function DriverCard({
       isFavoritePage ? true : (mover.isFavorite ?? false),
    );
 
-   // 지정견적 상태 관리
-   const [currentMover, setCurrentMover] = useState(mover);
-
    useEffect(() => {
       if (!isFavoritePage) {
          setCurrentFavoriteState(mover.isFavorite ?? false);
       }
    }, [mover.isFavorite, isFavoritePage]);
-
-   useEffect(() => {
-      setCurrentMover(mover);
-   }, [mover]);
 
    const handleCardClick = () => {
       router.push(`/mover-search/${mover.id}`);
@@ -98,19 +97,7 @@ export default function DriverCard({
       }
    };
 
-   // 지정견적 성공 핸들러
-   const handleDesignatedEstimateSuccess = (moverId: string) => {
-      if (moverId === mover.id) {
-         setCurrentMover((prev) => ({
-            ...prev,
-            hasDesignatedRequest: true,
-            designatedEstimateStatus: undefined,
-         }));
-      }
-      onDesignatedEstimateSuccess?.(moverId);
-   };
-
-   const validServiceTypes = validateServiceTypes(currentMover.serviceType!);
+   const validServiceTypes = validateServiceTypes(mover.serviceType!);
 
    return (
       <div
@@ -125,7 +112,7 @@ export default function DriverCard({
                ))}
 
                {/* DESIGNATED 칩: 지정견적 요청 있고 아직 미처리 */}
-               {shouldShowDesignatedChip(currentMover) && (
+               {shouldShowDesignatedChip(mover) && (
                   <MoveChip type="DESIGNATED" mini={false} />
                )}
             </div>
@@ -133,7 +120,7 @@ export default function DriverCard({
             {/* 소개글 */}
             <div className="mb-4">
                <p className="text-14-medium md:text-16-medium lg:text-18-medium line-clamp-2 leading-relaxed break-words text-gray-700">
-                  {currentMover.introduction ||
+                  {mover.introduction ||
                      "고객님의 물품을 안전하게 운송해 드립니다."}
                </p>
             </div>
@@ -143,13 +130,13 @@ export default function DriverCard({
                   big={false}
                   isLiked={currentFavoriteState}
                   handleLikedClick={handleLikedClick}
-                  nickName={currentMover.nickName ?? " "}
-                  favoriteCount={currentMover.favoriteCount}
-                  averageReviewRating={currentMover.averageReviewRating}
-                  reviewCount={currentMover.reviewCount}
-                  career={Number(currentMover.career) || 0}
-                  estimateCount={currentMover.estimateCount}
-                  profileImage={currentMover.profileImage}
+                  nickName={mover.nickName ?? " "}
+                  favoriteCount={mover.favoriteCount}
+                  averageReviewRating={mover.averageReviewRating}
+                  reviewCount={mover.reviewCount}
+                  career={Number(mover.career) || 0}
+                  estimateCount={mover.estimateCount}
+                  profileImage={mover.profileImage}
                   showHeart={!isLoggedInAsMover}
                />
             </div>

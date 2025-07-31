@@ -35,21 +35,6 @@ export default function DriverList({
    const [hasMore, setHasMore] = useState(true);
    const [currentPage, setCurrentPage] = useState(1);
 
-   // 🔥 지정견적 성공 핸들러
-   const handleDesignatedEstimateSuccess = useCallback((moverId: string) => {
-      setMovers((prev) =>
-         prev.map((mover) =>
-            mover.id === moverId
-               ? {
-                    ...mover,
-                    hasDesignatedRequest: true,
-                    designatedEstimateStatus: undefined,
-                 }
-               : mover,
-         ),
-      );
-   }, []);
-
    // 기사님 데이터 로드 함수
    const loadMovers = useCallback(
       async (reset = false) => {
@@ -187,7 +172,7 @@ export default function DriverList({
                            ...existingMover,
                            isFavorite: updatedMover.isFavorite,
                            favoriteCount: updatedMover.favoriteCount,
-                           // 🔥 지정견적 상태도 업데이트
+                           // 지정견적 상태도 업데이트
                            hasDesignatedRequest:
                               updatedMover.hasDesignatedRequest,
                            designatedEstimateStatus:
@@ -284,7 +269,7 @@ export default function DriverList({
                key={mover.id}
                mover={mover}
                onFavoriteChange={handleFavoriteChange}
-               onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
+               // 🔥 onDesignatedEstimateSuccess prop 제거 (DriverCard에서 받지 않음)
             />
          ))}
 

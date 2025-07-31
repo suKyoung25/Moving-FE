@@ -7,8 +7,8 @@ import {
    getMoverByIdWithAuth,
    getMoverByIdWithoutAuth,
 } from "@/lib/api/mover/getMover";
-import { useAuth } from "@/context/AuthContext"; // AuthContext 추가
-import { tokenSettings } from "@/lib/utils/auth.util"; // 토큰 확인용
+import { useAuth } from "@/context/AuthContext";
+import { tokenSettings } from "@/lib/utils/auth.util";
 import ActionButtons from "./ActionButtons";
 import DetailSections from "./DetailSections";
 import LineDivider from "../../common/LineDivider";
@@ -18,7 +18,7 @@ import DashboardReviewSection from "@/components/domain/dashboard/ReviewSection"
 
 export default function MoverDetail() {
    const params = useParams();
-   const { user } = useAuth(); // 로그인 상태 확인
+   const { user } = useAuth();
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
    const [mover, setMover] = useState<Mover | null>(null);
@@ -29,17 +29,14 @@ export default function MoverDetail() {
             setLoading(true);
             const id = params.id as string;
 
-            // 로그인 상태에 따라 다른 API 호출
             const hasToken = Boolean(tokenSettings.get());
             const isLoggedIn = Boolean(user);
 
             let moverData: Mover;
 
             if (hasToken && isLoggedIn) {
-               // 로그인된 상태: 찜 상태 포함해서 조회
                moverData = await getMoverByIdWithAuth(id);
             } else {
-               // 비로그인 상태: 찜 상태 없이 조회
                moverData = await getMoverByIdWithoutAuth(id);
             }
 
@@ -55,9 +52,8 @@ export default function MoverDetail() {
       if (params.id) {
          fetchMover();
       }
-   }, [params.id, user]); // user 의존성 추가
+   }, [params.id, user]);
 
-   // 찜 상태 변경 핸들러
    const handleFavoriteChange = (
       moverId: string,
       isFavorite: boolean,
@@ -70,7 +66,6 @@ export default function MoverDetail() {
       }
    };
 
-   // 지정견적 성공 핸들러
    const handleDesignatedEstimateSuccess = (moverId: string) => {
       if (mover && mover.id === moverId) {
          setMover((prev) =>
@@ -115,7 +110,7 @@ export default function MoverDetail() {
             <DriverCard
                mover={mover}
                onFavoriteChange={handleFavoriteChange}
-               onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
+               // 🔥 onDesignatedEstimateSuccess prop 제거
             />
             <LineDivider />
             <div className="p-4">
@@ -142,7 +137,7 @@ export default function MoverDetail() {
                <DriverCard
                   mover={mover}
                   onFavoriteChange={handleFavoriteChange}
-                  onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
+                  // 🔥 onDesignatedEstimateSuccess prop 제거
                />
                <LineDivider />
                <DetailSections mover={mover} />
