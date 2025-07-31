@@ -7,9 +7,15 @@ import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import Pagination from "@/components/common/pagination";
 import { FavoriteMoverState } from "@/lib/types";
+import EmptyState from "@/components/common/EmptyState";
+import { useTranslations } from "next-intl";
+import SolidButton from "@/components/common/SolidButton";
+import { useRouter } from "next/navigation";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 
 export default function FavoriteMover() {
+   const t = useTranslations("FavoriteMovers");
+   const router = useRouter();
    const [movers, setMovers] = useState<FavoriteMoverState[]>([]);
    // 페이지네이션
    const [pagination, setPagination] = useState(() => {
@@ -23,6 +29,7 @@ export default function FavoriteMover() {
          totalPages: 1,
       };
    });
+   const [loading, setLoading] = useState(false);
 
    const handleLikedClick = async (moverId: string) => {
       try {
@@ -51,6 +58,7 @@ export default function FavoriteMover() {
 
    useEffect(() => {
       async function fetchData() {
+         setLoading(true);
          try {
             const res = await getFavoriteMovers(
                pagination.page,
@@ -60,10 +68,16 @@ export default function FavoriteMover() {
             setPagination(res.data.pagination);
          } catch (error) {
             console.error(error);
+         } finally {
+            setLoading(false);
          }
       }
       fetchData();
    }, [pagination.page, pagination.limit]);
+
+   if (loading) {
+      return <div>로딩 중...</div>;
+   }
 
    return (
       <>
@@ -82,6 +96,7 @@ export default function FavoriteMover() {
                   </div>
                   <MoverProfile
                      big={true}
+                     profileImage={mover.profileImage}
                      isLiked={mover.isLiked}
                      handleLikedClick={() => handleLikedClick(mover.id)}
                      nickName={mover.nickName}
@@ -99,6 +114,17 @@ export default function FavoriteMover() {
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
          />
+         {!loading && movers.length === 0 && (
+            <div className="mt-46 flex flex-col items-center justify-center">
+               <EmptyState message={t("noFavoriteMover")} />
+               <SolidButton
+                  className="my-6 max-w-45 lg:my-8"
+                  onClick={() => router.replace("/mover-search")}
+               >
+                  {t("goToFavorite")}
+               </SolidButton>
+            </div>
+         )}
       </>
    );
 }

@@ -33,7 +33,9 @@
       "cases": "例"
    },
    "FavoriteMovers": {
-      "title": "收藏的搬运工"
+      "title": "收藏的搬运工",
+      "noFavoriteMover": "您还没有收藏的搬运工",
+      "goToFavorite": "去收藏"
    },
    "MyQuotes": {
       "Client": {

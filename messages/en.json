@@ -33,7 +33,9 @@
       "cases": ""
    },
    "FavoriteMovers": {
-      "title": "Favorite Movers"
+      "title": "Favorite Movers",
+      "noFavoriteMover": "No favorite movers yet",
+      "goToFavorite": "Go to favorites"
    },
    "MyQuotes": {
       "Client": {
