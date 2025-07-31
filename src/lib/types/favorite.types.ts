@@ -1,7 +1,7 @@
 export interface FavoriteMoverState {
    id: string;
    nickName: string;
-   profileImage: string | null;
+   profileImage: string | undefined;
    favoriteCount: number;
    averageReviewRating: number;
    reviewCount: number;
