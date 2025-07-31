@@ -87,12 +87,11 @@ export default function useClientProfilePostForm() {
             }
 
             setUser(res.data);
+            // alert("프로필이 등록되었습니다.");
             // user 상태 갱신: 미들웨어가 인식할 시간을 줌
             setTimeout(() => {
                router.replace("/mover-search");
             }, 100);
-            // alert("프로필이 등록되었습니다.");
-            router.replace("/mover-search");
          }
       } catch (error) {
          console.error("일반 프로필 등록 실패: ", error);
