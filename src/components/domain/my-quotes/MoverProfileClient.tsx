@@ -3,7 +3,7 @@
 import profile from "@/assets/images/profileIcon.svg";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoverProfile from "@/components/common/MoverProfile";
-import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useState } from "react";
 
 interface MoverProfileclientProps {
@@ -30,6 +30,7 @@ export default function MoverProfileclient(props: MoverProfileclientProps) {
 
    const handleLikedClick = async (e: React.MouseEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       if (loading) return;
       setLoading(true);
 

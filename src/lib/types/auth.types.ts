@@ -25,6 +25,11 @@ export interface Client extends BaseUser {
    livingArea: string[];
 }
 
+export enum EstimateStatus {
+   CONFIRMED = "CONFIRMED",
+   REJECTED = "REJECTED",
+}
+
 export interface Mover extends BaseUser {
    nickName?: string;
    career?: string | number; //TODO: string으로 통일할 것
@@ -37,6 +42,8 @@ export interface Mover extends BaseUser {
    reviewCount: number;
    averageReviewRating: number;
    isFavorite?: boolean;
+   hasDesignatedRequest?: boolean;
+   designatedEstimateStatus?: EstimateStatus | null;
 }
 
 export type User = Client | Mover;

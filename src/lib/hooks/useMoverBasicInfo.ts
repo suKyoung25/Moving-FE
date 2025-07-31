@@ -27,6 +27,9 @@ function useMoverBasicInfo() {
       reset,
    } = useForm<MoverBasicInfoInput>({
       resolver: zodResolver(MoverBasicInfoSchema),
+      context: {
+         isLocal: user?.provider === "LOCAL", // 소셜인증 / 로컬인증에 따라 스키마가 달라짐
+      },
       mode: "onChange",
       defaultValues: {
          name: user?.name || "",
@@ -70,6 +73,8 @@ function useMoverBasicInfo() {
             email: data.email,
             phone: data.phone,
             existedPassword: data.existedPassword,
+            newPassword: data.newPassword,
+            newPasswordConfirmation: data.newPasswordConfirmation,
          };
 
          // 비밀번호도 수정

@@ -39,9 +39,9 @@ export default function useSignInForm() {
 
          // ★ 프로필 등록 안 했으면 프로필 등록, 아니면 기사님 찾기로 이동
          if (!res.data?.isProfileCompleted) {
-            router.push("/profile/create");
+            router.replace("/profile/create");
          } else {
-            router.push("/mover-search");
+            router.replace("/received-requests");
          }
       } catch (error) {
          console.error("로그인 실패: ", error);

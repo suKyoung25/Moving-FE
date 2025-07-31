@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    const [user, setUser] = useState<User | null>(null);
    const [isLoading, setIsLoading] = useState(true); // 기본값 true로 시작
 
-   console.log(user);
+   console.log("AuthContext", user);
 
    const getUser = useCallback((user: User, accessToken: string) => {
       try {

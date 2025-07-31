@@ -5,6 +5,8 @@ import ErrorText from "../auth/ErrorText";
 import { FieldValues } from "react-hook-form";
 import { ClientProfileUpdateData } from "@/lib/types";
 
+const style = "flex w-full flex-col gap-2 lg:gap-4";
+
 // ✅ react-hook-form 적용한 Input
 export default function ProfileInput<T extends FieldValues>({
    type = "text",
@@ -13,9 +15,12 @@ export default function ProfileInput<T extends FieldValues>({
    placeholder,
    register,
    error,
+   social,
 }: ClientProfileUpdateData<T>) {
    return (
-      <section className="flex w-full flex-col gap-2 lg:max-w-160 lg:gap-4">
+      <section
+         className={social ? `${style} lg:max-w-160` : `${style} lg:max-w-full`}
+      >
          <label
             htmlFor={name}
             className="text-black-300 text-16-semibold lg:text-20-semibold"

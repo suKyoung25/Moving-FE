@@ -12,12 +12,15 @@ import EmptyState from "@/components/common/EmptyState";
 export default function Received() {
    const [dropdownName, setDropdownName] = useState("all");
    const [data, setData] = useState<Quotes[]>();
+   const [isLoading, setIsLoading] = useState<boolean>(false);
 
    useEffect(() => {
       async function getMyReceivedQuotes() {
          try {
+            setIsLoading(true);
             const result = await fetchClientReceivedQuotes(dropdownName);
             setData(result.data);
+            setIsLoading(false);
          } catch (e) {
             throw e;
          }
@@ -25,6 +28,8 @@ export default function Received() {
 
       getMyReceivedQuotes();
    }, [dropdownName]);
+
+   if (isLoading) return <div>로딩중...</div>;
 
    if (!data || data.length === 0)
       return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;

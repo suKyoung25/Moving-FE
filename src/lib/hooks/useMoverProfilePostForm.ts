@@ -12,11 +12,12 @@ import {
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { useAuth } from "@/context/AuthContext";
+import { tokenSettings } from "../utils";
 
 function useMoverProfilePostForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
-   const { refreshUser } = useAuth();
+   const { setUser } = useAuth();
 
    const {
       register,
@@ -55,12 +56,21 @@ function useMoverProfilePostForm() {
 
          const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
+         //디버깅
+         console.log("프로필 등록 res", res);
+
          if (res.isProfileCompleted) {
+            if (res.accessToken) {
+               tokenSettings.set(res.accessToken);
+            }
+
+            setUser(res.data);
+
+            setTimeout(() => {
+               router.replace("/dashboard");
+            }, 100); // user 상태 갱신: 미들웨어가 인식할 시간을 줌
+
             alert("프로필이 정상적으로 등록되었습니다."); //TODO: 토스트 알림으로 바꾸기
-
-            refreshUser();
-
-            router.push("/dashboard");
          }
       } catch (error) {
          console.error("기사님 프로필 등록 실패: ", error);

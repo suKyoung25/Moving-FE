@@ -6,7 +6,15 @@ import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoveTextCard from "../my-quotes/MoveTextCard";
 import RequestActionModal from "./RequestActionModal";
 
-export default function RequestCard({ req }: { req: ReceivedRequest }) {
+export default function RequestCard({
+   req,
+   setToast,
+}: {
+   req: ReceivedRequest;
+   setToast: (
+      toast: { id: number; text: string; success: boolean } | null,
+   ) => void;
+}) {
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [modalType, setModalType] = useState<"accept" | "reject" | null>(null);
 
@@ -19,7 +27,7 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
       setIsModalOpen(false);
       setModalType(null);
    };
-   
+
    return (
       <>
          {/* 요청 카드 UI */}
@@ -77,6 +85,7 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
                isOpen={isModalOpen}
                onClose={closeModal}
                modalType={modalType}
+               setToast={setToast}
                request={req}
                requestId={req.id}
                clientId={req.clientId}

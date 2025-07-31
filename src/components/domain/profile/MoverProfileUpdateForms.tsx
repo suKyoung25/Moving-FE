@@ -7,8 +7,12 @@ import TextAreaInputField from "./TextAreaInputField";
 import ButtonInputField from "./ButtonInputField";
 import SolidButton from "@/components/common/SolidButton";
 import useMoverProfileUpdateForm from "@/lib/hooks/useMoverProfileUpdateForm";
+import OutlinedButton from "@/components/common/OutlinedButton";
+import { useRouter } from "next/navigation";
 
 export default function MoverProfileUpdateForm() {
+   const router = useRouter();
+
    const {
       register,
       control,
@@ -107,10 +111,13 @@ export default function MoverProfileUpdateForm() {
             </div>
          </div>
 
-         <div className="mt-17 lg:pl-185">
+         <div className="mt-17 flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse lg:gap-8">
             <SolidButton disabled={!isValid || isLoading} type="submit">
                {isLoading ? "수정 중..." : "수정하기"}
             </SolidButton>
+            <OutlinedButton onClick={() => router.push("/dashboard")}>
+               취소
+            </OutlinedButton>
          </div>
       </form>
    );

@@ -1,6 +1,16 @@
 // 도메인 단위
 
 import z from "zod";
+import { RefinementCtx } from "zod";
+
+//스키마 분기처리를 위해
+type ExtendedRefinementCtx = RefinementCtx & {
+   context?: {
+      isLocal?: boolean;
+   };
+};
+
+const allowedDomains = ["gmail.com", "naver.com", "daum.net"];
 
 //기사님 기본정보 수정 시 사용
 const rawMoverBasicInfoSchema = {
@@ -8,20 +18,48 @@ const rawMoverBasicInfoSchema = {
       .string()
       .min(2, "본명은 2자 이상 입력해주세요")
       .max(4, "본명은 4자 이하로 입력해주세요"),
-   email: z.string().email("올바른 이메일 형식이 아닙니다."),
+   email: z
+      .string()
+      .email("올바른 이메일 형식이 아닙니다.")
+      .refine(
+         (email) => {
+            const domain = email.split("@")[1];
+            return allowedDomains.includes(domain);
+         },
+         {
+            message: "test, gmail, naver, daum 도메인만 허용합니다.",
+         },
+      ),
    phone: z
       .string()
       .min(10, "최소 10자리 이상이어야 합니다.")
+      .max(11, "최대 11자리 이하여야 합니다.")
       .regex(/^\d+$/, "숫자만 입력해주세요."),
-   existedPassword: z.string().min(8, "기존 비밀번호를 입력해주세요."),
    newPassword: z.string().optional(),
    newPasswordConfirmation: z.string().optional(),
 };
 
 //refine 로직 때문에 분리 (cheackNewPassword)
 export const MoverBasicInfoSchema = z
-   .object(rawMoverBasicInfoSchema)
+   .object({
+      ...rawMoverBasicInfoSchema,
+      existedPassword: z.string().optional(),
+   })
    .superRefine((data, ctx) => {
+      const { context } = ctx as ExtendedRefinementCtx;
+      const isLocal = context?.isLocal;
+
+      if (
+         isLocal &&
+         (!data.existedPassword || data.existedPassword.length < 8)
+      ) {
+         ctx.addIssue({
+            path: ["existedPassword"],
+            message: "기존 비밀번호를 입력해주세요.",
+            code: z.ZodIssueCode.custom,
+         });
+      }
+
       const { newPassword, newPasswordConfirmation } = data;
 
       const eitherPasswordExists = !!newPassword || !!newPasswordConfirmation;

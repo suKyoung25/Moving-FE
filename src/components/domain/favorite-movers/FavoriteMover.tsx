@@ -7,11 +7,11 @@ import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import Pagination from "@/components/common/pagination";
 import { FavoriteMoverState } from "@/lib/types";
-import { toggleFavoriteMover } from "@/lib/api/estimate/requests/favoriteMover";
 import EmptyState from "@/components/common/EmptyState";
 import { useTranslations } from "next-intl";
 import SolidButton from "@/components/common/SolidButton";
 import { useRouter } from "next/navigation";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 
 export default function FavoriteMover() {
    const t = useTranslations("FavoriteMovers");
