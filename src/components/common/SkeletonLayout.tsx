@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 
 interface SkeletonLayoutProps {
    count: number;
@@ -16,5 +16,3 @@ export default function SkeletonLayout({
       </>
    );
 }
-
-// <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">

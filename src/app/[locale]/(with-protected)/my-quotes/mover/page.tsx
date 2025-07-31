@@ -1,19 +1,36 @@
-import RejectedRequestsTab from "@/components/domain/my-quotes/RejectedRequestsTab";
-import SentQuotesTab from "@/components/domain/my-quotes/SentQuotesTab";
+"use client";
 
-type PageProps = {
-   searchParams: Promise<{ tab?: string }>;
-};
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import SentQuotesList from "@/components/domain/my-quotes/SentQuotesList";
+import RejectedRequestsList from "@/components/domain/my-quotes/RejectedRequestsList";
 
-export default async function Page({ searchParams }: PageProps) {
-   const { tab } = await searchParams;
+export default function Page() {
+   const { user } = useAuth();
+   const router = useRouter();
+   const searchParams = useSearchParams();
+
+   const tab = searchParams.get("tab");
    const activeTab = tab === "2" ? "2" : "1";
 
+   useEffect(() => {
+      if (!tab) {
+         if (!user?.isProfileCompleted) {
+            router.replace("/profile/create");
+         } else {
+            router.push("?tab=1");
+         }
+      }
+   }, [tab, user, router]);
+
    if (activeTab === "1") {
-      return <SentQuotesTab tab={activeTab} />;
+      return <SentQuotesList />;
    } else if (activeTab === "2") {
-      return <RejectedRequestsTab tab={activeTab} />;
+      return <RejectedRequestsList />;
    }
+
+   return null;
 }
 
 // 추후 아래 해당 코드로 리팩토링 예정
