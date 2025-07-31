@@ -8,6 +8,7 @@ import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
+import { EstimateStatus } from "@/lib/types";
 
 interface FavoriteDriverListProps {
    onFavoriteChange?: (moverId: string, isFavorite: boolean) => void;
@@ -22,20 +23,16 @@ export default function FavoriteDriverList({
    const [error, setError] = useState<string | null>(null);
    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-   // 로그인한 사용자가 기사님인지 확인
    const isLoggedInAsMover = user?.userType === "mover";
 
-   // 인증 상태 확인 함수
    const checkAuthStatus = useCallback(() => {
       return Boolean(tokenSettings.get());
    }, []);
 
-   // 🔥 찜한 기사님 목록 로드 - 더 많은 데이터를 가져오도록 수정
    const loadFavoriteMovers = useCallback(async () => {
       const authStatus = checkAuthStatus();
       setIsAuthenticated(authStatus);
 
-      // 기사님은 찜 목록을 볼 수 없음
       if (!authStatus || isLoggedInAsMover) {
          setFavoriteMovers([]);
          return;
@@ -45,11 +42,9 @@ export default function FavoriteDriverList({
          setLoading(true);
          setError(null);
 
-         // 🔥 더 많은 데이터를 가져와서 찜 해제 시 자동 리필되도록 함
-         const response = await getFavoriteMovers(1, 10); // 3 → 10으로 증가
+         const response = await getFavoriteMovers(1, 10);
 
          if (response?.data?.movers) {
-            // 찜한 목록이므로 모든 기사님의 isFavorite를 true로 강제 설정
             const moversWithFavoriteTrue = response.data.movers.map(
                (mover: Mover) => ({
                   ...mover,
@@ -72,7 +67,6 @@ export default function FavoriteDriverList({
       }
    }, [checkAuthStatus, isLoggedInAsMover]);
 
-   // 🔥 찜 토글 핸들러 - 찜 해제 후 자동으로 새 데이터 로드
    const handleFavoriteToggle = useCallback(
       async (moverId: string) => {
          try {
@@ -82,18 +76,15 @@ export default function FavoriteDriverList({
                response,
             });
 
-            // 찜 해제 후 목록에서 제거
             setFavoriteMovers((prev) =>
                prev.filter((mover) => mover.id !== moverId),
             );
 
-            // 부모 컴포넌트에 찜 상태 변경 알림 (DriverList 동기화용)
             onFavoriteChange?.(moverId, false);
 
-            // 🔥 찜 해제 후 새로운 데이터 자동 로드 (리필)
             setTimeout(() => {
                loadFavoriteMovers();
-            }, 500); // 약간의 지연을 두어 서버 상태가 업데이트된 후 호출
+            }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
             alert("찜 처리 중 오류가 발생했습니다.");
@@ -102,12 +93,10 @@ export default function FavoriteDriverList({
       [onFavoriteChange, loadFavoriteMovers],
    );
 
-   // 컴포넌트 마운트 시 데이터 로드
    useEffect(() => {
       loadFavoriteMovers();
    }, [loadFavoriteMovers]);
 
-   // 기사님이거나 인증되지 않은 경우 렌더링하지 않음
    if (!isAuthenticated || isLoggedInAsMover) {
       return null;
    }
@@ -153,8 +142,16 @@ export default function FavoriteDriverList({
       );
    }
 
-   // 🔥 최대 3명까지만 표시 (UI 공간 고려)
    const displayMovers = favoriteMovers.slice(0, 3);
+
+   function shouldShowDesignatedChip(mover: Mover): boolean {
+      // 지정견적 요청이 있고, 아직 처리되지 않은 경우 (CONFIRMED나 REJECTED가 아닌 경우)
+      return !!(
+         mover.hasDesignatedRequest &&
+         mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
+         mover.designatedEstimateStatus !== EstimateStatus.REJECTED
+      );
+   }
 
    return (
       <div className="mt-8 flex flex-col gap-4 rounded-lg">
@@ -186,6 +183,11 @@ export default function FavoriteDriverList({
                      }
                      return null;
                   })}
+
+                  {/* 🔥 DESIGNATED 칩 추가 */}
+                  {shouldShowDesignatedChip(mover) && (
+                     <MoveChip type="DESIGNATED" mini={false} />
+                  )}
                </div>
 
                {mover.description && (
@@ -198,7 +200,7 @@ export default function FavoriteDriverList({
                   profileImage={mover.profileImage}
                   forceMobileStyle={true}
                   big={false}
-                  isLiked={true} // 찜한 목록이므로 항상 true
+                  isLiked={true}
                   handleLikedClick={() => handleFavoriteToggle(mover.id)}
                   nickName={mover.nickName || " "}
                   favoriteCount={mover.favoriteCount || 0}
@@ -206,7 +208,7 @@ export default function FavoriteDriverList({
                   reviewCount={mover.reviewCount || 0}
                   career={Number(mover.career) || 0}
                   estimateCount={mover.estimateCount || 0}
-                  showHeart={true} // 찜한 목록에서는 항상 하트 표시 (기사님은 이 컴포넌트 자체가 안 보임)
+                  showHeart={true}
                />
             </div>
          ))}
