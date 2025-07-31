@@ -8,7 +8,7 @@ import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
-import { shouldShowDesignatedChip } from "@/lib/utils/designated.util";
+import { EstimateStatus } from "@/lib/types";
 
 interface FavoriteDriverListProps {
    onFavoriteChange?: (moverId: string, isFavorite: boolean) => void;
@@ -143,6 +143,15 @@ export default function FavoriteDriverList({
    }
 
    const displayMovers = favoriteMovers.slice(0, 3);
+
+   function shouldShowDesignatedChip(mover: Mover): boolean {
+      // 지정견적 요청이 있고, 아직 처리되지 않은 경우 (CONFIRMED나 REJECTED가 아닌 경우)
+      return !!(
+         mover.hasDesignatedRequest &&
+         mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
+         mover.designatedEstimateStatus !== EstimateStatus.REJECTED
+      );
+   }
 
    return (
       <div className="mt-8 flex flex-col gap-4 rounded-lg">
