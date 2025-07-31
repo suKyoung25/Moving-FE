@@ -11,9 +11,5 @@ export default async function Page({
 
    if (!id) return notFound();
 
-   return (
-      <Suspense fallback={<div>잠시만 기다려 주세요...</div>}>
-         <SentQuoteDetail id={id} />
-      </Suspense>
-   );
+   return <SentQuoteDetail id={id} />;
 }

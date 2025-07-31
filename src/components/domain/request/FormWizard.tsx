@@ -18,7 +18,6 @@ import {
 } from "@/lib/api/request/requests/requestDraftApi";
 import { debounce } from "lodash";
 import { createRequestAction } from "@/lib/actions/request.action";
-import toast from "react-hot-toast";
 import ToastPopup from "@/components/common/ToastPopup";
 
 interface FormWizardProps {
@@ -45,13 +44,18 @@ export default function FormWizard({
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
    const [isInitialized, setIsInitialized] = useState(false);
 
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
+
    const isFormValid =
       !!formState.moveType &&
       !!formState.moveDate &&
       !!formState.fromAddress &&
       !!formState.toAddress;
 
-   // 초기화: 서버에서 draft + activeRequest 상태 확인
    useEffect(() => {
       if (isLoading) return;
 
@@ -59,8 +63,6 @@ export default function FormWizard({
          if (!user) return;
 
          try {
-            // 활성 견적 있는지 확인
-            // TODO: 활성 견적 요청 api 수정 필요 -> 활성 견적은 하나만 존재 가능
             const data = await getClientActiveRequests();
             const activeRequest = data.requests[0];
 
@@ -74,10 +76,8 @@ export default function FormWizard({
                return;
             }
 
-            // 활성 견적 없는 경우 draft 조회
             const draftRes = await getRequestDraft();
             const draft = draftRes?.data;
-            console.log("draft:", draft);
 
             if (draft) {
                const {
@@ -91,7 +91,6 @@ export default function FormWizard({
                setFormState({ moveType, moveDate, fromAddress, toAddress });
                setCurrentStep(currentStep ?? 0);
             } else {
-               // draft 없을 경우 초기화
                setFormState(defaultState);
                setCurrentStep(0);
             }
@@ -105,7 +104,6 @@ export default function FormWizard({
       init();
    }, [user, isLoading]);
 
-   // debounce로 불필요한 저장 방지
    const debouncedSave = useMemo(
       () =>
          debounce(async (nextState: FormWizardState, step: number) => {
@@ -119,11 +117,10 @@ export default function FormWizard({
             } catch (err) {
                console.error("중간 상태 저장 실패:", err);
             }
-         }, 1000), // 1초 debounce
+         }, 1000),
       [],
    );
 
-   // 중간 상태 변경 시 서버에 저장
    useEffect(() => {
       if (!user || !isInitialized) return;
       if (currentStep >= 1) {
@@ -132,36 +129,27 @@ export default function FormWizard({
       }
    }, [formState, currentStep, user, isInitialized]);
 
-   // 견적 확정 버튼 클릭 시 새로운 견적 생성
    const handleConfirm = async () => {
       if (!user || !isFormValid) return;
 
       try {
          await createRequestAction(formState as CreateRequestDto);
 
-         toast.custom((t) => (
-            <ToastPopup
-               className={`${
-                  t.visible ? "animate-fade-in" : "animate-fade-out"
-               }`}
-            >
-               견적 요청이 완료되었어요!
-            </ToastPopup>
-         ));
+         setToast({
+            id: Date.now(),
+            text: "견적 요청이 완료되었어요!",
+            success: true,
+         });
 
          setCurrentStep(4);
       } catch (err) {
          console.error("견적 요청 실패:", err);
 
-         toast.custom((t) => (
-            <ToastPopup
-               className={`${
-                  t.visible ? "animate-fade-in" : "animate-fade-out"
-               }`}
-            >
-               견적 요청에 실패했어요.
-            </ToastPopup>
-         ));
+         setToast({
+            id: Date.now(),
+            text: "견적 요청에 실패했어요.",
+            success: false,
+         });
       }
    };
 
@@ -187,54 +175,72 @@ export default function FormWizard({
                   받은 견적 보러가기
                </SolidButton>
             </Link>
+
+            {toast && (
+               <ToastPopup
+                  key={toast.id}
+                  text={toast.text}
+                  success={toast.success}
+               />
+            )}
          </div>
       );
    }
 
    return (
-      <form className="flex flex-col gap-2 lg:gap-6">
-         <ChatMessage
-            type="system"
-            message="몇 가지 정보만 알려주시면 최대 5개의 견적을 받을 수 있어요 :)"
-         />
-         {currentStep >= 0 && (
-            <Step1
-               value={formState.moveType}
-               onChange={(v) =>
-                  setFormState((prev) => ({ ...prev, moveType: v }))
-               }
-               onNext={() => setCurrentStep(1)}
+      <>
+         <form className="flex flex-col gap-2 lg:gap-6">
+            <ChatMessage
+               type="system"
+               message="몇 가지 정보만 알려주시면 최대 5개의 견적을 받을 수 있어요 :)"
+            />
+            {currentStep >= 0 && (
+               <Step1
+                  value={formState.moveType}
+                  onChange={(v) =>
+                     setFormState((prev) => ({ ...prev, moveType: v }))
+                  }
+                  onNext={() => setCurrentStep(1)}
+               />
+            )}
+            {currentStep >= 1 && (
+               <Step2
+                  value={formState.moveDate}
+                  onChange={(v) =>
+                     setFormState((prev) => ({ ...prev, moveDate: v }))
+                  }
+                  onNext={() => setCurrentStep(2)}
+               />
+            )}
+            {currentStep >= 2 && (
+               <Step3
+                  isFormValid={isFormValid}
+                  from={formState.fromAddress}
+                  to={formState.toAddress}
+                  onFromChange={(v) =>
+                     setFormState((prev) => ({ ...prev, fromAddress: v }))
+                  }
+                  onToChange={(v) =>
+                     setFormState((prev) => ({ ...prev, toAddress: v }))
+                  }
+                  onSubmit={() => {
+                     setFormState(defaultState);
+                     setCurrentStep(0);
+                     localStorage.removeItem(`requestData_${user?.id}`);
+                  }}
+                  onConfirm={handleConfirm}
+                  onNext={() => setCurrentStep(3)}
+               />
+            )}
+         </form>
+
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
             />
          )}
-         {currentStep >= 1 && (
-            <Step2
-               value={formState.moveDate}
-               onChange={(v) =>
-                  setFormState((prev) => ({ ...prev, moveDate: v }))
-               }
-               onNext={() => setCurrentStep(2)}
-            />
-         )}
-         {currentStep >= 2 && (
-            <Step3
-               isFormValid={isFormValid}
-               from={formState.fromAddress}
-               to={formState.toAddress}
-               onFromChange={(v) =>
-                  setFormState((prev) => ({ ...prev, fromAddress: v }))
-               }
-               onToChange={(v) =>
-                  setFormState((prev) => ({ ...prev, toAddress: v }))
-               }
-               onSubmit={() => {
-                  setFormState(defaultState);
-                  setCurrentStep(0);
-                  localStorage.removeItem(`requestData_${user?.id}`);
-               }}
-               onConfirm={handleConfirm}
-               onNext={() => setCurrentStep(3)}
-            />
-         )}
-      </form>
+      </>
    );
 }
