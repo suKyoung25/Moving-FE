@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import RequestCard from "./RequestCard";
 import { ReceivedRequest, ReceivedRequestsProps } from "@/lib/types";
 import { useReceivedRequestsQuery } from "@/lib/api/request/query";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import RequestCardSkeleton from "./RequestCardSkeleton";
+import ToastPopup from "@/components/common/ToastPopup";
 
 export default function ReceivedRequestsList({
    moveType,
@@ -16,6 +17,11 @@ export default function ReceivedRequestsList({
    onLoadingChange,
 }: ReceivedRequestsProps) {
    const observerRef = useRef<HTMLDivElement | null>(null);
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
    const {
       data,
@@ -63,7 +69,7 @@ export default function ReceivedRequestsList({
          <div className="flex flex-col gap-6 md:gap-8 lg:gap-12">
             {data?.pages.map((page) =>
                (page as { requests: ReceivedRequest[] }).requests.map((req) => (
-                  <RequestCard key={req.id} req={req} />
+                  <RequestCard key={req.id} req={req} setToast={setToast} />
                )),
             )}
          </div>
@@ -78,6 +84,13 @@ export default function ReceivedRequestsList({
                </p>
             )}
          </div>
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
+            />
+         )}
       </>
    );
 }

@@ -7,7 +7,19 @@ import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 
-export function FavoriteButton({ mover }: { mover: Mover }) {
+interface FavoriteButtonProps {
+   mover: Mover;
+   onFavoriteChange?: (
+      moverId: string,
+      isFavorite: boolean,
+      favoriteCount: number,
+   ) => void;
+}
+
+export function FavoriteButton({
+   mover,
+   onFavoriteChange,
+}: FavoriteButtonProps) {
    const [isLoading, setIsLoading] = useState(false);
    const [isFavorite, setIsFavorite] = useState(mover.isFavorite ?? false);
 
@@ -21,11 +33,17 @@ export function FavoriteButton({ mover }: { mover: Mover }) {
       setIsLoading(true);
 
       try {
-         // tokenFetch를 사용하므로 token 매개변수 제거
          const result = await toggleFavoriteMover(mover.id);
 
          // 서버 응답으로 UI 업데이트
          setIsFavorite(result.isFavorite);
+
+         // 🔥 부모 컴포넌트에 상태 변경 알림
+         onFavoriteChange?.(
+            mover.id,
+            result.isFavorite,
+            result.favoriteCount || mover.favoriteCount,
+         );
 
          const message =
             result.action === "added"

@@ -5,9 +5,22 @@ import { useAuth } from "@/context/AuthContext";
 import { FavoriteButton } from "./FavoriteButton";
 import { EstimateRequestButton } from "./EstimateRequestButton";
 
-export default function ActionButtons({ mover }: { mover: Mover }) {
-   const { user } = useAuth();
+interface ActionButtonsProps {
+   mover: Mover;
+   onDesignatedEstimateSuccess?: (moverId: string) => void;
+   onFavoriteChange?: (
+      moverId: string,
+      isFavorite: boolean,
+      favoriteCount: number,
+   ) => void;
+}
 
+export default function ActionButtons({
+   mover,
+   onDesignatedEstimateSuccess,
+   onFavoriteChange,
+}: ActionButtonsProps) {
+   const { user } = useAuth();
    const isLoggedInAsMover = user?.userType === "mover";
 
    if (isLoggedInAsMover) {
@@ -23,8 +36,12 @@ export default function ActionButtons({ mover }: { mover: Mover }) {
          </div>
 
          <div className="flex flex-row space-x-3 lg:flex-col lg:space-y-3">
-            <FavoriteButton mover={mover} />
-            <EstimateRequestButton moverId={mover.id} />
+            <FavoriteButton mover={mover} onFavoriteChange={onFavoriteChange} />
+            <EstimateRequestButton
+               moverId={mover.id}
+               mover={mover}
+               onDesignatedEstimateSuccess={onDesignatedEstimateSuccess}
+            />
          </div>
       </div>
    );

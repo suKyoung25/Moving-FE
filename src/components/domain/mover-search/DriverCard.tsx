@@ -8,6 +8,7 @@ import type { Mover } from "@/lib/types";
 import { validateServiceTypes } from "@/lib/utils/moveChip.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
+import { EstimateStatus } from "@/lib/types";
 
 interface DriverCardProps {
    mover: Mover;
@@ -16,6 +17,14 @@ interface DriverCardProps {
       isFavorite: boolean,
       favoriteCount: number,
    ) => void;
+}
+function shouldShowDesignatedChip(mover: Mover): boolean {
+   // 지정견적 요청이 있고, 아직 처리되지 않은 경우 (CONFIRMED나 REJECTED가 아닌 경우)
+   return !!(
+      mover.hasDesignatedRequest &&
+      mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
+      mover.designatedEstimateStatus !== EstimateStatus.REJECTED
+   );
 }
 
 export default function DriverCard({
@@ -26,18 +35,13 @@ export default function DriverCard({
    const pathname = usePathname();
    const { user } = useAuth();
 
-   // 현재 로그인한 사용자가 기사님(mover)인지 확인
    const isLoggedInAsMover = user?.userType === "mover";
-
-   // 찜 목록 페이지인지 확인
    const isFavoritePage = pathname.includes("favorite-movers");
 
-   // 찜 목록 페이지에서는 항상 true, 아니면 API 값 사용
    const [currentFavoriteState, setCurrentFavoriteState] = useState(
       isFavoritePage ? true : (mover.isFavorite ?? false),
    );
 
-   // mover.isFavorite가 변경될 때마다 상태 동기화 (찜 목록 페이지 제외)
    useEffect(() => {
       if (!isFavoritePage) {
          setCurrentFavoriteState(mover.isFavorite ?? false);
@@ -51,13 +55,11 @@ export default function DriverCard({
    const handleLikedClick = async (e: React.MouseEvent) => {
       e.stopPropagation();
 
-      // 로그인한 사용자가 기사님이면 찜 클릭 방지
       if (isLoggedInAsMover) {
          alert("기사님은 다른 기사님을 찜할 수 없습니다.");
          return;
       }
 
-      // 로그인하지 않은 경우
       if (!user) {
          alert("로그인이 필요합니다.");
          return;
@@ -66,10 +68,8 @@ export default function DriverCard({
       try {
          const result = await toggleFavoriteMover(mover.id);
 
-         // 로컬 상태 업데이트
          setCurrentFavoriteState(result.isFavorite);
 
-         // 부모 컴포넌트에 변경사항 알림
          onFavoriteChange?.(
             mover.id,
             result.isFavorite,
@@ -106,15 +106,24 @@ export default function DriverCard({
       >
          <div className="flex flex-col">
             <div className="mb-2 flex items-center gap-2">
+               {/* 기존 서비스 타입 칩들 */}
                {validServiceTypes.map((type) => (
                   <MoveChip key={type} type={type} mini={false} />
                ))}
+
+               {/* DESIGNATED 칩: 지정견적 요청 있고 아직 미처리 */}
+               {shouldShowDesignatedChip(mover) && (
+                  <MoveChip type="DESIGNATED" mini={false} />
+               )}
             </div>
 
-            <p className="text-14-semibold md:text-14-semibold lg:text-24-semibold mb-3 text-gray-700">
-               {mover.introduction ||
-                  "고객님의 물품을 안전하게 운송해 드립니다."}
-            </p>
+            {/* 소개글 */}
+            <div className="mb-4">
+               <p className="text-14-medium md:text-16-medium lg:text-18-medium line-clamp-2 leading-relaxed break-words text-gray-700">
+                  {mover.introduction ||
+                     "고객님의 물품을 안전하게 운송해 드립니다."}
+               </p>
+            </div>
 
             <div className="box-border h-20 w-72 md:w-[34rem] lg:h-24 lg:w-[56rem]">
                <MoverProfile
@@ -128,7 +137,7 @@ export default function DriverCard({
                   career={Number(mover.career) || 0}
                   estimateCount={mover.estimateCount}
                   profileImage={mover.profileImage}
-                  showHeart={!isLoggedInAsMover} // 로그인한 사용자가 기사님이 아닐 때만 하트 표시
+                  showHeart={!isLoggedInAsMover}
                />
             </div>
          </div>

@@ -41,7 +41,7 @@ export default function useSignInForm() {
          if (!res.data?.isProfileCompleted) {
             router.replace("/profile/create");
          } else {
-            router.replace("/mover-search");
+            router.replace("/received-requests");
          }
       } catch (error) {
          console.error("로그인 실패: ", error);
