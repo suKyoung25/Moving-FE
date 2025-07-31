@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import SentQuoteDetail from "@/components/domain/my-quotes/SentQuoteDetail";
 

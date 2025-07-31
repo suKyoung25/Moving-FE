@@ -5,7 +5,6 @@ import SocialShareGroup from "@/components/common/SocialShareGroup";
 import SentQuoteDetailContent from "./SentQuoteDetailContent";
 import { Suspense } from "react";
 import SentQuoteDetailSkeleton from "./SentQuoteDetailSkeleton";
-import ToastPopup from "@/components/common/ToastPopup";
 
 export default async function SentQuoteDetail({ id }: { id: string }) {
    const estimate = await getSentEstimateDetail(id);
