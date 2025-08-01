@@ -6,18 +6,24 @@ import { getClientActiveRequest } from "@/lib/api/estimate/requests/getClientReq
 import { createDesignatedEstimate } from "@/lib/api/estimate/requests/createDesignatedEstimate";
 import { Mover, Request } from "@/lib/types";
 import ToastPopup from "@/components/common/ToastPopup";
+import { useAuth } from "@/context/AuthContext";
 
 interface EstimateRequestButtonProps {
    moverId: string;
    mover: Mover;
    onDesignatedEstimateSuccess?: (moverId: string) => void;
+   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+   setIsResultModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function EstimateRequestButton({
    moverId,
    mover,
    onDesignatedEstimateSuccess,
+   setErrorMessage,
+   setIsResultModalOpen,
 }: EstimateRequestButtonProps) {
+   const { user } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
    const [activeRequest, setActiveRequest] = useState<Request | null>(null);
    const [showNoRequestModal, setShowNoRequestModal] = useState(false);
@@ -36,6 +42,10 @@ export function EstimateRequestButton({
    }, [mover.hasDesignatedRequest]);
 
    const handleClick = async () => {
+      if (!user) {
+         setErrorMessage("로그인이 필요한 기능입니다.");
+         setIsResultModalOpen(true);
+      }
       // 🔥 이미 성공한 경우 클릭 막기
       if (isRequestSuccess) return;
 
