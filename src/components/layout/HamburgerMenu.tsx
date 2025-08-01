@@ -45,7 +45,7 @@ export default function HamburgerMenu({
            ]
          : [
               { label: "받은 요청", href: "/received-requests" },
-              { label: "내 견적 관리", href: "/my-quotes/mover" },
+              { label: "내 견적 관리", href: "/my-quotes/mover?tab=1" },
            ]
       : [
            { label: "로그인", href: "/sign-in/client" },
