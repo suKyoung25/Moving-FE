@@ -25,22 +25,6 @@ export default function Pending() {
 
    const router = useRouter();
 
-   useEffect(() => {
-      async function getMyPendingQuotes() {
-         try {
-            setIsLoading(true);
-            const result = await fetchClientPendingQuotes();
-            setData(result.data);
-         } catch (e) {
-            console.error(e);
-         } finally {
-            setIsLoading(false);
-         }
-      }
-
-      getMyPendingQuotes();
-   }, []);
-
    const handleClickConfirmed = async (estimateId: string) => {
       try {
          await postClientConfirmedQuote(estimateId);
