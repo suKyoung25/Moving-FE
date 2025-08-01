@@ -15,6 +15,28 @@ export interface MyReview extends WritableReview {
    createdAt: Date;
 }
 
+export interface WritableReviewsResponse {
+   data: {
+      estimates: WritableReview[];
+      pagination: {
+         page: number;
+         limit: number;
+         totalPages: number;
+      };
+   };
+}
+
+export interface MyReviewsResponse {
+   data: {
+      reviews: MyReview[];
+      pagination: {
+         page: number;
+         limit: number;
+         totalPages: number;
+      };
+   };
+}
+
 // TODO: schemas로 이동?
 export interface Review {
    id: string;
@@ -26,13 +48,13 @@ export interface Review {
 }
 
 export interface MoverReview {
-  id: string;
-  rating: number;
-  content: string;
-  createdAt: Date | string;
-  clientName: string;
-  price: number;
-  moveType: string;
-  moveDate: string;
-  isDesignatedEstimate: boolean;
+   id: string;
+   rating: number;
+   content: string;
+   createdAt: Date | string;
+   clientName: string;
+   price: number;
+   moveType: string;
+   moveDate: string;
+   isDesignatedEstimate: boolean;
 }

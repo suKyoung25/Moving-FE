@@ -1,154 +1,166 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import MoveChip from "@/components/common/MoveChip";
 import Image from "next/image";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
 import ReviewModal from "./ReviewModal";
-import { WritableReview } from "@/lib/types";
-import { formatIsoToYMD } from "@/lib/utils";
-import { isChipType } from "@/lib/utils/moveChip.util";
-import { getWritableReviews } from "@/lib/api/review/getWritableReviews";
 import Pagination from "@/components/common/pagination";
 import EmptyState from "@/components/common/EmptyState";
 import { useTranslations } from "next-intl";
+import { isChipType } from "@/lib/utils/moveChip.util";
+import { formatIsoToYMD } from "@/lib/utils";
+import { WritableReview } from "@/lib/types";
+import { useWritableReviews } from "@/lib/api/review/query";
+import ToastPopup from "@/components/common/ToastPopup";
 
 export default function WritableReviews() {
    const t = useTranslations("Reviews");
 
-   // 작성 가능한 리뷰 목록
-   const [writableReviews, setWritableReviews] = useState<WritableReview[]>([]);
-   // 페이지네이션
-   const [pagination, setPagination] = useState(() => {
-      let initialLimit = 6;
-      if (typeof window !== "undefined" && window.innerWidth < 1440) {
-         initialLimit = 4;
-      }
-      return {
-         page: 1,
-         limit: initialLimit,
-         totalPages: 1,
-      };
+   // 페이지네이션 상태
+   const [pagination, setPagination] = useState({
+      page: 1,
+      limit: 6,
+      totalPages: 1,
    });
    // 선택된 estimate의 id를 저장
    const [selectedId, setSelectedId] = useState<string | null>(null);
-   // 리뷰 작성 성공 여부
-   const [reviewSubmitted, setReviewSubmitted] = useState(false);
-   // 로딩 상태
-   const [loading, setLoading] = useState(false);
+   // 작성 가능한 리뷰 리스트
+   const { data, isLoading, error, refetch, isFetching } = useWritableReviews({
+      page: pagination.page,
+      limit: pagination.limit,
+   });
+   //토스트 상태
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
+   // 페이지네이션 핸들러
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
    };
 
-   useEffect(() => {
-      async function fetchData() {
-         try {
-            setLoading(true);
-            const res = await getWritableReviews(
-               pagination.page,
-               pagination.limit,
-            );
-            setWritableReviews(res.data.estimates);
-            setPagination(res.data.pagination);
-         } catch (error) {
-            console.error(error);
-         } finally {
-            setLoading(false);
-         }
-      }
-      fetchData();
-   }, [pagination.page, pagination.limit, reviewSubmitted]);
-
-   // id로 해당 estimate 객체 찾기
+   // 선택된 estimate 객체 찾기
    const selectedEstimate = useMemo(() => {
-      return writableReviews.find((item) => item.estimateId === selectedId);
-   }, [selectedId, writableReviews]);
+      return (
+         data?.data.estimates.find((item) => item.estimateId === selectedId) ??
+         null
+      );
+   }, [selectedId, data]);
+
+   // 리뷰 작성 성공 시 상태 토글해서 refetch
+   const handleReviewSuccess = () => {
+      refetch();
+      setToast({
+         id: Date.now(),
+         text: "리뷰가 성공적으로 등록되었습니다.",
+         success: true,
+      });
+   };
+
+   const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
+
+   if (error) {
+      return <div>{t("errorOccurred") || "오류가 발생했습니다."}</div>;
+   }
+
+   if (isLoading || isFetching) {
+      return <div>로딩중...</div>;
+   }
 
    return (
       <div>
          <div className="grid grid-cols-1 gap-8 lg:mb-6 lg:grid-cols-2 lg:gap-6">
-            {writableReviews.map((writableReview) => (
-               <div
-                  key={writableReview.estimateId}
-                  className="border-line-100 h-52 w-full rounded-2xl border bg-white px-3.5 pt-5 pb-3.5 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 md:px-4 lg:mb-6 lg:h-86.5 lg:px-6 lg:py-8"
-               >
-                  <div className="mb-3.5 flex gap-2 lg:gap-3">
-                     {isChipType(writableReview.moveType) ? (
-                        <MoveChip type={writableReview.moveType} />
-                     ) : null}
-                     {writableReview.isDesignatedEstimate && (
-                        <MoveChip type={"DESIGNATED"} />
-                     )}
-                  </div>
-                  <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
-                     {/* 프로필 이미지 */}
-                     <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
-                        <Image
-                           src={writableReview.moverProfileImage || profile}
-                           alt="프로필"
-                           fill
-                           className="object-cover"
-                        />
-                     </div>
-                     {/* 정보 영역 */}
-                     <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                           <span className="text-14-semibold lg:text-18-semibold text-black-300">
-                              {writableReview.moverNickName} {t("mover")}
-                           </span>
-                        </div>
-                        <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
-                           <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>{t("moveDate")}</span>
-                              <span className="text-black-300">
-                                 {formatIsoToYMD(writableReview.moveDate)}
-                              </span>
-                           </span>
-                           <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
-                           <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>{t("price")}</span>
-                              <span className="text-black-300">
-                                 {writableReview.price.toLocaleString()}
-                                 {t("money")}
-                              </span>
-                           </span>
-                        </div>
-                     </div>
-                  </div>
-                  <SolidButton
-                     onClick={() => setSelectedId(writableReview.estimateId)}
+            {(data?.data.estimates ?? []).map(
+               (writableReview: WritableReview) => (
+                  <div
+                     key={writableReview.estimateId}
+                     className="border-line-100 h-52 w-full rounded-2xl border bg-white px-3.5 pt-5 pb-3.5 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 md:px-4 lg:mb-6 lg:h-86.5 lg:px-6 lg:py-8"
                   >
-                     {t("writeReview")}
-                  </SolidButton>
-               </div>
-            ))}
+                     <div className="mb-3.5 flex gap-2 lg:gap-3">
+                        {isChipType(writableReview.moveType) ? (
+                           <MoveChip type={writableReview.moveType} />
+                        ) : null}
+                        {writableReview.isDesignatedEstimate && (
+                           <MoveChip type={"DESIGNATED"} />
+                        )}
+                     </div>
+                     <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
+                        <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
+                           <Image
+                              src={writableReview.moverProfileImage || profile}
+                              alt="프로필"
+                              fill
+                              className="object-cover"
+                           />
+                        </div>
+                        <div className="flex-1">
+                           <div className="flex items-center justify-between">
+                              <span className="text-14-semibold lg:text-18-semibold text-black-300">
+                                 {writableReview.moverNickName} {t("mover")}
+                              </span>
+                           </div>
+                           <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
+                              <span className="flex items-center gap-1.5 lg:gap-3">
+                                 <span>{t("moveDate")}</span>
+                                 <span className="text-black-300">
+                                    {formatIsoToYMD(writableReview.moveDate)}
+                                 </span>
+                              </span>
+                              <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
+                              <span className="flex items-center gap-1.5 lg:gap-3">
+                                 <span>{t("price")}</span>
+                                 <span className="text-black-300">
+                                    {writableReview.price.toLocaleString()}
+                                    {t("money")}
+                                 </span>
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                     <SolidButton
+                        onClick={() => setSelectedId(writableReview.estimateId)}
+                     >
+                        {t("writeReview")}
+                     </SolidButton>
+                  </div>
+               ),
+            )}
          </div>
+
+         {/* 페이지네이션 컴포넌트 */}
          <Pagination
             page={pagination.page}
-            totalPages={pagination.totalPages}
+            totalPages={totalPages}
             onPageChange={handlePageChange}
          />
-         {/* 로딩 중일 때 */}
-         {loading && (
-            <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
-               {t("loading")}
-            </div>
-         )}
 
-         {/* 로딩 중이 아니고, 리뷰 목록이 비었을 때 */}
-         {!loading && writableReviews.length === 0 && (
+         {/* 리뷰 목록이 없을 때 */}
+         {!isLoading && (data?.data.estimates.length ?? 0) === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <EmptyState message={t("noWritableReviews")} />
             </div>
          )}
+
+         {/* 리뷰 작성 모달 */}
          {selectedId && selectedEstimate && (
             <ReviewModal
                isOpen={true}
                onClose={() => setSelectedId(null)}
                selectedEstimate={selectedEstimate}
-               onReviewSuccess={() => setReviewSubmitted((prev) => !prev)}
+               onReviewSuccess={handleReviewSuccess}
+            />
+         )}
+
+         {/* 토스트 팝업*/}
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
             />
          )}
       </div>
