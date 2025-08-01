@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { CreateRequestDto, FormWizardState } from "@/lib/types";
-import { getClientActiveRequests } from "@/lib/api/estimate/requests/getClientRequest";
+import { getClientActiveRequest } from "@/lib/api/estimate/requests/getClientRequest";
 import {
    getRequestDraft,
    patchRequestDraft,
@@ -19,13 +19,7 @@ import {
 import { debounce } from "lodash";
 import { createRequestAction } from "@/lib/actions/request.action";
 import ToastPopup from "@/components/common/ToastPopup";
-
-interface FormWizardProps {
-   currentStep: number;
-   setCurrentStep: (val: number) => void;
-   isPending: boolean;
-   setIsPending: (val: boolean) => void;
-}
+import { useFormWizard } from "@/context/FormWizardContext";
 
 const defaultState: FormWizardState = {
    moveType: undefined,
@@ -34,13 +28,10 @@ const defaultState: FormWizardState = {
    toAddress: undefined,
 };
 
-export default function FormWizard({
-   currentStep,
-   setCurrentStep,
-   isPending,
-   setIsPending,
-}: FormWizardProps) {
+export default function FormWizard({}) {
    const { user, isLoading } = useAuth();
+   const { currentStep, setCurrentStep, isPending, setIsPending } =
+      useFormWizard();
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
    const [isInitialized, setIsInitialized] = useState(false);
 
@@ -63,19 +54,14 @@ export default function FormWizard({
          if (!user) return;
 
          try {
-            const data = await getClientActiveRequests();
-            const activeRequest = data.requests[0];
+            const data = await getClientActiveRequest();
 
-            const isActive =
-               activeRequest &&
-               new Date(activeRequest.moveDate) > new Date() &&
-               activeRequest.isPending;
-
-            if (isActive) {
+            if (data.request) {
                setCurrentStep(4);
                return;
             }
 
+            setCurrentStep(0);
             const draftRes = await getRequestDraft();
             const draft = draftRes?.data;
 
@@ -147,7 +133,7 @@ export default function FormWizard({
 
          setToast({
             id: Date.now(),
-            text: "견적 요청에 실패했어요.",
+            text: "이미 진행 중인 견적 요청이 있어요.",
             success: false,
          });
       }

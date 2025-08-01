@@ -1,13 +1,13 @@
 export interface Request {
-   id: number;
+   id: string;
    clientId: string;
    moverId: string;
    moveType: "SMALL" | "HOME" | "OFFICE";
    moveDate: Date;
    fromAddress: string;
    toAddress: string;
-   isDesignated: boolean;
-   requestStatus: "pending" | "confirmed" | "rejected";
+   isPending: boolean;
+   isDesignated?: boolean;
    rejectedReason?: string;
    requestedAt: Date;
 }

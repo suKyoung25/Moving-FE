@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/context/AuthContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import RouterGuardLayout from "@/components/layout/RouterGuardLayout";
+import { FormWizardProvider } from "@/context/FormWizardContext";
 
 export function Providers({ children }: { children: ReactNode }) {
    const [queryClient] = useState(() => new QueryClient());
@@ -14,7 +15,9 @@ export function Providers({ children }: { children: ReactNode }) {
       <AuthProvider>
          <RouterGuardLayout>
             <QueryClientProvider client={queryClient}>
-               <NotificationProvider>{children}</NotificationProvider>
+               <NotificationProvider>
+                  <FormWizardProvider>{children}</FormWizardProvider>
+               </NotificationProvider>
                <Toaster position="top-center" />
             </QueryClientProvider>
          </RouterGuardLayout>
