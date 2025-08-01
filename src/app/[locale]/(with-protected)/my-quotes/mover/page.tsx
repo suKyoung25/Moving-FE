@@ -12,7 +12,7 @@ export default function Page() {
    const searchParams = useSearchParams();
 
    const tab = searchParams.get("tab");
-   const activeTab = tab === "2" ? "2" : "1";
+   const activeTab = tab === "1" ? "1" : "2";
 
    useEffect(() => {
       if (!tab) {

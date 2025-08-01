@@ -1,17 +1,13 @@
 import { tokenFetch } from "@/lib/utils";
 import { delay } from "../../../../../delay";
 
-export async function getSentEstimates() {
-   await delay(3000);
-   try {
-      const data = await tokenFetch("/estimates/sent", {
-         method: "GET",
-         cache: "no-store",
-      });
+export async function getSentEstimates(page: number = 1) {
+   await delay(500);
 
-      return data;
-   } catch (error) {
-      console.error("보낸 견적 목록을 불러오지 못했습니다.", error);
-      return [];
-   }
+   const res = await tokenFetch(`/estimates/sent?page=${page}`, {
+      method: "GET",
+      cache: "no-store",
+   });
+
+   return res;
 }

@@ -1,51 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getRejectedEstimates } from "@/lib/api/estimate/requests/getRejectedEstimates";
 import EmptyState from "@/components/common/EmptyState";
 import QuoteCard from "./QuoteCard";
-import { MyEstimateDetail } from "@/lib/types";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import RejectedRequestsSkeleton from "./RejectedRequestsSkeleton";
+import { useState } from "react";
+import { MyEstimateDetail } from "@/lib/types";
+import Pagination from "@/components/common/pagination";
+import { useRejectedEstimates } from "@/lib/api/estimate/query";
 
 export default function RejectedRequestsList() {
-   const [estimates, setEstimates] = useState<MyEstimateDetail[] | null>(null);
-   const [isLoading, setIsLoading] = useState(true);
+   const [page, setPage] = useState(1);
+   const { data, isLoading } = useRejectedEstimates(page);
 
-   useEffect(() => {
-      const fetchData = async () => {
-         const response = await getRejectedEstimates();
-         setEstimates(response?.data ?? []);
-         setIsLoading(false);
-      };
-
-      fetchData();
-   }, []);
-
-   if (isLoading) {
-      return (
-         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
-            <SkeletonLayout
-               count={6}
-               SkeletonComponent={RejectedRequestsSkeleton}
-            />
-         </div>
-      );
-   }
-
-   const hasEstimates = estimates && estimates.length > 0;
+   const estimates = data?.data ?? [];
+   const totalPages = data?.totalPages ?? 1;
+   const hasEstimates = estimates.length > 0;
 
    return (
       <div>
-         {hasEstimates ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
-               {estimates.map((est) => (
+         {/* 카드 영역 */}
+         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
+            {isLoading ? (
+               <SkeletonLayout
+                  count={6}
+                  SkeletonComponent={RejectedRequestsSkeleton}
+               />
+            ) : hasEstimates ? (
+               estimates.map((est: MyEstimateDetail) => (
                   <QuoteCard key={est.id} estimate={est} />
-               ))}
-            </div>
-         ) : (
-            <EmptyState message="아직 반려한 견적이 없습니다." />
-         )}
+               ))
+            ) : (
+               <EmptyState message="아직 반려한 견적이 없습니다." />
+            )}
+         </div>
+         <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+         />
       </div>
    );
 }
