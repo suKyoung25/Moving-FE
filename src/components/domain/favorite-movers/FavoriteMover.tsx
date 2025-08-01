@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import MoverProfile from "@/components/common/MoverProfile";
@@ -9,26 +8,21 @@ import MoveChip from "@/components/common/MoveChip";
 import Pagination from "@/components/common/pagination";
 import EmptyState from "@/components/common/EmptyState";
 import SolidButton from "@/components/common/SolidButton";
-import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { isChipType } from "@/lib/utils/moveChip.util";
-import { FavoriteMoversResponse, FavoriteMoverState } from "@/lib/types";
+import { FavoriteMoverState } from "@/lib/types";
 import ToastPopup from "@/components/common/ToastPopup";
+import { useFavoriteMovers } from "@/lib/api/favorite/query";
+import { useToggleFavoriteMover } from "@/lib/api/favorite/mutation";
 
 export default function FavoriteMover() {
    const t = useTranslations("FavoriteMovers");
    const router = useRouter();
 
    // 페이지네이션 상태
-   const [pagination, setPagination] = useState(() => {
-      let initialLimit = 6;
-      if (typeof window !== "undefined" && window.innerWidth < 1440)
-         initialLimit = 4;
-      return {
-         page: 1,
-         limit: initialLimit,
-         totalPages: 1,
-      };
+   const [pagination, setPagination] = useState({
+      page: 1,
+      limit: 6,
+      totalPages: 1,
    });
    const [toast, setToast] = useState<{
       id: number;
@@ -36,55 +30,17 @@ export default function FavoriteMover() {
       success: boolean;
    } | null>(null);
 
-   const queryClient = useQueryClient();
-
    // 찜한 기사님 리스트 패치
-   const { data, isPending, error } = useQuery({
-      queryKey: ["favoriteMovers", pagination.page, pagination.limit],
-      queryFn: () => getFavoriteMovers(pagination.page, pagination.limit),
-      placeholderData: (previous) => previous,
-      staleTime: 1000 * 60, // 1분
+   const { data, isPending, error } = useFavoriteMovers({
+      page: pagination.page,
+      limit: pagination.limit,
    });
 
    // 찜 토글 뮤테이션
-   const { mutate } = useMutation({
-      mutationFn: toggleFavoriteMover,
-      onSuccess: (res, moverId) => {
-         queryClient.setQueryData<FavoriteMoversResponse>(
-            ["favoriteMovers", pagination.page, pagination.limit],
-            (oldData) => {
-               if (!oldData || !oldData.data?.movers) return oldData;
-               return {
-                  ...oldData,
-                  data: {
-                     ...oldData.data,
-                     movers: oldData.data.movers.map(
-                        (mover: FavoriteMoverState) =>
-                           mover.id === moverId
-                              ? {
-                                   ...mover,
-                                   isLiked: res.isFavorite,
-                                   favoriteCount: res.favoriteCount,
-                                }
-                              : mover,
-                     ),
-                  },
-               };
-            },
-         );
-         setToast({
-            id: Date.now(),
-            text: "찜이 성공적으로 변경되었습니다.",
-            success: true,
-         });
-      },
-      onError: () => {
-         setToast({
-            id: Date.now(),
-            text: "찜 처리 중 오류가 발생했습니다.",
-            success: false,
-         });
-      },
+   const { mutate } = useToggleFavoriteMover({
+      page: pagination.page,
+      limit: pagination.limit,
+      onToast: setToast,
    });
 
    const handleLikedClick = (moverId: string) => mutate(moverId);

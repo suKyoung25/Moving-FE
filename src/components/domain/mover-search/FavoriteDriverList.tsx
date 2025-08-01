@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
-import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
+import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
 import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
