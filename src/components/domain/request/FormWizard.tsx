@@ -5,21 +5,18 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import ChatMessage from "./ChatMessage";
-import SolidButton from "@/components/common/SolidButton";
-import carImage from "@/assets/images/emptyCarIcon.svg";
-import Image from "next/image";
-import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { CreateRequestDto, FormWizardState } from "@/lib/types";
-import { getClientActiveRequest } from "@/lib/api/estimate/requests/getClientRequest";
-import {
-   getRequestDraft,
-   patchRequestDraft,
-} from "@/lib/api/request/requests/requestDraftApi";
+import { patchRequestDraft } from "@/lib/api/request/requests/requestDraftApi";
 import { debounce } from "lodash";
 import { createRequestAction } from "@/lib/actions/request.action";
 import ToastPopup from "@/components/common/ToastPopup";
 import { useFormWizard } from "@/context/FormWizardContext";
+import {
+   useActiveRequest,
+   useRequestDraft,
+} from "@/lib/api/request/requests/query";
+import Step4 from "./Step4";
 
 const defaultState: FormWizardState = {
    moveType: undefined,
@@ -29,7 +26,7 @@ const defaultState: FormWizardState = {
 };
 
 export default function FormWizard({}) {
-   const { user, isLoading } = useAuth();
+   const { isLoading } = useAuth();
    const { currentStep, setCurrentStep, isPending, setIsPending } =
       useFormWizard();
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
@@ -47,49 +44,47 @@ export default function FormWizard({}) {
       !!formState.fromAddress &&
       !!formState.toAddress;
 
+   const { data: activeRequest, isPending: isActivePending } =
+      useActiveRequest();
+
+   const { data: draftRes, isPending: isDraftPending } = useRequestDraft();
+
    useEffect(() => {
-      if (isLoading) return;
+      if (isLoading || isActivePending || isDraftPending) return;
 
-      const init = async () => {
-         if (!user) return;
+      if (activeRequest?.request) {
+         setCurrentStep(4);
+         setIsPending(false);
+         return;
+      }
 
-         try {
-            const data = await getClientActiveRequest();
+      console.log("draft: ", draftRes.data);
 
-            if (data.request) {
-               setCurrentStep(4);
-               return;
-            }
-
+      if (!isInitialized) {
+         if (draftRes?.data) {
+            const { moveType, moveDate, fromAddress, toAddress, currentStep } =
+               draftRes.data;
+            setFormState({ moveType, moveDate, fromAddress, toAddress });
+            setCurrentStep(currentStep ?? 0);
+         } else {
+            setFormState(defaultState);
             setCurrentStep(0);
-            const draftRes = await getRequestDraft();
-            const draft = draftRes?.data;
-
-            if (draft) {
-               const {
-                  moveType,
-                  moveDate,
-                  fromAddress,
-                  toAddress,
-                  currentStep,
-               } = draft;
-
-               setFormState({ moveType, moveDate, fromAddress, toAddress });
-               setCurrentStep(currentStep ?? 0);
-            } else {
-               setFormState(defaultState);
-               setCurrentStep(0);
-            }
-         } catch (err) {
-            console.error("초기 로딩 실패:", err);
-         } finally {
-            setIsPending(false);
-            setIsInitialized(true);
          }
-      };
-      init();
-   }, [user, isLoading]);
+         setIsInitialized(true);
+         setIsPending(false);
+      }
 
+      setIsPending(false);
+   }, [
+      isLoading,
+      isActivePending,
+      isDraftPending,
+      activeRequest,
+      draftRes,
+      isInitialized,
+   ]);
+
+   // 견적 요청 상태 중간 저장
    const debouncedSave = useMemo(
       () =>
          debounce(async (nextState: FormWizardState, step: number) => {
@@ -108,15 +103,15 @@ export default function FormWizard({}) {
    );
 
    useEffect(() => {
-      if (!user || !isInitialized) return;
+      if (!isInitialized) return;
       if (currentStep >= 1) {
          debouncedSave(formState, currentStep);
          console.log("saved:", { formState, currentStep });
       }
-   }, [formState, currentStep, user, isInitialized]);
+   }, [formState, currentStep, isInitialized]);
 
    const handleConfirm = async () => {
-      if (!user || !isFormValid) return;
+      if (!isFormValid) return;
 
       try {
          await createRequestAction(formState as CreateRequestDto);
@@ -144,33 +139,7 @@ export default function FormWizard({}) {
    }
 
    if (currentStep === 4) {
-      return (
-         <div className="mt-30 flex flex-col items-center gap-8">
-            <Image
-               src={carImage}
-               alt="견적 요청 진행중"
-               className="w-61 lg:mb-8 lg:w-[402px]"
-            />
-            <p className="flex justify-center text-center text-sm text-gray-400 lg:text-xl">
-               현재 진행 중인 이사 견적이 있어요!
-               <br />
-               진행 중인 이사 완료 후 새로운 견적을 받아보세요.
-            </p>
-            <Link href="/my-quotes/client">
-               <SolidButton className="max-w-[196px] px-6">
-                  받은 견적 보러가기
-               </SolidButton>
-            </Link>
-
-            {toast && (
-               <ToastPopup
-                  key={toast.id}
-                  text={toast.text}
-                  success={toast.success}
-               />
-            )}
-         </div>
-      );
+      return <Step4 />;
    }
 
    return (
@@ -209,10 +178,9 @@ export default function FormWizard({}) {
                   onToChange={(v) =>
                      setFormState((prev) => ({ ...prev, toAddress: v }))
                   }
-                  onSubmit={() => {
+                  onReset={() => {
                      setFormState(defaultState);
                      setCurrentStep(0);
-                     localStorage.removeItem(`requestData_${user?.id}`);
                   }}
                   onConfirm={handleConfirm}
                   onNext={() => setCurrentStep(3)}
