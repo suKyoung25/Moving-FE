@@ -1,64 +1,77 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import MoveChip from "@/components/common/MoveChip";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import yellowStar from "@/assets/images/starFilledIcon.svg";
 import grayStar from "@/assets/images/starOutlineIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
-import { MyReview } from "@/lib/types";
-import { formatIsoToYMD } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { getMyReviews } from "@/lib/api/review/getMyReviews";
 import Pagination from "@/components/common/pagination";
-import { isChipType } from "@/lib/utils/moveChip.util";
 import EmptyState from "@/components/common/EmptyState";
-import more from "@/assets/images/moreGrayIcon.svg";
 import EditDeleteReviewModal from "./EditDeleteReviewModal";
 import { useTranslations } from "next-intl";
+import { isChipType } from "@/lib/utils/moveChip.util";
+import { formatIsoToYMD } from "@/lib/utils";
+import { MyReview } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { useMyReviews } from "@/lib/api/review/query";
+import ToastPopup from "@/components/common/ToastPopup";
+import more from "@/assets/images/moreGrayIcon.svg";
 
 export default function MyReviews() {
    const t = useTranslations("Reviews");
    const router = useRouter();
-   const [reviews, setReviews] = useState<MyReview[]>([]);
-   const [pagination, setPagination] = useState(() => {
-      let initialLimit = 6;
-      // 첫 로딩 때 width로 limit값 결정
-      if (typeof window !== "undefined" && window.innerWidth < 1440) {
-         initialLimit = 4;
-      }
-      return {
-         page: 1,
-         limit: initialLimit,
-         totalPages: 1,
-      };
+
+   // 페이지네이션 상태
+   const [pagination, setPagination] = useState({
+      page: 1,
+      limit: 6,
+      totalPages: 1,
    });
-   // 로딩 상태
-   const [loading, setLoading] = useState(false);
+
+   // 수정 모달 및 선택된 리뷰 상태
    const [editModalOpen, setEditModalOpen] = useState(false);
    const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
-   const [refreshFlag, setRefreshFlag] = useState(false);
+   // 토스트 상태
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
+   // 리뷰 리스트 조회
+   const { data, isLoading, isFetching, error, refetch } = useMyReviews({
+      page: pagination.page,
+      limit: pagination.limit,
+   });
+
+   // 페이지네이션 핸들러
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
    };
 
-   useEffect(() => {
-      async function fetchData() {
-         try {
-            setLoading(true);
-            const res = await getMyReviews(pagination.page, pagination.limit);
-            setReviews(res.data.reviews);
-            setPagination(res.data.pagination);
-         } catch (error) {
-            console.error(error);
-         } finally {
-            setLoading(false);
-         }
-      }
-      fetchData();
-   }, [pagination.page, pagination.limit, refreshFlag]);
+   // 리뷰 수정/삭제 완료 시 리스트 새로고침
+   const handleRefresh = () => {
+      refetch();
+      setToast({
+         id: Date.now(),
+         text: "리뷰가 성공적으로 수정/삭제되었습니다.",
+         success: true,
+      });
+   };
+
+   // 리뷰 목록
+   const reviews: MyReview[] = data?.data.reviews ?? [];
+   const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
+
+   if (error) {
+      return <div>{t("errorOccurred") || "오류가 발생했습니다."}</div>;
+   }
+
+   if (isLoading || isFetching) {
+      return <div>로딩중...</div>;
+   }
 
    return (
       <div>
@@ -161,18 +174,16 @@ export default function MyReviews() {
                </div>
             ))}
          </div>
+
+         {/* 페이지네이션 */}
          <Pagination
             page={pagination.page}
-            totalPages={pagination.totalPages}
+            totalPages={totalPages}
             onPageChange={handlePageChange}
          />
-         {/* 로딩 중일 때 */}
-         {loading && (
-            <div className="mt-46 flex flex-col items-center justify-center text-lg text-gray-500">
-               {t("loading")}
-            </div>
-         )}
-         {!loading && reviews.length === 0 && (
+
+         {/* 리뷰 목록이 없을 때 */}
+         {!isLoading && reviews.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <EmptyState message={t("noReview")} />
                <SolidButton
@@ -183,6 +194,7 @@ export default function MyReviews() {
                </SolidButton>
             </div>
          )}
+
          {/* 수정/삭제 모달 */}
          {selectedReview && (
             <EditDeleteReviewModal
@@ -195,8 +207,17 @@ export default function MyReviews() {
                onSuccess={() => {
                   setEditModalOpen(false);
                   setSelectedReview(null);
-                  setRefreshFlag((prev) => !prev); // 성공 시 목록 새로고침
+                  handleRefresh();
                }}
+            />
+         )}
+
+         {/* 토스트 팝업 별도 렌더링 */}
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
             />
          )}
       </div>

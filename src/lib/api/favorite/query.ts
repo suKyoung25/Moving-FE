@@ -11,6 +11,6 @@ export function useFavoriteMovers({ page, limit }: UseFavoriteMoversParams) {
    return useQuery<FavoriteMoversResponse>({
       queryKey: ["favoriteMovers", page, limit],
       queryFn: () => getFavoriteMovers(page, limit),
-      placeholderData: (previous) => previous,
+      placeholderData: (prev) => prev,
    });
 }
