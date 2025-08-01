@@ -1,4 +1,5 @@
-export default async function QuoteCardSkeleton() {
+"use client";
+export default async function SentQuotesSkeleton() {
    return (
       <div className="animate-pulse rounded-2xl bg-white px-3.5 py-4 lg:px-6 lg:py-5">
          {/* 상단 칩 영역 */}

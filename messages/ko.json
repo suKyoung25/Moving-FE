@@ -33,7 +33,9 @@
       "cases": "건"
    },
    "FavoriteMovers": {
-      "title": "찜한 기사님"
+      "title": "찜한 기사님",
+      "noFavoriteMover": "찜한 기사님이 없습니다",
+      "goToFavorite": "찜하러 가기"
    },
    "MyQuotes": {
       "Client": {

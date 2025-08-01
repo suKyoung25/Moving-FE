@@ -3,10 +3,11 @@
 import React, { useEffect, useRef } from "react";
 import closeIcon from "@/assets/images/xIcon.svg";
 import Image from "next/image";
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
 import { formatDateDiff } from "@/lib/utils";
 import { readNotification } from "@/lib/api/notification/notification";
 import { Notification } from "@/lib/types/notification.types";
-import DOMPurify from "dompurify";
 import { useRouter } from "next/navigation";
 import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
@@ -90,17 +91,16 @@ export default function NotificationModal({
                      onClick={() => handleClick(item)}
                      className={`hover:bg-bg-200 border-b-line-200 flex w-full flex-col items-baseline gap-1 rounded-lg px-4 py-3 text-left font-medium max-lg:text-xs lg:px-6 lg:py-4 ${idx === notifications.length - 1 ? "" : "border-b-1"}`}
                   >
-                     <div
-                        className={item.isRead ? "text-gray-300" : ""}
-                        dangerouslySetInnerHTML={{
-                           __html: item.isRead
-                              ? DOMPurify.sanitize(item.content, {
+                     <div className={item.isRead ? "text-gray-300" : ""}>
+                        {item.isRead
+                           ? parse(
+                                DOMPurify.sanitize(item.content, {
                                    FORBID_ATTR: ["style"],
                                    FORBID_TAGS: ["script"],
-                                })
-                              : DOMPurify.sanitize(item.content),
-                        }}
-                     />
+                                }),
+                             )
+                           : parse(DOMPurify.sanitize(item.content))}
+                     </div>
                      <div className="text-gray-300 lg:text-sm">
                         {formatDateDiff(item.createdAt)}
                      </div>
