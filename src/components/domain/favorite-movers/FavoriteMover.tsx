@@ -1,82 +1,104 @@
 "use client";
 
-import MoverProfile from "@/components/common/MoverProfile";
-import React, { useEffect, useState } from "react";
-import MoveChip from "@/components/common/MoveChip";
-import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
-import { isChipType } from "@/lib/utils/moveChip.util";
-import Pagination from "@/components/common/pagination";
-import { FavoriteMoverState } from "@/lib/types";
-import EmptyState from "@/components/common/EmptyState";
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import SolidButton from "@/components/common/SolidButton";
 import { useRouter } from "next/navigation";
+import MoverProfile from "@/components/common/MoverProfile";
+import MoveChip from "@/components/common/MoveChip";
+import Pagination from "@/components/common/pagination";
+import EmptyState from "@/components/common/EmptyState";
+import SolidButton from "@/components/common/SolidButton";
+import { getFavoriteMovers } from "@/lib/api/favorite/getFavoriteMovers";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
+import { isChipType } from "@/lib/utils/moveChip.util";
+import { FavoriteMoversResponse, FavoriteMoverState } from "@/lib/types";
+import ToastPopup from "@/components/common/ToastPopup";
 
 export default function FavoriteMover() {
    const t = useTranslations("FavoriteMovers");
    const router = useRouter();
-   const [movers, setMovers] = useState<FavoriteMoverState[]>([]);
-   // 페이지네이션
+
+   // 페이지네이션 상태
    const [pagination, setPagination] = useState(() => {
       let initialLimit = 6;
-      if (typeof window !== "undefined" && window.innerWidth < 1440) {
+      if (typeof window !== "undefined" && window.innerWidth < 1440)
          initialLimit = 4;
-      }
       return {
          page: 1,
          limit: initialLimit,
          totalPages: 1,
       };
    });
-   const [loading, setLoading] = useState(false);
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
-   const handleLikedClick = async (moverId: string) => {
-      try {
-         const res = await toggleFavoriteMover(moverId);
-         // API 응답에서 직접 최신 상태값을 반영
-         setMovers((prevMovers) =>
-            prevMovers.map((mover) =>
-               mover.id === moverId
-                  ? {
-                       ...mover,
-                       isLiked: res.isFavorite, // 백엔드에서 정확한 현재 상태값 받기
-                       favoriteCount: res.favoriteCount, // 백엔드에서 계산한 찜 개수 반영
-                    }
-                  : mover,
-            ),
+   const queryClient = useQueryClient();
+
+   // 찜한 기사님 리스트 패치
+   const { data, isPending, error } = useQuery({
+      queryKey: ["favoriteMovers", pagination.page, pagination.limit],
+      queryFn: () => getFavoriteMovers(pagination.page, pagination.limit),
+      placeholderData: (previous) => previous,
+      staleTime: 1000 * 60, // 1분
+   });
+
+   // 찜 토글 뮤테이션
+   const { mutate } = useMutation({
+      mutationFn: toggleFavoriteMover,
+      onSuccess: (res, moverId) => {
+         queryClient.setQueryData<FavoriteMoversResponse>(
+            ["favoriteMovers", pagination.page, pagination.limit],
+            (oldData) => {
+               if (!oldData || !oldData.data?.movers) return oldData;
+               return {
+                  ...oldData,
+                  data: {
+                     ...oldData.data,
+                     movers: oldData.data.movers.map(
+                        (mover: FavoriteMoverState) =>
+                           mover.id === moverId
+                              ? {
+                                   ...mover,
+                                   isLiked: res.isFavorite,
+                                   favoriteCount: res.favoriteCount,
+                                }
+                              : mover,
+                     ),
+                  },
+               };
+            },
          );
-      } catch (error) {
-         alert("찜 처리 중 오류가 발생했습니다.");
-         console.error(error);
-      }
-   };
+         setToast({
+            id: Date.now(),
+            text: "찜이 성공적으로 변경되었습니다.",
+            success: true,
+         });
+      },
+      onError: () => {
+         setToast({
+            id: Date.now(),
+            text: "찜 처리 중 오류가 발생했습니다.",
+            success: false,
+         });
+      },
+   });
+
+   const handleLikedClick = (moverId: string) => mutate(moverId);
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
    };
 
-   useEffect(() => {
-      async function fetchData() {
-         setLoading(true);
-         try {
-            const res = await getFavoriteMovers(
-               pagination.page,
-               pagination.limit,
-            );
-            setMovers(res.data.movers);
-            setPagination(res.data.pagination);
-         } catch (error) {
-            console.error(error);
-         } finally {
-            setLoading(false);
-         }
-      }
-      fetchData();
-   }, [pagination.page, pagination.limit]);
+   const movers: FavoriteMoverState[] = data?.data?.movers ?? [];
+   const pageInfo = data?.data?.pagination ?? pagination;
 
-   if (loading) {
-      return <div>로딩 중...</div>;
+   if (isPending) return <div>로딩 중...</div>;
+   if (error) {
+      return <div>오류가 발생했습니다.</div>;
    }
 
    return (
@@ -110,11 +132,11 @@ export default function FavoriteMover() {
             ))}
          </div>
          <Pagination
-            page={pagination.page}
-            totalPages={pagination.totalPages}
+            page={pageInfo.page}
+            totalPages={pageInfo.totalPages}
             onPageChange={handlePageChange}
          />
-         {!loading && movers.length === 0 && (
+         {!isPending && movers.length === 0 && (
             <div className="mt-46 flex flex-col items-center justify-center">
                <EmptyState message={t("noFavoriteMover")} />
                <SolidButton
@@ -124,6 +146,13 @@ export default function FavoriteMover() {
                   {t("goToFavorite")}
                </SolidButton>
             </div>
+         )}
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
+            />
          )}
       </>
    );
