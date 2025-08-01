@@ -2,19 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { NoRequestModal } from "./NoRequestModal";
-import { RequestSelectionModal } from "./RequestSelectionModal";
-import { getClientActiveRequests } from "@/lib/api/estimate/requests/getClientRequest";
+import { getClientActiveRequest } from "@/lib/api/estimate/requests/getClientRequest";
 import { createDesignatedEstimate } from "@/lib/api/estimate/requests/createDesignatedEstimate";
-import { Mover } from "@/lib/types";
-
-interface Request {
-   id: string;
-   moveType: "SMALL" | "HOME" | "OFFICE";
-   moveDate: string;
-   fromAddress: string;
-   toAddress: string;
-   requestedAt: string;
-}
+import { Mover, Request } from "@/lib/types";
+import ToastPopup from "@/components/common/ToastPopup";
 
 interface EstimateRequestButtonProps {
    moverId: string;
@@ -28,13 +19,16 @@ export function EstimateRequestButton({
    onDesignatedEstimateSuccess,
 }: EstimateRequestButtonProps) {
    const [isLoading, setIsLoading] = useState(false);
-   const [showModal, setShowModal] = useState(false);
+   const [activeRequest, setActiveRequest] = useState<Request | null>(null);
    const [showNoRequestModal, setShowNoRequestModal] = useState(false);
-   const [activeRequests, setActiveRequests] = useState<Request[]>([]);
-   const [selectedRequestId, setSelectedRequestId] = useState<string>("");
    const [isRequestSuccess, setIsRequestSuccess] = useState(
       mover.hasDesignatedRequest ?? false,
    );
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
    // mover 상태가 변경되면 버튼 상태도 업데이트
    useEffect(() => {
@@ -45,23 +39,24 @@ export function EstimateRequestButton({
       // 🔥 이미 성공한 경우 클릭 막기
       if (isRequestSuccess) return;
 
+      const response = await getClientActiveRequest();
+      setActiveRequest(response.request);
+
       try {
          setIsLoading(true);
 
-         const response = await getClientActiveRequests();
-         setActiveRequests(response.requests);
-
-         if (response.requests.length === 0) {
+         if (!activeRequest) {
             setShowNoRequestModal(true);
             return;
+         } else if (!activeRequest.isPending) {
+            setToast({
+               id: Date.now(),
+               text: "이미 진행중인 견적이 있어요!",
+               success: false,
+            });
+            return;
          }
-
-         if (response.requests.length === 1) {
-            setSelectedRequestId(response.requests[0].id);
-            await submitDesignatedEstimate(response.requests[0].id);
-         } else {
-            setShowModal(true);
-         }
+         await submitDesignatedEstimate(activeRequest.id);
       } catch (error) {
          console.error("활성 요청 조회 실패:", error);
 
@@ -74,7 +69,11 @@ export function EstimateRequestButton({
             }
          }
 
-         alert(errorMessage);
+         setToast({
+            id: Date.now(),
+            text: errorMessage,
+            success: false,
+         });
       } finally {
          setIsLoading(false);
       }
@@ -87,8 +86,12 @@ export function EstimateRequestButton({
          // 이때 DesignatedRequest 테이블에 레코드 생성됨
          await createDesignatedEstimate(moverId, requestId);
 
-         alert("지정 견적 요청이 성공적으로 전송되었습니다!");
-         setShowModal(false);
+         setToast({
+            id: Date.now(),
+            text: "지정 견적 요청이 성공적으로 전송되었습니다!",
+            success: true,
+         });
+
          setIsRequestSuccess(true);
 
          // 성공 시 부모에게 알림 (DESIGNATED 칩 표시용)
@@ -119,19 +122,14 @@ export function EstimateRequestButton({
             }
          }
 
-         alert(errorMessage);
+         setToast({
+            id: Date.now(),
+            text: errorMessage,
+            success: false,
+         });
       } finally {
          setIsLoading(false);
       }
-   };
-
-   const handleModalSubmit = () => {
-      if (!selectedRequestId) {
-         alert("요청을 선택해주세요.");
-         return;
-      }
-
-      submitDesignatedEstimate(selectedRequestId);
    };
 
    const handleNoRequestConfirm = () => {
@@ -176,15 +174,13 @@ export function EstimateRequestButton({
             onConfirm={handleNoRequestConfirm}
          />
 
-         <RequestSelectionModal
-            isOpen={showModal}
-            onClose={() => setShowModal(false)}
-            onConfirm={handleModalSubmit}
-            requests={activeRequests}
-            selectedRequestId={selectedRequestId}
-            onSelectRequest={setSelectedRequestId}
-            isLoading={isLoading}
-         />
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
+            />
+         )}
       </>
    );
 }

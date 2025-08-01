@@ -42,7 +42,9 @@ export default function Pagination({
       return () => window.removeEventListener("resize", update);
    }, []);
 
-   if (totalPages <= 1) return null;
+   if (!totalPages || totalPages < 1) {
+      return <nav className="my-6 flex h-10 items-center justify-center" />;
+   }
 
    const pagesToShow = getPageRange(page, totalPages, maxPages);
    const hasLeftDots = pagesToShow[0] > 2;
