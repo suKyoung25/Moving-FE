@@ -27,7 +27,6 @@ export default function useClientProfileUpdateForm() {
 
          return {
             name: client.name ?? "",
-            email: client.email ?? "",
             phone: client.phone ?? "",
             profileImage: client.profileImage ?? "",
             serviceType: client.serviceType ?? [],
@@ -37,7 +36,6 @@ export default function useClientProfileUpdateForm() {
 
       return {
          name: "",
-         email: "",
          phone: "",
          profileImage: "",
          serviceType: [],
