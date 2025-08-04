@@ -10,3 +10,14 @@ export interface FavoriteMoverState {
    serviceType: string[];
    isLiked: boolean;
 }
+
+export interface FavoriteMoversResponse {
+   data: {
+      movers: FavoriteMoverState[];
+      pagination: {
+         page: number;
+         limit: number;
+         totalPages: number;
+      };
+   };
+}

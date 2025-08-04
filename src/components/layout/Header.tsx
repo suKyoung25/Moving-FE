@@ -126,7 +126,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         받은 요청
                      </Link>
                      <Link
-                        href="/my-quotes/mover"
+                        href="/my-quotes/mover?tab=1"
                         className={linkClass("/my-quotes/mover")}
                      >
                         내 견적 관리
@@ -201,18 +201,28 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      </div>
                      <div
                         ref={profileRef}
-                        className="relative size-6 lg:size-8"
+                        className="relative flex size-6 justify-center lg:size-8"
                      >
                         <button
                            onClick={() =>
                               setIsProfileDropDownOpen((prev) => !prev)
                            }
                         >
-                           <Image
-                              src={profileIcon}
-                              alt="profile"
-                              className="lg:w-full"
-                           />
+                           {user?.profileImage ? (
+                              <Image
+                                 src={user.profileImage}
+                                 alt="profile"
+                                 width={32}
+                                 height={32}
+                                 className="h-full w-full rounded-full"
+                              />
+                           ) : (
+                              <Image
+                                 src={profileIcon}
+                                 alt="default profile"
+                                 className="lg:w-full"
+                              />
+                           )}
                         </button>
                         {isProfileDropDownOpen && <ProfileDropDownMenu />}
                      </div>

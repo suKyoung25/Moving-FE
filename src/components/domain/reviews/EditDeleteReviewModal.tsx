@@ -1,16 +1,17 @@
-import InputModal from "@/components/common/InputModal";
-import SolidButton from "@/components/common/SolidButton";
-import { deleteReview } from "@/lib/api/review/deleteReview";
-import { updateReview } from "@/lib/api/review/updateReview";
-import { UpdateReviewDto } from "@/lib/schemas/reviews.schema";
-import { MyReview } from "@/lib/types";
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client";
+
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { ReviewFormBody } from "./ReviewFormBody";
+import { WritableReview, MyReview } from "@/lib/types";
+import InputModal from "@/components/common/InputModal";
+import { useForm } from "react-hook-form";
+import { UpdateReviewDto } from "@/lib/schemas/reviews.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { extractErrorMessage } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
+import { useUpdateReview, useDeleteReview } from "@/lib/api/review/mutation";
+import SolidButton from "@/components/common/SolidButton";
 
 interface EditDeleteReviewModalProps {
    isOpen: boolean;
@@ -26,13 +27,13 @@ export default function EditDeleteReviewModal({
    onSuccess,
 }: EditDeleteReviewModalProps) {
    const t = useTranslations("Reviews");
-
    const { updateSchema } = useValidationSchema();
+
    const {
       handleSubmit,
       setValue,
       reset,
-      formState: { errors, isSubmitting },
+      formState: { errors },
       watch,
    } = useForm<UpdateReviewDto>({
       resolver: zodResolver(updateSchema),
@@ -43,49 +44,59 @@ export default function EditDeleteReviewModal({
    });
 
    const [apiMessage, setApiMessage] = useState("");
-   const [deleteLoading, setDeleteLoading] = useState(false);
    const [hovered, setHovered] = useState<number | null>(null);
+
+   // 수정
+   const updateMutation = useUpdateReview({
+      onSuccess: () => {
+         onClose();
+         onSuccess?.();
+         reset();
+         setHovered(null);
+         setApiMessage("");
+      },
+      onError: (error) => {
+         setApiMessage(extractErrorMessage(error, t("editError")));
+      },
+   });
+
+   // 삭제
+   const deleteMutation = useDeleteReview({
+      onSuccess: () => {
+         onClose();
+         onSuccess?.();
+      },
+      onError: (error) => {
+         setApiMessage(extractErrorMessage(error, t("deleteError")));
+      },
+   });
 
    useEffect(() => {
       if (isOpen && review) {
          reset({ rating: review.rating, content: review.content });
          setApiMessage("");
+         setHovered(null);
       }
    }, [isOpen, review, reset]);
-
-   // 수정
-   const onSubmit = async (data: UpdateReviewDto) => {
-      setApiMessage("");
-      try {
-         await updateReview(review.id, data);
-         onClose();
-         onSuccess?.();
-      } catch (error: unknown) {
-         setApiMessage(extractErrorMessage(error, t("editError")));
-      }
-   };
-
-   //삭제
-   const handleDelete = async () => {
-      if (!window.confirm(t("deleteConfirm"))) return;
-      setDeleteLoading(true);
-      setApiMessage("");
-      try {
-         await deleteReview(review.id);
-         onClose();
-         onSuccess?.();
-      } catch (error: unknown) {
-         setApiMessage(extractErrorMessage(error, t("deleteError")));
-      } finally {
-         setDeleteLoading(false);
-      }
-   };
 
    const rating = watch("rating") ?? 0;
    const content = watch("content") ?? "";
    const isActive = rating > 0 && content.length >= 10;
 
    if (!isOpen) return null;
+
+   const onSubmit = (data: UpdateReviewDto) => {
+      setApiMessage("");
+      updateMutation.mutate({ id: review.id, data });
+   };
+
+   const handleDelete = () => {
+      if (!window.confirm(t("deleteConfirm"))) return;
+      setApiMessage("");
+      deleteMutation.mutate(review.id);
+   };
+
+   const loading = updateMutation.isPending || deleteMutation.isPending;
 
    return (
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -95,13 +106,20 @@ export default function EditDeleteReviewModal({
                onClose();
                reset();
                setApiMessage("");
+               setHovered(null);
             }}
             title={t("editDelete")}
-            buttonTitle={isSubmitting ? t("editting") : t("editReview")}
-            isActive={isActive && !isSubmitting}
+            buttonTitle={
+               loading
+                  ? updateMutation.isPending
+                     ? t("editting")
+                     : t("deleting")
+                  : t("editReview")
+            }
+            isActive={isActive && !loading}
          >
             <ReviewFormBody
-               estimate={review}
+               estimate={review as WritableReview}
                rating={rating}
                setRating={(v: number) =>
                   setValue("rating", v, { shouldValidate: true })
@@ -121,10 +139,10 @@ export default function EditDeleteReviewModal({
             <SolidButton
                type="button"
                className="mt-2 w-full bg-red-500"
-               disabled={isSubmitting || deleteLoading}
+               disabled={loading}
                onClick={handleDelete}
             >
-               {deleteLoading ? t("deleting") : t("deleteReview")}
+               {deleteMutation.isPending ? t("deleting") : t("deleteReview")}
             </SolidButton>
          </InputModal>
       </form>
