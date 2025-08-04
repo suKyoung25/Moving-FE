@@ -24,12 +24,12 @@ export default function ConfirmedButton({
          await postClientConfirmedQuote(estimateId);
 
          setToast({
-            id: Date.now(), // 같은 메시지도 연속 노출 가능하게
+            id: Date.now(),
             text: "견적이 확정되었습니다",
             success: true,
          });
 
-         router.push("/ko/my-quotes/client?tab=2");
+         router.refresh();
       } catch (e) {
          setToast({
             id: Date.now(),
