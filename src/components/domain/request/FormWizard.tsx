@@ -52,28 +52,22 @@ export default function FormWizard({}) {
    useEffect(() => {
       if (isLoading || isActivePending || isDraftPending) return;
 
-      if (activeRequest?.request) {
+      if (activeRequest?.data) {
          setCurrentStep(4);
          setIsPending(false);
          return;
       }
 
-      console.log("draft: ", draftRes.data);
-
-      if (!isInitialized) {
-         if (draftRes?.data) {
-            const { moveType, moveDate, fromAddress, toAddress, currentStep } =
-               draftRes.data;
-            setFormState({ moveType, moveDate, fromAddress, toAddress });
-            setCurrentStep(currentStep ?? 0);
-         } else {
-            setFormState(defaultState);
-            setCurrentStep(0);
-         }
-         setIsInitialized(true);
-         setIsPending(false);
+      if (draftRes?.data) {
+         const { moveType, moveDate, fromAddress, toAddress, currentStep } =
+            draftRes.data;
+         setFormState({ moveType, moveDate, fromAddress, toAddress });
+         setCurrentStep(currentStep);
+      } else {
+         setFormState(defaultState);
+         setCurrentStep(0);
       }
-
+      setIsInitialized(true);
       setIsPending(false);
    }, [
       isLoading,
@@ -82,6 +76,8 @@ export default function FormWizard({}) {
       activeRequest,
       draftRes,
       isInitialized,
+      setCurrentStep,
+      setIsPending,
    ]);
 
    // 견적 요청 상태 중간 저장
@@ -104,15 +100,12 @@ export default function FormWizard({}) {
 
    useEffect(() => {
       if (!isInitialized) return;
-      if (currentStep >= 1) {
+      if (currentStep >= 1 && currentStep < 4) {
          debouncedSave(formState, currentStep);
-         console.log("saved:", { formState, currentStep });
       }
-   }, [formState, currentStep, isInitialized]);
+   }, [formState, currentStep, isInitialized, debouncedSave]);
 
    const handleConfirm = async () => {
-      if (!isFormValid) return;
-
       try {
          await createRequestAction(formState as CreateRequestDto);
 
@@ -139,62 +132,63 @@ export default function FormWizard({}) {
    }
 
    if (currentStep === 4) {
-      return <Step4 />;
+      return (
+         <>
+            <Step4 />
+            {toast && (
+               <ToastPopup
+                  key={toast.id}
+                  text={toast.text}
+                  success={toast.success}
+               />
+            )}
+         </>
+      );
    }
 
    return (
-      <>
-         <form className="flex flex-col gap-2 lg:gap-6">
-            <ChatMessage
-               type="system"
-               message="몇 가지 정보만 알려주시면 최대 5개의 견적을 받을 수 있어요 :)"
-            />
-            {currentStep >= 0 && (
-               <Step1
-                  value={formState.moveType}
-                  onChange={(v) =>
-                     setFormState((prev) => ({ ...prev, moveType: v }))
-                  }
-                  onNext={() => setCurrentStep(1)}
-               />
-            )}
-            {currentStep >= 1 && (
-               <Step2
-                  value={formState.moveDate}
-                  onChange={(v) =>
-                     setFormState((prev) => ({ ...prev, moveDate: v }))
-                  }
-                  onNext={() => setCurrentStep(2)}
-               />
-            )}
-            {currentStep >= 2 && (
-               <Step3
-                  isFormValid={isFormValid}
-                  from={formState.fromAddress}
-                  to={formState.toAddress}
-                  onFromChange={(v) =>
-                     setFormState((prev) => ({ ...prev, fromAddress: v }))
-                  }
-                  onToChange={(v) =>
-                     setFormState((prev) => ({ ...prev, toAddress: v }))
-                  }
-                  onReset={() => {
-                     setFormState(defaultState);
-                     setCurrentStep(0);
-                  }}
-                  onConfirm={handleConfirm}
-                  onNext={() => setCurrentStep(3)}
-               />
-            )}
-         </form>
-
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
+      <form className="flex flex-col gap-2 lg:gap-6">
+         <ChatMessage
+            type="system"
+            message="몇 가지 정보만 알려주시면 최대 5개의 견적을 받을 수 있어요 :)"
+         />
+         {currentStep >= 0 && (
+            <Step1
+               value={formState.moveType}
+               onChange={(v) =>
+                  setFormState((prev) => ({ ...prev, moveType: v }))
+               }
+               onNext={() => setCurrentStep(1)}
             />
          )}
-      </>
+         {currentStep >= 1 && (
+            <Step2
+               value={formState.moveDate}
+               onChange={(v) =>
+                  setFormState((prev) => ({ ...prev, moveDate: v }))
+               }
+               onNext={() => setCurrentStep(2)}
+            />
+         )}
+         {currentStep >= 2 && (
+            <Step3
+               isFormValid={isFormValid}
+               from={formState.fromAddress}
+               to={formState.toAddress}
+               onFromChange={(v) =>
+                  setFormState((prev) => ({ ...prev, fromAddress: v }))
+               }
+               onToChange={(v) =>
+                  setFormState((prev) => ({ ...prev, toAddress: v }))
+               }
+               onReset={() => {
+                  setFormState(defaultState);
+                  setCurrentStep(0);
+               }}
+               onConfirm={handleConfirm}
+               onNext={() => setCurrentStep(3)}
+            />
+         )}
+      </form>
    );
 }
