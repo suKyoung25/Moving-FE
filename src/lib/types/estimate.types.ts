@@ -12,22 +12,34 @@ export interface DesignatedRequest {
 }
 
 export interface Estimate {
+   career: number;
+   comment: string;
+   created: string;
+   estimateCount: number;
    estimateId: string;
+   favoriteCount: number;
+   isConfirmed: boolean;
    moverId: string;
    moverName: string;
    moverNickName: string;
-   profileImage: string | null;
-   comment: string;
    price: number;
-   created: string;
-   isDesignated: boolean;
-   isFavorited: Favorite | null;
-   career: number;
-   estimateCount: number;
-   favoriteCount: number;
    reviewCount: number;
    reviewRating: number;
-   isConfirmed: boolean;
+   isFavorited: Favorite | null;
+   profileImage: string | null;
+   isDesignated: boolean;
+}
+
+export type MoveType = "SMALL" | "MEDIUM" | "LARGE" | string;
+
+export interface Request {
+   designatedRequest: DesignatedRequest[];
+   fromAddress: string;
+   moveDate: string;
+   moveType: MoveType;
+   requestId: string;
+   requestedAt: string;
+   toAddress: string;
 }
 
 export interface Quotes {
@@ -73,4 +85,40 @@ export interface RejectEstimateParams {
    comment: string;
    clientId: string;
    requestId: string;
+}
+
+export interface QuoteItem {
+   estimate: Estimate;
+   request: Request;
+}
+
+export interface PendingQuotesResponse {
+   message: string;
+   data: QuoteItem[];
+   totalCount: number;
+}
+
+export interface ReceivedEstimateData {
+   estimates: Estimate[];
+   request: Request;
+}
+
+interface RequestType {
+   id: string;
+   fromAddress: string;
+   moveDate: Date;
+   moveType: string;
+   toAddress: string;
+   requestedAt: Date;
+   designatedRequest: DesignatedRequest[];
+}
+
+export interface DataItem {
+   request: RequestType;
+   estimate: Estimate;
+}
+
+export interface GroupedByRequest {
+   request: RequestType;
+   estimates: Estimate[];
 }
