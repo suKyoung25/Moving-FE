@@ -1,17 +1,17 @@
 import { tokenFetch } from "@/lib/utils";
 import { delay } from "../../../../../delay";
 
-export async function getSentEstimateDetail(id: string) {
-   await delay(500);
+export async function getReceivedRequestDetail(id: string) {
+   await delay(2000);
    try {
-      const { data } = await tokenFetch(`/estimates/sented/${id}`, {
+      const data = await tokenFetch(`/requests/detail/${id}`, {
          method: "GET",
          cache: "force-cache",
       });
 
       return data;
    } catch (error) {
-      console.error("getSentEstimateDetail error:", error);
+      console.error("getReceivedRequestDetail error:", error);
       return null;
    }
 }
