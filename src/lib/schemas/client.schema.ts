@@ -1,5 +1,5 @@
 import z from "zod";
-import { emailSchema, nameSchema, phoneSchema } from "./auth.schema";
+import { nameSchema, phoneSchema } from "./auth.schema";
 
 // ✅ 개별 스키마
 export const profileImageSchema = z

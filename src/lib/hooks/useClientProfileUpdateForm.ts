@@ -11,10 +11,10 @@ import {
    updateClientProfileSchema,
 } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
-import { ServiceType } from "../types/client.types";
+import { NotiSetting, ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 
-export default function useClientProfileUpdateForm() {
+export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
    // ✅ 상태 모음
    const router = useRouter();
    const { user, refreshUser } = useAuth();
@@ -118,16 +118,24 @@ export default function useClientProfileUpdateForm() {
             serviceType: watch("serviceType") || [],
             livingArea: watch("livingArea") || [],
          };
-
          await clientProfile.update(payload);
-         alert("프로필이 수정되었습니다.");
 
+         setToast({
+            id: Date.now(),
+            text: "프로필이 수정되었습니다.",
+            success: true,
+         });
          // user 상태 즉각 반영
-         if (refreshUser) {
+         // 알림창
+         setTimeout(async () => {
             await refreshUser();
-         }
-
-         router.replace("/mover-search");
+            setTimeout(() => {
+               router.replace("/mover-search");
+            }, 500);
+         }, 1500);
+         // setTimeout(() => {
+         //    router.replace("/mover-search");
+         // }, 1000);
       } catch (error) {
          console.error("일반 프로필 수정 실패: ", error);
 
