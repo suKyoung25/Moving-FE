@@ -43,9 +43,8 @@ export default function BasicInfoForms() {
                <BasicInputField<MoverBasicInfoInput>
                   name="email"
                   text="이메일"
-                  placeholder="moving.@email.com"
                   register={register}
-                  error={errors.email?.message}
+                  readOnly
                />
 
                <hr className="p-o border-line-100 my-8 border-t" />

@@ -21,7 +21,7 @@ export default function SignUpForm({ userType }: Prop) {
    return (
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
-         className="flex w-full flex-col gap-4"
+         className="flex w-full flex-col"
       >
          {/* ✅ Input */}
          <AuthInput<SignUpFormValues>
@@ -73,7 +73,7 @@ export default function SignUpForm({ userType }: Prop) {
                   이미 무빙 회원이신가요?
                </p>
                <Link
-                  href="/sign-in/client"
+                  href={`/sign-in/${userType}`}
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
                >
                   로그인

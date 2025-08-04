@@ -7,7 +7,8 @@ import { matchPath, removeLocalePrefix } from "@/lib/utils";
 import Spinner from "../common/Spinner";
 
 const PROFILE_CREATE_PATH = "/profile/create";
-const guestPaths = ["/", "/sign-in", "/sign-up"];
+// const guestPaths = ["/", "/sign-in", "/sign-up"];  //TODO: 추후 삭제 필요
+const guestPaths = ["/"];
 const moverPaths = ["/dashboard", "/received-requests", "/my-quotes/mover"];
 const clientPaths = [
    "/favorite-movers",

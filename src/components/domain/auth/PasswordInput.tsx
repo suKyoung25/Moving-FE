@@ -55,7 +55,7 @@ export default function PasswordInput<T extends FieldValues>({
             </button>
          </div>
 
-         {error && <ErrorText error={error} />}
+         <ErrorText error={error} />
       </section>
    );
 }
