@@ -299,7 +299,7 @@
    }
 
    .tooltip {
-      @apply text-10-semibold bg-black-300 absolute top-full left-1/2 z-10 mt-2 w-max -translate-x-1/2 scale-95 rounded px-2 py-0.5 text-white opacity-0 transition-all duration-200 ease-out group-hover:scale-100 group-hover:opacity-100;
+      @apply text-10-semibold bg-black-400 absolute top-full left-1/2 z-10 mt-2 w-max -translate-x-1/2 scale-95 rounded px-2 py-0.5 text-white opacity-0 transition-all duration-200 ease-out group-hover:scale-100 group-hover:opacity-100;
    }
 }
 

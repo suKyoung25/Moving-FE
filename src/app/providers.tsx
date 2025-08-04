@@ -2,7 +2,6 @@
 
 import { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/context/AuthContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import RouterGuardLayout from "@/components/layout/RouterGuardLayout";
@@ -18,7 +17,6 @@ export function Providers({ children }: { children: ReactNode }) {
                <NotificationProvider>
                   <FormWizardProvider>{children}</FormWizardProvider>
                </NotificationProvider>
-               <Toaster position="top-center" />
             </QueryClientProvider>
          </RouterGuardLayout>
       </AuthProvider>

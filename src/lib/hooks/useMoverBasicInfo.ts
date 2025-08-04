@@ -47,7 +47,7 @@ function useMoverBasicInfo() {
    // 둘 중 하나가 바뀔 때 유효성 강제 검사
    useEffect(() => {
       trigger(["newPassword", "newPasswordConfirmation"]);
-   }, [newPassword, newPasswordConfirmation]);
+   }, [newPassword, newPasswordConfirmation, trigger]);
 
    //user 정보가 비동기적으로 들어오기 때문에
    useEffect(() => {

@@ -29,7 +29,11 @@ export default function ConfirmedButton({
             success: true,
          });
 
-         router.refresh();
+         // TODO: 토스트 알림 안뜸
+         setTimeout(() => {
+            setToast(null);
+            router.refresh();
+         }, 2000);
       } catch (e) {
          setToast({
             id: Date.now(),

@@ -22,7 +22,7 @@ export default function KakaoShareButton() {
          }
       };
       document.head.appendChild(script);
-   }, []);
+   }, [appKey]);
 
    const handleClick = () => {
       if (!window.Kakao || !kakaoUrl) return;

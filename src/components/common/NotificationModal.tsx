@@ -78,7 +78,7 @@ export default function NotificationModal({
       observer.observe(bottomRef.current);
 
       return () => observer.disconnect();
-   }, [bottomRef, hasNextPage, isFetchingNextPage]);
+   }, [bottomRef, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
    return (
       <div className="border-line-200 absolute top-10 -left-6 z-10 flex h-80 w-78 -translate-x-1/2 flex-col rounded-3xl border bg-white px-4 py-2.5 md:-left-8 lg:top-12 lg:-left-4 lg:h-88 lg:w-90">
