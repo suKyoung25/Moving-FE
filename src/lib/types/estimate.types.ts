@@ -30,13 +30,13 @@ export interface Estimate {
    isDesignated: boolean;
 }
 
-export type MoveType = "SMALL" | "MEDIUM" | "LARGE" | string;
+export type EstimateMoveType = "SMALL" | "MEDIUM" | "LARGE" | string;
 
-export interface Request {
+export interface EstimateRequest {
    designatedRequest: DesignatedRequest[];
    fromAddress: string;
    moveDate: string;
-   moveType: MoveType;
+   moveType: EstimateMoveType;
    requestId: string;
    requestedAt: string;
    toAddress: string;
@@ -89,7 +89,7 @@ export interface RejectEstimateParams {
 
 export interface QuoteItem {
    estimate: Estimate;
-   request: Request;
+   request: EstimateRequest;
 }
 
 export interface PendingQuotesResponse {
@@ -100,7 +100,7 @@ export interface PendingQuotesResponse {
 
 export interface ReceivedEstimateData {
    estimates: Estimate[];
-   request: Request;
+   request: EstimateRequest;
 }
 
 interface RequestType {
