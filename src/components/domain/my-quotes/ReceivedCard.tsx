@@ -27,7 +27,7 @@ export default function ReceivedCard({
          className="flex w-full cursor-pointer flex-col gap-2 rounded-2xl bg-white px-3.5 pt-5 pb-3.5 lg:px-6 lg:pt-7 lg:pb-5.5"
       >
          <MoverProfileclient
-            moveType={estimate.isConfirmed ? "DONE" : null}
+            moveType={estimate.isConfirmed ? "CONFIRMED" : null}
             isDesignated={designated.some(
                (d) => d.moverId === estimate.moverId,
             )}

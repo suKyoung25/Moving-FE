@@ -12,12 +12,14 @@ export interface DesignatedRequest {
 }
 
 export interface Estimate {
+   id?: string;
    career: number;
    comment: string;
    created: string;
    estimateCount: number;
    estimateId: string;
    favoriteCount: number;
+   isClientConfirmed?: boolean; // TODO: 통합 필요
    isConfirmed: boolean;
    moverId: string;
    moverName: string;
@@ -49,6 +51,7 @@ export interface Quotes {
    moveDate: string;
    moveType: string;
    requestedAt: string;
+   isPending?: boolean;
    estimates: Estimate[];
    designatedRequest: DesignatedRequest[];
 }
@@ -68,7 +71,7 @@ export interface MyEstimateDetail {
       client: {
          name: string;
       };
-      designatedRequest: {
+      designatedRequests: {
          moverId: string;
       }[];
    };

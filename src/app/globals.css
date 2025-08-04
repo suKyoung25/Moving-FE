@@ -254,6 +254,12 @@
    font-weight: 500;
 }
 
+@utility text-12-bold {
+   font-size: 0.75rem; /* 12px */
+   line-height: 1.25rem; /* 20px */
+   font-weight: 700;
+}
+
 @utility text-12-semibold {
    font-size: 0.75rem; /* 12px */
    line-height: 1.25rem; /* 20px */
@@ -272,6 +278,18 @@
    font-weight: 400;
 }
 
+@utility text-10-bold {
+   font-size: 0.625rem; /* 10px */
+   line-height: 1.25rem; /* 20px */
+   font-weight: 700;
+}
+
+@utility text-10-semibold {
+   font-size: 0.625rem; /* 10px */
+   line-height: 1.25rem; /* 20px */
+   font-weight: 600;
+}
+
 @layer utilities {
    .scrollbar-hide {
       &::-webkit-scrollbar {
@@ -280,33 +298,8 @@
       scrollbar-width: none;
    }
 
-   .animate-fade-in {
-      animation: fadeIn 0.3s ease-out forwards;
-   }
-   .animate-fade-out {
-      animation: fadeOut 0.3s ease-in forwards;
-   }
-
-   @keyframes fadeIn {
-      from {
-         opacity: 0;
-         transform: translateY(-4px);
-      }
-      to {
-         opacity: 1;
-         transform: translateY(0);
-      }
-   }
-
-   @keyframes fadeOut {
-      from {
-         opacity: 1;
-         transform: translateY(0);
-      }
-      to {
-         opacity: 0;
-         transform: translateY(-4px);
-      }
+   .tooltip {
+      @apply text-10-semibold bg-black-400 absolute top-full left-1/2 z-10 mt-2 w-max -translate-x-1/2 scale-95 rounded px-2 py-0.5 text-white opacity-0 transition-all duration-200 ease-out group-hover:scale-100 group-hover:opacity-100;
    }
 }
 

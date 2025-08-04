@@ -9,3 +9,7 @@ export default function DefaultLayout({
       </div>
    );
 }
+
+export function CustomLayout({ children }: { children: React.ReactNode }) {
+   return children;
+}

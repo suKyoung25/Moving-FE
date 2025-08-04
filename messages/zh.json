@@ -40,7 +40,8 @@
    "MyQuotes": {
       "Client": {
          "pendingQuotes": "待处理报价",
-         "receivedQuotes": "收到的报价"
+         "receivedQuotes": "收到的报价",
+         "requestedQuotes": "请求报价"
       },
       "Mover": {
          "sentQuotes": "发送的报价",
@@ -52,8 +53,11 @@
       "home": "家庭搬家",
       "office": "办公室搬家",
       "designated": "指定报价请求",
+      "matching_success": "配对成功",
+      "matching_failed": "匹配失败",
       "pending": "报价等待",
-      "done": "已确认报价"
+      "confirmed": "已确认报价",
+      "done": "董事完毕"
    },
    "Validations": {
       "invalidRequest": "无效的请求。",

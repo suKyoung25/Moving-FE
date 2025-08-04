@@ -12,6 +12,7 @@ export default function SomeHeader({ page }: TabsProps) {
 
    let tab1Label = "";
    let tab2Label = "";
+   let tab3Label = "";
 
    if (page === "Reviews") {
       tab1Label = t("writableReviews");
@@ -19,6 +20,7 @@ export default function SomeHeader({ page }: TabsProps) {
    } else if (page === "MyQuotes.Client") {
       tab1Label = t("pendingQuotes");
       tab2Label = t("receivedQuotes");
+      tab3Label = t("requestedQuotes");
    } else if (page === "MyQuotes.Mover") {
       tab1Label = t("sentQuotes");
       tab2Label = t("rejectedRequests");
@@ -29,7 +31,11 @@ export default function SomeHeader({ page }: TabsProps) {
 
    return (
       <Suspense fallback={null}>
-         <HeaderTabs tab1Label={tab1Label} tab2Label={tab2Label} />
+         <HeaderTabs
+            tab1Label={tab1Label}
+            tab2Label={tab2Label}
+            tab3Label={tab3Label}
+         />
       </Suspense>
    );
 }

@@ -3,6 +3,7 @@ import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 import { Providers } from "@/app/providers";
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ export default async function RootLayout({
             <NextIntlClientProvider>
                <Providers>
                   <main>{children}</main>
+                  <Toaster position="top-center" />
                </Providers>
             </NextIntlClientProvider>
          </body>

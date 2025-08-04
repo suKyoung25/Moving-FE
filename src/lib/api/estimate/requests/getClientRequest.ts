@@ -5,3 +5,9 @@ export async function getClientActiveRequest() {
       method: "GET",
    });
 }
+
+export async function getRequests() {
+   return await tokenFetch("/requests/client", {
+      method: "GET",
+   });
+}

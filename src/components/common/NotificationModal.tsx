@@ -6,22 +6,27 @@ import Image from "next/image";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import { formatDateDiff } from "@/lib/utils";
-import { readNotification } from "@/lib/api/notification/notification";
+import {
+   readAllNotifications,
+   readNotification,
+} from "@/lib/api/notification/notification";
 import { Notification } from "@/lib/types/notification.types";
 import { useRouter } from "next/navigation";
 import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
 import { useQueryClient } from "@tanstack/react-query";
+import { FiCheckSquare } from "react-icons/fi";
 
 export default function NotificationModal({
    setIsNotiModalOpen,
 }: {
    setIsNotiModalOpen: (val: boolean) => void;
 }) {
-   const { realtimeNotifications, setHasUnread } = useNotification();
+   const { realtimeNotifications } = useNotification();
    const router = useRouter();
-   const queryClient = useQueryClient();
    const bottomRef = useRef<HTMLDivElement | null>(null);
+
+   const queryClient = useQueryClient();
 
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
       useNotificationsQuery();
@@ -49,6 +54,15 @@ export default function NotificationModal({
       }
    };
 
+   const handleReadAll = async () => {
+      try {
+         await readAllNotifications();
+         queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      } catch (err) {
+         console.error("모든 알림 읽기 실패", err);
+      }
+   };
+
    useEffect(() => {
       if (!bottomRef.current || !hasNextPage || isFetchingNextPage) return;
 
@@ -64,24 +78,30 @@ export default function NotificationModal({
       observer.observe(bottomRef.current);
 
       return () => observer.disconnect();
-   }, [bottomRef, hasNextPage, isFetchingNextPage]);
-
-   useEffect(() => {
-      setHasUnread(false);
-   }, [setHasUnread]);
+   }, [bottomRef, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
    return (
       <div className="border-line-200 absolute top-10 -left-6 z-10 flex h-80 w-78 -translate-x-1/2 flex-col rounded-3xl border bg-white px-4 py-2.5 md:-left-8 lg:top-12 lg:-left-4 lg:h-88 lg:w-90">
          <div className="flex items-center justify-between py-3.5 pr-3 pl-4 md:-left-8 lg:top-12 lg:pl-6">
-            <span className="font-bold lg:text-lg">알림</span>
-            <button type="button" onClick={() => setIsNotiModalOpen(false)}>
-               <Image src={closeIcon} alt="알림 닫기" className="h-6 w-6" />
-            </button>
+            <span className="lg:text-18-bold text-16-bold">알림</span>
+            <div className="inline-flex items-center gap-2">
+               <button
+                  type="button"
+                  onClick={handleReadAll}
+                  className="group relative"
+               >
+                  <div className="tooltip">모두 읽음 처리</div>
+                  <FiCheckSquare className="text-gray-500" />
+               </button>
+               <button type="button" onClick={() => setIsNotiModalOpen(false)}>
+                  <Image src={closeIcon} alt="알림 닫기" className="h-6 w-6" />
+               </button>
+            </div>
          </div>
          <ul className="scrollbar-hide h-full overflow-auto">
             {isLoading ? (
                // TODO: skeleton 넣어주세요
-               <div className="py-4 text-center font-medium text-gray-400 max-lg:text-xs">
+               <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
                   잠시만요
                </div>
             ) : notifications.length > 0 ? (
@@ -89,7 +109,7 @@ export default function NotificationModal({
                   <button
                      key={idx}
                      onClick={() => handleClick(item)}
-                     className={`hover:bg-bg-200 border-b-line-200 flex w-full flex-col items-baseline gap-1 rounded-lg px-4 py-3 text-left font-medium max-lg:text-xs lg:px-6 lg:py-4 ${idx === notifications.length - 1 ? "" : "border-b-1"}`}
+                     className={`hover:bg-bg-200 border-b-line-200 text-16-medium max-lg:text-12-medium flex w-full flex-col items-baseline gap-1 rounded-lg px-4 py-3 text-left lg:px-6 lg:py-4 ${idx === notifications.length - 1 ? "" : "border-b-1"}`}
                   >
                      <div className={item.isRead ? "text-gray-300" : ""}>
                         {item.isRead
@@ -101,7 +121,7 @@ export default function NotificationModal({
                              )
                            : parse(DOMPurify.sanitize(item.content))}
                      </div>
-                     <div className="text-gray-300 lg:text-sm">
+                     <div className="lg:text-14-medium text-gray-300">
                         {formatDateDiff(item.createdAt)}
                      </div>
                   </button>
@@ -113,7 +133,7 @@ export default function NotificationModal({
             )}
             <div ref={bottomRef} />
             {isFetchingNextPage && (
-               <div className="py-4 text-center font-medium text-gray-400 max-lg:text-xs">
+               <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
                   불러오는 중...
                </div>
             )}
