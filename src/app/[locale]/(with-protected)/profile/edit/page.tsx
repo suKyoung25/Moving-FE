@@ -17,7 +17,6 @@ export default function EditProfilePage() {
 
    // ✅ 일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
-      console.log("toast 값:", toast);
       return (
          <>
             <div className="pt-4 pb-10 lg:pt-6">

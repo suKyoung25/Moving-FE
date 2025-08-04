@@ -93,8 +93,6 @@ export default function useClientProfilePostForm({ setToast }: NotiSetting) {
                success: true,
             });
 
-            // setUser(res.data);
-
             // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
             setTimeout(async () => {
                await refreshUser();

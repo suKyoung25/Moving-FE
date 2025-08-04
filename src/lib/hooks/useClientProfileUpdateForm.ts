@@ -88,11 +88,6 @@ export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
       reset(initialValues);
    }, [initialValues, reset]);
 
-   // ✅ 기본값 초기화 설정333 = 이름 등을 보존하려면 현재 값 기준으로 써야 함 (취소 버튼으로 연결)
-   const handleCancel = () => {
-      reset(initialValues);
-   };
-
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
    const onSubmit = async (data: ClientProfileUpdateValue) => {
       setIsLoading(true);
@@ -166,6 +161,5 @@ export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
       handleSubmit,
       watch,
       control,
-      handleCancel,
    };
 }

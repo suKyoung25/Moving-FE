@@ -13,12 +13,14 @@ import ImageInputField from "./ImageInputField";
 import { useAuth } from "@/context/AuthContext";
 import { ClientProfileUpdateValue } from "@/lib/schemas";
 import { NotiSetting } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 const style1 = "lg:mb-14 lg:flex-row lg:justify-between lg:gap-14";
 const borderStyle = "border-line-100 my-5 lg:my-8";
 
 export default function ClientProfileUpdateForm({ setToast }: NotiSetting) {
    // ✅ 함수 등 모음
+   const router = useRouter();
    const { user } = useAuth();
    const {
       register,
@@ -31,7 +33,6 @@ export default function ClientProfileUpdateForm({ setToast }: NotiSetting) {
       handleSubmit,
       watch,
       control,
-      handleCancel,
    } = useClientProfileUpdateForm({ setToast });
 
    return (
@@ -223,8 +224,7 @@ export default function ClientProfileUpdateForm({ setToast }: NotiSetting) {
                   {isLoading ? "로딩 중..." : "수정하기"}
                </SolidButton>
                <OutlinedButton
-                  type="button"
-                  onClick={handleCancel}
+                  onClick={() => router.push("/mover-search")}
                   className={
                      user?.provider === "LOCAL"
                         ? "max-w-165 !border-gray-200 !text-gray-200 lg:w-auto lg:flex-1"
