@@ -56,9 +56,6 @@ function useMoverProfilePostForm() {
 
          const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
-         //디버깅
-         console.log("프로필 등록 res", res);
-
          if (res.isProfileCompleted) {
             if (res.accessToken) {
                tokenSettings.set(res.accessToken);
