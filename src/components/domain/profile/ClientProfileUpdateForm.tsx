@@ -89,44 +89,37 @@ export default function ClientProfileUpdateForm() {
                         : `${borderStyle} lg:w-full`
                   }
                />
-               {user && user.provider === "LOCAL" && (
-                  <ProfilePasswordInput<ClientProfileUpdateValue>
-                     label="현재 비밀번호"
-                     name="password"
-                     placeholder="현재 비밀번호를 입력해 주세요."
-                     register={register}
-                     error={errors.password?.message}
-                  />
-               )}
-               {user && user.provider === "LOCAL" && (
-                  <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
-               )}
-               {user && user.provider === "LOCAL" && (
-                  <ProfilePasswordInput<ClientProfileUpdateValue>
-                     label="새 비밀번호"
-                     name="newPassword"
-                     placeholder="현재 비밀번호를 입력해 주세요."
-                     register={register}
-                     error={errors.newPassword?.message}
-                  />
-               )}
-               {user && user.provider === "LOCAL" && (
-                  <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
-               )}
-               {user && user.provider === "LOCAL" && (
-                  <ProfilePasswordInput<ClientProfileUpdateValue>
-                     label="새 비밀번호 확인"
-                     name="newPasswordConfirmation"
-                     placeholder="새 비밀번호를 다시 한번 입력해 주세요."
-                     register={register}
-                     error={errors.newPasswordConfirmation?.message}
-                  />
+
+               {/* 비밀번호 관련 항목들 : 소셜 로그인 하면 화면에 안 나옴 */}
+               {user && user.provider !== "LOCAL" ? null : (
+                  <>
+                     <ProfilePasswordInput<ClientProfileUpdateValue>
+                        label="현재 비밀번호"
+                        name="password"
+                        placeholder="현재 비밀번호를 입력해 주세요."
+                        register={register}
+                        error={errors.password?.message}
+                     />
+                     <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
+                     <ProfilePasswordInput<ClientProfileUpdateValue>
+                        label="새 비밀번호"
+                        name="newPassword"
+                        placeholder="새로운 비밀번호를 입력해 주세요."
+                        register={register}
+                        error={errors.newPassword?.message}
+                     />
+                     <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
+                     <ProfilePasswordInput<ClientProfileUpdateValue>
+                        label="새 비밀번호"
+                        name="newPassword"
+                        placeholder="새로운 비밀번호를 다시 한번 입력해 주세요."
+                        register={register}
+                        error={errors.newPassword?.message}
+                     />
+                     <hr className="border-line-100 my-5 lg:my-8 lg:hidden" />
+                  </>
                )}
             </div>
-
-            {user && user.provider === "LOCAL" && (
-               <hr className="border-line-100 my-5 lg:my-8 lg:hidden" />
-            )}
 
             <div className={user?.provider === "LOCAL" ? "flex-1" : ""}>
                {/* ✅ 프로필 이미지 */}
