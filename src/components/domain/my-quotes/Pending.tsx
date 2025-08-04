@@ -27,7 +27,7 @@ export default function Pending() {
 
    const router = useRouter();
 
-   const { data, isLoading, isError } = usePendingEstimates(page);
+   const { data, isLoading, isError, refetch } = usePendingEstimates(page);
 
    const handleClickConfirmed = async (estimateId: string) => {
       try {
@@ -39,7 +39,7 @@ export default function Pending() {
             success: true,
          });
 
-         router.push("/ko/my-quotes/client?tab=2");
+         refetch();
       } catch (e) {
          setToast({
             id: Date.now(),

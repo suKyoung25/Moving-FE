@@ -7,10 +7,10 @@ import InputModal from "@/components/common/InputModal";
 import { useForm } from "react-hook-form";
 import { CreateReviewDto } from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createReview } from "@/lib/api/review/createReview";
 import { extractErrorMessage } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
+import { useCreateReview } from "@/lib/api/review/mutation";
 
 interface ReviewModalProps {
    isOpen: boolean;
@@ -26,7 +26,6 @@ export default function ReviewModal({
    onReviewSuccess,
 }: ReviewModalProps) {
    const t = useTranslations("Reviews");
-
    const { createSchema } = useValidationSchema();
 
    const {
@@ -35,7 +34,7 @@ export default function ReviewModal({
       register,
       reset,
       watch,
-      formState: { errors, isSubmitting },
+      formState: { errors },
    } = useForm<CreateReviewDto>({
       resolver: zodResolver(createSchema),
       defaultValues: {
@@ -46,8 +45,21 @@ export default function ReviewModal({
    });
 
    const [apiMessage, setApiMessage] = useState("");
-   // 별점 호버링
    const [hovered, setHovered] = useState<number | null>(null);
+
+   // mutation 사용
+   const mutation = useCreateReview({
+      onSuccess: () => {
+         onClose();
+         reset();
+         setHovered(null);
+         setApiMessage("");
+         onReviewSuccess?.();
+      },
+      onError: (error: unknown) => {
+         setApiMessage(extractErrorMessage(error, t("reviewError")));
+      },
+   });
 
    useEffect(() => {
       if (isOpen && selectedEstimate) {
@@ -61,30 +73,18 @@ export default function ReviewModal({
       }
    }, [isOpen, selectedEstimate, reset]);
 
-   const handleSuccess = () => {
-      onClose();
-      reset();
-      setHovered(null);
-      onReviewSuccess?.();
-   };
-
-   const onSubmit = async (data: CreateReviewDto) => {
-      setApiMessage("");
-      try {
-         await createReview(data);
-         handleSuccess();
-      } catch (error: unknown) {
-         setApiMessage(extractErrorMessage(error, t("reviewError")));
-      }
-   };
-
    const rating = watch("rating") ?? 0;
    const content = watch("content") ?? "";
 
    if (!isOpen || !selectedEstimate) return null;
 
-   // 버튼 활성화
+   // 버튼 활성화 여부
    const isActive = rating > 0 && content.trim().length >= 10;
+
+   const onSubmit = (data: CreateReviewDto) => {
+      setApiMessage("");
+      mutation.mutate(data);
+   };
 
    return (
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -105,8 +105,10 @@ export default function ReviewModal({
                setApiMessage("");
             }}
             title={t("modalTitle")}
-            buttonTitle={isSubmitting ? t("registering") : t("registerReview")}
-            isActive={isActive && !isSubmitting}
+            buttonTitle={
+               mutation.isPending ? t("registering") : t("registerReview")
+            }
+            isActive={isActive && !mutation.isPending}
          >
             <ReviewFormBody
                estimate={selectedEstimate}
