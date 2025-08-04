@@ -1,5 +1,5 @@
 import SomeHeader from "@/components/common/SomeHeader";
-import DefaultLayout from "@/components/layout/DefaultLayout";
+import { CustomLayout } from "@/components/layout/DefaultLayout";
 import Header from "@/components/layout/Header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <SomeHeader page="MyQuotes.Client" />
          </Header>
 
-         <DefaultLayout>{children}</DefaultLayout>
+         <CustomLayout>{children}</CustomLayout>
       </div>
    );
 }
