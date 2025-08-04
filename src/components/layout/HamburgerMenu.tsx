@@ -42,6 +42,7 @@ export default function HamburgerMenu({
               { label: "견적 요청", href: "/request" },
               { label: "기사님 찾기", href: "/mover-search" },
               { label: "내 견적 관리", href: "/my-quotes/client" },
+              { label: "비용 계산기", href: "/cost-calculate" },
            ]
          : [
               { label: "받은 요청", href: "/received-requests" },

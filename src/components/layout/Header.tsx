@@ -111,6 +111,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      >
                         내 견적 관리
                      </Link>
+                     <Link
+                        href="/cost-calculate"
+                        className={linkClass("/cost-calculate")}
+                     >
+                        비용 계산기
+                     </Link>
                   </>
                )}
 
