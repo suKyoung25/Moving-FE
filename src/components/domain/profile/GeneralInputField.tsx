@@ -59,7 +59,7 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
             placeholder={placeholder}
          />
 
-         {error && <ErrorText error={error.message} />}
+         <ErrorText error={error?.message} />
       </div>
    );
 }

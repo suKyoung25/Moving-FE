@@ -29,7 +29,7 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
          <div>
             {text}
             <span className="text-blue-300"> *</span>
-            {error && <ErrorText error={error.message} position="left" />}
+            <ErrorText error={error?.message} position="left" />
          </div>
 
          <Controller<T, Path<T>>
