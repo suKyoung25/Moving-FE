@@ -62,7 +62,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       try {
          await delay(200);
-
          const response = await authApi.getMe();
 
          if (response?.user) setUser(response.user);

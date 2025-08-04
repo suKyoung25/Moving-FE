@@ -1,33 +1,31 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthFetchError, Client } from "../types";
+import { AuthFetchError, Client, User } from "../types";
 import {
    ClientProfileUpdateValue,
    updateClientProfileSchema,
 } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
-import { ServiceType } from "../types/client.types";
+import { NotiSetting, ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 
-export default function useClientProfileUpdateForm() {
+export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
    // ✅ 상태 모음
    const router = useRouter();
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
 
    // ✅ 초깃값 보존 용도 기본값
-   const initialValues = useMemo<ClientProfileUpdateValue>(() => {
+   function getInitialValues(user: User | null): ClientProfileUpdateValue {
       if (user?.userType === "client") {
          const client = user as Client;
-
          return {
             name: client.name ?? "",
-            email: client.email ?? "",
             phone: client.phone ?? "",
             profileImage: client.profileImage ?? "",
             serviceType: client.serviceType ?? [],
@@ -37,13 +35,17 @@ export default function useClientProfileUpdateForm() {
 
       return {
          name: "",
-         email: "",
          phone: "",
          profileImage: "",
          serviceType: [],
          livingArea: [],
       };
-   }, [user]);
+   }
+
+   const initialValues = useMemo<ClientProfileUpdateValue>(
+      () => getInitialValues(user),
+      [user],
+   );
 
    // ✅ react-hook-form
    const {
@@ -58,7 +60,6 @@ export default function useClientProfileUpdateForm() {
    } = useForm<ClientProfileUpdateValue>({
       mode: "onChange",
       resolver: zodResolver(updateClientProfileSchema(user?.provider)),
-      defaultValues: initialValues, // 새로고침 해야 나옴 (취소 버튼은 상관x)
    });
 
    // ✅ 이용 서비스 선택
@@ -82,10 +83,10 @@ export default function useClientProfileUpdateForm() {
       setValue("livingArea", updated, { shouldValidate: true });
    };
 
-   // ✅ 기본값 초기화 설정333 = 이름 등을 보존하려면 현재 값 기준으로 써야 함 (취소 버튼으로 연결)
-   const handleCancel = () => {
+   // ✅ 프로필 등록 -> 프로필 수정 페이지로 처음 이동하면 지역이 안 나와서 reset으로 useEffect 걺
+   useEffect(() => {
       reset(initialValues);
-   };
+   }, [initialValues, reset]);
 
    // ✅ api 호출하고 프로필 생성 성공하면 mover-search로 이동: 이미지 부분 수정해야 함
    const onSubmit = async (data: ClientProfileUpdateValue) => {
@@ -114,14 +115,20 @@ export default function useClientProfileUpdateForm() {
          };
 
          await clientProfile.update(payload);
-         alert("프로필이 수정되었습니다.");
 
-         // user 상태 즉각 반영
-         if (refreshUser) {
+         setToast({
+            id: Date.now(),
+            text: "프로필이 수정되었습니다.",
+            success: true,
+         });
+
+         // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
+         setTimeout(async () => {
             await refreshUser();
-         }
-
-         router.replace("/mover-search");
+            setTimeout(() => {
+               router.replace("/mover-search");
+            }, 500);
+         }, 1500);
       } catch (error) {
          console.error("일반 프로필 수정 실패: ", error);
 
@@ -154,6 +161,5 @@ export default function useClientProfileUpdateForm() {
       handleSubmit,
       watch,
       control,
-      handleCancel,
    };
 }

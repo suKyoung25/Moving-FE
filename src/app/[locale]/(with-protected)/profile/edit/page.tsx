@@ -1,28 +1,44 @@
 "use client";
 
+import ToastPopup from "@/components/common/ToastPopup";
 import ClientProfileTitle from "@/components/domain/profile/ClientProfileTitle";
 import ClientProfileUpdateForm from "@/components/domain/profile/ClientProfileUpdateForm";
 import MoverProfileUpdateForm from "@/components/domain/profile/MoverProfileUpdateForms";
 import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
 
 export default function EditProfilePage() {
    const { user } = useAuth();
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
    // ✅ 일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
       return (
-         <div className="pt-4 pb-10 lg:pt-6">
-            <div
-               className={
-                  user?.provider === "LOCAL"
-                     ? "mx-auto max-w-82 lg:max-w-338"
-                     : "mx-auto max-w-82 lg:max-w-200"
-               }
-            >
-               <ClientProfileTitle type="수정" />
-               <ClientProfileUpdateForm />
+         <>
+            <div className="pt-4 pb-10 lg:pt-6">
+               <div
+                  className={
+                     user?.provider === "LOCAL"
+                        ? "mx-auto max-w-82 lg:max-w-338"
+                        : "mx-auto max-w-82 lg:max-w-200"
+                  }
+               >
+                  <ClientProfileTitle type="수정" />
+                  <ClientProfileUpdateForm setToast={setToast} />
+               </div>
             </div>
-         </div>
+            {toast && (
+               <ToastPopup
+                  key={toast.id}
+                  text={toast.text}
+                  success={toast.success}
+               />
+            )}
+         </>
       );
    }
 
