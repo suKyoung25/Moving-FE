@@ -40,7 +40,8 @@
    "MyQuotes": {
       "Client": {
          "pendingQuotes": "Pending Quotes",
-         "receivedQuotes": "Received Quotes"
+         "receivedQuotes": "Received Quotes",
+         "requestedQuotes": "Requested Quotes"
       },
       "Mover": {
          "sentQuotes": "Sent Quotes",
@@ -52,8 +53,11 @@
       "home": "Home Move",
       "office": "Office Move",
       "designated": "Designated Estimate Request",
+      "matching_success": "Matching Success",
+      "matching_failed": "Matching Failed",
       "pending": "Estimate Pending",
-      "done": "Confirmed Estimate"
+      "confirmed": "Confirmed Estimate",
+      "done": "Moved Completed"
    },
    "Validations": {
       "invalidRequest": "Invalid request.",

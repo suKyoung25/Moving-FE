@@ -173,7 +173,7 @@ export default function FavoriteDriverList({
                         "OFFICE",
                         "DESIGNATED",
                         "PENDING",
-                        "DONE",
+                        "CONFIRMED",
                      ];
 
                      if (validChipTypes.includes(chipType)) {
