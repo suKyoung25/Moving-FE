@@ -16,7 +16,7 @@ export default function useClientProfilePostForm({ setToast }: NotiSetting) {
    // ✅ 상태 모음
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
-   const { setUser, refreshUser } = useAuth();
+   const { refreshUser } = useAuth();
 
    // react-hook-form
    const {
