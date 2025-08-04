@@ -16,7 +16,7 @@ export default function useClientProfilePostForm() {
    // ✅ 상태 모음
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
-   const { setUser } = useAuth();
+   const { setUser, refreshUser } = useAuth();
 
    // react-hook-form
    const {
@@ -87,8 +87,7 @@ export default function useClientProfilePostForm() {
             }
 
             setUser(res.data);
-            // alert("프로필이 등록되었습니다.");
-            // user 상태 갱신: 미들웨어가 인식할 시간을 줌
+            await refreshUser(); // 프로필 수정 페이지에서  첫 로그인 시 지역 정보를 바로 못 받아서 넣음
             setTimeout(() => {
                router.replace("/mover-search");
             }, 100);

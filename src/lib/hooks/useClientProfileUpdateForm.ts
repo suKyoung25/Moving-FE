@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthFetchError, Client } from "../types";
+import { AuthFetchError, Client, User } from "../types";
 import {
    ClientProfileUpdateValue,
    updateClientProfileSchema,
@@ -21,10 +21,9 @@ export default function useClientProfileUpdateForm() {
    const [isLoading, setIsLoading] = useState(false);
 
    // ✅ 초깃값 보존 용도 기본값
-   const initialValues = useMemo<ClientProfileUpdateValue>(() => {
+   function getInitialValues(user: User | null): ClientProfileUpdateValue {
       if (user?.userType === "client") {
          const client = user as Client;
-
          return {
             name: client.name ?? "",
             phone: client.phone ?? "",
@@ -41,7 +40,12 @@ export default function useClientProfileUpdateForm() {
          serviceType: [],
          livingArea: [],
       };
-   }, [user]);
+   }
+
+   const initialValues = useMemo<ClientProfileUpdateValue>(
+      () => getInitialValues(user),
+      [user],
+   );
 
    // ✅ react-hook-form
    const {
@@ -56,7 +60,6 @@ export default function useClientProfileUpdateForm() {
    } = useForm<ClientProfileUpdateValue>({
       mode: "onChange",
       resolver: zodResolver(updateClientProfileSchema(user?.provider)),
-      defaultValues: initialValues, // 새로고침 해야 나옴 (취소 버튼은 상관x)
    });
 
    // ✅ 이용 서비스 선택
@@ -79,6 +82,11 @@ export default function useClientProfileUpdateForm() {
 
       setValue("livingArea", updated, { shouldValidate: true });
    };
+
+   // ✅ 프로필 등록 -> 프로필 수정 페이지로 처음 이동하면 지역이 안 나와서 reset으로 useEffect 걺
+   useEffect(() => {
+      reset(initialValues);
+   }, [initialValues, reset]);
 
    // ✅ 기본값 초기화 설정333 = 이름 등을 보존하려면 현재 값 기준으로 써야 함 (취소 버튼으로 연결)
    const handleCancel = () => {
