@@ -118,6 +118,7 @@ export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
             serviceType: watch("serviceType") || [],
             livingArea: watch("livingArea") || [],
          };
+
          await clientProfile.update(payload);
 
          setToast({
@@ -125,17 +126,14 @@ export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
             text: "프로필이 수정되었습니다.",
             success: true,
          });
-         // user 상태 즉각 반영
-         // 알림창
+
+         // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
          setTimeout(async () => {
             await refreshUser();
             setTimeout(() => {
                router.replace("/mover-search");
             }, 500);
          }, 1500);
-         // setTimeout(() => {
-         //    router.replace("/mover-search");
-         // }, 1000);
       } catch (error) {
          console.error("일반 프로필 수정 실패: ", error);
 

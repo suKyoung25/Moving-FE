@@ -7,8 +7,9 @@ import SolidButton from "../../common/SolidButton";
 import { MOVE_TYPES, moveType, regions } from "@/constants";
 import useClientProfilePostForm from "@/lib/hooks/useClientProfilePostForm";
 import ImageInputField from "./ImageInputField";
+import { NotiSetting } from "@/lib/types";
 
-export default function ClientProfilePostForm() {
+export default function ClientProfilePostForm({ setToast }: NotiSetting) {
    // ✅ 함수 등 모음
    const {
       isValid,
@@ -20,10 +21,10 @@ export default function ClientProfilePostForm() {
       control,
       errors,
       watch,
-   } = useClientProfilePostForm();
+   } = useClientProfilePostForm({ setToast });
 
    return (
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
          {/* ✅ 이미지 */}
          <ImageInputField
             name="profileImage"
@@ -84,10 +85,7 @@ export default function ClientProfilePostForm() {
          </section>
 
          {/* ✅ 제출 버튼 */}
-         <SolidButton
-            disabled={!isValid || isLoading}
-            onClick={handleSubmit(onSubmit)}
-         >
+         <SolidButton type="submit" disabled={!isValid || isLoading}>
             {isLoading ? "로딩 중..." : "시작하기"}
          </SolidButton>
       </form>

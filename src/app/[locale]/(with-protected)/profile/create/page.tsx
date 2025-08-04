@@ -5,19 +5,36 @@ import { useAuth } from "@/context/AuthContext";
 import ClientProfileTitle from "@/components/domain/profile/ClientProfileTitle";
 import ClientProfilePostForm from "@/components/domain/profile/ClientProfilePostForm";
 import MoverProfilePostForm from "@/components/domain/profile/MoverProfilePostForms";
+import { useState } from "react";
+import ToastPopup from "@/components/common/ToastPopup";
 
 export default function CreateProfilePage() {
    const { user } = useAuth();
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
    // ✅ 일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
       return (
-         <div className="pt-4 pb-10 lg:pt-6">
-            <div className="mx-auto max-w-82 lg:max-w-160">
-               <ClientProfileTitle type="생성" />
-               <ClientProfilePostForm />
+         <>
+            <div className="pt-4 pb-10 lg:pt-6">
+               <div className="mx-auto max-w-82 lg:max-w-160">
+                  <ClientProfileTitle type="생성" />
+                  <ClientProfilePostForm setToast={setToast} />
+               </div>
             </div>
-         </div>
+
+            {toast && (
+               <ToastPopup
+                  key={toast.id}
+                  text={toast.text}
+                  success={toast.success}
+               />
+            )}
+         </>
       );
    }
 

@@ -8,11 +8,11 @@ import { ClientProfilePostSchema, ClientProfilePostValue } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { AuthFetchError } from "../types";
-import { ServiceType } from "../types/client.types";
+import { NotiSetting, ServiceType } from "../types/client.types";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { tokenSettings } from "../utils";
 
-export default function useClientProfilePostForm() {
+export default function useClientProfilePostForm({ setToast }: NotiSetting) {
    // ✅ 상태 모음
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
@@ -86,11 +86,22 @@ export default function useClientProfilePostForm() {
                tokenSettings.set(res.data.accessToken);
             }
 
-            setUser(res.data);
-            await refreshUser(); // 프로필 수정 페이지에서  첫 로그인 시 지역 정보를 바로 못 받아서 넣음
-            setTimeout(() => {
-               router.replace("/mover-search");
-            }, 100);
+            // 알림
+            setToast({
+               id: Date.now(),
+               text: "프로필이 등록되었습니다.",
+               success: true,
+            });
+
+            // setUser(res.data);
+
+            // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
+            setTimeout(async () => {
+               await refreshUser();
+               setTimeout(() => {
+                  router.replace("/mover-search");
+               }, 100);
+            }, 1500);
          }
       } catch (error) {
          console.error("일반 프로필 등록 실패: ", error);
