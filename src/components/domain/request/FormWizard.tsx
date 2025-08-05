@@ -10,6 +10,7 @@ import { CreateRequestDto, FormWizardState } from "@/lib/types";
 import { patchRequestDraft } from "@/lib/api/request/requests/requestDraftApi";
 import { debounce } from "lodash";
 import { createRequestAction } from "@/lib/actions/request.action";
+import ToastPopup from "@/components/common/ToastPopup";
 import { useFormWizard } from "@/context/FormWizardContext";
 import {
    useActiveRequest,
@@ -30,6 +31,12 @@ export default function FormWizard({}) {
       useFormWizard();
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
    const [isInitialized, setIsInitialized] = useState(false);
+
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
    const isFormValid =
       !!formState.moveType &&
@@ -102,13 +109,21 @@ export default function FormWizard({}) {
       try {
          await createRequestAction(formState as CreateRequestDto);
 
-         showSuccess("견적 요청이 완료되었어요!"); // 성경 추가
+         setToast({
+            id: Date.now(),
+            text: "견적 요청이 완료되었어요!",
+            success: true,
+         });
 
          setCurrentStep(4);
       } catch (err) {
          console.error("견적 요청 실패:", err);
 
-         showError("이미 진행 중인 견적 요청이 있어요."); // 성경 추가
+         setToast({
+            id: Date.now(),
+            text: "이미 진행 중인 견적 요청이 있어요.",
+            success: false,
+         });
       }
    };
 

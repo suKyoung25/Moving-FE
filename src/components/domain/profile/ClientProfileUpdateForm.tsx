@@ -12,13 +12,12 @@ import OutlinedButton from "@/components/common/OutlinedButton";
 import ImageInputField from "./ImageInputField";
 import { useAuth } from "@/context/AuthContext";
 import { ClientProfileUpdateValue } from "@/lib/schemas";
-import { NotiSetting } from "@/lib/types";
 import { useRouter } from "next/navigation";
 
 const style1 = "lg:mb-14 lg:flex-row lg:justify-between lg:gap-14";
 const borderStyle = "border-line-100 my-5 lg:my-8";
 
-export default function ClientProfileUpdateForm({ setToast }: NotiSetting) {
+export default function ClientProfileUpdateForm() {
    // ✅ 함수 등 모음
    const router = useRouter();
    const { user } = useAuth();
@@ -33,7 +32,7 @@ export default function ClientProfileUpdateForm({ setToast }: NotiSetting) {
       handleSubmit,
       watch,
       control,
-   } = useClientProfileUpdateForm({ setToast });
+   } = useClientProfileUpdateForm();
 
    return (
       <>

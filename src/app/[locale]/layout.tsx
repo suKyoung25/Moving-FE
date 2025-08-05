@@ -3,7 +3,6 @@ import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { Toaster } from "react-hot-toast";
 import { Providers } from "@/app/providers";
 import { ToastProvider } from "@/context/ToastConText";
 import ToastContainer from "@/components/common/ToastContainer";
