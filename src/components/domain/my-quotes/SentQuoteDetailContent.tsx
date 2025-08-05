@@ -32,7 +32,7 @@ export default async function SentQuoteDetailContent({ id }: { id: string }) {
                   )}
                   <MoveChip type={request.moveType} />
                   <DesignatedBadge
-                     designatedRequest={request.designatedRequest}
+                     designatedRequest={request.designatedRequests}
                   />
                </div>
                <p className="text-16-semibold lg:text-20-semibold">

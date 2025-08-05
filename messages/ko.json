@@ -40,7 +40,8 @@
    "MyQuotes": {
       "Client": {
          "pendingQuotes": "대기 중인 견적",
-         "receivedQuotes": "받았던 견적"
+         "receivedQuotes": "받았던 견적",
+         "requestedQuotes": "요청한 견적"
       },
       "Mover": {
          "sentQuotes": "보낸 견적 조회",
@@ -52,8 +53,11 @@
       "home": "가정이사",
       "office": "사무실이사",
       "designated": "지정 견적 요청",
+      "matching_success": "매칭 성공",
+      "matching_failed": "매칭 실패",
       "pending": "견적 대기",
-      "done": "확정 견적"
+      "confirmed": "확정 견적",
+      "done": "이사 완료"
    },
    "Validations": {
       "invalidRequest": "잘못된 요청입니다.",

@@ -21,7 +21,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
       if (typeof watchedValue === "string" && watchedValue !== previewUrl) {
          setPreviewUrl(watchedValue);
       }
-   }, [watchedValue]);
+   }, [watchedValue, previewUrl]);
 
    return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-4">

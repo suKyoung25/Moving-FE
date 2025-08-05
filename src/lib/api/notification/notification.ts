@@ -25,6 +25,13 @@ export async function readNotification(notificationId: string) {
    });
 }
 
+// 모든 알림 읽기
+export async function readAllNotifications() {
+   return await tokenFetch("/notifications", {
+      method: "PATCH",
+   });
+}
+
 // SSE 실시간 연결
 export function connectSSE(
    onMessage: (data: Notification) => void,

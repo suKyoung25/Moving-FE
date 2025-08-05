@@ -20,3 +20,8 @@ export interface ClientProfileUpdateData<T extends FieldValues> {
    error?: string;
    social?: boolean;
 }
+
+// 토스트 알림
+export interface NotiSetting {
+   setToast: (toast: { id: number; text: string; success: boolean }) => void;
+}

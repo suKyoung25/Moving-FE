@@ -20,7 +20,7 @@ import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
 import { routing } from "@/i18n/routing"; // locales 배열 접근용
 import LanguageSwitcherDesktop from "./LanguageSwitcherDesktop";
-import { useNotification } from "@/context/NotificationContext";
+import { useNotificationsQuery } from "@/lib/api/notification/query";
 
 function getPathnameWithoutLocale(
    pathname: string,
@@ -36,13 +36,16 @@ function getPathnameWithoutLocale(
 
 export default function Header({ children }: { children?: React.ReactNode }) {
    const { user } = useAuth();
-   const { hasUnread } = useNotification();
    const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
    const [isProfileDropDownOpen, setIsProfileDropDownOpen] = useState(false);
    const [isNotiModalOpen, setIsNotiModalOpen] = useState(false);
    const pathname = usePathname();
    const profileRef = useRef<HTMLDivElement>(null);
    const notificationRef = useRef<HTMLDivElement>(null);
+
+   const { data } = useNotificationsQuery();
+   const rawCount = data?.pages?.[0]?.unreadCount;
+   const unreadCount = rawCount === 0 ? null : rawCount;
 
    const isActive = (path: string) => pathnameWithoutLocale.startsWith(path);
    const linkClass = (path: string) =>
@@ -188,10 +191,11 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                               alt="alarm"
                               className="lg:w-full"
                            />
-                           {hasUnread && (
-                              <span className="absolute top-0 right-0 flex size-2.5">
-                                 <span className="bg-secondary-yellow-100 absolute top-0 inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
-                                 <span className="bg-secondary-yellow-100 relative inline-flex size-2.5 rounded-full"></span>
+                           {unreadCount && (
+                              <span className="absolute top-0 right-0 flex size-3.5 -translate-y-1 lg:size-5 lg:translate-x-0.5 lg:-translate-y-1">
+                                 <span className="text-10-bold lg:text-12-bold absolute inline-flex h-full w-full items-center justify-center rounded-full bg-blue-300 p-2 text-white">
+                                    {unreadCount >= 99 ? "99+" : unreadCount}
+                                 </span>
                               </span>
                            )}
                         </button>

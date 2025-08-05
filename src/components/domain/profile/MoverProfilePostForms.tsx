@@ -35,7 +35,7 @@ export default function MoverProfilePostForm() {
                   error={errors.nickName}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <ImageInputField
                   name="image"
@@ -44,7 +44,7 @@ export default function MoverProfilePostForm() {
                   error={errors.image}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField<MoverProfileInput>
                   name="career"
@@ -54,7 +54,7 @@ export default function MoverProfilePostForm() {
                   error={errors.career}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField<MoverProfileInput>
                   name="introduction"
@@ -64,7 +64,7 @@ export default function MoverProfilePostForm() {
                   error={errors.introduction}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0 lg:hidden" />
+               <hr className="border-line-100 m-0 border-t p-0 lg:hidden" />
             </div>
 
             <div className="flex-1">
@@ -76,7 +76,7 @@ export default function MoverProfilePostForm() {
                   error={errors.description}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <ButtonInputField
                   name="serviceType"
@@ -90,7 +90,7 @@ export default function MoverProfilePostForm() {
                   }
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <ButtonInputField
                   name="serviceArea"

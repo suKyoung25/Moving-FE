@@ -37,10 +37,10 @@ export default function useSignInForm() {
          // 가져온 유저정보 업데이트
          await refreshUser();
 
-         // ★ 프로필 등록 안 했으면 프로필 등록, 아니면 기사님 찾기로 이동
-         if (!res.data?.isProfileCompleted) {
-            router.replace("/profile/create");
-         } else {
+         // 프로필 등록 안 했으면 프로필 등록(라우트 가드), 아니면 받은 견적 페이지로 이동
+         if (res.data?.user.isProfileCompleted) {
+            // client는 "/mover-search"로 이동(라우터 가드),
+            // mover는 "/received-requests"로 이동
             router.replace("/received-requests");
          }
       } catch (error) {

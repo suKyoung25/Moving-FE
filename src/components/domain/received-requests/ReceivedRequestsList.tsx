@@ -43,7 +43,7 @@ export default function ReceivedRequestsList({
 
    useEffect(() => {
       onLoadingChange?.(isLoading);
-   }, [isLoading]);
+   }, [isLoading, onLoadingChange]);
 
    useEffect(() => {
       const observer = new IntersectionObserver(([entry]) => {

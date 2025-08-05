@@ -23,11 +23,11 @@ export default function QuoteCard({
       client,
       fromAddress,
       toAddress,
-      designatedRequest,
+      designatedRequests,
    } = request;
 
    const isPastMoveDate = new Date(moveDate) < new Date();
-   const isDesignated = designatedRequest.some(
+   const isDesignated = designatedRequests.some(
       (d: { moverId: string }) => d.moverId === moverId,
    );
 

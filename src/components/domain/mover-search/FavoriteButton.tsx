@@ -14,11 +14,15 @@ interface FavoriteButtonProps {
       isFavorite: boolean,
       favoriteCount: number,
    ) => void;
+   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+   setIsResultModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function FavoriteButton({
    mover,
    onFavoriteChange,
+   setErrorMessage,
+   setIsResultModalOpen,
 }: FavoriteButtonProps) {
    const [isLoading, setIsLoading] = useState(false);
    const [isFavorite, setIsFavorite] = useState(mover.isFavorite ?? false);
@@ -56,13 +60,14 @@ export function FavoriteButton({
          let errorMessage = "찜 처리 중 오류가 발생했습니다.";
          if (error instanceof Error) {
             if (error.message.includes("로그인")) {
-               errorMessage = "로그인이 필요합니다.";
+               errorMessage = "로그인이 필요한 기능입니다.";
             } else {
                errorMessage = error.message;
             }
          }
 
-         alert(errorMessage);
+         setErrorMessage(errorMessage);
+         setIsResultModalOpen(true);
       } finally {
          setIsLoading(false);
       }

@@ -2,24 +2,29 @@
 
 import { useState, useEffect } from "react";
 import { NoRequestModal } from "./NoRequestModal";
-import { getClientActiveRequest } from "@/lib/api/estimate/requests/getClientRequest";
 import { createDesignatedEstimate } from "@/lib/api/estimate/requests/createDesignatedEstimate";
-import { Mover, Request } from "@/lib/types";
+import { Mover } from "@/lib/types";
 import ToastPopup from "@/components/common/ToastPopup";
+import { useAuth } from "@/context/AuthContext";
+import { useActiveRequest } from "@/lib/api/request/requests/query";
 
 interface EstimateRequestButtonProps {
    moverId: string;
    mover: Mover;
    onDesignatedEstimateSuccess?: (moverId: string) => void;
+   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+   setIsResultModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function EstimateRequestButton({
    moverId,
    mover,
    onDesignatedEstimateSuccess,
+   setErrorMessage,
+   setIsResultModalOpen,
 }: EstimateRequestButtonProps) {
+   const { user } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
-   const [activeRequest, setActiveRequest] = useState<Request | null>(null);
    const [showNoRequestModal, setShowNoRequestModal] = useState(false);
    const [isRequestSuccess, setIsRequestSuccess] = useState(
       mover.hasDesignatedRequest ?? false,
@@ -30,20 +35,26 @@ export function EstimateRequestButton({
       success: boolean;
    } | null>(null);
 
+   const { data: result, isPending } = useActiveRequest();
+   const activeRequest = result?.data;
+
    // mover 상태가 변경되면 버튼 상태도 업데이트
    useEffect(() => {
       setIsRequestSuccess(mover.hasDesignatedRequest ?? false);
    }, [mover.hasDesignatedRequest]);
 
    const handleClick = async () => {
+      if (!user) {
+         setErrorMessage("로그인이 필요한 기능입니다.");
+         setIsResultModalOpen(true);
+         return;
+      }
       // 🔥 이미 성공한 경우 클릭 막기
       if (isRequestSuccess) return;
 
-      const response = await getClientActiveRequest();
-      setActiveRequest(response.request);
-
       try {
          setIsLoading(true);
+         if (isPending) return;
 
          if (!activeRequest) {
             setShowNoRequestModal(true);

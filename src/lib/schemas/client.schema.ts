@@ -1,5 +1,5 @@
 import z from "zod";
-import { emailSchema, nameSchema, phoneSchema } from "./auth.schema";
+import { nameSchema, phoneSchema } from "./auth.schema";
 
 // ✅ 개별 스키마
 export const profileImageSchema = z
@@ -17,15 +17,20 @@ export const livingAreaSchema = z
 
 const passwordSchema = z.string().optional();
 
+// ✅ 일반 프로필 등록 스키마
+export const ClientProfilePostSchema = z.object({
+   profileImage: profileImageSchema,
+   serviceType: serviceTypeSchema,
+   livingArea: livingAreaSchema,
+});
+
 /**
- * 함수로 제작
+ * ✅ 일반 프로필 수정 스키마: 함수로 제작
  */
 export function updateClientProfileSchema(provider?: string) {
-   // ✅ 일반 프로필 수정 스키마
    return z
       .object({
          name: nameSchema.optional(),
-         email: emailSchema.optional(),
          phone: phoneSchema.optional(),
          password: passwordSchema,
          newPassword: passwordSchema.or(z.literal("")),
@@ -41,7 +46,6 @@ export function updateClientProfileSchema(provider?: string) {
 
          // 0. [일반 로그인] 현재 비밀번호 필수
          if (provider === "LOCAL") {
-            // [로컬 로그인] 현재 비밀번호는 항상 필수
             if (!password || password.length === 0) {
                ctx.addIssue({
                   path: ["password"],
@@ -82,13 +86,6 @@ export function updateClientProfileSchema(provider?: string) {
          }
       });
 }
-
-// ✅ 일반 프로필 등록 스키마
-export const ClientProfilePostSchema = z.object({
-   profileImage: profileImageSchema,
-   serviceType: serviceTypeSchema,
-   livingArea: livingAreaSchema,
-});
 
 // ✅ 타입 반출
 export type ClientProfilePostValue = z.infer<typeof ClientProfilePostSchema>;

@@ -77,9 +77,10 @@ export interface AuthInputProps<T extends FieldValues> {
 export interface BasicInfoInputProps<T extends FieldValues> {
    name: Path<T>;
    text: string;
-   placeholder: string;
+   placeholder?: string;
    register: UseFormRegister<T>;
    error?: string;
+   readOnly?: boolean;
 }
 
 // ✅ 오류 메시지 출력

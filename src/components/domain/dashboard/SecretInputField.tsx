@@ -21,23 +21,23 @@ function SecretInputField<T extends FieldValues>({
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
 
    return (
-      <div className="relative flex flex-col gap-4 leading-8">
+      <div className="relative flex flex-col leading-8">
          <div className="text-16-semibold lg:text-20-semibold">{text}</div>
          <input
             type={isVisible ? "text" : "password"}
             placeholder={placeholder}
             {...register(name)}
             name={name}
-            className={`bg-bg-200 mg:h-13 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:h-16 ${error ? "border border-red-500" : ""}`}
+            className={`bg-bg-200 mg:h-13 mt-4 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:h-16 ${error ? "border border-red-500" : ""}`}
          />
          <Image
-            className="absolute lg:top-16.5 lg:right-3"
+            className="absolute top-14 right-3 lg:top-16.5 lg:right-3"
             src={isVisible ? visibilityOn : visibilityOff}
             alt={isVisible ? "비밀번호 보기" : "비밀번호 숨김"}
             onClick={toggleEyeIcon}
          />
 
-         {error && <ErrorText error={error} />}
+         <ErrorText error={error} />
       </div>
    );
 }

@@ -10,7 +10,10 @@ export type ChipType =
    | "HOME"
    | "OFFICE"
    | "DESIGNATED"
+   | "MATCHING_SUCCESS"
+   | "MATCHING_FAILED"
    | "PENDING"
+   | "CONFIRMED"
    | "DONE";
 
 const CHIP_CONFIG: Record<
@@ -43,13 +46,31 @@ const CHIP_CONFIG: Record<
    },
    PENDING: {
       label: "pending",
-      bg: "bg-gray-100",
+      bg: "bg-gray-800",
+      text: "text-primary-blue-400",
+      icon: undefined,
+   },
+   MATCHING_SUCCESS: {
+      label: "matching_success",
+      bg: "bg-primary-blue-100",
+      text: "text-primary-blue-300",
+      icon: undefined,
+   },
+   MATCHING_FAILED: {
+      label: "matching_failed",
+      bg: "bg-secondary-red-100",
+      text: "text-secondary-red-200",
+      icon: undefined,
+   },
+   CONFIRMED: {
+      label: "confirmed",
+      bg: "bg-gray-800",
       text: "text-primary-blue-400",
       icon: undefined,
    },
    DONE: {
       label: "done",
-      bg: "bg-gray-100",
+      bg: "bg-gray-800",
       text: "text-primary-blue-400",
       icon: undefined,
    },
@@ -69,18 +90,18 @@ export default function MoveChip({ type, mini = false }: MoveChipProps) {
 
    return (
       <div
-         className={`inline-flex items-center !gap-0 rounded-sm px-1 py-1 ${config.bg}`}
+         className={`inline-flex items-center !gap-0 rounded-sm px-1.5 py-0.5 ${config.bg}`}
       >
          {config.icon && (
             <Image
                src={config.icon}
                alt={`${config.label} 아이콘`}
-               className="h-5 w-5 lg:h-6 lg:w-6"
+               className="h-4 w-4 lg:h-5 lg:w-5"
             />
          )}
          {!mini && (
             <span
-               className={`${config.text} text-13-semibold lg:text-16-semibold ml-1`}
+               className={`${config.text} text-13-semibold lg:text-16-semibold`}
             >
                {t(config.label)}
             </span>

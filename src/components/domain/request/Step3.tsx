@@ -14,7 +14,7 @@ interface Step3Props {
    to?: Request["toAddress"];
    onFromChange: (val: string) => void;
    onToChange: (val: string) => void;
-   onSubmit: () => void;
+   onReset: () => void;
    onConfirm: () => void;
    onNext: () => void;
 }
@@ -26,7 +26,7 @@ export default function Step3({
    to,
    onFromChange,
    onToChange,
-   onSubmit,
+   onReset,
    onConfirm,
    onNext,
 }: Step3Props) {
@@ -100,7 +100,7 @@ export default function Step3({
          {fromAddress && toAddress && (
             <button
                type="button"
-               onClick={onSubmit}
+               onClick={onReset}
                className="mr-2 text-right font-medium text-gray-500 underline max-lg:text-xs"
             >
                처음부터 다시 선택

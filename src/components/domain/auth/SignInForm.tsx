@@ -20,7 +20,7 @@ export default function SignInForm({ userType }: Prop) {
    return (
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
-         className="flex w-full flex-col gap-4"
+         className="flex w-full flex-col"
       >
          {/* ✅ Input */}
          <AuthInput
