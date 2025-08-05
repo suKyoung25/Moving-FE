@@ -80,8 +80,12 @@ export default function Received() {
                      견적서 목록
                   </p>
                   <Dropdown
-                     dropdownName={dropdownName}
-                     setDropdownName={setDropdownName}
+                     selectedValue={dropdownName}
+                     setSelectedValue={setDropdownName}
+                     options={[
+                        { label: "전체", value: "all" },
+                        { label: "확정한 견적서", value: "confirmed" },
+                     ]}
                   />
                </main>
                <main className="mt-4 flex flex-col gap-6 md:gap-8 lg:mt-8 lg:gap-14">

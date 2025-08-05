@@ -1,27 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Quotes } from "@/lib/types";
 import QuotaionInfo from "./QuotaionInfo";
 import Dropdown from "./Dropdown";
 import EmptyState from "@/components/common/EmptyState";
-import { getRequests } from "@/lib/api/estimate/requests/getClientRequest";
 import { isAfter } from "date-fns";
 import { useRouter } from "next/navigation";
 import ToastPopup from "@/components/common/ToastPopup";
+import { useRequestsQuery } from "@/lib/api/estimate/query";
 
 // 요청한 견적
 export default function Requested() {
-   const [dropdownName, setDropdownName] = useState("all");
-   const [data, setData] = useState<Quotes[]>();
-   const [isLoading, setIsLoading] = useState<boolean>(false);
-   const router = useRouter();
-
+   const [dropdownName, setDropdownName] = useState("recent");
    const [toast, setToast] = useState<{
       id: number;
       text: string;
       success: boolean;
    } | null>(null);
+
+   const router = useRouter();
+   const bottomRef = useRef<HTMLDivElement | null>(null);
+
+   const sort = dropdownName === "recent" ? "desc" : "asc";
+   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+      useRequestsQuery(sort);
+   const requests = data?.pages.flatMap((page) => page.requests) ?? [];
 
    const chipTypeMap = (moveDate: Date, isPending: boolean) => {
       const now = new Date();
@@ -47,8 +51,6 @@ export default function Requested() {
          (e) => e.isClientConfirmed === true,
       );
 
-      console.log(confirmed);
-
       if (confirmed) {
          router.push(`/my-quotes/client/${confirmed.id}`);
       } else {
@@ -61,23 +63,29 @@ export default function Requested() {
    };
 
    useEffect(() => {
-      async function getMyReceivedQuotes() {
-         try {
-            setIsLoading(true);
-            const result = await getRequests();
-            setData(result.data);
-            setIsLoading(false);
-         } catch (e) {
-            throw e;
-         }
-      }
+      if (!bottomRef.current) return;
+      const observer = new IntersectionObserver(
+         (entries) => {
+            if (
+               entries[0].isIntersecting &&
+               hasNextPage &&
+               !isFetchingNextPage
+            ) {
+               fetchNextPage();
+            }
+         },
+         { threshold: 1.0 },
+      );
 
-      getMyReceivedQuotes();
-   }, [dropdownName]);
+      const current = bottomRef.current;
+      observer.observe(current);
+
+      return () => observer.unobserve(current);
+   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
    if (isLoading) return <div>로딩중...</div>;
 
-   if (!data || data.length === 0)
+   if (requests.length === 0)
       return <EmptyState message="아직 보낸 요청이 없어요!" />;
 
    return (
@@ -85,26 +93,33 @@ export default function Requested() {
          <h2 className="text-18-semibold lg:text-24-semibold flex items-center justify-between">
             견적 요청 목록
             <Dropdown
-               dropdownName={dropdownName}
-               setDropdownName={setDropdownName}
+               selectedValue={dropdownName}
+               setSelectedValue={setDropdownName}
+               options={[
+                  { label: "최근 요청순", value: "recent" },
+                  { label: "오래된 요청순", value: "oldest" },
+               ]}
             />
          </h2>
          <article className="mt-4 flex flex-col gap-6 md:gap-8 lg:mt-8 lg:gap-14">
-            {data.map((d, idx) => {
-               const chipType = chipTypeMap(new Date(d.moveDate), d.isPending!);
+            {requests.map((request) => {
+               const chipType = chipTypeMap(
+                  new Date(request.moveDate),
+                  request.isPending!,
+               );
 
                return (
                   <div
-                     key={idx}
-                     onClick={() => handleClick(d)}
+                     key={request.id}
+                     onClick={() => handleClick(request)}
                      className="cursor-pointer"
                   >
                      <QuotaionInfo
-                        fromAddress={d.fromAddress}
-                        moveDate={d.moveDate}
-                        moveType={d.moveType}
-                        toAddress={d.toAddress}
-                        requestedAt={d.requestedAt}
+                        fromAddress={request.fromAddress}
+                        moveDate={request.moveDate}
+                        moveType={request.moveType}
+                        toAddress={request.toAddress}
+                        requestedAt={request.requestedAt}
                         chipType={chipType}
                         isRequestedTap={true}
                      />
@@ -112,6 +127,12 @@ export default function Requested() {
                );
             })}
          </article>
+         <div ref={bottomRef} />
+         {isFetchingNextPage && (
+            <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
+               불러오는 중...
+            </div>
+         )}
          {toast && (
             <ToastPopup
                key={toast.id}
