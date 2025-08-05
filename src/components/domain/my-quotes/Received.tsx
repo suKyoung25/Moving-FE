@@ -63,14 +63,6 @@ export default function Received() {
 
    return (
       <div className="flex flex-col gap-2 md:gap-4 lg:gap-8">
-         <h2 className="text-18-semibold lg:text-24-semibold flex items-center justify-between md:mx-auto md:w-150 lg:w-350">
-            견적 요청 목록
-            <Dropdown
-               dropdownName={dropdownName}
-               setDropdownName={setDropdownName}
-            />
-         </h2>
-
          {groupedData.map(({ request, estimates }, idx) => (
             <section
                key={idx}
@@ -87,6 +79,14 @@ export default function Received() {
                   <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
                      견적서 목록
                   </p>
+                  <Dropdown
+                     selectedValue={dropdownName}
+                     setSelectedValue={setDropdownName}
+                     options={[
+                        { label: "전체", value: "all" },
+                        { label: "확정한 견적서", value: "confirmed" },
+                     ]}
+                  />
                </main>
                <main className="mt-4 flex flex-col gap-6 md:gap-8 lg:mt-8 lg:gap-14">
                   {estimates.map((estimate, idx) => {
