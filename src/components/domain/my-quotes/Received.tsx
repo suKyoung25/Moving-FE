@@ -63,14 +63,6 @@ export default function Received() {
 
    return (
       <div className="flex flex-col gap-2 md:gap-4 lg:gap-8">
-         <h2 className="text-18-semibold lg:text-24-semibold flex items-center justify-between md:mx-auto md:w-150 lg:w-350">
-            견적 요청 목록
-            <Dropdown
-               dropdownName={dropdownName}
-               setDropdownName={setDropdownName}
-            />
-         </h2>
-
          {groupedData.map(({ request, estimates }, idx) => (
             <section
                key={idx}
