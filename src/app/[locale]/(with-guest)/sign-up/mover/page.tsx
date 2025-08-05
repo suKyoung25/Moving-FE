@@ -1,8 +1,11 @@
 import EasyLoginForm from "@/components/domain/auth/EasyLoginForm";
 import MoverTitle from "@/components/domain/auth/MoverTitle";
 import SignUpForm from "@/components/domain/auth/SignUpForm";
+import { useAuthError } from "@/lib/hooks/useAuthError";
 
 export default function MoverSignUpPage() {
+   useAuthError();
+
    return (
       <section className="mx-auto mt-18 mb-31 flex w-82 flex-col items-center lg:w-160">
          {/* 제목 + 기사 페이지로 링크 이동 */}
