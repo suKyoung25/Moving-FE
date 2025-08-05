@@ -107,7 +107,7 @@ export interface ReceivedEstimateData {
 }
 
 interface RequestType {
-   id: string;
+   requestId: string;
    fromAddress: string;
    moveDate: Date;
    moveType: string;
