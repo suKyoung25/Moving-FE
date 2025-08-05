@@ -34,6 +34,7 @@ export default async function MyQuoetesDetailPage({
                      favoriteCount={data.mover.favoriteCount}
                      quotesStatus={data.status}
                      moverId={data.mover.id}
+                     comment={data.comment}
                   />
                </article>
                <hr className="bg-line-100 h-px border-0" />

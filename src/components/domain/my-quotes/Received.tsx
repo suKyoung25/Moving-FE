@@ -15,7 +15,7 @@ function groupByRequest(data: DataItem[]): GroupedByRequest[] {
    const map = new Map<string, GroupedByRequest>();
 
    data.forEach((item) => {
-      const requestId = item.request.id;
+      const requestId = item.request.requestId;
       if (!map.has(requestId)) {
          map.set(requestId, {
             request: item.request,
@@ -63,6 +63,14 @@ export default function Received() {
 
    return (
       <div className="flex flex-col gap-2 md:gap-4 lg:gap-8">
+         <h2 className="text-18-semibold lg:text-24-semibold flex items-center justify-between md:mx-auto md:w-150 lg:w-350">
+            견적 요청 목록
+            <Dropdown
+               dropdownName={dropdownName}
+               setDropdownName={setDropdownName}
+            />
+         </h2>
+
          {groupedData.map(({ request, estimates }, idx) => (
             <section
                key={idx}
@@ -79,18 +87,14 @@ export default function Received() {
                   <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
                      견적서 목록
                   </p>
-                  <Dropdown
-                     dropdownName={dropdownName}
-                     setDropdownName={setDropdownName}
-                  />
                </main>
                <main className="mt-4 flex flex-col gap-6 md:gap-8 lg:mt-8 lg:gap-14">
                   {estimates.map((estimate, idx) => {
-                     const isLast = idx === allData.length - 1;
+                     const isLastOfGroup = idx === estimates.length - 1;
                      return (
                         <span
                            key={estimate.estimateId}
-                           ref={isLast ? ref : undefined}
+                           ref={isLastOfGroup ? ref : undefined}
                         >
                            <ReceivedCard
                               estimate={estimate}
