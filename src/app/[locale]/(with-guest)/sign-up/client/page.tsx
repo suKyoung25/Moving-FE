@@ -1,3 +1,5 @@
+"use client";
+
 import SignUpForm from "@/components/domain/auth/SignUpForm";
 import ClientTitle from "@/components/domain/auth/ClientTitle";
 import EasyLoginForm from "@/components/domain/auth/EasyLoginForm";
