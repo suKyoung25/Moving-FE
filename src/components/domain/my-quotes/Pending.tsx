@@ -16,8 +16,11 @@ import { usePendingEstimates } from "@/lib/api/estimate/query";
 import Pagination from "@/components/common/pagination";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
+import { useTranslations } from "next-intl";
 
 export default function Pending() {
+   const t = useTranslations("MyQuotes.Client");
+
    const [page, setPage] = useState(1);
    const [toast, setToast] = useState<{
       id: number;
@@ -35,7 +38,7 @@ export default function Pending() {
 
          setToast({
             id: Date.now(),
-            text: "견적이 확정되었습니다",
+            text: t("toast.confirmed"),
             success: true,
          });
 
@@ -43,7 +46,7 @@ export default function Pending() {
       } catch (e) {
          setToast({
             id: Date.now(),
-            text: "견적 확정에 실패했습니다",
+            text: t("toast.confirmFailed"),
             success: false,
          });
          console.error(e);
@@ -56,7 +59,7 @@ export default function Pending() {
       );
 
    if (isError || !data || data.data.length === 0) {
-      return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
+      return <EmptyState message={t("emptyMessage")} />;
    }
 
    return (
@@ -87,26 +90,27 @@ export default function Pending() {
                         quotesStatus="pending"
                      />
                      <MoveDateCard
-                        category="이사일"
+                        category={t("category.moveDate")}
                         text={new Date(request.moveDate).toLocaleDateString()}
                      />
                      <article className="flex items-center gap-3.5">
                         <MoveDateCard
-                           category="출발"
+                           category={t("category.from")}
                            text={request.fromAddress}
                         />
                         <div className="bg-line-200 h-3.5 w-px" />
                         <MoveDateCard
-                           category="도착"
+                           category={t("category.to")}
                            text={request.toAddress}
                         />
                      </article>
                   </div>
                   <div>
                      <p className="text-14-medium text-black-400 text-right">
-                        견적 금액{" "}
+                        {t("priceLabel")}{" "}
                         <span className="text-18-bold">
-                           {estimate.price.toLocaleString()}원
+                           {estimate.price.toLocaleString()}
+                           {t("money")}
                         </span>
                      </p>
                   </div>
@@ -116,14 +120,14 @@ export default function Pending() {
                            handleClickConfirmed(estimate.estimateId)
                         }
                      >
-                        견적 확정하기
+                        {t("buttons.confirmEstimate")}
                      </SolidButton>
                      <OutlinedButton
                         onClick={() =>
                            router.push(`client/${estimate.estimateId}`)
                         }
                      >
-                        상세보기
+                        {t("buttons.viewDetails")}
                      </OutlinedButton>
                   </div>
                </section>

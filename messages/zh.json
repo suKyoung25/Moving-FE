@@ -299,7 +299,70 @@
       "Client": {
          "pendingQuotes": "待处理报价",
          "receivedQuotes": "收到的报价",
-         "requestedQuotes": "请求报价"
+         "requestedQuotes": "请求报价",
+         "myRequestTitle": "我的活动请求",
+         "requestedAtLabel": "请求日期：",
+         "requestedAtDateFormat": "yyyy年 MM月 dd日",
+         "fromLabel": "出发地",
+         "toLabel": "目的地",
+         "moveDateLabel": "搬家日期",
+         "moveDateFormat": "yyyy年 MM月 dd日 (eee)",
+         "SMALL": "小型搬家",
+         "HOME": "家庭搬家",
+         "OFFICE": "办公室搬家",
+         "toast": {
+            "confirmed": "报价已确认",
+            "confirmFailed": "报价确认失败",
+            "noReceivedEstimates": "没有收到报价！",
+            "noConfirmedEstimate": "没有确认的报价！"
+         },
+         "emptyMessage": "司机们正在努力确认中！",
+         "category": {
+            "moveDate": "搬家日期",
+            "from": "出发",
+            "to": "到达"
+         },
+         "priceLabel": "报价金额",
+         "buttons": {
+            "confirmEstimate": "确认报价",
+            "viewDetails": "查看详情"
+         },
+         "money": "元",
+         "estimateListTitle": "报价列表",
+         "dropdown": {
+            "all": "全部",
+            "confirmed": "已确认报价",
+            "recent": "最近请求",
+            "oldest": "最早请求"
+         },
+         "loadingNextPage": "正在加载下一页...",
+         "requestInfoTitle": "请求信息",
+         "estimateInfoTitle": "报价信息",
+         "labels": {
+            "requestedAt": "请求日期",
+            "service": "服务",
+            "moveDate": "搬家日期",
+            "from": "出发地",
+            "to": "目的地"
+         },
+         "loading": "加载中...",
+         "emptyRequestMessage": "尚未发送请求！",
+         "title": "报价请求列表",
+         "loadingMore": "加载中...",
+         "Detail": {
+            "pageTitle": "报价详情",
+            "estimatePriceTitle": "报价金额",
+            "currencyUnit": "韩元",
+            "shareQuoteText": "分享报价单",
+            "money": "元",
+            "button": {
+               "confirmEstimate": "确认报价"
+            },
+            "toast": {
+               "confirmed": "报价已确认",
+               "confirmFailed": "报价确认失败"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "发送的报价",

@@ -299,7 +299,70 @@
       "Client": {
          "pendingQuotes": "Pending Quotes",
          "receivedQuotes": "Received Quotes",
-         "requestedQuotes": "Requested Quotes"
+         "requestedQuotes": "Requested Quotes",
+         "myRequestTitle": "My Active Request",
+         "requestedAtLabel": "Requested at:",
+         "requestedAtDateFormat": "MMMM dd, yyyy",
+         "fromLabel": "Departure",
+         "toLabel": "Destination",
+         "moveDateLabel": "Move Date",
+         "moveDateFormat": "MMMM dd, yyyy (eee)",
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move",
+         "toast": {
+            "confirmed": "Estimate has been confirmed.",
+            "confirmFailed": "Failed to confirm estimate.",
+            "noReceivedEstimates": "No received estimates!",
+            "noConfirmedEstimate": "No confirmed estimates!"
+         },
+         "emptyMessage": "Drivers are diligently checking!",
+         "category": {
+            "moveDate": "Move Date",
+            "from": "From",
+            "to": "To"
+         },
+         "priceLabel": "Estimate Price",
+         "buttons": {
+            "confirmEstimate": "Confirm Estimate",
+            "viewDetails": "View Details"
+         },
+         "money": "KRW",
+         "estimateListTitle": "Estimate List",
+         "dropdown": {
+            "all": "All",
+            "confirmed": "Confirmed",
+            "recent": "Recent",
+            "oldest": "Oldest"
+         },
+         "loadingNextPage": "Loading next page...",
+         "requestInfoTitle": "Request Info",
+         "estimateInfoTitle": "Estimate Info",
+         "labels": {
+            "requestedAt": "Requested At",
+            "service": "Service",
+            "moveDate": "Move Date",
+            "from": "From",
+            "to": "To"
+         },
+         "loading": "Loading...",
+         "emptyRequestMessage": "No requests sent yet!",
+         "title": "Quote Requests",
+         "loadingMore": "Loading more...",
+         "Detail": {
+            "pageTitle": "Quote Details",
+            "estimatePriceTitle": "Estimate Price",
+            "currencyUnit": "KRW",
+            "shareQuoteText": "Share Quote",
+            "money": "KRW",
+            "button": {
+               "confirmEstimate": "Confirm Estimate"
+            },
+            "toast": {
+               "confirmed": "Estimate has been confirmed",
+               "confirmFailed": "Failed to confirm estimate"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "Sent Quotes",

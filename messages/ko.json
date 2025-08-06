@@ -299,7 +299,70 @@
       "Client": {
          "pendingQuotes": "대기 중인 견적",
          "receivedQuotes": "받았던 견적",
-         "requestedQuotes": "요청한 견적"
+         "requestedQuotes": "요청한 견적",
+         "myRequestTitle": "내 견적 요청",
+         "requestedAtLabel": "견적 요청일:",
+         "requestedAtDateFormat": "yyyy년 MM월 dd일",
+         "fromLabel": "출발지",
+         "toLabel": "도착지",
+         "moveDateLabel": "이사 예정일",
+         "moveDateFormat": "yyyy년 MM월 dd일 (eee)",
+         "SMALL": "소형이사",
+         "HOME": "가정이사",
+         "OFFICE": "사무실이사",
+         "toast": {
+            "confirmed": "견적이 확정되었습니다",
+            "confirmFailed": "견적 확정에 실패했습니다",
+            "noReceivedEstimates": "받은 견적이 없어요!",
+            "noConfirmedEstimate": "확정된 견적이 없어요!"
+         },
+         "emptyMessage": "기사님들이 열심히 확인 중이에요!",
+         "category": {
+            "moveDate": "이사일",
+            "from": "출발",
+            "to": "도착"
+         },
+         "priceLabel": "견적 금액",
+         "buttons": {
+            "confirmEstimate": "견적 확정하기",
+            "viewDetails": "상세보기"
+         },
+         "money": "원",
+         "estimateListTitle": "견적서 목록",
+         "dropdown": {
+            "all": "전체",
+            "confirmed": "확정한 견적서",
+            "recent": "최근 요청순",
+            "oldest": "오래된 요청순"
+         },
+         "loadingNextPage": "다음 페이지 불러오는 중...",
+         "requestInfoTitle": "요청 정보",
+         "estimateInfoTitle": "견적 정보",
+         "labels": {
+            "requestedAt": "견적 요청일",
+            "service": "서비스",
+            "moveDate": "이사일",
+            "from": "출발지",
+            "to": "도착지"
+         },
+         "loading": "로딩중...",
+         "emptyRequestMessage": "아직 보낸 요청이 없어요!",
+         "title": "견적 요청 목록",
+         "loadingMore": "불러오는 중...",
+         "Detail": {
+            "pageTitle": "견적 상세",
+            "estimatePriceTitle": "견적가",
+            "currencyUnit": "원",
+            "shareQuoteText": "견적서 공유하기",
+            "money": "원",
+            "button": {
+               "confirmEstimate": "견적 확정하기"
+            },
+            "toast": {
+               "confirmed": "견적이 확정되었습니다",
+               "confirmFailed": "견적 확정에 실패했습니다"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "보낸 견적 조회",
