@@ -5,10 +5,11 @@ import { DayPicker, getDefaultClassNames } from "react-day-picker";
 import ChatMessage from "./ChatMessage";
 import ChatWrapper from "./ChatWrapper";
 import "react-day-picker/style.css";
-import { ko } from "react-day-picker/locale";
+import { enUS, ko, zhCN } from "react-day-picker/locale";
 import { format } from "date-fns";
 import { Request } from "@/lib/types";
 import SolidButton from "@/components/common/SolidButton";
+import { useLocale, useTranslations } from "next-intl";
 
 interface Step2Props {
    value?: Request["moveDate"];
@@ -16,8 +17,17 @@ interface Step2Props {
    onNext: () => void;
 }
 
+const localeMap: Record<string, any> = {
+   ko: ko,
+   en: enUS,
+   zh: zhCN,
+};
+
 // 이사 날짜 선택 단계
 export default function Step2({ value, onChange, onNext }: Step2Props) {
+   const t = useTranslations("Request");
+   const locale = useLocale();
+
    const [selected, setSelected] = useState<Request["moveDate"] | undefined>(
       value,
    );
@@ -40,7 +50,7 @@ export default function Step2({ value, onChange, onNext }: Step2Props) {
    return (
       <>
          {/* 시스템 메시지 */}
-         <ChatMessage type="system" message="이사 예정일을 선택해 주세요." />
+         <ChatMessage type="system" message={t("selectMoveDatePrompt")} />
 
          {/* 유저 메세지 */}
          {value && !isEditing ? (
@@ -58,7 +68,7 @@ export default function Step2({ value, onChange, onNext }: Step2Props) {
                      mode="single"
                      selected={selected}
                      onSelect={handleSelect}
-                     locale={ko}
+                     locale={localeMap[locale] || ko}
                      navLayout="around"
                      showOutsideDays
                      required
@@ -83,13 +93,13 @@ export default function Step2({ value, onChange, onNext }: Step2Props) {
                      footer={
                         isValidDate && (
                            <div className="text-secondary-red-200 mt-2 mr-2 text-center font-medium">
-                              오늘 이후 날짜를 선택해주세요
+                              {t("selectFutureDateWarning")}
                            </div>
                         )
                      }
                   />
                   <SolidButton onClick={handleSubmit} disabled={isValidDate}>
-                     선택완료
+                     {t("completeSelection")}
                   </SolidButton>
                </ChatWrapper>
                {isEditing && (
@@ -98,7 +108,7 @@ export default function Step2({ value, onChange, onNext }: Step2Props) {
                      className="mr-2 text-right font-medium text-gray-500 underline max-lg:text-xs"
                      onClick={() => setIsEditing(false)}
                   >
-                     수정취소
+                     {t("cancelEdit")}
                   </button>
                )}
             </>
