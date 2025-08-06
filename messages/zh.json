@@ -189,7 +189,13 @@
       "myPage": "我的页面",
       "clientHonorific": "客户",
       "moverHonorific": "搬运工",
-      "logout": "登出"
+      "logout": "登出",
+      "withdraw": "注销账号",
+      "enterPasswordPrompt": "请输入密码以进行注销",
+      "passwordPlaceholder": "请输入您的密码",
+      "close": "关闭",
+      "withdrawButton": "注销账号",
+      "withdrawing": "正在注销..."
    },
    "Notification": {
       "title": "通知",

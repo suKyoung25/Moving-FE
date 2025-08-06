@@ -199,7 +199,13 @@
       "myPage": "My Page",
       "clientHonorific": "Client",
       "moverHonorific": "Mover",
-      "logout": "Logout"
+      "logout": "Logout",
+      "withdraw": "Withdraw",
+      "enterPasswordPrompt": "Please enter your password to withdraw",
+      "passwordPlaceholder": "Enter your password",
+      "close": "Close",
+      "withdrawButton": "Withdraw",
+      "withdrawing": "Withdrawing..."
    },
    "Notification": {
       "title": "Notifications",

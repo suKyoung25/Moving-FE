@@ -199,7 +199,13 @@
       "myPage": "마이페이지",
       "clientHonorific": "고객님",
       "moverHonorific": "기사님",
-      "logout": "로그아웃"
+      "logout": "로그아웃",
+      "withdraw": "회원 탈퇴",
+      "enterPasswordPrompt": "탈퇴하시려면 비밀번호를 입력해주세요",
+      "passwordPlaceholder": "비밀번호를 입력해 주세요",
+      "close": "닫기",
+      "withdrawButton": "탈퇴하기",
+      "withdrawing": "탈퇴 중..."
    },
    "Notification": {
       "title": "알림",
