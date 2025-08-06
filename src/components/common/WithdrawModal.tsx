@@ -5,12 +5,14 @@ import OutlinedButton from "./OutlinedButton";
 import PasswordInput from "../domain/auth/PasswordInput";
 import GeneralInputField from "../domain/profile/GeneralInputField";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslations } from "next-intl";
 
 interface Props {
    onClose: () => void;
 }
 
 export default function WithdrawModal({ onClose }: Props) {
+   const t = useTranslations("Header");
    const { user } = useAuth();
 
    if (!user) return null;
@@ -41,12 +43,13 @@ export default function WithdrawModal({ onClose }: Props) {
                {isLocal ? (
                   <>
                      <h2 className="mb-4 text-lg font-semibold">
-                        탈퇴하시려면 비밀번호를 입력해주세요
+                        {/* TODO: 추후 확인 탈퇴하시려면 비밀번호를 입력해주세요 */}
+                        {t("enterPasswordPrompt")}
                      </h2>
 
                      <PasswordInput
                         name="password"
-                        placeholder="비밀번호를 입력해 주세요"
+                        placeholder={t("passwordPlaceholder")}
                         register={register}
                         error={errors.password?.message}
                      />
@@ -68,10 +71,12 @@ export default function WithdrawModal({ onClose }: Props) {
                )}
 
                <div className="mt-4 flex justify-end gap-2">
-                  <OutlinedButton onClick={onClose}>닫기</OutlinedButton>
+                  <OutlinedButton onClick={onClose}>
+                     {t("close")}
+                  </OutlinedButton>
 
                   <SolidButton disabled={!isValid || isLoading} type="submit">
-                     {isLoading ? "탈퇴 중..." : "탈퇴하기"}
+                     {isLoading ? t("withdrawing") : t("withdrawButton")}
                   </SolidButton>
                </div>
             </div>
