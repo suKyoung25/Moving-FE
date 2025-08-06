@@ -7,22 +7,21 @@ import Dropdown from "./Dropdown";
 import EmptyState from "@/components/common/EmptyState";
 import { isAfter } from "date-fns";
 import { useRouter } from "next/navigation";
-import ToastPopup from "@/components/common/ToastPopup";
 import { useRequestsQuery } from "@/lib/api/estimate/query";
+import { cancelRequest } from "@/lib/api/estimate/requests/cancelRequest";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/context/ToastConText";
 
 // 요청한 견적
 export default function Requested() {
    const [dropdownName, setDropdownName] = useState("recent");
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
-
+   const { showSuccess, showError } = useToast();
    const router = useRouter();
    const bottomRef = useRef<HTMLDivElement | null>(null);
 
    const sort = dropdownName === "recent" ? "desc" : "asc";
+   const queryClient = useQueryClient();
+
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
       useRequestsQuery(sort);
    const requests = data?.pages.flatMap((page) => page.requests) ?? [];
@@ -38,15 +37,6 @@ export default function Requested() {
    };
 
    const handleClick = (request: Quotes) => {
-      if (!request.estimates || request.estimates.length === 0) {
-         setToast({
-            id: Date.now(),
-            text: "받은 견적이 없어요!",
-            success: false,
-         });
-         return;
-      }
-
       const confirmed = request.estimates.find(
          (e) => e.isClientConfirmed === true,
       );
@@ -54,11 +44,19 @@ export default function Requested() {
       if (confirmed) {
          router.push(`/my-quotes/client/${confirmed.id}`);
       } else {
-         setToast({
-            id: Date.now(),
-            text: "확정된 견적이 없어요!",
-            success: false,
-         });
+         showError("확정된 견적이 없어요!");
+      }
+   };
+
+   const handleCancel = async (requestId: string) => {
+      try {
+         const { data } = await cancelRequest(requestId);
+         console.log(data);
+         queryClient.invalidateQueries({ queryKey: ["requests", sort] });
+         queryClient.invalidateQueries({ queryKey: ["activeRequest"] });
+         showSuccess("견적 요청이 취소되었어요");
+      } catch (error) {
+         console.error("견적 요청 취소 실패:", error);
       }
    };
 
@@ -107,22 +105,30 @@ export default function Requested() {
                   new Date(request.moveDate),
                   request.isPending!,
                );
-
                return (
-                  <div
-                     key={request.id}
-                     onClick={() => handleClick(request)}
-                     className="cursor-pointer"
-                  >
-                     <QuotaionInfo
-                        fromAddress={request.fromAddress}
-                        moveDate={request.moveDate}
-                        moveType={request.moveType}
-                        toAddress={request.toAddress}
-                        requestedAt={request.requestedAt}
-                        chipType={chipType}
-                        isRequestedTap={true}
-                     />
+                  <div key={request.id}>
+                     <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
+                        요청 정보
+                     </p>
+                     {!request.isPending ? (
+                        <div
+                           key={request.id}
+                           onClick={() => handleClick(request)}
+                           className="cursor-pointer"
+                        >
+                           <QuotaionInfo
+                              request={request}
+                              chipType={chipType}
+                           />
+                        </div>
+                     ) : (
+                        <QuotaionInfo
+                           request={request}
+                           chipType={chipType}
+                           isPending={true}
+                           onClick={() => handleCancel(request.id)}
+                        />
+                     )}
                   </div>
                );
             })}
@@ -132,13 +138,6 @@ export default function Requested() {
             <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
                불러오는 중...
             </div>
-         )}
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
          )}
       </section>
    );
