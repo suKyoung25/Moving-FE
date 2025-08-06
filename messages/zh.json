@@ -109,7 +109,17 @@
       "selectFromAddress": "选择出发地址",
       "selectToAddress": "选择目的地址",
       "confirmEstimate": "确认报价",
-      "resetSelection": "重新选择"
+      "resetSelection": "重新选择",
+      "selectDeparture": "请选择出发地",
+      "selectDestination": "请选择目的地",
+      "closeModal": "关闭模态框",
+      "searchInfo": "如果要重新选择，请点击搜索图标。",
+      "searchAgain": "重新搜索",
+      "search": "搜索",
+      "roadAddressLabel": "道路名",
+      "jibunAddressLabel": "地番地址",
+      "confirmSelection": "选择完成",
+      "postcodeFrameLabel": "地址搜索框架"
    },
    "Reviews": {
       "writableReviews": "可写评论",

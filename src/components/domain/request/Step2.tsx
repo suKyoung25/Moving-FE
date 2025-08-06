@@ -7,6 +7,7 @@ import ChatWrapper from "./ChatWrapper";
 import "react-day-picker/style.css";
 import { enUS, ko, zhCN } from "react-day-picker/locale";
 import { format } from "date-fns";
+import type { Locale as DateFnsLocale } from "date-fns";
 import { Request } from "@/lib/types";
 import SolidButton from "@/components/common/SolidButton";
 import { useLocale, useTranslations } from "next-intl";
@@ -17,7 +18,7 @@ interface Step2Props {
    onNext: () => void;
 }
 
-const localeMap: Record<string, any> = {
+const localeMap: Record<string, DateFnsLocale> = {
    ko: ko,
    en: enUS,
    zh: zhCN,
