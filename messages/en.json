@@ -458,7 +458,10 @@
       "passwordPlaceholder": "Enter your password",
       "close": "Close",
       "withdrawButton": "Withdraw",
-      "withdrawing": "Withdrawing..."
+      "withdrawing": "Withdrawing...",
+      "withdrawConfirmMessage": "To withdraw, please type 'Withdraw'",
+      "confirmMessageLabel": "Confirmation Message",
+      "confirmMessagePlaceholder": "Please type 'Withdraw' exactly"
    },
    "Notification": {
       "title": "Notifications",

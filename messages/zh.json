@@ -458,7 +458,10 @@
       "passwordPlaceholder": "请输入您的密码",
       "close": "关闭",
       "withdrawButton": "注销账号",
-      "withdrawing": "正在注销..."
+      "withdrawing": "退出中...",
+      "withdrawConfirmMessage": "要退出，请输入“会员退出”",
+      "confirmMessageLabel": "确认信息",
+      "confirmMessagePlaceholder": "请准确输入“会员退出”"
    },
    "Notification": {
       "title": "通知",

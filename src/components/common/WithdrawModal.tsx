@@ -59,13 +59,13 @@ export default function WithdrawModal({ onClose }: Props) {
                ) : (
                   <>
                      <h2 className="mb-4 text-lg font-semibold">
-                        탈퇴하시려면 &quot;회원 탈퇴&quot;를 입력해주세요
+                        {t("withdrawConfirmMessage")}
                      </h2>
 
                      <GeneralInputField
                         name="confirmMessage"
-                        text="확인 메세지"
-                        placeholder="'회원 탈퇴'를 정확히 입력해주세요"
+                        text={t("confirmMessageLabel")}
+                        placeholder={t("confirmMessagePlaceholder")}
                         register={register}
                         error={errors.confirmMessage}
                      />

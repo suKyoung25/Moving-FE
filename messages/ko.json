@@ -458,7 +458,10 @@
       "passwordPlaceholder": "비밀번호를 입력해 주세요",
       "close": "닫기",
       "withdrawButton": "탈퇴하기",
-      "withdrawing": "탈퇴 중..."
+      "withdrawing": "탈퇴 중...",
+      "withdrawConfirmMessage": "탈퇴하시려면 \"회원 탈퇴\"를 입력해주세요",
+      "confirmMessageLabel": "확인 메시지",
+      "confirmMessagePlaceholder": "'회원 탈퇴'를 정확히 입력해주세요"
    },
    "Notification": {
       "title": "알림",
