@@ -1,19 +1,12 @@
 "use client";
 
-import ToastPopup from "@/components/common/ToastPopup";
 import ClientProfileTitle from "@/components/domain/profile/ClientProfileTitle";
 import ClientProfileUpdateForm from "@/components/domain/profile/ClientProfileUpdateForm";
 import MoverProfileUpdateForm from "@/components/domain/profile/MoverProfileUpdateForms";
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
 
 export default function EditProfilePage() {
    const { user } = useAuth();
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    // ✅ 일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
@@ -28,16 +21,9 @@ export default function EditProfilePage() {
                   }
                >
                   <ClientProfileTitle type="수정" />
-                  <ClientProfileUpdateForm setToast={setToast} />
+                  <ClientProfileUpdateForm />
                </div>
             </div>
-            {toast && (
-               <ToastPopup
-                  key={toast.id}
-                  text={toast.text}
-                  success={toast.success}
-               />
-            )}
          </>
       );
    }

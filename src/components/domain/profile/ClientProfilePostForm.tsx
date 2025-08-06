@@ -7,9 +7,8 @@ import SolidButton from "../../common/SolidButton";
 import { MOVE_TYPES, moveType, regions } from "@/constants";
 import useClientProfilePostForm from "@/lib/hooks/useClientProfilePostForm";
 import ImageInputField from "./ImageInputField";
-import { NotiSetting } from "@/lib/types";
 
-export default function ClientProfilePostForm({ setToast }: NotiSetting) {
+export default function ClientProfilePostForm() {
    // ✅ 함수 등 모음
    const {
       isValid,
@@ -21,7 +20,7 @@ export default function ClientProfilePostForm({ setToast }: NotiSetting) {
       control,
       errors,
       watch,
-   } = useClientProfilePostForm({ setToast });
+   } = useClientProfilePostForm();
 
    return (
       <form onSubmit={handleSubmit(onSubmit)}>

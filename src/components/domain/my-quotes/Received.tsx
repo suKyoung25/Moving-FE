@@ -15,7 +15,7 @@ function groupByRequest(data: DataItem[]): GroupedByRequest[] {
    const map = new Map<string, GroupedByRequest>();
 
    data.forEach((item) => {
-      const requestId = item.request.id;
+      const requestId = item.request.requestId;
       if (!map.has(requestId)) {
          map.set(requestId, {
             request: item.request,
@@ -80,17 +80,21 @@ export default function Received() {
                      견적서 목록
                   </p>
                   <Dropdown
-                     dropdownName={dropdownName}
-                     setDropdownName={setDropdownName}
+                     selectedValue={dropdownName}
+                     setSelectedValue={setDropdownName}
+                     options={[
+                        { label: "전체", value: "all" },
+                        { label: "확정한 견적서", value: "confirmed" },
+                     ]}
                   />
                </main>
                <main className="mt-4 flex flex-col gap-6 md:gap-8 lg:mt-8 lg:gap-14">
                   {estimates.map((estimate, idx) => {
-                     const isLast = idx === allData.length - 1;
+                     const isLastOfGroup = idx === estimates.length - 1;
                      return (
                         <span
                            key={estimate.estimateId}
-                           ref={isLast ? ref : undefined}
+                           ref={isLastOfGroup ? ref : undefined}
                         >
                            <ReceivedCard
                               estimate={estimate}

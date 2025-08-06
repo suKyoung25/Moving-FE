@@ -11,14 +11,16 @@ import {
    updateClientProfileSchema,
 } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
-import { NotiSetting, ServiceType } from "../types/client.types";
+import { ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
+import { useToast } from "@/context/ToastConText";
 
-export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
+export default function useClientProfileUpdateForm() {
    // ✅ 상태 모음
    const router = useRouter();
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
+   const { showSuccess } = useToast();
 
    // ✅ 초깃값 보존 용도 기본값
    function getInitialValues(user: User | null): ClientProfileUpdateValue {
@@ -115,12 +117,7 @@ export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
          };
 
          await clientProfile.update(payload);
-
-         setToast({
-            id: Date.now(),
-            text: "프로필이 수정되었습니다.",
-            success: true,
-         });
+         showSuccess("프로필이 수정되었습니다."); // 알림 모달
 
          // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
          setTimeout(async () => {

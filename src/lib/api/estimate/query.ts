@@ -3,6 +3,7 @@ import { getRejectedEstimates } from "./requests/getRejectedEstimates";
 import { getSentEstimates } from "./requests/getSentEstimates";
 import { fetchClientPendingQuotes } from "./getClientPendingQuote";
 import { fetchClientReceivedQuotes } from "./getClientReceivedQuote";
+import { getRequests } from "./requests/getClientRequest";
 
 export function useRejectedEstimates(page: number) {
    return useQuery({
@@ -54,5 +55,14 @@ export function useReceivedEstimates(category: string) {
          return undefined;
       },
       initialPageParam: 1,
+   });
+}
+
+export function useRequestsQuery(sort: "asc" | "desc") {
+   return useInfiniteQuery({
+      queryKey: ["requests", sort],
+      queryFn: ({ pageParam }) => getRequests({ cursor: pageParam, sort }),
+      initialPageParam: undefined,
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
    });
 }

@@ -56,9 +56,7 @@ export default function MoverProfileclient(props: MoverProfileclientProps) {
                <MoveChip type={props.serviceType as ChipType} />
             )}
          </div>
-         <p
-            className={`text-14-semibold text-black-300 lg:text-20-semibold ${props.quotesStatus === "pending" ? "hidden" : "block"}`}
-         >
+         <p className={`text-14-semibold text-black-300 lg:text-24-semibold`}>
             {props.comment}
          </p>
          <MoverProfile
