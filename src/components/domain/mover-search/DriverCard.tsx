@@ -90,13 +90,13 @@ export default memo(function DriverCard({
 
          // 기사님 로그인 상태 체크
          if (isLoggedInAsMover) {
-            showToast(t("error.loggedInAsMover"));
+            showToast(t("error.loggedInAsMover"), false);
             return;
          }
 
          // 로그인 상태 체크
          if (!user) {
-            showToast(t("error.needLogin"));
+            showToast(t("error.needLogin"), false);
             return;
          }
 
