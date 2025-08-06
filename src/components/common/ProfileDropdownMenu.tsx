@@ -12,10 +12,6 @@ export default function ProfileDropDownMenu() {
    const router = useRouter();
    const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
-   if (!user) return null;
-   const userType = user.userType!;
-   const userProvider = user.provider!;
-
    const handleLogout = () => {
       logout();
       router.replace("/mover-search");
@@ -69,11 +65,7 @@ export default function ProfileDropDownMenu() {
          </div>
          {isWithdrawModalOpen &&
             ReactDOM.createPortal(
-               <WithdrawModal
-                  onClose={() => setIsWithdrawModalOpen(false)}
-                  userType={userType}
-                  userProvider={userProvider}
-               />,
+               <WithdrawModal onClose={() => setIsWithdrawModalOpen(false)} />,
                document.body,
             )}
       </div>

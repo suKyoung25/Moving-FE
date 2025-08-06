@@ -2,23 +2,24 @@ import React from "react";
 import { useMoverWithdrawForm } from "@/lib/hooks/useMoverWithdrawForm";
 import SolidButton from "./SolidButton";
 import OutlinedButton from "./OutlinedButton";
-import { UserType } from "@/lib/types";
 import PasswordInput from "../domain/auth/PasswordInput";
 import GeneralInputField from "../domain/profile/GeneralInputField";
+import { useAuth } from "@/context/AuthContext";
 
 interface Props {
    onClose: () => void;
-   userType: UserType;
-   userProvider: string;
 }
 
-export default function WithdrawModal({
-   onClose,
-   userType,
-   userProvider,
-}: Props) {
+export default function WithdrawModal({ onClose }: Props) {
+   const { user } = useAuth();
+
+   if (!user) return null;
+   const userType = user.userType!;
+   const userProvider = user.provider!;
+
    // provider가 LOCAL / SOCIAL인지에 따라 UI 분기처리
    const isLocal = userProvider === "LOCAL";
+
    console.log("userProvider", userProvider); //디버깅
 
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
