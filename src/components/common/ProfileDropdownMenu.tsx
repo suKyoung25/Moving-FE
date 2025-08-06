@@ -12,7 +12,8 @@ export default function ProfileDropDownMenu() {
    const router = useRouter();
    const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
-   const userType = user?.userType!;
+   if (!user) return null;
+   const userType = user.userType;
 
    const handleLogout = () => {
       logout();
@@ -57,7 +58,7 @@ export default function ProfileDropDownMenu() {
             </button>
 
             <button
-               onClick={(e) => {
+               onClick={() => {
                   setIsWithdrawModalOpen(true);
                }}
                className="block w-full"

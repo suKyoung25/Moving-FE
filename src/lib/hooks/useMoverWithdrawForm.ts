@@ -27,9 +27,11 @@ export function useMoverWithdrawForm(onSuccess: () => void) {
    const onSubmit = (type: UserType) => async (data: WithdrawFormValues) => {
       setIsLoading(true);
 
+      if (!user) return;
+
       const payload = {
          password: data.password,
-         userId: user?.id!,
+         userId: user.id,
       };
 
       try {

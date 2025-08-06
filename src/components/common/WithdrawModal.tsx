@@ -11,8 +11,6 @@ interface Props {
 }
 
 export default function WithdrawModal({ onClose, userType }: Props) {
-   if (typeof window === "undefined") return null;
-
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
       useMoverWithdrawForm(onClose);
 
