@@ -14,8 +14,15 @@ interface Prop {
 
 export default function SignInForm({ userType }: Prop) {
    // ✅ 함수 모음
-   const { register, errors, isValid, onSubmit, isLoading, handleSubmit } =
-      useSignInForm();
+   const {
+      register,
+      errors,
+      isValid,
+      onSubmit,
+      isLoading,
+      handleSubmit,
+      isLoginBlock,
+   } = useSignInForm();
 
    return (
       <form
@@ -41,7 +48,10 @@ export default function SignInForm({ userType }: Prop) {
 
          {/* ✅ 로그인 버튼 */}
          <section className="mt-4 lg:mt-10">
-            <SolidButton type="submit" disabled={!isValid || isLoading}>
+            <SolidButton
+               type="submit"
+               disabled={!isValid || isLoading || isLoginBlock}
+            >
                {isLoading ? "로딩 중..." : "로그인"}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">

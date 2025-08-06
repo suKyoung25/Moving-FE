@@ -113,7 +113,7 @@ export default function ClientProfileUpdateForm() {
                         />
                         <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
                         <ProfilePasswordInput<ClientProfileUpdateValue>
-                           label="새 비밀번호"
+                           label="새 비밀번호 확인"
                            name="newPasswordConfirmation"
                            placeholder="새로운 비밀번호를 다시 한번 입력해 주세요."
                            register={register}
