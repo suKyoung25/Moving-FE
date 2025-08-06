@@ -13,7 +13,8 @@ export default function ProfileDropDownMenu() {
    const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
    if (!user) return null;
-   const userType = user.userType;
+   const userType = user.userType!;
+   const userProvider = user.provider!;
 
    const handleLogout = () => {
       logout();
@@ -71,6 +72,7 @@ export default function ProfileDropDownMenu() {
                <WithdrawModal
                   onClose={() => setIsWithdrawModalOpen(false)}
                   userType={userType}
+                  userProvider={userProvider}
                />,
                document.body,
             )}
