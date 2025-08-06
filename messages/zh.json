@@ -77,6 +77,50 @@
       "yellowStarAlt": "黄色星星",
       "grayStarAlt": "灰色星星"
    },
+   "Request": {
+      "requestQuote": "请求报价",
+      "progressbarAriaLabel": "请求报价进度",
+      "toast": {
+         "success": "报价请求已完成！",
+         "fail": "已有进行中的报价请求。"
+      },
+      "loading": "加载中...",
+      "systemInfoMessage": "只需告诉我们一些信息，即可获得多位搬运工的报价 :)",
+      "inProgressAlt": "报价请求进行中",
+      "inProgressMessageLine1": "您有正在进行的搬家报价请求！",
+      "inProgressMessageLine2": "请在当前搬家完成后，接收新的报价。",
+      "goToReceivedQuotesButton": "查看收到的报价",
+      "edit": "编辑",
+      "selectMoveTypePrompt": "请选择搬家类型。",
+      "moveTypes": {
+         "SMALL": "小型搬家（单间、一室、20坪以下）",
+         "HOME": "家庭搬家（三室、20坪以上）",
+         "OFFICE": "办公室搬家（办公空间、商业空间）"
+      },
+      "radioSelectedAlt": "单选按钮已选中",
+      "radioUnselectedAlt": "单选按钮未选中",
+      "completeSelection": "完成选择",
+      "cancelEdit": "取消编辑",
+      "selectMoveDatePrompt": "请选择预定搬家日期。",
+      "selectFutureDateWarning": "请选择今天之后的日期",
+      "selectMoveAreaPrompt": "请选择搬家区域。",
+      "from": "出发地",
+      "to": "目的地",
+      "selectFromAddress": "选择出发地址",
+      "selectToAddress": "选择目的地址",
+      "confirmEstimate": "确认报价",
+      "resetSelection": "重新选择",
+      "selectDeparture": "请选择出发地",
+      "selectDestination": "请选择目的地",
+      "closeModal": "关闭模态框",
+      "searchInfo": "如果要重新选择，请点击搜索图标。",
+      "searchAgain": "重新搜索",
+      "search": "搜索",
+      "roadAddressLabel": "道路名",
+      "jibunAddressLabel": "地番地址",
+      "confirmSelection": "选择完成",
+      "postcodeFrameLabel": "地址搜索框架"
+   },
    "Reviews": {
       "writableReviews": "可写评论",
       "noWritableReviews": "没有可撰写的评价。",
@@ -143,6 +187,7 @@
          "myQuotes": "我的报价",
          "receivedRequests": "收到的请求",
          "myQuotesMover": "我的报价",
+         "myQuotesClient": "我的报价",
          "login": "登录",
          "signUp": "注册",
          "contactUs": "联系我们"
@@ -154,7 +199,13 @@
       "myPage": "我的页面",
       "clientHonorific": "客户",
       "moverHonorific": "搬运工",
-      "logout": "登出"
+      "logout": "登出",
+      "withdraw": "注销账号",
+      "enterPasswordPrompt": "请输入密码以进行注销",
+      "passwordPlaceholder": "请输入您的密码",
+      "close": "关闭",
+      "withdrawButton": "注销账号",
+      "withdrawing": "正在注销..."
    },
    "Notification": {
       "title": "通知",

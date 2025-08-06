@@ -66,7 +66,7 @@ export default function ProfileDropDownMenu() {
                }}
                className="block w-full"
             >
-               회원 탈퇴
+               {t("withdraw")}
             </button>
          </div>
          {isWithdrawModalOpen &&

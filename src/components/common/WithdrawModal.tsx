@@ -1,9 +1,12 @@
+"use client";
+
 import React from "react";
 import { useMoverWithdrawForm } from "@/lib/hooks/useMoverWithdrawForm";
 import SolidButton from "./SolidButton";
 import OutlinedButton from "./OutlinedButton";
 import { UserType } from "@/lib/types";
 import PasswordInput from "../domain/auth/PasswordInput";
+import { useTranslations } from "next-intl";
 
 interface Props {
    onClose: () => void;
@@ -11,6 +14,8 @@ interface Props {
 }
 
 export default function WithdrawModal({ onClose, userType }: Props) {
+   const t = useTranslations("Header");
+
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
       useMoverWithdrawForm(onClose);
 
@@ -28,20 +33,22 @@ export default function WithdrawModal({ onClose, userType }: Props) {
                onMouseDown={(e) => e.stopPropagation()} // 내부 클릭 시 닫히는 거 막기
             >
                <h2 className="mb-4 text-lg font-semibold">
-                  탈퇴하시려면 비밀번호를 입력해주세요
+                  {t("enterPasswordPrompt")}
                </h2>
 
                <PasswordInput
                   name="password"
-                  placeholder="비밀번호를 입력해 주세요"
+                  placeholder={t("passwordPlaceholder")}
                   register={register}
                   error={errors.password?.message}
                />
                <div className="flex justify-end gap-2">
-                  <OutlinedButton onClick={onClose}>닫기</OutlinedButton>
+                  <OutlinedButton onClick={onClose}>
+                     {t("close")}
+                  </OutlinedButton>
 
                   <SolidButton disabled={!isValid || isLoading} type="submit">
-                     {isLoading ? "탈퇴 중..." : "탈퇴하기"}
+                     {isLoading ? t("withdrawing") : t("withdrawButton")}
                   </SolidButton>
                </div>
             </div>

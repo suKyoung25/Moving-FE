@@ -77,6 +77,50 @@
       "yellowStarAlt": "노란별",
       "grayStarAlt": "회색별"
    },
+   "Request": {
+      "requestQuote": "견적 요청",
+      "progressbarAriaLabel": "견적 요청 진행 상태",
+      "toast": {
+         "success": "견적 요청이 완료되었어요!",
+         "fail": "이미 진행 중인 견적 요청이 있어요."
+      },
+      "loading": "로딩 중...",
+      "systemInfoMessage": "몇 가지 정보만 알려주시면 다양한 기사님의 견적을 받을 수 있어요 :)",
+      "inProgressAlt": "견적 요청 진행중",
+      "inProgressMessageLine1": "현재 진행 중인 이사 견적이 있어요!",
+      "inProgressMessageLine2": "진행 중인 이사 완료 후 새로운 견적을 받아보세요.",
+      "goToReceivedQuotesButton": "받은 견적 보러가기",
+      "edit": "수정하기",
+      "selectMoveTypePrompt": "이사 종류를 선택해 주세요.",
+      "moveTypes": {
+         "SMALL": "소형이사 (원룸, 투룸, 20평대 미만)",
+         "HOME": "가정이사 (쓰리룸, 20평대 이상)",
+         "OFFICE": "사무실이사 (사무실, 상업공간)"
+      },
+      "radioSelectedAlt": "라디오 버튼 선택됨",
+      "radioUnselectedAlt": "라디오 버튼 선택 안됨",
+      "completeSelection": "선택완료",
+      "cancelEdit": "수정취소",
+      "selectMoveDatePrompt": "이사 예정일을 선택해 주세요.",
+      "selectFutureDateWarning": "오늘 이후 날짜를 선택해주세요",
+      "selectMoveAreaPrompt": "이사 지역을 선택해 주세요.",
+      "from": "출발지",
+      "to": "도착지",
+      "selectFromAddress": "출발지 선택하기",
+      "selectToAddress": "도착지 선택하기",
+      "confirmEstimate": "견적 확정하기",
+      "resetSelection": "처음부터 다시 선택",
+      "selectDeparture": "출발지를 선택해주세요",
+      "selectDestination": "도착지를 선택해주세요",
+      "closeModal": "모달 닫기",
+      "searchInfo": "다시 선택하려면 검색 아이콘을 눌러주세요.",
+      "searchAgain": "검색 다시하기",
+      "search": "검색",
+      "roadAddressLabel": "도로명",
+      "jibunAddressLabel": "지번",
+      "confirmSelection": "선택 완료",
+      "postcodeFrameLabel": "주소 검색 프레임"
+   },
    "Reviews": {
       "writableReviews": "작성 가능한 리뷰",
       "noWritableReviews": "작성 가능한 리뷰가 없어요",
@@ -143,6 +187,7 @@
          "myQuotes": "내 견적 관리",
          "receivedRequests": "받은 요청",
          "myQuotesMover": "내 견적 관리",
+         "myQuotesClient": "내 견적 관리",
          "login": "로그인",
          "signUp": "회원가입",
          "contactUs": "문의하기"
@@ -154,7 +199,13 @@
       "myPage": "마이페이지",
       "clientHonorific": "고객님",
       "moverHonorific": "기사님",
-      "logout": "로그아웃"
+      "logout": "로그아웃",
+      "withdraw": "회원 탈퇴",
+      "enterPasswordPrompt": "탈퇴하시려면 비밀번호를 입력해주세요",
+      "passwordPlaceholder": "비밀번호를 입력해 주세요",
+      "close": "닫기",
+      "withdrawButton": "탈퇴하기",
+      "withdrawing": "탈퇴 중..."
    },
    "Notification": {
       "title": "알림",
