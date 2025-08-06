@@ -66,7 +66,7 @@ export interface LoginFormState {
 // ✅ 인증 컴포넌트 props
 export interface AuthInputProps<T extends FieldValues> {
    name: Path<T>;
-   label: string;
+   label?: string;
    type?: "text" | "email" | "password";
    placeholder: string;
    register: UseFormRegister<T>;

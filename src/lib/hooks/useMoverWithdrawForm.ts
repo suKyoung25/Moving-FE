@@ -6,11 +6,13 @@ import deleteUserInfo from "../api/auth/requests/deleteMoverInfo";
 import { AuthFetchError, UserType } from "../types";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/context/ToastConText";
 
-export function useMoverWithdrawForm() {
+export function useMoverWithdrawForm(onSuccess: () => void) {
    const [isLoading, setIsLoading] = useState(false);
    const router = useRouter();
-   const { user, getUser, refreshUser, logout } = useAuth();
+   const { user, logout } = useAuth();
+   const { showSuccess } = useToast();
 
    const {
       register,
@@ -33,24 +35,18 @@ export function useMoverWithdrawForm() {
       try {
          const res = await deleteUserInfo(type, payload);
 
-         //디버깅
-         console.log("회원 탈퇴 1");
-         //디버깅
-         console.log("회원 탈퇴 res", res);
+         if (res.message === "Mover 회원 삭제 성공") {
+            onSuccess();
 
-         logout();
+            showSuccess("정상적으로 회원탈퇴가 진행되었습니다");
 
-         //디버깅
-         console.log("회원 탈퇴 2");
-
-         await refreshUser();
-
-         alert("정상적으로 회원탈퇴가 진행되었습니다"); // TODO: 토스트 알림 구현
-
-         //디버깅
-         console.log("회원 탈퇴 3");
-
-         router.replace("/mover-search");
+            setTimeout(async () => {
+               logout();
+               setTimeout(() => {
+                  router.replace("/mover-search");
+               }, 500);
+            }, 1500);
+         }
       } catch (error) {
          console.error("회원 탈퇴 실패:", error);
 
@@ -58,8 +54,6 @@ export function useMoverWithdrawForm() {
 
          if (customError?.body.message) {
             const message = customError?.body.message;
-
-            console.log("프론트가 던지는 에러", message); //디버깅
 
             if (message === "비밀번호가 일치하지 않습니다.") {
                setError("password", {

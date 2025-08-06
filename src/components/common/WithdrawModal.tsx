@@ -14,7 +14,7 @@ export default function WithdrawModal({ onClose, userType }: Props) {
    if (typeof window === "undefined") return null;
 
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
-      useMoverWithdrawForm();
+      useMoverWithdrawForm(onClose);
 
    return (
       <form
@@ -22,12 +22,12 @@ export default function WithdrawModal({ onClose, userType }: Props) {
          className="flex w-full flex-col"
       >
          <div
-            className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black"
+            className="bg-black-100/50 fixed inset-0 z-50 flex items-center justify-center"
             onMouseDown={onClose} // 바깥 누르면 닫기
          >
             <div
                className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg"
-               onMouseDown={(e) => e.stopPropagation()} // 내부 클릭 시 전파 막기
+               onMouseDown={(e) => e.stopPropagation()} // 내부 클릭 시 닫히는 거 막기
             >
                <h2 className="mb-4 text-lg font-semibold">
                   탈퇴하시려면 비밀번호를 입력해주세요
@@ -35,7 +35,6 @@ export default function WithdrawModal({ onClose, userType }: Props) {
 
                <PasswordInput
                   name="password"
-                  label="비밀번호"
                   placeholder="비밀번호를 입력해 주세요"
                   register={register}
                   error={errors.password?.message}
