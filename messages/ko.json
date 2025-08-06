@@ -126,6 +126,36 @@
          "rejectedRequests": "반려요청"
       }
    },
+   "Header": {
+      "logoAlt": "메인 로고",
+      "logoMobileAlt": "모바일 메인 로고",
+      "hamburgerMenuAlt": "메뉴 열기",
+      "closeAlt": "메뉴 닫기",
+      "alarmAlt": "알림",
+      "profileAlt": "프로필 이미지",
+      "profileDefaultAlt": "기본 프로필 이미지",
+      "login": "로그인",
+      "loginClient": "고객",
+      "loginMover": "기사",
+      "nav": {
+         "findMovers": "기사님 찾기",
+         "requestQuote": "견적 요청",
+         "myQuotes": "내 견적 관리",
+         "receivedRequests": "받은 요청",
+         "myQuotesMover": "내 견적 관리",
+         "login": "로그인",
+         "signUp": "회원가입",
+         "contactUs": "문의하기"
+      },
+      "honorific": "님",
+      "editProfile": "프로필 수정",
+      "favoriteMovers": "찜한 기사님",
+      "movingReviews": "이사 리뷰",
+      "myPage": "마이페이지",
+      "clientHonorific": "고객님",
+      "moverHonorific": "기사님",
+      "logout": "로그아웃"
+   },
    "Chips": {
       "small": "소형이사",
       "home": "가정이사",

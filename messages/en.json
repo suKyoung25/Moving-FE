@@ -126,6 +126,36 @@
          "rejectedRequests": "Rejected Requests"
       }
    },
+   "Header": {
+      "logoAlt": "Main Logo",
+      "logoMobileAlt": "Mobile Main Logo",
+      "hamburgerMenuAlt": "Open Menu",
+      "closeAlt": "Close Menu",
+      "alarmAlt": "Notification",
+      "profileAlt": "Profile Image",
+      "profileDefaultAlt": "Default Profile Image",
+      "login": "Login",
+      "loginClient": "Client",
+      "loginMover": "Mover",
+      "nav": {
+         "findMovers": "Find Movers",
+         "requestQuote": "Request Quote",
+         "myQuotes": "My Quotes",
+         "receivedRequests": "Received Requests",
+         "myQuotesMover": "My Quotes",
+         "login": "Login",
+         "signUp": "Sign Up",
+         "contactUs": "Contact Us"
+      },
+      "honorific": "",
+      "editProfile": "Edit Profile",
+      "favoriteMovers": "Favorite Movers",
+      "movingReviews": "Moving Reviews",
+      "myPage": "My Page",
+      "clientHonorific": "Client",
+      "moverHonorific": "Mover",
+      "logout": "Logout"
+   },
    "Chips": {
       "small": "Small",
       "home": "Home",

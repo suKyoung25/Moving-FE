@@ -126,6 +126,36 @@
          "rejectedRequests": "被拒请求"
       }
    },
+   "Header": {
+      "logoAlt": "主标志",
+      "logoMobileAlt": "移动主标志",
+      "hamburgerMenuAlt": "打开菜单",
+      "closeAlt": "关闭菜单",
+      "alarmAlt": "通知",
+      "profileAlt": "个人资料图片",
+      "profileDefaultAlt": "默认个人资料图片",
+      "login": "登录",
+      "loginClient": "客户",
+      "loginMover": "搬运工",
+      "nav": {
+         "findMovers": "寻找搬运工",
+         "requestQuote": "请求报价",
+         "myQuotes": "我的报价",
+         "receivedRequests": "收到的请求",
+         "myQuotesMover": "我的报价",
+         "login": "登录",
+         "signUp": "注册",
+         "contactUs": "联系我们"
+      },
+      "honorific": "",
+      "editProfile": "编辑个人资料",
+      "favoriteMovers": "收藏的搬运工",
+      "movingReviews": "搬家评论",
+      "myPage": "我的页面",
+      "clientHonorific": "客户",
+      "moverHonorific": "搬运工",
+      "logout": "登出"
+   },
    "Chips": {
       "small": "小件搬家",
       "home": "家庭搬家",
