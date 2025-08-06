@@ -6,6 +6,7 @@ import { Mover } from "@/lib/types";
 import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
+import { useTranslations } from "next-intl";
 
 interface FavoriteButtonProps {
    mover: Mover;
@@ -24,6 +25,8 @@ export function FavoriteButton({
    setErrorMessage,
    setIsResultModalOpen,
 }: FavoriteButtonProps) {
+   const t = useTranslations("MoverDetail");
+
    const [isLoading, setIsLoading] = useState(false);
    const [isFavorite, setIsFavorite] = useState(mover.isFavorite ?? false);
 
@@ -57,10 +60,10 @@ export function FavoriteButton({
       } catch (error) {
          console.error("찜 처리 실패:", error);
 
-         let errorMessage = "찜 처리 중 오류가 발생했습니다.";
+         let errorMessage = t("errorOccurred");
          if (error instanceof Error) {
             if (error.message.includes("로그인")) {
-               errorMessage = "로그인이 필요한 기능입니다.";
+               errorMessage = t("loginRequired");
             } else {
                errorMessage = error.message;
             }
@@ -86,16 +89,16 @@ export function FavoriteButton({
          <span className="text-lg">
             <Image
                src={isFavorite ? heart : inActiveHeart}
-               alt={isFavorite ? "찜 해제" : "찜 하기"}
+               alt={isFavorite ? t("alt.unfavorite") : t("alt.favorite")}
                className="h-6 w-8"
             />
          </span>
          <span className="hidden lg:block">
             {isLoading
-               ? "처리 중..."
+               ? t("loading")
                : isFavorite
-                 ? "찜 해제하기"
-                 : "기사님 찜하기"}
+                 ? t("unfavorite")
+                 : t("favoriteDriver")}
          </span>
       </button>
    );
