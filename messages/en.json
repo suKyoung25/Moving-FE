@@ -156,6 +156,18 @@
       "moverHonorific": "Mover",
       "logout": "Logout"
    },
+   "Notification": {
+      "title": "Notifications",
+      "readAllTooltip": "Mark all as read",
+      "readAllAria": "Button to mark all notifications as read",
+      "closeAlt": "Close notifications",
+      "closeAria": "Close notification modal button",
+      "loading": "Please wait",
+      "empty": "No notifications available.",
+      "loadingMore": "Loading...",
+      "readFail": "Failed to mark notification as read",
+      "readAllFail": "Failed to mark all notifications as read"
+   },
    "Chips": {
       "small": "Small",
       "home": "Home",

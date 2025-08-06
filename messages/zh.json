@@ -156,6 +156,18 @@
       "moverHonorific": "搬运工",
       "logout": "登出"
    },
+   "Notification": {
+      "title": "通知",
+      "readAllTooltip": "全部标记为已读",
+      "readAllAria": "将所有通知标记为已读的按钮",
+      "closeAlt": "关闭通知",
+      "closeAria": "关闭通知模态框按钮",
+      "loading": "请稍候",
+      "empty": "暂无通知。",
+      "loadingMore": "加载中...",
+      "readFail": "通知标记为已读失败",
+      "readAllFail": "全部通知标记为已读失败"
+   },
    "Chips": {
       "small": "小件搬家",
       "home": "家庭搬家",

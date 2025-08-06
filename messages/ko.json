@@ -156,6 +156,18 @@
       "moverHonorific": "기사님",
       "logout": "로그아웃"
    },
+   "Notification": {
+      "title": "알림",
+      "readAllTooltip": "모두 읽음 처리",
+      "readAllAria": "모든 알림을 읽음 처리하는 버튼",
+      "closeAlt": "알림 닫기",
+      "closeAria": "알림 모달 닫기 버튼",
+      "loading": "잠시만요",
+      "empty": "알림이 존재하지 않습니다.",
+      "loadingMore": "불러오는 중...",
+      "readFail": "알림 읽기 실패",
+      "readAllFail": "모든 알림 읽기 실패"
+   },
    "Chips": {
       "small": "소형이사",
       "home": "가정이사",
