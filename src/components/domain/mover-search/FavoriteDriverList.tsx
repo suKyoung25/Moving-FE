@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo, useMemo } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
@@ -8,23 +8,56 @@ import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastConText"; // 🔥 ToastContext 추가
 import { EstimateStatus } from "@/lib/types";
 
+// 🔥 타입 수정: favoriteCount 매개변수 추가
 interface FavoriteDriverListProps {
-   onFavoriteChange?: (moverId: string, isFavorite: boolean) => void;
+   onFavoriteChange?: (
+      moverId: string,
+      isFavorite: boolean,
+      favoriteCount: number,
+   ) => void;
 }
 
-export default function FavoriteDriverList({
+// ✅ 함수를 컴포넌트 외부로 이동하여 메모이제이션
+function shouldShowDesignatedChip(mover: Mover): boolean {
+   return !!(
+      mover.hasDesignatedRequest &&
+      mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
+      mover.designatedEstimateStatus !== EstimateStatus.REJECTED
+   );
+}
+
+// ✅ 상수를 컴포넌트 외부로 이동
+const VALID_CHIP_TYPES: ChipType[] = [
+   "SMALL",
+   "HOME",
+   "OFFICE",
+   "DESIGNATED",
+   "PENDING",
+   "CONFIRMED",
+];
+
+// ✅ 메인 컴포넌트를 memo로 최적화
+export default memo(function FavoriteDriverList({
    onFavoriteChange,
 }: FavoriteDriverListProps) {
    const { user } = useAuth();
+   const { showToast } = useToast(); // 🔥 Toast 훅 사용
+
    const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-   const isLoggedInAsMover = user?.userType === "mover";
+   // ✅ 계산값을 메모이제이션
+   const isLoggedInAsMover = useMemo(
+      () => user?.userType === "mover",
+      [user?.userType],
+   );
 
+   // ✅ 함수들을 useCallback으로 최적화
    const checkAuthStatus = useCallback(() => {
       return Boolean(tokenSettings.get());
    }, []);
@@ -67,36 +100,72 @@ export default function FavoriteDriverList({
       }
    }, [checkAuthStatus, isLoggedInAsMover]);
 
+   // 🔥 수정된 찜하기 로직 - Toast 사용
    const handleFavoriteToggle = useCallback(
       async (moverId: string) => {
          try {
+            // 🔥 해제하려는 기사님의 현재 정보 가져오기
+            const targetMover = favoriteMovers.find(
+               (mover) => mover.id === moverId,
+            );
+            const newFavoriteCount = Math.max(
+               (targetMover?.favoriteCount || 1) - 1,
+               0,
+            );
+
             const response = await toggleFavoriteMover(moverId);
             console.log("❤️ FavoriteDriverList 찜 해제:", {
                moverId,
                response,
+               newFavoriteCount,
             });
 
             setFavoriteMovers((prev) =>
                prev.filter((mover) => mover.id !== moverId),
             );
 
-            onFavoriteChange?.(moverId, false);
+            // 🔥 favoriteCount도 함께 전달
+            onFavoriteChange?.(moverId, false, newFavoriteCount);
+
+            // 🎉 Toast로 성공 메시지 표시
+            showToast("찜 목록에서 제거되었습니다.", true);
 
             setTimeout(() => {
                loadFavoriteMovers();
             }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
-            alert("찜 처리 중 오류가 발생했습니다.");
+
+            // 🚨 에러 메시지를 Toast로 표시
+            let errorMessage = "찜 처리 중 오류가 발생했습니다.";
+            if (err instanceof Error) {
+               if (err.message.includes("로그인")) {
+                  errorMessage = "로그인이 필요합니다.";
+               } else if (err.message.includes("네트워크")) {
+                  errorMessage = "네트워크 연결을 확인해주세요.";
+               } else {
+                  errorMessage =
+                     err.message || "찜 처리 중 오류가 발생했습니다.";
+               }
+            }
+
+            showToast(errorMessage, false); // 🚨 실패 Toast
          }
       },
-      [onFavoriteChange, loadFavoriteMovers],
+      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showToast], // showToast 의존성 추가
    );
 
    useEffect(() => {
       loadFavoriteMovers();
    }, [loadFavoriteMovers]);
 
+   // ✅ 표시할 기사 목록을 메모이제이션
+   const displayMovers = useMemo(
+      () => favoriteMovers.slice(0, 3),
+      [favoriteMovers],
+   );
+
+   // 🔥 원본 조건부 렌더링 로직 유지
    if (!isAuthenticated || isLoggedInAsMover) {
       return null;
    }
@@ -142,23 +211,13 @@ export default function FavoriteDriverList({
       );
    }
 
-   const displayMovers = favoriteMovers.slice(0, 3);
-
-   function shouldShowDesignatedChip(mover: Mover): boolean {
-      // 지정견적 요청이 있고, 아직 처리되지 않은 경우 (CONFIRMED나 REJECTED가 아닌 경우)
-      return !!(
-         mover.hasDesignatedRequest &&
-         mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
-         mover.designatedEstimateStatus !== EstimateStatus.REJECTED
-      );
-   }
-
    return (
       <div className="mt-8 flex flex-col gap-4 rounded-lg">
          <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
             찜한 기사님
          </h2>
 
+         {/* 🔥 원본 렌더링 로직 유지 */}
          {displayMovers.map((mover) => (
             <div
                key={mover.id}
@@ -167,16 +226,8 @@ export default function FavoriteDriverList({
                <div className="flex gap-1">
                   {mover.serviceType?.map((type: string, index: number) => {
                      const chipType = type.toUpperCase() as ChipType;
-                     const validChipTypes: ChipType[] = [
-                        "SMALL",
-                        "HOME",
-                        "OFFICE",
-                        "DESIGNATED",
-                        "PENDING",
-                        "CONFIRMED",
-                     ];
 
-                     if (validChipTypes.includes(chipType)) {
+                     if (VALID_CHIP_TYPES.includes(chipType)) {
                         return (
                            <MoveChip key={index} type={chipType} mini={false} />
                         );
@@ -184,7 +235,7 @@ export default function FavoriteDriverList({
                      return null;
                   })}
 
-                  {/* 🔥 DESIGNATED 칩 추가 */}
+                  {/* 🔥 DESIGNATED 칩 로직 유지 */}
                   {shouldShowDesignatedChip(mover) && (
                      <MoveChip type="DESIGNATED" mini={false} />
                   )}
@@ -196,6 +247,7 @@ export default function FavoriteDriverList({
                   </p>
                )}
 
+               {/* 🔥 원본 MoverProfile props 유지 */}
                <MoverProfile
                   profileImage={mover.profileImage}
                   forceMobileStyle={true}
@@ -214,4 +266,4 @@ export default function FavoriteDriverList({
          ))}
       </div>
    );
-}
+});

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import DriverCard from "./DriverCard";
 import { getMovers } from "@/lib/api/mover/getMover";
 import { GetMoversParams } from "@/lib/types/mover.types";
@@ -24,7 +24,7 @@ interface DriverListProps {
    refreshKey?: number;
 }
 
-export default function DriverList({
+export default memo(function DriverList({
    filters,
    onFavoriteChange,
    refreshKey,
@@ -35,7 +35,7 @@ export default function DriverList({
    const [hasMore, setHasMore] = useState(true);
    const [currentPage, setCurrentPage] = useState(1);
 
-   // 기사님 데이터 로드 함수
+   // 기사님 데이터 로드 함수 + useCallback으로 최적화
    const loadMovers = useCallback(
       async (reset = false) => {
          try {
@@ -95,7 +95,6 @@ export default function DriverList({
       ],
    );
 
-   // 다음 페이지 로드
    const loadMore = useCallback(() => {
       if (!hasMore || loading) return;
       loadMovers(false);
@@ -110,15 +109,9 @@ export default function DriverList({
       threshold: 0.1,
    });
 
-   // 찜 상태 변경 핸들러
+   //  찜 상태 변경 핸들러 + useCallback으로 최적화
    const handleFavoriteChange = useCallback(
       (moverId: string, isFavorite: boolean, favoriteCount: number) => {
-         console.log("📋 DriverList 찜 상태 변경:", {
-            moverId,
-            isFavorite,
-            favoriteCount,
-         });
-
          setMovers((prev) =>
             prev.map((mover) =>
                mover.id === moverId
@@ -132,11 +125,9 @@ export default function DriverList({
       [onFavoriteChange],
    );
 
-   // 외부에서 refreshKey 변경 시 특정 기사의 찜 상태만 업데이트
+   //  외부 refreshKey 처리 로직
    useEffect(() => {
       if (refreshKey && refreshKey > 0) {
-         console.log("📋 DriverList 외부 새로고침 요청:", refreshKey);
-
          const refreshFavoriteStates = async () => {
             try {
                const currentMovers = movers;
@@ -172,7 +163,6 @@ export default function DriverList({
                            ...existingMover,
                            isFavorite: updatedMover.isFavorite,
                            favoriteCount: updatedMover.favoriteCount,
-                           // 지정견적 상태도 업데이트
                            hasDesignatedRequest:
                               updatedMover.hasDesignatedRequest,
                            designatedEstimateStatus:
@@ -198,7 +188,7 @@ export default function DriverList({
       movers,
    ]);
 
-   // 필터 변경 시 데이터 리셋
+   //  필터 변경 시 데이터 리셋
    useEffect(() => {
       setCurrentPage(1);
       setHasMore(true);
@@ -269,7 +259,6 @@ export default function DriverList({
                key={mover.id}
                mover={mover}
                onFavoriteChange={handleFavoriteChange}
-               // 🔥 onDesignatedEstimateSuccess prop 제거 (DriverCard에서 받지 않음)
             />
          ))}
 
@@ -299,4 +288,4 @@ export default function DriverList({
          )}
       </div>
    );
-}
+});

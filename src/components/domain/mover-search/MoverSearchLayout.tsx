@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, memo, lazy, Suspense } from "react";
 import DriverList from "./DriverList";
 import SortDropdown from "./SortDropdown";
 import FilterAreaServiceBox from "./FilterAreaServiceBox";
 import SearchBar from "./SearchBar";
 import { DropdownOption } from "@/lib/types/mover.types";
-import FavoriteDriverList from "./FavoriteDriverList";
+
+// FavoriteDriverList를 lazy 로딩으로 최적화
+const FavoriteDriverList = lazy(() => import("./FavoriteDriverList"));
 
 import {
    AREA_OPTIONS,
@@ -14,11 +16,23 @@ import {
    SORT_OPTIONS,
 } from "@/constants/mover.constants";
 
+// 상수들을 컴포넌트 외부로 이동 (매번 새로 생성되는 것 방지)
 const areaOptions = AREA_OPTIONS;
 const serviceOptions = SERVICE_OPTIONS;
 const sortOptions = SORT_OPTIONS;
 
-export default function FindDriverLayout() {
+// FavoriteDriverList 로딩 스켈레톤
+const FavoriteListSkeleton = memo(function FavoriteListSkeleton() {
+   return (
+      <div className="mt-8 flex animate-pulse flex-col gap-4 rounded-lg">
+         <div className="h-6 w-32 rounded bg-gray-200"></div>
+         <div className="h-20 rounded-lg bg-gray-100"></div>
+         <div className="h-20 rounded-lg bg-gray-100"></div>
+      </div>
+   );
+});
+
+export default memo(function MoverSearchLayout() {
    const [filters, setFilters] = useState({
       search: "",
       area: "all",
@@ -26,57 +40,51 @@ export default function FindDriverLayout() {
       sortBy: "mostReviewed",
    });
 
-   // 🔥 양방향 동기화를 위한 두 개의 refreshKey
+   //  양방향 동기화를 위한 refreshKey 관리
    const [favoriteRefreshKey, setFavoriteRefreshKey] = useState(0);
    const [driverListRefreshKey, setDriverListRefreshKey] = useState(0);
 
-   const handleFilterChange = (newFilters: Partial<typeof filters>) => {
-      setFilters((prev) => ({ ...prev, ...newFilters }));
-   };
-
-   // 🔥 DriverList에서 찜 상태 변경 시 → FavoriteDriverList 새로고침
-   const handleDriverListFavoriteChange = useCallback(
-      (moverId: string, isFavorite: boolean, favoriteCount: number) => {
-         console.log("📋 DriverList → FavoriteDriverList 동기화:", {
-            moverId,
-            isFavorite,
-            favoriteCount,
-         });
-         // FavoriteDriverList 새로고침을 위한 키 변경
-         setFavoriteRefreshKey((prev) => prev + 1);
+   // 함수들을 useCallback으로 최적화
+   const handleFilterChange = useCallback(
+      (newFilters: Partial<typeof filters>) => {
+         setFilters((prev) => ({ ...prev, ...newFilters }));
       },
       [],
    );
 
-   // 🔥 FavoriteDriverList에서 찜 해제 시 → DriverList 새로고침
-   const handleFavoriteListChange = useCallback(
-      (moverId: string, isFavorite: boolean) => {
-         console.log("❤️ FavoriteDriverList → DriverList 동기화:", {
-            moverId,
-            isFavorite,
-         });
-         // DriverList 새로고침을 위한 키 변경
-         setDriverListRefreshKey((prev) => prev + 1);
-      },
-      [],
-   );
+   //  DriverList → FavoriteDriverList 동기화
+   const handleDriverListFavoriteChange = useCallback(() => {
+      setFavoriteRefreshKey((prev) => prev + 1);
+   }, []);
 
-   const handleReset = () => {
+   //  FavoriteDriverList → DriverList 동기화
+   const handleFavoriteListChange = useCallback(() => {
+      setDriverListRefreshKey((prev) => prev + 1);
+   }, []);
+
+   const handleReset = useCallback(() => {
       setFilters({
          search: "",
          area: "all",
          serviceType: "all",
          sortBy: "mostReviewed",
       });
-   };
+   }, []);
 
-   const handleSortSelect = (option: DropdownOption) => {
-      handleFilterChange({ sortBy: option.value });
-   };
+   const handleSortSelect = useCallback(
+      (option: DropdownOption) => {
+         handleFilterChange({ sortBy: option.value });
+      },
+      [handleFilterChange],
+   );
 
-   const currentSortOption =
-      sortOptions.find((option) => option.value === filters.sortBy) ||
-      sortOptions[0];
+   // 현재 정렬 옵션을 메모이제이션
+   const currentSortOption = useMemo(
+      () =>
+         sortOptions.find((option) => option.value === filters.sortBy) ||
+         sortOptions[0],
+      [filters.sortBy],
+   );
 
    return (
       <div className="mx-auto flex min-h-screen min-w-full justify-center pt-6 pb-10 md:max-w-3xl lg:max-w-6xl">
@@ -90,11 +98,14 @@ export default function FindDriverLayout() {
                   onReset={handleReset}
                   currentFilters={filters}
                />
-               {/* 🔥 FavoriteDriverList에 onFavoriteChange 콜백 전달 */}
-               <FavoriteDriverList
-                  key={favoriteRefreshKey}
-                  onFavoriteChange={handleFavoriteListChange}
-               />
+
+               {/* 동기화 + Lazy 로딩 적용 */}
+               <Suspense fallback={<FavoriteListSkeleton />}>
+                  <FavoriteDriverList
+                     key={favoriteRefreshKey}
+                     onFavoriteChange={handleFavoriteListChange}
+                  />
+               </Suspense>
             </div>
 
             {/* Content Section */}
@@ -126,7 +137,7 @@ export default function FindDriverLayout() {
                   />
                </div>
 
-               {/* 🔥 DriverList에 refreshKey와 onFavoriteChange 모두 전달 */}
+               {/*  양방향 동기화  */}
                <DriverList
                   filters={filters}
                   onFavoriteChange={handleDriverListFavoriteChange}
@@ -136,4 +147,4 @@ export default function FindDriverLayout() {
          </div>
       </div>
    );
-}
+});

@@ -40,7 +40,7 @@ export default function DashboardReviewSection({
 
             let response;
 
-            // 🔥 수정된 로직: moverId가 있으면 user 없이도 실행
+            //  수정된 로직: moverId가 있으면 user 없이도 실행
             if (moverId) {
                // 상세페이지에서 특정 기사의 리뷰 조회 (로그인 불필요)
                response = await getMoverReviews(1, 20, moverId);
@@ -66,7 +66,7 @@ export default function DashboardReviewSection({
          }
       };
 
-      // 🔥 조건 수정: moverId가 있거나 user가 있으면 실행
+      //  조건 수정: moverId가 있거나 user가 있으면 실행
       if (moverId || user?.userType) {
          fetchReviews();
       } else {
@@ -94,7 +94,7 @@ export default function DashboardReviewSection({
       );
    }
 
-   // 🔥 제목 텍스트를 상황에 따라 변경
+   //  제목 텍스트를 상황에 따라 변경
    const getSectionTitle = () => {
       if (moverId) {
          return t("moverReviewsTitle", { count: reviewCount });
