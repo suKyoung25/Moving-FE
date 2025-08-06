@@ -6,9 +6,6 @@ export default async function updateMoverBasicInfo(data: MoverBasicInfoInput) {
    const url = "/dashboard/edit/mover";
    return await tokenFetch(url, {
       method: "PATCH",
-      headers: {
-         "Content-Type": "application/json",
-      },
       body: JSON.stringify(data),
    });
 }

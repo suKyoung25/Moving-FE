@@ -14,6 +14,9 @@ export default function AuthInput<T extends FieldValues>({
    register,
    error,
 }: AuthInputProps<T>) {
+   const hasError = Boolean(error);
+   const errorId = hasError ? `${name}-error` : undefined;
+
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
          <label
@@ -27,10 +30,12 @@ export default function AuthInput<T extends FieldValues>({
             type={type}
             {...register(name)}
             placeholder={placeholder}
-            className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 rounded-2xl border bg-white p-3.5 lg:h-16`}
+            aria-invalid={hasError}
+            aria-describedby={errorId}
+            className={`${hasError ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 rounded-2xl border bg-white p-3.5 lg:h-16`}
          />
 
-         <ErrorText error={error} />
+         <ErrorText error={error} name={name} />
       </section>
    );
 }

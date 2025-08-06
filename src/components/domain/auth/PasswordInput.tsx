@@ -37,6 +37,8 @@ export default function PasswordInput<T extends FieldValues>({
                type={isVisible ? "text" : "password"}
                placeholder={placeholder}
                {...register(name)}
+               aria-invalid={!!error}
+               aria-describedby={error ? `${name}-error` : undefined}
                className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 w-full rounded-2xl border bg-white p-3.5 lg:h-16`}
             />
 
@@ -44,18 +46,20 @@ export default function PasswordInput<T extends FieldValues>({
             <button
                type="button"
                onClick={toggleEyeIcon}
+               aria-label={isVisible ? "비밀번호 숨기기" : "비밀번호 보기"}
                className="absolute top-1/2 right-3 -translate-y-1/2"
             >
                <Image
                   src={isVisible ? openedEye : closedEye}
                   alt="비밀번호 토글 아이콘"
+                  priority
                   width={24}
                   height={24}
                />
             </button>
          </div>
 
-         <ErrorText error={error} />
+         <ErrorText error={error} name={name} />
       </section>
    );
 }

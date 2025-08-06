@@ -51,6 +51,13 @@ export const SignInFormSchema = z.object({
    password: passwordSchema,
 });
 
+// 회원탈퇴 스키마
+export const WithdrawFormSchema = z.object({
+   userId: z.string().optional(),
+   password: passwordSchema,
+});
+
 // ✅ 타입 반출
 export type SignUpFormValues = z.infer<typeof signUpFormSchema>;
 export type SignInFormValues = z.infer<typeof SignInFormSchema>;
+export type WithdrawFormValues = z.infer<typeof WithdrawFormSchema>;
