@@ -12,8 +12,11 @@ import ToastPopup from "@/components/common/ToastPopup";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { deleteEstimate } from "@/lib/api/estimate/requests/deleteEstimate";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 export default function SentQuotesList() {
+   const t = useTranslations("MyQuotes.Mover");
+
    const [page, setPage] = useState(1);
    const { data, isLoading } = useSentEstimates(page);
    const [toast, setToast] = useState<{
@@ -39,7 +42,7 @@ export default function SentQuotesList() {
       if (res) {
          setToast({
             id: Date.now(),
-            text: "견적이 성공적으로 취소되었습니다.",
+            text: t("toast.cancelSuccess"),
             success: true,
          });
          queryClient.invalidateQueries({ queryKey: ["sentEstimates"] });
@@ -47,7 +50,7 @@ export default function SentQuotesList() {
       } else {
          setToast({
             id: Date.now(),
-            text: "견적 취소 중 오류가 발생했습니다. 다시 시도해주세요.",
+            text: t("toast.cancelError"),
             success: false,
          });
       }
@@ -74,7 +77,7 @@ export default function SentQuotesList() {
             </div>
          ) : (
             <div className="flex items-center justify-center">
-               <EmptyState message="아직 보낸 견적이 없습니다." />
+               <EmptyState message={t("emptyMessage")} />
             </div>
          )}
 
@@ -97,8 +100,8 @@ export default function SentQuotesList() {
                isOpen={!!selectedEstimateId}
                onClose={() => setSelectedEstimateId(null)}
                onConfirm={handleCancelEstimate}
-               title="견적 취소하기"
-               description="정말 이 견적을 취소하시겠습니까?"
+               title={t("modal.title")}
+               description={t("modal.description")}
             />
          )}
       </div>

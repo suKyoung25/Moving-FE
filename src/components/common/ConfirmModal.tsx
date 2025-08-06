@@ -41,6 +41,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import xIcon from "@/assets/images/xIcon.svg";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
+import { useTranslations } from "next-intl";
 
 interface ConfirmModalProps {
    isOpen: boolean;
@@ -57,6 +58,8 @@ export default function ConfirmModal({
    title,
    description,
 }: ConfirmModalProps) {
+   const t = useTranslations("MyQuotes.Mover");
+
    const modalRef = useRef<HTMLDivElement>(null);
 
    useOutsideClick(modalRef, () => {
@@ -73,10 +76,10 @@ export default function ConfirmModal({
          >
             <div className="flex items-center justify-between">
                <h2 className="text-18-bold lg:text-24-bold">{title}</h2>
-               <button onClick={onClose}>
+               <button onClick={onClose} aria-label={t("closeButtonAlt")}>
                   <Image
                      src={xIcon}
-                     alt="닫기 버튼"
+                     alt={t("closeButtonAlt")}
                      width={24}
                      height={24}
                      className="lg:size-9"
@@ -93,7 +96,7 @@ export default function ConfirmModal({
                   onClick={onConfirm}
                   className="bg-primary-blue-300 text-16-medium lg:text-18-medium h-13 w-full rounded-2xl text-white lg:h-16"
                >
-                  확인하기
+                  {t("confirmButtonText")}
                </button>
             </div>
          </div>

@@ -10,6 +10,7 @@ import { useReceivedEstimates } from "@/lib/api/estimate/query";
 import { useInView } from "react-intersection-observer";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
+import { useTranslations } from "next-intl";
 
 function groupByRequest(data: DataItem[]): GroupedByRequest[] {
    const map = new Map<string, GroupedByRequest>();
@@ -31,6 +32,8 @@ function groupByRequest(data: DataItem[]): GroupedByRequest[] {
 
 // 받았던 견적
 export default function Received() {
+   const t = useTranslations("MyQuotes.Client");
+
    const [dropdownName, setDropdownName] = useState("all");
    const { ref, inView } = useInView();
 
@@ -57,7 +60,7 @@ export default function Received() {
       );
 
    if (allData.length === 0 || isError)
-      return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
+      return <EmptyState message={t("emptyMessage")} />;
 
    const groupedData: GroupedByRequest[] = groupByRequest(allData);
 
@@ -77,14 +80,14 @@ export default function Received() {
                />
                <main className="mt-8 lg:mt-10.5">
                   <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
-                     견적서 목록
+                     {t("estimateListTitle")}
                   </p>
                   <Dropdown
                      selectedValue={dropdownName}
                      setSelectedValue={setDropdownName}
                      options={[
-                        { label: "전체", value: "all" },
-                        { label: "확정한 견적서", value: "confirmed" },
+                        { label: t("dropdown.all"), value: "all" },
+                        { label: t("dropdown.confirmed"), value: "confirmed" },
                      ]}
                   />
                </main>
@@ -107,7 +110,7 @@ export default function Received() {
                </main>
             </section>
          ))}
-         {isFetchingNextPage && <div>다음 페이지 불러오는 중...</div>}
+         {isFetchingNextPage && <div>{t("loadingNextPage")}</div>}
       </div>
    );
 }
