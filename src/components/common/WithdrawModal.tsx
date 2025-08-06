@@ -17,6 +17,9 @@ export default function WithdrawModal({ onClose }: Props) {
    const t = useTranslations("Header");
    const { user } = useAuth();
 
+   const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
+      useMoverWithdrawForm(onClose);
+
    if (!user) return null;
    const userType = user.userType!;
    const userProvider = user.provider!;
@@ -25,9 +28,6 @@ export default function WithdrawModal({ onClose }: Props) {
    const isLocal = userProvider === "LOCAL";
 
    console.log("userProvider", userProvider); //디버깅
-
-   const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
-      useMoverWithdrawForm(onClose);
 
    return (
       <form
