@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { User } from "@/lib/types";
 import LanguageSwitcherMobile from "./LanguageSwitcherMobile";
+import { useTranslations } from "next-intl";
 
 const listVariants = {
    hidden: {},
@@ -33,25 +34,26 @@ export default function HamburgerMenu({
    isHamburgerOpen: boolean;
    setIsHamburgerOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+   const t = useTranslations("Header");
    const router = useRouter();
    const [isMenuVisible, setIsMenuVisible] = useState(false);
 
    const menuItems = user
       ? user.userType === "client"
          ? [
-              { label: "견적 요청", href: "/request" },
-              { label: "기사님 찾기", href: "/mover-search" },
-              { label: "내 견적 관리", href: "/my-quotes/client" },
+              { label: t("nav.requestQuote"), href: "/request" },
+              { label: t("nav.findMovers"), href: "/mover-search" },
+              { label: t("nav.myQuotesClient"), href: "/my-quotes/client" },
            ]
          : [
-              { label: "받은 요청", href: "/received-requests" },
-              { label: "내 견적 관리", href: "/my-quotes/mover?tab=1" },
+              { label: t("nav.receivedRequests"), href: "/received-requests" },
+              { label: t("nav.myQuotesMover"), href: "/my-quotes/mover?tab=1" },
            ]
       : [
-           { label: "로그인", href: "/sign-in/client" },
-           { label: "회원가입", href: "/sign-up/client" },
-           { label: "기사님 찾기", href: "/mover-search" },
-           { label: "문의하기", href: "/support" },
+           { label: t("nav.login"), href: "/sign-in/client" },
+           { label: t("nav.signUp"), href: "/sign-up/client" },
+           { label: t("nav.findMovers"), href: "/mover-search" },
+           { label: t("nav.contactUs"), href: "/support" },
         ];
 
    useEffect(() => {

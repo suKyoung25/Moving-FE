@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useMoverWithdrawForm } from "@/lib/hooks/useMoverWithdrawForm";
 import SolidButton from "./SolidButton";

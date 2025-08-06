@@ -1,11 +1,14 @@
 import BasicInfoForms from "@/components/domain/dashboard/BasicInfoForms";
+import { getTranslations } from "next-intl/server";
 
-export default function MoverBasicInfoEditPage() {
+export default async function MoverBasicInfoEditPage() {
+   const t = await getTranslations("Dashboard");
+
    return (
       <>
          <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
             <div className="text-18-semibold lg:text-32-semibold leading-8">
-               기본정보 수정
+               {t("basicInfoEditTitle")}
             </div>
          </div>
 
