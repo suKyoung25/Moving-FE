@@ -17,6 +17,7 @@ import {
    useRequestDraft,
 } from "@/lib/api/request/requests/query";
 import Step4 from "./Step4";
+import { useTranslations } from "next-intl";
 
 const defaultState: FormWizardState = {
    moveType: undefined,
@@ -26,6 +27,7 @@ const defaultState: FormWizardState = {
 };
 
 export default function FormWizard({}) {
+   const t = useTranslations("Request");
    const { isLoading } = useAuth();
    const { currentStep, setCurrentStep, isPending, setIsPending } =
       useFormWizard();
@@ -111,7 +113,7 @@ export default function FormWizard({}) {
 
          setToast({
             id: Date.now(),
-            text: "견적 요청이 완료되었어요!",
+            text: t("toast.success"),
             success: true,
          });
 
@@ -121,14 +123,14 @@ export default function FormWizard({}) {
 
          setToast({
             id: Date.now(),
-            text: "이미 진행 중인 견적 요청이 있어요.",
+            text: t("toast.fail"),
             success: false,
          });
       }
    };
 
    if (isPending) {
-      return <div className="text-center text-gray-400">로딩 중...</div>;
+      return <div className="text-center text-gray-400">{t("loading")}</div>;
    }
 
    if (currentStep === 4) {
@@ -148,10 +150,7 @@ export default function FormWizard({}) {
 
    return (
       <form className="flex flex-col gap-2 lg:gap-6">
-         <ChatMessage
-            type="system"
-            message="몇 가지 정보만 알려주시면 최대 5개의 견적을 받을 수 있어요 :)"
-         />
+         <ChatMessage type="system" message={t("systemInfoMessage")} />
          {currentStep >= 0 && (
             <Step1
                value={formState.moveType}
