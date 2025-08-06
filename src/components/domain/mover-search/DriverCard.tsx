@@ -17,6 +17,7 @@ import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastConText";
 import { EstimateStatus } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface DriverCardProps {
    mover: Mover;
@@ -31,6 +32,8 @@ export default memo(function DriverCard({
    mover,
    onFavoriteChange,
 }: DriverCardProps) {
+   const t = useTranslations("MoverSearch");
+
    const router = useRouter();
    const pathname = usePathname();
    const { user } = useAuth();
@@ -87,13 +90,13 @@ export default memo(function DriverCard({
 
          // 기사님 로그인 상태 체크
          if (isLoggedInAsMover) {
-            showToast("기사님은 다른 기사님을 찜할 수 없습니다.", false);
+            showToast(t("error.loggedInAsMover"));
             return;
          }
 
          // 로그인 상태 체크
          if (!user) {
-            showToast("로그인이 필요합니다.", false);
+            showToast(t("error.needLogin"));
             return;
          }
 
@@ -120,22 +123,16 @@ export default memo(function DriverCard({
          } catch (error) {
             console.error("찜 처리 중 오류:", error);
 
-            // 에러 메시지를 Toast로 표시
-            let errorMessage = "찜 처리 중 오류가 발생했습니다.";
-
+            let errorMessage = t("error.toggleFailed");
             if (error instanceof Error) {
                if (error.message.includes("로그인")) {
-                  errorMessage = "로그인이 필요합니다.";
-               } else if (error.message.includes("권한")) {
-                  errorMessage = "권한이 없습니다.";
+                  errorMessage = t("error.needLogin");
                } else {
-                  errorMessage =
-                     error.message || "찜 처리 중 오류가 발생했습니다.";
+                  errorMessage = error.message;
                }
             }
 
             showToast(errorMessage, false);
-
             // 에러 시 원래 상태로 복구
             setCurrentFavoriteState((prev) => !prev);
          }
@@ -180,8 +177,7 @@ export default memo(function DriverCard({
             {/* 소개 텍스트 */}
             <div className="mb-4">
                <p className="text-14-medium md:text-16-medium lg:text-18-medium line-clamp-2 leading-relaxed break-words text-gray-700">
-                  {mover.introduction ||
-                     "고객님의 물품을 안전하게 운송해 드립니다."}
+                  {mover.introduction || t("defaultIntroduction")}
                </p>
             </div>
 

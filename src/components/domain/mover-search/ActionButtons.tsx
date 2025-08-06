@@ -7,6 +7,7 @@ import { EstimateRequestButton } from "./EstimateRequestButton";
 import { useState } from "react";
 import ResultModal from "@/components/common/ResultModal";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface ActionButtonsProps {
    mover: Mover;
@@ -23,6 +24,8 @@ export default function ActionButtons({
    onDesignatedEstimateSuccess,
    onFavoriteChange,
 }: ActionButtonsProps) {
+   const t = useTranslations("MoverDetail");
+
    const { user } = useAuth();
    const [isResultModalOpen, setIsResultModalOpen] = useState(false);
    const [errorMessage, setErrorMessage] = useState("");
@@ -38,7 +41,7 @@ export default function ActionButtons({
       <div className="p-4 lg:p-5">
          <div className="mb-4 hidden lg:block">
             <p className="text-14-semibold lg:text-20-bold mb-1">
-               {mover.nickName} 기사님에게 지정 견적을 요청해보세요!
+               {mover.nickName} {t("requestDesignatedEstimate")}
             </p>
          </div>
 
@@ -62,7 +65,7 @@ export default function ActionButtons({
             <ResultModal
                isOpen={isResultModalOpen}
                message={errorMessage}
-               buttonText="로그인하러 가기"
+               buttonText={t("goToLogin")}
                onClose={() => setIsResultModalOpen(false)}
                onClick={() => router.push("/sign-in/client")}
             />

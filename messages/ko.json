@@ -1,4 +1,135 @@
 {
+   "MoverSearch": {
+      "findDriver": "기사님 찾기",
+      "areas": {
+         "all": "전체",
+         "seoul": "서울",
+         "incheon": "인천",
+         "daejeon": "대전",
+         "daegu": "대구",
+         "gwangju": "광주",
+         "busan": "부산",
+         "ulsan": "울산",
+         "sejong": "세종",
+         "gyeonggi": "경기",
+         "gangwon": "강원",
+         "chungbuk": "충북",
+         "chungnam": "충남",
+         "jeonbuk": "전북",
+         "jeonnam": "전남",
+         "gyeongbuk": "경북",
+         "gyeongnam": "경남",
+         "jeju": "제주"
+      },
+      "services": {
+         "all": "전체",
+         "SMALL": "소형이사",
+         "HOME": "가정이사",
+         "OFFICE": "사무실이사"
+      },
+      "sorts": {
+         "mostReviewed": "리뷰 많은순",
+         "highRating": "평점 높은순",
+         "highExperience": "경력 높은순",
+         "mostBooked": "확정 많은순"
+      },
+      "filter": "필터",
+      "reset": "초기화",
+      "selectArea": "지역을 선택해주세요",
+      "selectService": "어떤 서비스가 필요하세요?",
+      "all": "전체",
+      "searchAlt": "검색 아이콘",
+      "searchPlaceholder": "기사님 이름을 검색해주세요.",
+      "searchInputAria": "기사님 이름 검색 입력창",
+      "clearSearchAria": "검색어 초기화",
+      "searching": "검색 중",
+      "loadFailed": "기사님 목록을 불러오는데 실패했습니다.",
+      "retry": "다시 시도",
+      "loading": "로딩 중...",
+      "scrollToLoadMore": "스크롤하여 더 보기",
+      "allLoaded": "모든 기사님을 확인했습니다.",
+      "noResults": "검색 결과가 없습니다.",
+      "error": {
+         "loggedInAsMover": "기사님은 다른 기사님을 찜할 수 없습니다.",
+         "needLogin": "로그인이 필요합니다.",
+         "toggleFailed": "찜 처리 중 오류가 발생했습니다."
+      },
+      "defaultIntroduction": "고객님의 물품을 안전하게 운송해 드립니다."
+   },
+   "MoverDetail": {
+      "requestDesignatedEstimate": "기사님에게 지정 견적을 요청해보세요!",
+      "goToLogin": "로그인하러 가기",
+      "alt": {
+         "favorite": "기사님 찜하기",
+         "unfavorite": "찜 해제"
+      },
+      "loading": "처리 중...",
+      "unfavorite": "찜 해제하기",
+      "favoriteDriver": "기사님 찜하기",
+      "errorOccurred": "찜 처리 중 오류가 발생했습니다.",
+      "loginRequired": "로그인이 필요한 기능입니다.",
+      "error": {
+         "loginRequired": "로그인이 필요한 기능입니다.",
+         "loginRequiredAgain": "로그인이 필요합니다. 다시 로그인해주세요.",
+         "requestFailed": "요청 조회에 실패했습니다.",
+         "designatedRequestFailed": "지정 견적 요청에 실패했습니다.",
+         "alreadyRequested": "이미 이 기사님에게 지정 견적을 요청하셨습니다.",
+         "requestExpiredOrCompleted": "요청이 만료되었거나 이미 완료되었습니다.",
+         "noMoverInfo": "기사님 정보를 찾을 수 없습니다.",
+         "loadFailed": "기사님 정보를 불러오는데 실패했습니다.",
+         "notFound": "기사님 정보를 찾을 수 없습니다."
+      },
+      "toast": {
+         "alreadyInProgress": "이미 진행중인 견적이 있어요!",
+         "requestSuccess": "지정 견적 요청이 성공적으로 전송되었습니다!"
+      },
+      "button": {
+         "requestCompleted": "지정 견적 요청 완료",
+         "processing": "처리 중...",
+         "requestEstimate": "지정 견적 요청하기"
+      },
+      "designatedEstimateRequestTitle": "지정 견적 요청하기",
+      "generalEstimateFirst": "일반 견적 요청을 먼저 진행해 주세요",
+      "requestGeneralEstimateButton": "일반 견적 요청하기",
+      "closeAlt": "닫기",
+      "confirm": "확인",
+      "shareText": "나만 알기엔 아쉬운 기사님인가요?",
+      "section": {
+         "detailDescription": "상세설명",
+         "providedServices": "제공 서비스",
+         "serviceRegions": "서비스 가능 지역"
+      },
+      "noDescription": "소개글이 없습니다.",
+      "noServices": "등록된 서비스가 없습니다.",
+      "noRegions": "등록된 지역이 없습니다.",
+      "serviceLabels": {
+         "SMALL": "소형이사",
+         "HOME": "가정이사",
+         "OFFICE": "사무실이사",
+         "DESIGNATED": "지정견적",
+         "PENDING": "대기중",
+         "CONFIRMED": "확정됨"
+      },
+      "regions": {
+         "서울": "서울",
+         "인천": "인천",
+         "대전": "대전",
+         "대구": "대구",
+         "광주": "광주",
+         "부산": "부산",
+         "울산": "울산",
+         "세종": "세종",
+         "경기": "경기",
+         "강원": "강원",
+         "충북": "충북",
+         "충남": "충남",
+         "전북": "전북",
+         "전남": "전남",
+         "경북": "경북",
+         "경남": "경남",
+         "제주": "제주"
+      }
+   },
    "Dashboard": {
       "title": "마이페이지",
       "loading": "기사님 정보를 불러오는 중...",
@@ -77,6 +208,50 @@
       "yellowStarAlt": "노란별",
       "grayStarAlt": "회색별"
    },
+   "Request": {
+      "requestQuote": "견적 요청",
+      "progressbarAriaLabel": "견적 요청 진행 상태",
+      "toast": {
+         "success": "견적 요청이 완료되었어요!",
+         "fail": "이미 진행 중인 견적 요청이 있어요."
+      },
+      "loading": "로딩 중...",
+      "systemInfoMessage": "몇 가지 정보만 알려주시면 다양한 기사님의 견적을 받을 수 있어요 :)",
+      "inProgressAlt": "견적 요청 진행중",
+      "inProgressMessageLine1": "현재 진행 중인 이사 견적이 있어요!",
+      "inProgressMessageLine2": "진행 중인 이사 완료 후 새로운 견적을 받아보세요.",
+      "goToReceivedQuotesButton": "받은 견적 보러가기",
+      "edit": "수정하기",
+      "selectMoveTypePrompt": "이사 종류를 선택해 주세요.",
+      "moveTypes": {
+         "SMALL": "소형이사 (원룸, 투룸, 20평대 미만)",
+         "HOME": "가정이사 (쓰리룸, 20평대 이상)",
+         "OFFICE": "사무실이사 (사무실, 상업공간)"
+      },
+      "radioSelectedAlt": "라디오 버튼 선택됨",
+      "radioUnselectedAlt": "라디오 버튼 선택 안됨",
+      "completeSelection": "선택완료",
+      "cancelEdit": "수정취소",
+      "selectMoveDatePrompt": "이사 예정일을 선택해 주세요.",
+      "selectFutureDateWarning": "오늘 이후 날짜를 선택해주세요",
+      "selectMoveAreaPrompt": "이사 지역을 선택해 주세요.",
+      "from": "출발지",
+      "to": "도착지",
+      "selectFromAddress": "출발지 선택하기",
+      "selectToAddress": "도착지 선택하기",
+      "confirmEstimate": "견적 확정하기",
+      "resetSelection": "처음부터 다시 선택",
+      "selectDeparture": "출발지를 선택해주세요",
+      "selectDestination": "도착지를 선택해주세요",
+      "closeModal": "모달 닫기",
+      "searchInfo": "다시 선택하려면 검색 아이콘을 눌러주세요.",
+      "searchAgain": "검색 다시하기",
+      "search": "검색",
+      "roadAddressLabel": "도로명",
+      "jibunAddressLabel": "지번",
+      "confirmSelection": "선택 완료",
+      "postcodeFrameLabel": "주소 검색 프레임"
+   },
    "Reviews": {
       "writableReviews": "작성 가능한 리뷰",
       "noWritableReviews": "작성 가능한 리뷰가 없어요",
@@ -113,7 +288,12 @@
    "FavoriteMovers": {
       "title": "찜한 기사님",
       "noFavoriteMover": "찜한 기사님이 없습니다",
-      "goToFavorite": "찜하러 가기"
+      "goToFavorite": "찜하러 가기",
+      "loading": "로딩 중...",
+      "loginRequired": "로그인이 필요한 서비스입니다.",
+      "loadFailed": "찜한 기사님 목록을 불러오는데 실패했습니다.",
+      "noFavorites": "찜한 기사님이 없습니다.",
+      "toggleError": "찜 처리 중 오류가 발생했습니다."
    },
    "MyQuotes": {
       "Client": {
@@ -143,6 +323,7 @@
          "myQuotes": "내 견적 관리",
          "receivedRequests": "받은 요청",
          "myQuotesMover": "내 견적 관리",
+         "myQuotesClient": "내 견적 관리",
          "login": "로그인",
          "signUp": "회원가입",
          "contactUs": "문의하기"
@@ -154,7 +335,13 @@
       "myPage": "마이페이지",
       "clientHonorific": "고객님",
       "moverHonorific": "기사님",
-      "logout": "로그아웃"
+      "logout": "로그아웃",
+      "withdraw": "회원 탈퇴",
+      "enterPasswordPrompt": "탈퇴하시려면 비밀번호를 입력해주세요",
+      "passwordPlaceholder": "비밀번호를 입력해 주세요",
+      "close": "닫기",
+      "withdrawButton": "탈퇴하기",
+      "withdrawing": "탈퇴 중..."
    },
    "Notification": {
       "title": "알림",
@@ -178,6 +365,19 @@
       "pending": "견적 대기",
       "confirmed": "확정 견적",
       "done": "이사 완료"
+   },
+   "ShareButton": {
+      "copied": "복사했습니다!",
+      "copyUrl": "URL을 클립보드에 복사",
+      "ariaLabel": "링크 공유 버튼",
+      "altText": "링크 공유 아이콘",
+      "kakao": {
+         "title": "믿을 수 있는 이사, 무빙에서 시작하세요.",
+         "description": "견적부터 기사님 선택까지, 이사 준비를 쉽고 빠르게! 지금 무빙에서 확인해보세요.",
+         "buttonText": "무빙에서 확인하기",
+         "ariaLabel": "카카오톡 공유 버튼",
+         "altText": "카카오톡 공유 아이콘"
+      }
    },
    "Validations": {
       "invalidRequest": "잘못된 요청입니다.",

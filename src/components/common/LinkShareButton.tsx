@@ -3,8 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import shareLinkIcon from "@/assets/images/shareLinkIcon.svg";
+import { useTranslations } from "next-intl";
 
 export default function LinkShareButton() {
+   const t = useTranslations("ShareButton");
+
    const [copied, setCopied] = useState(false);
    const [isHovered, setIsHovered] = useState(false);
 
@@ -32,15 +35,15 @@ export default function LinkShareButton() {
                   : "pointer-events-none opacity-0"
             }`}
          >
-            {copied ? "Copied!" : "Copy URL to clipboard"}
+            {copied ? t("copied") : t("copyUrl")}
          </div>
 
          {/* Button */}
          <div className="relative h-10 w-10 lg:h-16 lg:w-16">
-            <button onClick={handleClick}>
+            <button onClick={handleClick} aria-label={t("ariaLabel")}>
                <Image
                   src={shareLinkIcon}
-                  alt="shareLinkIcon"
+                  alt={t("altText")}
                   className="h-full w-full"
                />
             </button>

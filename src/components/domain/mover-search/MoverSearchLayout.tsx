@@ -15,6 +15,7 @@ import {
    SERVICE_OPTIONS,
    SORT_OPTIONS,
 } from "@/constants/mover.constants";
+import { useTranslations } from "next-intl";
 
 // 상수들을 컴포넌트 외부로 이동 (매번 새로 생성되는 것 방지)
 const areaOptions = AREA_OPTIONS;
@@ -33,6 +34,24 @@ const FavoriteListSkeleton = memo(function FavoriteListSkeleton() {
 });
 
 export default memo(function MoverSearchLayout() {
+   const t = useTranslations("MoverSearch");
+
+   // 다국어 적용한 옵션들 새로 생성 (원본 배열 복사 + 번역)
+   const areaOptions = AREA_OPTIONS.map((option) => ({
+      ...option,
+      label: t(`areas.${option.value}`),
+   }));
+
+   const serviceOptions = SERVICE_OPTIONS.map((option) => ({
+      ...option,
+      label: t(`services.${option.value}`),
+   }));
+
+   const sortOptions = SORT_OPTIONS.map((option) => ({
+      ...option,
+      label: t(`sorts.${option.value}`),
+   }));
+
    const [filters, setFilters] = useState({
       search: "",
       area: "all",
@@ -126,6 +145,7 @@ export default memo(function MoverSearchLayout() {
                      <SortDropdown
                         selected={currentSortOption}
                         onSelect={handleSortSelect}
+                        sortOptions={sortOptions}
                      />
                   </div>
                </div>

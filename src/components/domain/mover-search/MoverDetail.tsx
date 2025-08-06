@@ -22,7 +22,7 @@ import DetailSections from "./DetailSections";
 import LineDivider from "../../common/LineDivider";
 import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
-
+import { useTranslations } from "next-intl";
 // 무거운 컴포넌트들을 lazy 로딩으로 최적화
 const DashboardReviewSection = lazy(
    () => import("@/components/domain/dashboard/ReviewSection"),
@@ -45,27 +45,23 @@ const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
 
 // 로딩과 에러 컴포넌트를 memo로 최적화
 const LoadingSpinner = memo(function LoadingSpinner() {
+   const t = useTranslations("MoverDetail");
    return (
       <div className="flex min-h-screen items-center justify-center">
          <div className="text-center">
             <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-b-2 border-blue-600"></div>
-            <p className="text-gray-600">기사님 정보 불러오는 중...</p>
+            <p className="text-gray-600">{t("loadingMessage")}</p>
          </div>
       </div>
    );
 });
 
 const ErrorDisplay = memo(function ErrorDisplay({ error }: { error: string }) {
+   const t = useTranslations("MoverDetail");
    return (
       <div className="flex min-h-screen items-center justify-center">
          <div className="text-center">
             <p className="text-lg text-red-600">{error}</p>
-            <button
-               onClick={() => window.location.reload()}
-               className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-            >
-               다시 시도
-            </button>
          </div>
       </div>
    );
@@ -73,6 +69,7 @@ const ErrorDisplay = memo(function ErrorDisplay({ error }: { error: string }) {
 
 // 메인 컴포넌트 최적화
 export default memo(function MoverDetail() {
+   const t = useTranslations("MoverDetail");
    const params = useParams();
    const { user } = useAuth();
 
@@ -117,7 +114,7 @@ export default memo(function MoverDetail() {
          console.error("Error fetching mover:", err);
          setState({
             loading: false,
-            error: "기사님 정보를 불러오는데 실패했습니다.",
+            error: t("error.loadFailed"),
             mover: null,
          });
       }
@@ -158,11 +155,7 @@ export default memo(function MoverDetail() {
    // 조기 리턴으로 성능 최적화
    if (state.loading) return <LoadingSpinner />;
    if (state.error || !state.mover) {
-      return (
-         <ErrorDisplay
-            error={state.error || "기사님 정보를 찾을 수 없습니다."}
-         />
-      );
+      return <ErrorDisplay error={state.error || t("error.notFound")} />;
    }
 
    const { mover } = state;
@@ -174,7 +167,7 @@ export default memo(function MoverDetail() {
             <DriverCard mover={mover} onFavoriteChange={handleFavoriteChange} />
             <LineDivider />
             <div className="p-4">
-               <SocialShareGroup text="나만 알기엔 아쉬운 기사님인가요?" />
+               <SocialShareGroup text={t("shareText")} />
                <div className="pt-5 lg:hidden">
                   <LineDivider />
                </div>
@@ -223,7 +216,7 @@ export default memo(function MoverDetail() {
                   <LineDivider />
                </div>
                <div className="lg:p-5">
-                  <SocialShareGroup text="나만 알기엔 아쉬운 기사님인가요?" />
+                  <SocialShareGroup text={t("shareText")} />
                   <div className="lg:hidden">
                      <LineDivider />
                   </div>

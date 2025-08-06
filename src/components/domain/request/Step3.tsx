@@ -7,6 +7,7 @@ import { Request } from "@/lib/types";
 import AddressSearch from "./AddressSearch";
 import OutlinedButton from "@/components/common/OutlinedButton";
 import SolidButton from "@/components/common/SolidButton";
+import { useTranslations } from "next-intl";
 
 interface Step3Props {
    isFormValid: boolean;
@@ -30,6 +31,8 @@ export default function Step3({
    onConfirm,
    onNext,
 }: Step3Props) {
+   const t = useTranslations("Request");
+
    const [fromAddress, setFromAddress] = useState<
       Request["fromAddress"] | undefined
    >(from);
@@ -62,10 +65,12 @@ export default function Step3({
    return (
       <>
          {/* 시스템 메세지 */}
-         <ChatMessage type="system" message="이사 지역을 선택해 주세요." />
+         <ChatMessage type="system" message={t("selectMoveAreaPrompt")} />
          {/* 유저 메세지 */}
          <ChatWrapper>
-            <label className="text-sm font-medium lg:text-lg">출발지</label>
+            <label className="text-sm font-medium lg:text-lg">
+               {t("from")}
+            </label>
             <OutlinedButton
                className="text-left lg:w-140"
                onClick={() => {
@@ -73,9 +78,9 @@ export default function Step3({
                   setShowModal(true);
                }}
             >
-               {fromAddress || "출발지 선택하기"}
+               {fromAddress || t("selectFromAddress")}
             </OutlinedButton>
-            <label className="text-sm font-medium lg:text-lg">도착지</label>
+            <label className="text-sm font-medium lg:text-lg">{t("to")}</label>
             <OutlinedButton
                className="text-left lg:w-140"
                onClick={() => {
@@ -83,10 +88,10 @@ export default function Step3({
                   setShowModal(true);
                }}
             >
-               {toAddress || "도착지 선택하기"}
+               {toAddress || t("selectToAddress")}
             </OutlinedButton>
             <SolidButton onClick={onConfirm} disabled={!isFormValid}>
-               견적 확정하기
+               {t("confirmEstimate")}
             </SolidButton>
          </ChatWrapper>
          {/* 주소 검색 모달 */}
@@ -103,7 +108,7 @@ export default function Step3({
                onClick={onReset}
                className="mr-2 text-right font-medium text-gray-500 underline max-lg:text-xs"
             >
-               처음부터 다시 선택
+               {t("resetSelection")}
             </button>
          )}
       </>
