@@ -7,18 +7,32 @@ import FilterAreaServiceBox from "./FilterAreaServiceBox";
 import SearchBar from "./SearchBar";
 import { DropdownOption } from "@/lib/types/mover.types";
 import FavoriteDriverList from "./FavoriteDriverList";
-
 import {
    AREA_OPTIONS,
    SERVICE_OPTIONS,
    SORT_OPTIONS,
 } from "@/constants/mover.constants";
-
-const areaOptions = AREA_OPTIONS;
-const serviceOptions = SERVICE_OPTIONS;
-const sortOptions = SORT_OPTIONS;
+import { useTranslations } from "next-intl";
 
 export default function FindDriverLayout() {
+   const t = useTranslations("MoverSearch");
+
+   // 다국어 적용한 옵션들 새로 생성 (원본 배열 복사 + 번역)
+   const areaOptions = AREA_OPTIONS.map((option) => ({
+      ...option,
+      label: t(`areas.${option.value}`),
+   }));
+
+   const serviceOptions = SERVICE_OPTIONS.map((option) => ({
+      ...option,
+      label: t(`services.${option.value}`),
+   }));
+
+   const sortOptions = SORT_OPTIONS.map((option) => ({
+      ...option,
+      label: t(`sorts.${option.value}`),
+   }));
+
    const [filters, setFilters] = useState({
       search: "",
       area: "all",
@@ -115,6 +129,7 @@ export default function FindDriverLayout() {
                      <SortDropdown
                         selected={currentSortOption}
                         onSelect={handleSortSelect}
+                        sortOptions={sortOptions}
                      />
                   </div>
                </div>
