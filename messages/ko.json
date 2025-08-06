@@ -352,7 +352,6 @@
          "Detail": {
             "pageTitle": "견적 상세",
             "estimatePriceTitle": "견적가",
-            "currencyUnit": "원",
             "shareQuoteText": "견적서 공유하기",
             "money": "원",
             "button": {
@@ -366,7 +365,62 @@
       },
       "Mover": {
          "sentQuotes": "보낸 견적 조회",
-         "rejectedRequests": "반려요청"
+         "rejectedRequests": "반려요청",
+         "toast": {
+            "cancelSuccess": "견적이 성공적으로 취소되었습니다.",
+            "cancelError": "견적 취소 중 오류가 발생했습니다. 다시 시도해주세요."
+         },
+         "emptyMessage": "아직 보낸 견적이 없습니다.",
+         "rejectedemptyMessage": "아직 반려한 견적이 없습니다.",
+         "modal": {
+            "title": "견적 취소하기",
+            "description": "정말 이 견적을 취소하시겠습니까?",
+            "title2": "견적 반려하기",
+            "description2": "정말 이 견적을 반려하시겠습니까?"
+         },
+         "closeButtonAlt": "닫기 버튼",
+         "confirmButtonText": "확인하기",
+         "confirmedLabel": "견적 확정",
+         "cancelButton": "취소하기",
+         "clientHonorific": "고객님",
+         "moveDateLabel": "이사일",
+         "departureLabel": "출발",
+         "destinationLabel": "도착",
+         "priceLabel": "견적 금액",
+         "money": "원",
+         "weekday": {
+            "sun": "일",
+            "mon": "월",
+            "tue": "화",
+            "wed": "수",
+            "thu": "목",
+            "fri": "금",
+            "sat": "토"
+         },
+         "moveCompletedLabel": "이사 완료된 견적이에요",
+         "detailsButton": "견적 상세보기",
+         "Detail": {
+            "pageTitle": "견적 상세",
+            "shareQuoteText": "견적서 공유하기",
+            "confirmedLabel": "견적 확정",
+            "clientHonorific": "고객님",
+            "moveDateLabel": "이사일",
+            "departureLabel": "출발",
+            "destinationLabel": "도착",
+            "estimatePriceTitle": "견적가",
+            "money": "원",
+            "estimateInfoTitle": "견적 정보",
+            "labels": {
+               "requestedAt": "견적 요청일",
+               "service": "서비스",
+               "from": "출발지",
+               "to": "도착지"
+            },
+            "OFFICE": "사무실이사",
+            "HOME": "가정이사",
+            "SMALL": "소형이사",
+            "estimateSuffix": "이사"
+         }
       }
    },
    "Header": {

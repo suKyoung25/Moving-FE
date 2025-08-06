@@ -4,6 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoveTextCard from "@/components/domain/my-quotes/MoveTextCard";
 import { MyEstimateDetail } from "@/lib/types";
+import { useLocale, useTranslations } from "next-intl";
+import { enUS, ko, Locale, zhCN } from "date-fns/locale";
+import { format } from "date-fns";
 
 export default function QuoteCard({
    estimate,
@@ -12,6 +15,9 @@ export default function QuoteCard({
    estimate: MyEstimateDetail;
    onRequestCancel: (id: string) => void;
 }) {
+   const t = useTranslations("MyQuotes.Mover");
+   const locale = useLocale();
+
    const router = useRouter();
    const searchParams = useSearchParams();
    const tab = searchParams.get("tab");
@@ -35,6 +41,17 @@ export default function QuoteCard({
       router.push(`/my-quotes/mover/${id}`);
    };
 
+   const localeMap: Record<string, Locale> = {
+      ko,
+      en: enUS,
+      zh: zhCN,
+   };
+   const currentLocale = localeMap[locale] || ko;
+
+   const formattedDate = format(new Date(moveDate), "yyyy-MM-dd (eee)", {
+      locale: currentLocale,
+   });
+
    return (
       <div
          onClick={!isPastMoveDate ? handleCardClick : undefined}
@@ -51,7 +68,7 @@ export default function QuoteCard({
                {isClientConfirmed && (
                   <div className="w-fit rounded-sm bg-gray-800 px-1.5 py-0.5 lg:py-1">
                      <span className="text-13-semibold lg:text-16-semibold">
-                        견적 확정
+                        {t("confirmedLabel")}
                      </span>
                   </div>
                )}
@@ -67,35 +84,34 @@ export default function QuoteCard({
                      onRequestCancel(id); // 상위에서 모달 오픈 처리
                   }}
                >
-                  취소하기
+                  {t("cancelButton")}
                </button>
             )}
          </div>
 
          <div className="mt-3.5 md:flex md:flex-col md:gap-2.5 lg:mt-4 lg:gap-6">
             <span className="text-16-semibold lg:text-20-semibold">
-               {client.name} 고객님
+               {client.name} {t("clientHonorific")}
             </span>
             <div className="border-line-100 hidden w-full border-b md:block"></div>
 
             <div className="flex flex-col gap-2.5 md:flex-row md:flex-wrap md:gap-3.5 [&_div]:flex [&_div]:items-center">
                <div className="mt-3.5 gap-2 md:mt-0">
-                  <MoveTextCard text="이사일" />
+                  <MoveTextCard text={t("moveDateLabel")} />
                   <span className="text-14-medium lg:text-18-medium">
-                     {moveDate.slice(0, 10)} (
-                     {"일월화수목금토"[new Date(moveDate).getDay()]})
+                     {formattedDate}
                   </span>
                </div>
                <div className="border-line-100 w-full border-b md:!hidden"></div>
                <div className="gap-3.5">
                   <div className="gap-2">
-                     <MoveTextCard text="출발" />
+                     <MoveTextCard text={t("departureLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
                         {fromAddress.slice(0, 6)}
                      </span>
                   </div>
                   <div className="gap-2">
-                     <MoveTextCard text="도착" />
+                     <MoveTextCard text={t("destinationLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
                         {toAddress.slice(0, 6)}
                      </span>
@@ -106,10 +122,10 @@ export default function QuoteCard({
             {tab === "1" && (
                <div className="mt-4 flex items-center justify-end gap-2 lg:mt-6 lg:gap-4">
                   <span className="text-14-medium lg:text-18-medium">
-                     견적 금액
+                     {t("priceLabel")}
                   </span>
                   <span className="text-18-bold lg:text-24-bold">
-                     {Number(price).toLocaleString()}원
+                     {Number(price).toLocaleString()} {t("money")}
                   </span>
                </div>
             )}
@@ -117,13 +133,13 @@ export default function QuoteCard({
             {isPastMoveDate && (
                <div className="absolute top-1/2 left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 text-white lg:gap-3">
                   <span className="text-16-semibold lg:text-18-semibold">
-                     이사 완료된 견적이에요
+                     {t("moveCompletedLabel")}
                   </span>
                   <button
                      className="border-primary-blue-200 lg:text-16-semibold text-14-semibold text-primary-blue-300 bg-primary-blue-100 w-fit rounded-2xl border px-4 py-2 lg:px-4.5 lg:py-2.5"
                      onClick={handleCardClick}
                   >
-                     견적 상세보기
+                     {t("detailsButton")}
                   </button>
                </div>
             )}

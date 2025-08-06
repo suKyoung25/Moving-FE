@@ -180,7 +180,7 @@
       "updating": "正在更新...",
       "update": "更新",
       "cancel": "取消",
-      "money": "元",
+      "money": "韩元",
       "moveTypes": {
          "SMALL": "小型搬家",
          "OFFICE": "办公室搬家",
@@ -268,7 +268,7 @@
       "price": "报价",
       "career": "经验",
       "loading": "加载中...",
-      "money": "元",
+      "money": "韩元",
       "reviewError": "提交评论时发生错误。",
       "noReview": "你还没有注册任何评论！",
       "goToWrite": "去写评论",
@@ -327,7 +327,7 @@
             "confirmEstimate": "确认报价",
             "viewDetails": "查看详情"
          },
-         "money": "元",
+         "money": "韩元",
          "estimateListTitle": "报价列表",
          "dropdown": {
             "all": "全部",
@@ -352,9 +352,8 @@
          "Detail": {
             "pageTitle": "报价详情",
             "estimatePriceTitle": "报价金额",
-            "currencyUnit": "韩元",
             "shareQuoteText": "分享报价单",
-            "money": "元",
+            "money": "韩元",
             "button": {
                "confirmEstimate": "确认报价"
             },
@@ -366,7 +365,62 @@
       },
       "Mover": {
          "sentQuotes": "发送的报价",
-         "rejectedRequests": "被拒请求"
+         "rejectedRequests": "被拒请求",
+         "toast": {
+            "cancelSuccess": "报价已成功取消。",
+            "cancelError": "取消报价时发生错误。请重试。"
+         },
+         "emptyMessage": "尚无发送的报价。",
+         "rejectedemptyMessage": "尚无反驳的报价。",
+         "modal": {
+            "title": "取消报价",
+            "description": "您确定要取消此报价吗？",
+            "title2": "拒绝报价",
+            "description2": "您确定要拒绝此报价吗？"
+         },
+         "closeButtonAlt": "关闭按钮",
+         "confirmButtonText": "确认",
+         "confirmedLabel": "报价确认",
+         "cancelButton": "取消",
+         "clientHonorific": "客户",
+         "moveDateLabel": "搬家日期",
+         "departureLabel": "出发",
+         "destinationLabel": "抵达",
+         "priceLabel": "报价金额",
+         "money": "韩元",
+         "weekday": {
+            "sun": "日",
+            "mon": "一",
+            "tue": "二",
+            "wed": "三",
+            "thu": "四",
+            "fri": "五",
+            "sat": "六"
+         },
+         "moveCompletedLabel": "此报价已完成",
+         "detailsButton": "查看详情",
+         "Detail": {
+            "pageTitle": "报价详情",
+            "shareQuoteText": "分享报价单",
+            "confirmedLabel": "报价确认",
+            "clientHonorific": "客户",
+            "moveDateLabel": "搬家日期",
+            "departureLabel": "出发",
+            "destinationLabel": "目的地",
+            "estimatePriceTitle": "报价金额",
+            "money": "韩元",
+            "estimateInfoTitle": "报价信息",
+            "labels": {
+               "requestedAt": "请求日期",
+               "service": "服务",
+               "from": "出发地",
+               "to": "目的地"
+            },
+            "OFFICE": "办公室搬家",
+            "HOME": "家庭搬家",
+            "SMALL": "小型搬家",
+            "estimateSuffix": "搬家"
+         }
       }
    },
    "Header": {
