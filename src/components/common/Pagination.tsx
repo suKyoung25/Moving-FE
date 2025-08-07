@@ -42,7 +42,7 @@ export default function Pagination({
       return () => window.removeEventListener("resize", update);
    }, []);
 
-   if (!totalPages || totalPages < 1) {
+   if (!totalPages || totalPages <= 1) {
       return <nav className="my-6 flex h-10 items-center justify-center" />;
    }
 
