@@ -54,13 +54,10 @@ export default async function MyQuoetesDetailPage({
                   <SocialShareGroup text={t("shareQuoteText")} />
                </article>
                <hr className="bg-line-100 h-px border-0 lg:hidden" />
-               <QuotaionInfo
-                  fromAddress={data.request.fromAddress}
-                  moveDate={data.request.moveDate}
-                  moveType={data.request.moveType}
-                  requestedAt={data.request.requestedAt}
-                  toAddress={data.request.toAddress}
-               />
+               <p className="text-16-semibold lg:text-24-semibold">
+                  {t("estimateInfoTitle")}
+               </p>
+               <QuotaionInfo request={data.request} />
             </section>
             <div
                style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.16)" }}

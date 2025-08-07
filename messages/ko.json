@@ -352,6 +352,7 @@
          "Detail": {
             "pageTitle": "견적 상세",
             "estimatePriceTitle": "견적가",
+            "estimateInfoTitle": "견적 정보",
             "shareQuoteText": "견적서 공유하기",
             "money": "원",
             "button": {

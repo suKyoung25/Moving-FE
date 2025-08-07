@@ -352,6 +352,7 @@
          "Detail": {
             "pageTitle": "Quote Details",
             "estimatePriceTitle": "Estimate Price",
+            "estimateInfoTitle": "Estimate Info",
             "shareQuoteText": "Share Quote",
             "money": "KRW",
             "button": {
