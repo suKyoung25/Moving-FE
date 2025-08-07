@@ -352,6 +352,7 @@
          "Detail": {
             "pageTitle": "报价详情",
             "estimatePriceTitle": "报价金额",
+            "estimateInfoTitle": "报价信息",
             "shareQuoteText": "分享报价单",
             "money": "韩元",
             "button": {
@@ -421,6 +422,88 @@
             "SMALL": "小型搬家",
             "estimateSuffix": "搬家"
          }
+      }
+   },
+   "ReceivedRequests": {
+      "pageTitle": "收到的请求",
+      "loading": "正在加载请求列表...",
+      "totalCount": "共有 {count} 条请求",
+      "filterIconAlt": "打开筛选",
+      "sidebar": {
+         "moveTypeTitle": "搬家类型",
+         "filterTitle": "筛选",
+         "selectAll": "全选",
+         "selectAllAlt": "全选",
+         "singleSelectAlt": "选择{type}",
+         "onlyDesignated": "仅显示指定报价请求",
+         "onlyDesignatedAlt": "仅显示指定报价请求"
+      },
+      "moveTypes": {
+         "SMALL": "小型搬家",
+         "HOME": "家庭搬家",
+         "OFFICE": "办公室搬家"
+      },
+      "searchInput": {
+         "placeholder": "您在找哪一位客户？",
+         "iconAlt": "搜索"
+      },
+      "sort": {
+         "moveDate-asc": "搬家日期最早",
+         "moveDate-desc": "搬家日期最晚"
+      },
+      "loadingMore": "正在加载...",
+      "noMoreRequests": "所有请求已全部到达",
+      "clientHonorific": "客户",
+      "moveDateLabel": "搬家日期",
+      "departureLabel": "出发",
+      "destinationLabel": "目的地",
+      "sendEstimateButton": "发送报价",
+      "rejectButton": "拒绝",
+      "modal": {
+         "title": "搬家类型和筛选",
+         "closeAlt": "关闭按钮",
+         "selectAll": "全选",
+         "selectAllAlt": "全选",
+         "singleSelectAlt": "选择{type}",
+         "onlyDesignated": "仅显示指定报价请求",
+         "onlyDesignatedAlt": "仅显示指定报价请求",
+         "sendTitle": "发送报价",
+         "rejectTitle": "请求反驳",
+         "sendButton": "发送报价",
+         "rejectButton": "反驳"
+      },
+      "priceLabel": "报价金额",
+      "pricePlaceholder": "请输入金额",
+      "commentLabel": "请输入备注",
+      "commentPlaceholder": "请输入关于报价的备注",
+      "rejectReasonLabel": "反驳原因",
+      "rejectReasonPlaceholder": "请输入反驳原因",
+      "toast": {
+         "sendSuccess": "报价已成功发送给客户。",
+         "rejectSuccess": "请求已被反驳。",
+         "requestFailed": "请求失败，请重试。"
+      },
+      "Detail": {
+         "pageTitle": "请求详情",
+         "shareQuoteText": "分享报价单",
+         "clientHonorific": "客户",
+         "moveDateLabel": "搬家日期",
+         "departureLabel": "出发",
+         "destinationLabel": "目的地",
+         "estimateInfoTitle": "报价信息",
+         "labels": {
+            "requestedAt": "请求日期",
+            "service": "服务",
+            "from": "出发地",
+            "to": "目的地"
+         },
+         "moveTypes": {
+            "OFFICE": "办公室",
+            "HOME": "家庭",
+            "SMALL": "小型"
+         },
+         "estimateSuffix": "搬家",
+         "confirmedLabel": "报价已确认"
       }
    },
    "Header": {

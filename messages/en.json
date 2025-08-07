@@ -352,6 +352,7 @@
          "Detail": {
             "pageTitle": "Quote Details",
             "estimatePriceTitle": "Estimate Price",
+            "estimateInfoTitle": "Estimate Info",
             "shareQuoteText": "Share Quote",
             "money": "KRW",
             "button": {
@@ -421,6 +422,88 @@
             "SMALL": "Small Move",
             "estimateSuffix": "Move"
          }
+      }
+   },
+   "ReceivedRequests": {
+      "pageTitle": "Received Requests",
+      "loading": "Loading request list...",
+      "totalCount": "There are {count} requests in total",
+      "filterIconAlt": "Open filters",
+      "sidebar": {
+         "moveTypeTitle": "Move Types",
+         "filterTitle": "Filters",
+         "selectAll": "Select All",
+         "selectAllAlt": "Select all",
+         "singleSelectAlt": "Select {type}",
+         "onlyDesignated": "Show Designated Requests Only",
+         "onlyDesignatedAlt": "Show only designated requests"
+      },
+      "moveTypes": {
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move"
+      },
+      "searchInput": {
+         "placeholder": "Which customer are you searching for?",
+         "iconAlt": "Search"
+      },
+      "sort": {
+         "moveDate-asc": "Earliest Move Date",
+         "moveDate-desc": "Latest Move Date"
+      },
+      "loadingMore": "Loading more...",
+      "noMoreRequests": "All requests have arrived",
+      "clientHonorific": "Client",
+      "moveDateLabel": "Move Date",
+      "departureLabel": "From",
+      "destinationLabel": "To",
+      "sendEstimateButton": "Send Estimate",
+      "rejectButton": "Reject",
+      "modal": {
+         "title": "Move Types and Filters",
+         "closeAlt": "Close button",
+         "selectAll": "Select All",
+         "selectAllAlt": "Select all",
+         "singleSelectAlt": "Select {type}",
+         "onlyDesignated": "Show Designated Requests Only",
+         "onlyDesignatedAlt": "Show only designated requests",
+         "sendTitle": "Send Estimate",
+         "rejectTitle": "Reject Request",
+         "sendButton": "Send Estimate",
+         "rejectButton": "Reject"
+      },
+      "priceLabel": "Estimate Price",
+      "pricePlaceholder": "Enter amount",
+      "commentLabel": "Please enter a comment",
+      "commentPlaceholder": "Write a note about the estimate",
+      "rejectReasonLabel": "Rejection Reason",
+      "rejectReasonPlaceholder": "Enter the reason for rejection",
+      "toast": {
+         "sendSuccess": "Estimate sent successfully to the client.",
+         "rejectSuccess": "The request has been rejected.",
+         "requestFailed": "Request failed. Please try again."
+      },
+      "Detail": {
+         "pageTitle": "Request Details",
+         "shareQuoteText": "Share Quote",
+         "clientHonorific": "Client",
+         "moveDateLabel": "Move Date",
+         "departureLabel": "From",
+         "destinationLabel": "To",
+         "estimateInfoTitle": "Estimate Info",
+         "labels": {
+            "requestedAt": "Requested At",
+            "service": "Service",
+            "from": "From",
+            "to": "To"
+         },
+         "moveTypes": {
+            "OFFICE": "Office",
+            "HOME": "Home",
+            "SMALL": "Small"
+         },
+         "estimateSuffix": "Move",
+         "confirmedLabel": "Estimate Confirmed"
       }
    },
    "Header": {

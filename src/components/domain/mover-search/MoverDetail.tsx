@@ -1,6 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, {
+   useState,
+   useEffect,
+   useCallback,
+   useMemo,
+   memo,
+   lazy,
+   Suspense,
+} from "react";
 import { useParams } from "next/navigation";
 import { Mover } from "@/lib/types/auth.types";
 import {
@@ -14,107 +22,144 @@ import DetailSections from "./DetailSections";
 import LineDivider from "../../common/LineDivider";
 import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
-import DashboardReviewSection from "@/components/domain/dashboard/ReviewSection";
 import { useTranslations } from "next-intl";
 
-export default function MoverDetail() {
-   const t = useTranslations("MoverDetail");
+const DashboardReviewSection = lazy(
+   () => import("@/components/domain/dashboard/ReviewSection"),
+);
 
+const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
+   return (
+      <div className="animate-pulse p-4">
+         <div className="mb-4 h-6 w-32 rounded bg-gray-200"></div>
+         {[1, 2, 3].map((i) => (
+            <div key={i} className="mb-4 rounded border p-4">
+               <div className="mb-2 h-4 w-3/4 rounded bg-gray-200"></div>
+               <div className="h-3 w-1/2 rounded bg-gray-200"></div>
+            </div>
+         ))}
+      </div>
+   );
+});
+
+// 🔧 Fixed: Each component uses its own useTranslations hook
+const LoadingSpinner = memo(function LoadingSpinner() {
+   const t = useTranslations("MoverDetail");
+   return (
+      <div className="flex min-h-screen items-center justify-center">
+         <div className="text-center">
+            <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-b-2 border-blue-600"></div>
+            <p className="text-gray-600">{t("loadingMessage")}</p>
+         </div>
+      </div>
+   );
+});
+
+const ErrorDisplay = memo(function ErrorDisplay({ error }: { error: string }) {
+   return (
+      <div className="flex min-h-screen items-center justify-center">
+         <div className="text-center">
+            <p className="text-lg text-red-600">{error}</p>
+         </div>
+      </div>
+   );
+});
+
+// 🔧 Main component - t is used properly here
+export default memo(function MoverDetail() {
+   const t = useTranslations("MoverDetail");
    const params = useParams();
    const { user } = useAuth();
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState<string | null>(null);
-   const [mover, setMover] = useState<Mover | null>(null);
+
+   const [state, setState] = useState({
+      loading: true,
+      error: null as string | null,
+      mover: null as Mover | null,
+   });
+
+   const moverId = useMemo(() => params.id as string, [params.id]);
+
+   const authState = useMemo(
+      () => ({
+         hasToken: Boolean(tokenSettings.get()),
+         isLoggedIn: Boolean(user),
+      }),
+      [user],
+   );
+
+   // 🔧 Fixed: Added t dependency
+   const fetchMover = useCallback(async () => {
+      if (!moverId) return;
+
+      try {
+         setState((prev) => ({ ...prev, loading: true, error: null }));
+
+         const fetchPromise =
+            authState.hasToken && authState.isLoggedIn
+               ? getMoverByIdWithAuth(moverId)
+               : getMoverByIdWithoutAuth(moverId);
+
+         const moverData = await fetchPromise;
+
+         setState({
+            loading: false,
+            error: null,
+            mover: moverData,
+         });
+      } catch (err) {
+         console.error("Error fetching mover:", err);
+         setState({
+            loading: false,
+            error: t("error.loadFailed"),
+            mover: null,
+         });
+      }
+   }, [moverId, authState.hasToken, authState.isLoggedIn, t]);
 
    useEffect(() => {
-      const fetchMover = async () => {
-         try {
-            setLoading(true);
-            const id = params.id as string;
+      fetchMover();
+   }, [fetchMover]);
 
-            const hasToken = Boolean(tokenSettings.get());
-            const isLoggedIn = Boolean(user);
+   const handleFavoriteChange = useCallback(
+      (moverId: string, isFavorite: boolean, favoriteCount: number) => {
+         setState((prev) => {
+            if (!prev.mover || prev.mover.id !== moverId) return prev;
+            return {
+               ...prev,
+               mover: { ...prev.mover, isFavorite, favoriteCount },
+            };
+         });
+      },
+      [],
+   );
 
-            let moverData: Mover;
+   const handleDesignatedEstimateSuccess = useCallback((moverId: string) => {
+      setState((prev) => {
+         if (!prev.mover || prev.mover.id !== moverId) return prev;
+         return {
+            ...prev,
+            mover: {
+               ...prev.mover,
+               hasDesignatedRequest: true,
+               designatedEstimateStatus: undefined,
+            },
+         };
+      });
+   }, []);
 
-            if (hasToken && isLoggedIn) {
-               moverData = await getMoverByIdWithAuth(id);
-            } else {
-               moverData = await getMoverByIdWithoutAuth(id);
-            }
-
-            setMover(moverData);
-         } catch (err) {
-            console.error("Error fetching mover:", err);
-            setError(t("error.loadFailed"));
-         } finally {
-            setLoading(false);
-         }
-      };
-
-      if (params.id) {
-         fetchMover();
-      }
-   }, [params.id, user]);
-
-   const handleFavoriteChange = (
-      moverId: string,
-      isFavorite: boolean,
-      favoriteCount: number,
-   ) => {
-      if (mover && mover.id === moverId) {
-         setMover((prev) =>
-            prev ? { ...prev, isFavorite, favoriteCount } : null,
-         );
-      }
-   };
-
-   const handleDesignatedEstimateSuccess = (moverId: string) => {
-      if (mover && mover.id === moverId) {
-         setMover((prev) =>
-            prev
-               ? {
-                    ...prev,
-                    hasDesignatedRequest: true,
-                    designatedEstimateStatus: undefined,
-                 }
-               : null,
-         );
-      }
-   };
-
-   if (loading) {
-      return (
-         <div className="flex min-h-screen items-center justify-center">
-            <div className="text-center">
-               <div className="mx-auto mb-4 h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-               <p className="text-gray-600">{t("loading")}</p>
-            </div>
-         </div>
-      );
+   // 🔧 Fixed: No need to pass t as props anymore
+   if (state.loading) return <LoadingSpinner />;
+   if (state.error || !state.mover) {
+      return <ErrorDisplay error={state.error || t("error.notFound")} />;
    }
 
-   if (error || !mover) {
-      return (
-         <div className="flex min-h-screen items-center justify-center">
-            <div className="text-center">
-               <p className="text-lg text-red-600">
-                  {error || t("error.notFound")}
-               </p>
-            </div>
-         </div>
-      );
-   }
+   const { mover } = state;
 
    return (
       <div className="flex w-full flex-col gap-4 lg:gap-6">
-         {/* Mobile Layout - Stack vertically */}
+         {/* Mobile Layout */}
          <div className="mx-auto flex w-80 flex-col gap-4 md:w-[36rem] lg:hidden lg:w-[60rem]">
-            <DriverCard
-               mover={mover}
-               onFavoriteChange={handleFavoriteChange}
-               // 🔥 onDesignatedEstimateSuccess prop 제거
-            />
+            <DriverCard mover={mover} onFavoriteChange={handleFavoriteChange} />
             <LineDivider />
             <div className="p-4">
                <SocialShareGroup text={t("shareText")} />
@@ -124,9 +169,13 @@ export default function MoverDetail() {
             </div>
             <DetailSections mover={mover} />
             <LineDivider />
+
             <div className="p-4">
-               <DashboardReviewSection moverId={mover.id} />
+               <Suspense fallback={<ReviewSectionSkeleton />}>
+                  <DashboardReviewSection moverId={mover.id} />
+               </Suspense>
             </div>
+
             <ActionButtons
                mover={mover}
                onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
@@ -134,18 +183,20 @@ export default function MoverDetail() {
             />
          </div>
 
-         {/* Desktop Layout - Side by side */}
+         {/* Desktop Layout */}
          <div className="hidden lg:flex lg:flex-row lg:justify-between lg:gap-6">
             <div className="flex w-full flex-col gap-6 lg:w-2/3">
                <DriverCard
                   mover={mover}
                   onFavoriteChange={handleFavoriteChange}
-                  // 🔥 onDesignatedEstimateSuccess prop 제거
                />
                <LineDivider />
                <DetailSections mover={mover} />
                <LineDivider />
-               <DashboardReviewSection moverId={mover.id} />
+
+               <Suspense fallback={<ReviewSectionSkeleton />}>
+                  <DashboardReviewSection moverId={mover.id} />
+               </Suspense>
             </div>
 
             <div className="flex w-full flex-col gap-6 lg:w-1/3">
@@ -167,4 +218,4 @@ export default function MoverDetail() {
          </div>
       </div>
    );
-}
+});

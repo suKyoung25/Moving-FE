@@ -52,7 +52,7 @@ export function EstimateRequestButton({
          setIsResultModalOpen(true);
          return;
       }
-      // 🔥 이미 성공한 경우 클릭 막기
+      //  이미 성공한 경우 클릭 막기
       if (isRequestSuccess) return;
 
       try {
@@ -151,7 +151,7 @@ export function EstimateRequestButton({
       window.location.href = "/request";
    };
 
-   // 🔥 버튼 스타일과 텍스트 결정
+   //  버튼 스타일과 텍스트 결정
    const getButtonStyle = () => {
       if (isRequestSuccess) {
          return "cursor-not-allowed bg-gray-100 text-white";
@@ -176,7 +176,7 @@ export function EstimateRequestButton({
       <>
          <button
             onClick={handleClick}
-            disabled={isLoading || isRequestSuccess} // 🔥 성공 시에도 비활성화
+            disabled={isLoading || isRequestSuccess} //  성공 시에도 비활성화
             className={`w-full rounded-lg px-4 py-3 font-medium transition-colors ${getButtonStyle()}`}
          >
             {getButtonText()}
