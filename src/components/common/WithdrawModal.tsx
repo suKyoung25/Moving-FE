@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useMoverWithdrawForm } from "@/lib/hooks/useMoverWithdrawForm";
+import { useUserWithdrawForm } from "@/lib/hooks/useUserWithdrawForm";
 import SolidButton from "./SolidButton";
 import OutlinedButton from "./OutlinedButton";
 import PasswordInput from "../domain/auth/PasswordInput";
@@ -18,7 +18,7 @@ export default function WithdrawModal({ onClose }: Props) {
    const { user } = useAuth();
 
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
-      useMoverWithdrawForm(onClose);
+      useUserWithdrawForm(onClose);
 
    if (!user) return null;
    const userType = user.userType!;
