@@ -682,5 +682,17 @@
       "selectRating": "별점을 선택해 주세요",
       "maxRating": "5점 만점 입니다.",
       "minContent": "리뷰 내용을 최소 10자 이상 입력해 주세요"
+   },
+   "NotFound": {
+      "logoAlt": "로고",
+      "earthAlt": "지구 이미지",
+      "moverAlt": "무빙맨 이미지",
+      "truckMoverAlt": "트럭 무빙맨 이미지",
+      "starAlt": "별 이미지",
+      "pageNotFoundTitle": "현재 접속하신 페이지가\n존재하지 않습니다.",
+      "pageNotFoundMessageLine1": "서비스 이용에 불편을 드려 대단히 죄송합니다.",
+      "pageNotFoundMessageLine2": "현재 해당 사이트의 페이지가 존재하지 않아요.",
+      "pageNotFoundMessageLine3": "확인 후 다시 접속해 주세요.",
+      "goToMain": "메인으로 바로가기"
    }
 }

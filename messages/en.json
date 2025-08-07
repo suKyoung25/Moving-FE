@@ -683,5 +683,17 @@
       "selectRating": "Please select a rating.",
       "maxRating": "Maximum rating is 5.",
       "minContent": "Please enter at least 10 characters in your review."
+   },
+   "NotFound": {
+      "logoAlt": "Logo",
+      "earthAlt": "Earth image",
+      "moverAlt": "Moving man image",
+      "truckMoverAlt": "Truck moving man image",
+      "starAlt": "Star image",
+      "pageNotFoundTitle": "The page you are trying to access\ndoes not exist.",
+      "pageNotFoundMessageLine1": "We apologize for the inconvenience.",
+      "pageNotFoundMessageLine2": "The page you are looking for does not currently exist.",
+      "pageNotFoundMessageLine3": "Please check and try again.",
+      "goToMain": "Go to Main"
    }
 }

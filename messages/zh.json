@@ -683,5 +683,17 @@
       "selectRating": "请选择评分。",
       "maxRating": "最高评分为5分。",
       "minContent": "请在评论中输入至少10个字符。"
+   },
+   "NotFound": {
+      "logoAlt": "标志",
+      "earthAlt": "地球图片",
+      "moverAlt": "搬家人图像",
+      "truckMoverAlt": "卡车搬家人图像",
+      "starAlt": "星星图片",
+      "pageNotFoundTitle": "您访问的页面\n不存在。",
+      "pageNotFoundMessageLine1": "给您带来不便，深感抱歉。",
+      "pageNotFoundMessageLine2": "目前该站点页面不存在。",
+      "pageNotFoundMessageLine3": "请确认后重试。",
+      "goToMain": "返回首页"
    }
 }
