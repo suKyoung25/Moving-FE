@@ -6,7 +6,7 @@ import Image from "next/image";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
 import ReviewModal from "./ReviewModal";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import EmptyState from "@/components/common/EmptyState";
 import { useTranslations } from "next-intl";
 import { isChipType } from "@/lib/utils/moveChip.util";

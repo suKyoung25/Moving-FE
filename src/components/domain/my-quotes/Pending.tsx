@@ -10,7 +10,7 @@ import MoveDateCard from "./MoveDateCard";
 import MoverProfileclient from "./MoverProfileClient";
 import EmptyState from "@/components/common/EmptyState";
 import { usePendingEstimates } from "@/lib/api/estimate/query";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import ConfirmedButton from "./ConfirmedButton";

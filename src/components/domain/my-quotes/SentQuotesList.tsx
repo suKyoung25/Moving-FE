@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSentEstimates } from "@/lib/api/estimate/query";
 import QuoteCard from "./QuoteCard";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import EmptyState from "@/components/common/EmptyState";

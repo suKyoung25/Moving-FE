@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Quotes } from "@/lib/types";
-import QuotaionInfo from "./QuotaionInfo";
+import QuotationInfo from "./QuotationInfo";
 import Dropdown from "./Dropdown";
 import EmptyState from "@/components/common/EmptyState";
 import { isAfter } from "date-fns";
@@ -29,7 +29,6 @@ export default function Requested() {
       useRequestsQuery(sort);
    const requests =
       data?.pages?.flatMap((page) => page.requests).filter(Boolean) ?? [];
-   console.log(requests);
 
    const chipTypeMap = (moveDate: Date, isPending: boolean) => {
       const now = new Date();
@@ -55,8 +54,7 @@ export default function Requested() {
 
    const handleCancel = async (requestId: string) => {
       try {
-         const { data } = await cancelRequest(requestId);
-         console.log(data);
+         await cancelRequest(requestId);
          queryClient.invalidateQueries({ queryKey: ["requests", sort] });
          queryClient.invalidateQueries({ queryKey: ["activeRequest"] });
          showSuccess("견적 요청이 취소되었어요");
@@ -121,13 +119,13 @@ export default function Requested() {
                            onClick={() => handleClick(request)}
                            className="cursor-pointer"
                         >
-                           <QuotaionInfo
+                           <QuotationInfo
                               request={request}
                               chipType={chipType}
                            />
                         </div>
                      ) : (
-                        <QuotaionInfo
+                        <QuotationInfo
                            request={request}
                            chipType={chipType}
                            isPending={true}

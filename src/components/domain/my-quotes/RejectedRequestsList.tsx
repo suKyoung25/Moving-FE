@@ -6,7 +6,7 @@ import SkeletonLayout from "@/components/common/SkeletonLayout";
 import RejectedRequestsSkeleton from "./RejectedRequestsSkeleton";
 import { useState } from "react";
 import { MyEstimateDetail } from "@/lib/types";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import { useRejectedEstimates } from "@/lib/api/estimate/query";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { deleteEstimate } from "@/lib/api/estimate/requests/deleteEstimate";

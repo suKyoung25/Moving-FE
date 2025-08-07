@@ -7,7 +7,7 @@ import profile from "@/assets/images/profileUploaderIcon.svg";
 import yellowStar from "@/assets/images/starFilledIcon.svg";
 import grayStar from "@/assets/images/starOutlineIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import EmptyState from "@/components/common/EmptyState";
 import EditDeleteReviewModal from "./EditDeleteReviewModal";
 import more from "@/assets/images/moreGrayIcon.svg";
