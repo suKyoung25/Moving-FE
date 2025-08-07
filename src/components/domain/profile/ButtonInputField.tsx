@@ -15,6 +15,7 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
    isServiceType,
    isArea,
    error,
+   labelId,
 }: InputFieldProps<T>) {
    //각 버튼들 상수화
    const serviceTypes = moveType;
@@ -26,7 +27,7 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
 
    return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-6 leading-8">
-         <div>
+         <div id={labelId}>
             {text}
             <span className="text-blue-300"> *</span>
             <ErrorText error={error?.message} position="left" />

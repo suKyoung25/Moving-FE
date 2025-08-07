@@ -24,10 +24,16 @@ export default function MoverProfilePostForm() {
       <form
          onSubmit={handleSubmit(onSubmit)}
          className="mt-6 flex w-full flex-col lg:mt-12"
+         aria-labelledby="profile-form-title"
       >
+         <h2 id="profile-form-title" className="sr-only">
+            기사 프로필 등록 폼
+         </h2>
+
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex flex-1 flex-col">
                <GeneralInputField<MoverProfileInput>
+                  labelId="nickname-label"
                   name="nickName"
                   text="별명"
                   placeholder="사이트에 노출될 이름을 입력해주세요"
@@ -38,6 +44,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <ImageInputField
+                  labelId="image-label"
                   name="image"
                   text="프로필 이미지"
                   control={control}
@@ -47,6 +54,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField<MoverProfileInput>
+                  labelId="career-label"
                   name="career"
                   text="경력"
                   placeholder="기사님의 경력을 입력해주세요"
@@ -57,6 +65,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField<MoverProfileInput>
+                  labelId="introduction-label"
                   name="introduction"
                   text="한 줄 소개"
                   placeholder="한 줄 소개를 입력해주세요"
@@ -69,6 +78,7 @@ export default function MoverProfilePostForm() {
 
             <div className="flex-1">
                <TextAreaInputField
+                  labelId="description-label"
                   name="description"
                   text="상세 설명"
                   placeholder="상세 내용을 입력해주세요"
@@ -79,6 +89,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <ButtonInputField
+                  labelId="service-type-label"
                   name="serviceType"
                   text="제공 서비스"
                   isServiceType={true}
@@ -93,6 +104,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <ButtonInputField
+                  labelId="service-area-label"
                   name="serviceArea"
                   text="서비스 가능 지역"
                   isArea={true}
@@ -107,7 +119,11 @@ export default function MoverProfilePostForm() {
          </div>
 
          <div className="mt-17 lg:pl-185">
-            <SolidButton disabled={!isValid || isLoading} type="submit">
+            <SolidButton
+               disabled={!isValid || isLoading}
+               type="submit"
+               aria-disabled={!isValid || isLoading}
+            >
                {isLoading ? "등록 중..." : "시작하기"}
             </SolidButton>
          </div>

@@ -17,6 +17,8 @@ export interface InputFieldProps<T extends Record<string, FieldValue>> {
    control?: Control<T>;
    register?: UseFormRegister<T>;
    error?: FieldError;
+
+   labelId?: string;
 }
 
 //기사님 프로필 유효성 함수 관련
