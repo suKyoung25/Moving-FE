@@ -389,7 +389,8 @@
       "loginRequired": "Login is required for this service.",
       "loadFailed": "Failed to load favorite drivers.",
       "noFavorites": "No favorite drivers found.",
-      "toggleError": "An error occurred while toggling favorite."
+      "toggleError": "An error occurred while toggling favorite.",
+      "removeSuccess": "Removed from favorites."
    },
    "MyQuotes": {
       "Client": {

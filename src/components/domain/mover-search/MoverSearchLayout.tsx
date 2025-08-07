@@ -28,7 +28,7 @@ const FavoriteListSkeleton = memo(function FavoriteListSkeleton() {
 export default memo(function MoverSearchLayout() {
    const t = useTranslations("MoverSearch");
 
-   // 🔧 Fixed: Removed unused variables and properly memoized translated options
+   // 번역된 옵션들을 메모이제이션
    const translatedAreaOptions = useMemo(
       () =>
          AREA_OPTIONS.map((option) => ({
@@ -73,13 +73,35 @@ export default memo(function MoverSearchLayout() {
       [],
    );
 
-   const handleDriverListFavoriteChange = useCallback(() => {
-      setFavoriteRefreshKey((prev) => prev + 1);
-   }, []);
+   // DriverList에서 찜 상태가 변경되었을 때 호출되는 핸들러
+   const handleDriverListFavoriteChange = useCallback(
+      (moverId: string, isFavorite: boolean, favoriteCount: number) => {
+         console.log("DriverList favorite change:", {
+            moverId,
+            isFavorite,
+            favoriteCount,
+         });
 
-   const handleFavoriteListChange = useCallback(() => {
-      setDriverListRefreshKey((prev) => prev + 1);
-   }, []);
+         // FavoriteDriverList를 새로고침하도록 키 업데이트
+         setFavoriteRefreshKey((prev) => prev + 1);
+      },
+      [],
+   );
+
+   // FavoriteDriverList에서 찜 상태가 변경되었을 때 호출되는 핸들러
+   const handleFavoriteListChange = useCallback(
+      (moverId: string, isFavorite: boolean, favoriteCount: number) => {
+         console.log("FavoriteDriverList favorite change:", {
+            moverId,
+            isFavorite,
+            favoriteCount,
+         });
+
+         // DriverList를 새로고침하도록 키 업데이트
+         setDriverListRefreshKey((prev) => prev + 1);
+      },
+      [],
+   );
 
    const handleReset = useCallback(() => {
       setFilters({
@@ -97,7 +119,7 @@ export default memo(function MoverSearchLayout() {
       [handleFilterChange],
    );
 
-   // 🔧 Fixed: Use translatedSortOptions instead of undefined sortOptions
+   // 현재 선택된 정렬 옵션 찾기
    const currentSortOption = useMemo(
       () =>
          translatedSortOptions.find(
@@ -121,6 +143,7 @@ export default memo(function MoverSearchLayout() {
                <Suspense fallback={<FavoriteListSkeleton />}>
                   <FavoriteDriverList
                      key={favoriteRefreshKey}
+                     refreshKey={favoriteRefreshKey} // refreshKey prop 추가
                      onFavoriteChange={handleFavoriteListChange}
                   />
                </Suspense>

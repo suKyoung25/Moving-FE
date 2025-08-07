@@ -389,7 +389,8 @@
       "loginRequired": "로그인이 필요한 서비스입니다.",
       "loadFailed": "찜한 기사님 목록을 불러오는데 실패했습니다.",
       "noFavorites": "찜한 기사님이 없습니다.",
-      "toggleError": "찜 처리 중 오류가 발생했습니다."
+      "toggleError": "찜 처리 중 오류가 발생했습니다.",
+      "removeSuccess": "찜 목록에서 제거되었습니다."
    },
    "MyQuotes": {
       "Client": {
