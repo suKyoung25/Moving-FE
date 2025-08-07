@@ -68,7 +68,7 @@ export default function Step1({ value, onChange, onNext }: Step1Props) {
                            type="button"
                            key={option.value}
                            onClick={() => handleSelect(option.value)}
-                           className={`hover:border-primary-blue-300 flex h-13 w-full cursor-pointer items-center rounded-2xl border px-4 py-[14px] text-left break-keep lg:h-21 lg:w-140 ${
+                           className={`hover:border-primary-blue-300 flex h-13 w-full items-center rounded-2xl border px-4 py-3.5 text-left break-keep lg:h-21 lg:w-140 ${
                               selected === option.value
                                  ? "border-primary-blue-300 bg-primary-blue-50"
                                  : "border-line-200"
@@ -87,7 +87,7 @@ export default function Step1({ value, onChange, onNext }: Step1Props) {
                               )}
                               className="aspect-square w-6 lg:w-9"
                            />
-                           <span className="ml-2 text-sm font-semibold lg:text-lg">
+                           <span className="text-14-semibold lg:text-18-semibold ml-2">
                               {option.label}
                            </span>
                         </button>
@@ -101,7 +101,7 @@ export default function Step1({ value, onChange, onNext }: Step1Props) {
                {isEditing && (
                   <button
                      type="button"
-                     className="mr-2 text-right font-medium text-gray-500 underline max-lg:text-xs"
+                     className="text-16-semibold max-lg:text-12-medium mr-2 text-right text-gray-500 underline"
                      onClick={() => setIsEditing(false)}
                   >
                      {t("cancelEdit")}
