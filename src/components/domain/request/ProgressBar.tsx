@@ -18,11 +18,11 @@ export default function ProgressBar() {
       <>
          {currentStep !== 4 && (
             <div className="w-full space-y-4 py-4 lg:space-y-6 lg:py-8">
-               <h1 className="text-lg font-semibold lg:text-2xl">
+               <h1 className="text-18-semibold lg:text-24-semibold">
                   {t("requestQuote")}
                </h1>
                <div
-                  className="bg-line-200 h-[6px] w-full rounded-full lg:h-2"
+                  className="bg-line-200 h-1.5 w-full rounded-full lg:h-2"
                   role="progressbar"
                   aria-valuemin={0}
                   aria-valuemax={100}
@@ -30,7 +30,7 @@ export default function ProgressBar() {
                   aria-label={t("progressbarAriaLabel")}
                >
                   <div
-                     className="bg-primary-blue-300 h-[6px] rounded-full transition-all duration-300 lg:h-2"
+                     className="bg-primary-blue-300 h-1.5 rounded-full transition-all duration-300 lg:h-2"
                      style={{ width: `${progress}%` }}
                   />
                </div>

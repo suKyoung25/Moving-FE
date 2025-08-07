@@ -20,7 +20,7 @@ export default function ChatMessage({
    const t = useTranslations("Request");
 
    const baseStyle =
-      "w-fit h-fit px-5 py-3 text-sm font-medium max-lg:max-w-62 lg:px-10 lg:py-5 lg:text-lg";
+      "w-fit h-fit px-5 py-3 text-14-medium max-lg:max-w-62 lg:px-10 lg:py-5 lg:text-18-medium";
 
    // 시스템 메세지
    if (type === "system") {
@@ -43,7 +43,7 @@ export default function ChatMessage({
             {message}
          </div>
          <button
-            className="mr-2 font-medium text-gray-500 underline max-lg:text-xs"
+            className="text-16-medium max-lg:text-12-medium mr-2 text-gray-500 underline"
             onClick={onEditClick}
          >
             {t("edit")}

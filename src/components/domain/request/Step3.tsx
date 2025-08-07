@@ -68,7 +68,7 @@ export default function Step3({
          <ChatMessage type="system" message={t("selectMoveAreaPrompt")} />
          {/* 유저 메세지 */}
          <ChatWrapper>
-            <label className="text-sm font-medium lg:text-lg">
+            <label className="text-14-medium lg:text-18-medium">
                {t("from")}
             </label>
             <OutlinedButton
@@ -80,7 +80,9 @@ export default function Step3({
             >
                {fromAddress || t("selectFromAddress")}
             </OutlinedButton>
-            <label className="text-sm font-medium lg:text-lg">{t("to")}</label>
+            <label className="text-14-medium lg:text-18-medium">
+               {t("to")}
+            </label>
             <OutlinedButton
                className="text-left lg:w-140"
                onClick={() => {
@@ -106,7 +108,7 @@ export default function Step3({
             <button
                type="button"
                onClick={onReset}
-               className="mr-2 text-right font-medium text-gray-500 underline max-lg:text-xs"
+               className="text-16-medium max-lg:text-12-medium mr-2 text-right text-gray-500 underline"
             >
                {t("resetSelection")}
             </button>
