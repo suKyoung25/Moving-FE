@@ -27,7 +27,9 @@ export default function Requested() {
 
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
       useRequestsQuery(sort);
-   const requests = data?.pages.flatMap((page) => page.requests) ?? [];
+   const requests =
+      data?.pages?.flatMap((page) => page.requests).filter(Boolean) ?? [];
+   console.log(requests);
 
    const chipTypeMap = (moveDate: Date, isPending: boolean) => {
       const now = new Date();

@@ -8,10 +8,10 @@ import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import EmptyState from "@/components/common/EmptyState";
 import { MyEstimateDetail } from "@/lib/types";
-import ToastPopup from "@/components/common/ToastPopup";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { deleteEstimate } from "@/lib/api/estimate/requests/deleteEstimate";
 import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/context/ToastConText";
 import { useTranslations } from "next-intl";
 
 export default function SentQuotesList() {
@@ -19,11 +19,7 @@ export default function SentQuotesList() {
 
    const [page, setPage] = useState(1);
    const { data, isLoading } = useSentEstimates(page);
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
+   const { showSuccess, showError } = useToast();
 
    const [selectedEstimateId, setSelectedEstimateId] = useState<string | null>(
       null,
@@ -40,19 +36,11 @@ export default function SentQuotesList() {
       setSelectedEstimateId(null);
 
       if (res) {
-         setToast({
-            id: Date.now(),
-            text: t("toast.cancelSuccess"),
-            success: true,
-         });
+         showSuccess(t("toast.cancelSuccess"));
          queryClient.invalidateQueries({ queryKey: ["sentEstimates"] });
          queryClient.invalidateQueries({ queryKey: ["rejectedEstimates"] });
       } else {
-         setToast({
-            id: Date.now(),
-            text: t("toast.cancelError"),
-            success: false,
-         });
+         showError(t("toast.cancelError"));
       }
    };
 
@@ -87,13 +75,6 @@ export default function SentQuotesList() {
             totalPages={totalPages}
             onPageChange={setPage}
          />
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
-         )}
 
          {selectedEstimateId && (
             <ConfirmModal

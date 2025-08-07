@@ -11,13 +11,13 @@ import {
 } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip from "@/components/common/MoveChip";
-import type { Mover } from "@/lib/types";
 import { validateServiceTypes } from "@/lib/utils/moveChip.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastConText";
-import { EstimateStatus } from "@/lib/types";
+import { EstimateStatus, Mover } from "@/lib/types";
 import { useTranslations } from "next-intl";
+import ResultModal from "@/components/common/ResultModal";
 
 interface DriverCardProps {
    mover: Mover;
@@ -37,8 +37,9 @@ export default memo(function DriverCard({
    const router = useRouter();
    const pathname = usePathname();
    const { user } = useAuth();
-   const { showToast } = useToast();
+   const { showSuccess, showError } = useToast();
 
+   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
    const [isPending, startTransition] = useTransition();
 
    // 계산값들을 메모이제이션
@@ -90,13 +91,13 @@ export default memo(function DriverCard({
 
          // 기사님 로그인 상태 체크
          if (isLoggedInAsMover) {
-            showToast(t("error.loggedInAsMover"), false);
+            showError(t("error.loggedInAsMover"));
             return;
          }
 
          // 로그인 상태 체크
          if (!user) {
-            showToast(t("error.needLogin"), false);
+            showError(t("error.needLogin"));
             return;
          }
 
@@ -119,7 +120,7 @@ export default memo(function DriverCard({
                   ? "찜 목록에 추가되었습니다."
                   : "찜 목록에서 제거되었습니다.";
 
-            showToast(message, true);
+            showSuccess(message);
          } catch (error) {
             console.error("찜 처리 중 오류:", error);
 
@@ -132,7 +133,7 @@ export default memo(function DriverCard({
                }
             }
 
-            showToast(errorMessage, false);
+            showError(errorMessage);
             // 에러 시 원래 상태로 복구
             setCurrentFavoriteState((prev) => !prev);
          }
@@ -143,8 +144,8 @@ export default memo(function DriverCard({
          mover.id,
          mover.favoriteCount,
          onFavoriteChange,
-         showToast,
-         t, // 🔧 Fixed: Added 't' dependency
+         showError,
+         t,
       ],
    );
 
@@ -199,6 +200,15 @@ export default memo(function DriverCard({
                />
             </div>
          </div>
+         {isResultModalOpen && (
+            <ResultModal
+               isOpen={isResultModalOpen}
+               message={t("loginRequired")}
+               buttonText={t("goToLogin")}
+               onClose={() => setIsResultModalOpen(false)}
+               onClick={() => router.push("/sign-in/client")}
+            />
+         )}
       </div>
    );
 });

@@ -14,6 +14,7 @@ import {
 } from "@/lib/schemas";
 import { useQueryClient } from "@tanstack/react-query";
 import { receivedRequestsQueryKey } from "@/lib/api/request/query";
+import { useToast } from "@/context/ToastConText";
 import { useTranslations } from "next-intl";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
 
@@ -21,10 +22,6 @@ interface Props {
    isOpen: boolean;
    onClose: () => void;
    modalType: "accept" | "reject";
-   setToast: (
-      toast: { id: number; text: string; success: boolean } | null,
-   ) => void;
-
    request: ReceivedRequest;
    requestId: string;
    clientId: string;
@@ -34,7 +31,6 @@ export default function RequestActionModal({
    isOpen,
    onClose,
    modalType,
-   setToast,
    request,
    requestId,
    clientId,
@@ -42,6 +38,7 @@ export default function RequestActionModal({
    const t = useTranslations("ReceivedRequests");
 
    const queryClient = useQueryClient();
+   const { showSuccess } = useToast();
 
    const {
       register,
@@ -83,14 +80,11 @@ export default function RequestActionModal({
       } catch (error) {
          console.error("요청 실패:", error);
       } finally {
-         setToast({
-            id: Date.now(),
-            text:
-               modalType === "accept"
-                  ? t("toast.sendSuccess")
-                  : t("toast.rejectSuccess"),
-            success: true,
-         });
+         showSuccess(
+            modalType === "accept"
+               ? t("toast.sendSuccess")
+               : t("toast.rejectSuccess"),
+         );
          onClose();
          reset();
       }

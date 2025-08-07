@@ -13,10 +13,11 @@ import { isChipType } from "@/lib/utils/moveChip.util";
 import { formatIsoToYMD } from "@/lib/utils";
 import { WritableReview } from "@/lib/types";
 import { useWritableReviews } from "@/lib/api/review/query";
-import ToastPopup from "@/components/common/ToastPopup";
+import { useToast } from "@/context/ToastConText";
 
 export default function WritableReviews() {
    const t = useTranslations("Reviews");
+   const { showSuccess } = useToast();
 
    // 페이지네이션 상태
    const [pagination, setPagination] = useState({
@@ -31,12 +32,6 @@ export default function WritableReviews() {
       page: pagination.page,
       limit: pagination.limit,
    });
-   //토스트 상태
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    // 페이지네이션 핸들러
    const handlePageChange = (page: number) => {
@@ -54,11 +49,7 @@ export default function WritableReviews() {
    // 리뷰 작성 성공 시 상태 토글해서 refetch
    const handleReviewSuccess = () => {
       refetch();
-      setToast({
-         id: Date.now(),
-         text: "리뷰가 성공적으로 등록되었습니다.",
-         success: true,
-      });
+      showSuccess("리뷰가 성공적으로 등록되었습니다.");
    };
 
    const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
@@ -152,15 +143,6 @@ export default function WritableReviews() {
                onClose={() => setSelectedId(null)}
                selectedEstimate={selectedEstimate}
                onReviewSuccess={handleReviewSuccess}
-            />
-         )}
-
-         {/* 토스트 팝업*/}
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
             />
          )}
       </div>

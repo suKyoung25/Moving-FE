@@ -10,18 +10,19 @@ import SolidButton from "@/components/common/SolidButton";
 import Pagination from "@/components/common/pagination";
 import EmptyState from "@/components/common/EmptyState";
 import EditDeleteReviewModal from "./EditDeleteReviewModal";
+import more from "@/assets/images/moreGrayIcon.svg";
 import { useTranslations } from "next-intl";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { formatIsoToYMD } from "@/lib/utils";
 import { MyReview } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMyReviews } from "@/lib/api/review/query";
-import ToastPopup from "@/components/common/ToastPopup";
-import more from "@/assets/images/moreGrayIcon.svg";
+import { useToast } from "@/context/ToastConText";
 
 export default function MyReviews() {
    const t = useTranslations("Reviews");
    const router = useRouter();
+   const { showSuccess } = useToast();
 
    // 페이지네이션 상태
    const [pagination, setPagination] = useState({
@@ -33,12 +34,6 @@ export default function MyReviews() {
    // 수정 모달 및 선택된 리뷰 상태
    const [editModalOpen, setEditModalOpen] = useState(false);
    const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
-   // 토스트 상태
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    // 리뷰 리스트 조회
    const { data, isLoading, isFetching, error, refetch } = useMyReviews({
@@ -54,11 +49,7 @@ export default function MyReviews() {
    // 리뷰 수정/삭제 완료 시 리스트 새로고침
    const handleRefresh = () => {
       refetch();
-      setToast({
-         id: Date.now(),
-         text: "리뷰가 성공적으로 수정/삭제되었습니다.",
-         success: true,
-      });
+      showSuccess("리뷰가 성공적으로 수정/삭제되었습니다.");
    };
 
    // 리뷰 목록
@@ -209,15 +200,6 @@ export default function MyReviews() {
                   setSelectedReview(null);
                   handleRefresh();
                }}
-            />
-         )}
-
-         {/* 토스트 팝업 별도 렌더링 */}
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
             />
          )}
       </div>

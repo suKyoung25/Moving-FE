@@ -4,11 +4,10 @@ import { useState, useEffect, useCallback, memo, useMemo } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
-import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastConText";
-import { EstimateStatus } from "@/lib/types";
+import { EstimateStatus, Mover } from "@/lib/types";
 import { useTranslations } from "next-intl";
 
 // 타입 수정: favoriteCount 매개변수 추가
@@ -46,7 +45,7 @@ export default memo(function FavoriteDriverList({
    const t = useTranslations("FavoriteMovers");
 
    const { user } = useAuth();
-   const { showToast } = useToast();
+   const { showSuccess, showError } = useToast();
 
    const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
@@ -124,17 +123,17 @@ export default memo(function FavoriteDriverList({
             onFavoriteChange?.(moverId, false, newFavoriteCount);
 
             // Toast로 성공 메시지 표시
-            showToast("찜 목록에서 제거되었습니다.", true);
+            showSuccess("찜 목록에서 제거되었습니다.");
 
             setTimeout(() => {
                loadFavoriteMovers();
             }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
-            showToast(t("toggleError"), false);
+            showError(t("toggleError"));
          }
       },
-      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showToast, t],
+      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showError, t],
    );
 
    useEffect(() => {
