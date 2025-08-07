@@ -31,7 +31,7 @@ export default function AuthInput<T extends FieldValues>({
             {...register(name)}
             placeholder={placeholder}
             aria-invalid={hasError}
-            aria-describedby={errorId}
+            aria-describedby={hasError ? `${name}-error` : undefined}
             className={`${hasError ? "border-secondary-red-200 focus:border-secondary-red-200" : "border-line-200 focus:border-primary-blue-300"} text-black-400 h-14 rounded-2xl border bg-white p-3.5 lg:h-16`}
          />
 

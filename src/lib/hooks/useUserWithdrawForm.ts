@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { WithdrawFormSchema, WithdrawFormValues } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import deleteUserInfo from "../api/auth/requests/deleteMoverInfo";
+import deleteUserInfo from "../api/auth/requests/deleteUserInfo";
 import { AuthFetchError, UserType } from "../types";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastConText";
@@ -41,7 +41,7 @@ export function useUserWithdrawForm(onSuccess: () => void) {
             showSuccess("정상적으로 회원탈퇴가 진행되었습니다");
 
             setTimeout(async () => {
-               logout(); // 로그아웃하면 자동으로 mover-search로 이동하게 되어 있어서 router.replace를 쓰면 오히려 충돌이 날 수 있어 해당 코드 삭제했습니다. (이 주석 확인하시고 나서 지워 주세요.)
+               logout();
             }, 1500);
          }
       } catch (error) {
