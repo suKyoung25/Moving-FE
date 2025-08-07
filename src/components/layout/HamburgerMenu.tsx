@@ -53,7 +53,6 @@ export default function HamburgerMenu({
            { label: t("nav.login"), href: "/sign-in/client" },
            { label: t("nav.signUp"), href: "/sign-up/client" },
            { label: t("nav.findMovers"), href: "/mover-search" },
-           { label: t("nav.contactUs"), href: "/support" },
         ];
 
    useEffect(() => {
