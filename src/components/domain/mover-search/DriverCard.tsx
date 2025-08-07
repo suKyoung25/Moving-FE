@@ -83,7 +83,7 @@ export default memo(function DriverCard({
       });
    }, [router, mover.id]);
 
-   // 찜하기 핸들러 - Toast 사용
+   // 찜하기 핸들러 - Toast 사용 + t 의존성 추가
    const handleLikedClick = useCallback(
       async (e: React.MouseEvent) => {
          e.stopPropagation();
@@ -144,6 +144,7 @@ export default memo(function DriverCard({
          mover.favoriteCount,
          onFavoriteChange,
          showToast,
+         t, // 🔧 Fixed: Added 't' dependency
       ],
    );
 

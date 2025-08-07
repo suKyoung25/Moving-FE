@@ -23,12 +23,11 @@ import LineDivider from "../../common/LineDivider";
 import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
 import { useTranslations } from "next-intl";
-// 무거운 컴포넌트들을 lazy 로딩으로 최적화
+
 const DashboardReviewSection = lazy(
    () => import("@/components/domain/dashboard/ReviewSection"),
 );
 
-// 로딩 스켈레톤 컴포넌트들 - displayName 추가
 const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
    return (
       <div className="animate-pulse p-4">
@@ -43,7 +42,7 @@ const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
    );
 });
 
-// 로딩과 에러 컴포넌트를 memo로 최적화
+// 🔧 Fixed: Each component uses its own useTranslations hook
 const LoadingSpinner = memo(function LoadingSpinner() {
    const t = useTranslations("MoverDetail");
    return (
@@ -57,7 +56,6 @@ const LoadingSpinner = memo(function LoadingSpinner() {
 });
 
 const ErrorDisplay = memo(function ErrorDisplay({ error }: { error: string }) {
-   const t = useTranslations("MoverDetail");
    return (
       <div className="flex min-h-screen items-center justify-center">
          <div className="text-center">
@@ -67,20 +65,18 @@ const ErrorDisplay = memo(function ErrorDisplay({ error }: { error: string }) {
    );
 });
 
-// 메인 컴포넌트 최적화
+// 🔧 Main component - t is used properly here
 export default memo(function MoverDetail() {
    const t = useTranslations("MoverDetail");
    const params = useParams();
    const { user } = useAuth();
 
-   // 상태를 하나의 객체로 관리
    const [state, setState] = useState({
       loading: true,
       error: null as string | null,
       mover: null as Mover | null,
    });
 
-   // 계산값들을 메모이제이션
    const moverId = useMemo(() => params.id as string, [params.id]);
 
    const authState = useMemo(
@@ -91,7 +87,7 @@ export default memo(function MoverDetail() {
       [user],
    );
 
-   // 데이터 페칭 최적화
+   // 🔧 Fixed: Added t dependency
    const fetchMover = useCallback(async () => {
       if (!moverId) return;
 
@@ -118,13 +114,12 @@ export default memo(function MoverDetail() {
             mover: null,
          });
       }
-   }, [moverId, authState.hasToken, authState.isLoggedIn]);
+   }, [moverId, authState.hasToken, authState.isLoggedIn, t]);
 
    useEffect(() => {
       fetchMover();
    }, [fetchMover]);
 
-   //  이벤트 핸들러 + useCallback으로 최적화
    const handleFavoriteChange = useCallback(
       (moverId: string, isFavorite: boolean, favoriteCount: number) => {
          setState((prev) => {
@@ -152,7 +147,7 @@ export default memo(function MoverDetail() {
       });
    }, []);
 
-   // 조기 리턴으로 성능 최적화
+   // 🔧 Fixed: No need to pass t as props anymore
    if (state.loading) return <LoadingSpinner />;
    if (state.error || !state.mover) {
       return <ErrorDisplay error={state.error || t("error.notFound")} />;
@@ -175,7 +170,6 @@ export default memo(function MoverDetail() {
             <DetailSections mover={mover} />
             <LineDivider />
 
-            {/* 리뷰 섹션을 lazy 로딩 */}
             <div className="p-4">
                <Suspense fallback={<ReviewSectionSkeleton />}>
                   <DashboardReviewSection moverId={mover.id} />
@@ -200,7 +194,6 @@ export default memo(function MoverDetail() {
                <DetailSections mover={mover} />
                <LineDivider />
 
-               {/* 데스크톱에서도 리뷰 섹션 lazy 로딩 */}
                <Suspense fallback={<ReviewSectionSkeleton />}>
                   <DashboardReviewSection moverId={mover.id} />
                </Suspense>

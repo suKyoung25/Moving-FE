@@ -7,18 +7,29 @@ import EditButtons from "./EditButtons";
 import MoverInfo from "./MoverInfo";
 import { getMoverProfile } from "@/lib/api/mover/getMoverProfile";
 import { Mover } from "@/lib/types/auth.types";
+import { useTranslations } from "next-intl";
+
+// 🔧 Fixed: Replace any with specific type
+interface MoverCardErrorBoundaryProps {
+   children: React.ReactNode;
+   fallback: React.ComponentType<Record<string, never>>;
+}
+
+interface MoverCardErrorBoundaryState {
+   hasError: boolean;
+}
 
 // 에러 바운더리 컴포넌트
 class MoverCardErrorBoundary extends React.Component<
-   { children: React.ReactNode; fallback: React.ComponentType },
-   { hasError: boolean }
+   MoverCardErrorBoundaryProps,
+   MoverCardErrorBoundaryState
 > {
-   constructor(props: any) {
+   constructor(props: MoverCardErrorBoundaryProps) {
       super(props);
       this.state = { hasError: false };
    }
 
-   static getDerivedStateFromError() {
+   static getDerivedStateFromError(): MoverCardErrorBoundaryState {
       return { hasError: true };
    }
 
@@ -30,56 +41,78 @@ class MoverCardErrorBoundary extends React.Component<
    }
 }
 
-const ErrorFallback = () => (
-   <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
-      <div className="py-8 text-center text-red-500">
-         프로필을 불러오는데 문제가 발생했습니다.
-      </div>
-   </section>
-);
+const ErrorFallback = () => {
+   const t = useTranslations("Dashboard");
+   return (
+      <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
+         <div className="py-8 text-center text-red-500">
+            {t("profileLoadError")}
+         </div>
+      </section>
+   );
+};
 
 export default function MoverCard() {
+   const t = useTranslations("Dashboard");
    const [mover, setMover] = useState<Mover | null>(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
+   const [retryCount, setRetryCount] = useState(0);
 
-   // 재시도 로직 제거, 단순화
    const fetchMoverData = useCallback(async () => {
       try {
          setError(null);
+         setLoading(true);
+
+         console.log("기사님 프로필 조회 시작...");
          const moverData = await getMoverProfile();
+         console.log("조회된 기사님 데이터:", moverData);
+
          setMover(moverData);
+         setRetryCount(0);
       } catch (err) {
+         console.error("기사님 정보 조회 실패:", err);
+
          const errorMessage =
-            err instanceof Error
-               ? err.message
-               : "프로필 정보를 불러오는데 실패했습니다.";
+            err instanceof Error ? err.message : t("loadError");
          setError(errorMessage);
+
+         if (errorMessage.includes("로그인") || errorMessage.includes("인증")) {
+            setError(t("loginExpired"));
+         }
       } finally {
          setLoading(false);
       }
-   }, []);
+   }, [t]);
+
+   const handleRetry = useCallback(() => {
+      if (retryCount < 1) {
+         setRetryCount((prev) => prev + 1);
+         fetchMoverData();
+      } else {
+         setError(t("maxRetryError"));
+      }
+   }, [retryCount, fetchMoverData, t]);
 
    useEffect(() => {
       fetchMoverData();
    }, [fetchMoverData]);
 
-   // 메모이제이션된 컴포넌트들
    const profileImage = useMemo(
       () => (
          <Image
             src={mover?.profileImage || avatar}
-            alt="프로필 이미지"
+            alt={t("profileImageAlt")}
             width={64}
             height={64}
             className="h-16 w-16 rounded-full object-cover"
             onError={(e) => {
                e.currentTarget.src = avatar;
             }}
-            priority // 중요한 이미지이므로 우선 로딩
+            priority
          />
       ),
-      [mover?.profileImage],
+      [mover?.profileImage, t],
    );
 
    const editButtonsDesktop = useMemo(
@@ -103,6 +136,9 @@ export default function MoverCard() {
                   </div>
                </div>
                <div className="mb-4 h-24 rounded bg-gray-200"></div>
+               <div className="text-center text-sm text-gray-500">
+                  {t("loading")}
+               </div>
             </div>
          </section>
       );
@@ -112,13 +148,29 @@ export default function MoverCard() {
       return (
          <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
             <div className="py-8 text-center">
-               <p className="mb-4 text-red-500">{error}</p>
-               <button
-                  onClick={() => window.location.reload()}
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-               >
-                  새로고침
-               </button>
+               <div className="mb-4 text-blue-500">
+                  <p className="mb-2 font-medium">{t("profileLoadError")}</p>
+                  {error && <p className="text-sm text-gray-500">{error}</p>}
+               </div>
+
+               <div className="flex justify-center gap-2">
+                  {retryCount < 1 ? (
+                     <button
+                        onClick={handleRetry}
+                        className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+                        disabled={loading}
+                     >
+                        {loading ? t("retrying") : t("retryBtn")}
+                     </button>
+                  ) : (
+                     <button
+                        onClick={() => window.location.reload()}
+                        className="rounded-lg bg-gray-500 px-4 py-2 text-white transition-colors hover:bg-gray-600"
+                     >
+                        {t("refreshBtn")}
+                     </button>
+                  )}
+               </div>
             </div>
          </section>
       );
@@ -134,7 +186,7 @@ export default function MoverCard() {
                      {mover.nickName || mover.name || ""}
                   </p>
                   <p className="text-sm font-normal text-gray-400 lg:text-xl">
-                     {mover.introduction || "소개글이 없습니다."}
+                     {mover.introduction || t("noIntro")}
                   </p>
                </div>
                {editButtonsDesktop}

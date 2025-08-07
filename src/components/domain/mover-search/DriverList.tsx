@@ -38,7 +38,7 @@ export default memo(function DriverList({
    const [hasMore, setHasMore] = useState(true);
    const [currentPage, setCurrentPage] = useState(1);
 
-   // 기사님 데이터 로드 함수 + useCallback으로 최적화
+   // 기사님 데이터 로드 함수 + useCallback으로 최적화 + t 의존성 추가
    const loadMovers = useCallback(
       async (reset = false) => {
          try {
@@ -95,6 +95,7 @@ export default memo(function DriverList({
          filters.serviceType,
          filters.sortBy,
          currentPage,
+         t, // t 의존성 추가
       ],
    );
 
@@ -191,7 +192,7 @@ export default memo(function DriverList({
       movers,
    ]);
 
-   //  필터 변경 시 데이터 리셋
+   //  필터 변경 시 데이터 리셋 + t 의존성 추가
    useEffect(() => {
       setCurrentPage(1);
       setHasMore(true);
@@ -237,7 +238,7 @@ export default memo(function DriverList({
       }, 300);
 
       return () => clearTimeout(timeoutId);
-   }, [filters.search, filters.area, filters.serviceType, filters.sortBy]);
+   }, [filters.search, filters.area, filters.serviceType, filters.sortBy, t]);
 
    if (error) {
       return (

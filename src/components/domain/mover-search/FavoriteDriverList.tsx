@@ -46,7 +46,7 @@ export default memo(function FavoriteDriverList({
    const t = useTranslations("FavoriteMovers");
 
    const { user } = useAuth();
-   const { showToast } = useToast(); // Toast 훅 사용
+   const { showToast } = useToast();
 
    const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
@@ -64,6 +64,7 @@ export default memo(function FavoriteDriverList({
       return Boolean(tokenSettings.get());
    }, []);
 
+   // t 의존성 추가
    const loadFavoriteMovers = useCallback(async () => {
       const authStatus = checkAuthStatus();
       setIsAuthenticated(authStatus);
@@ -100,9 +101,9 @@ export default memo(function FavoriteDriverList({
       } finally {
          setLoading(false);
       }
-   }, [checkAuthStatus, isLoggedInAsMover]);
+   }, [checkAuthStatus, isLoggedInAsMover, t]);
 
-   // 수정된 찜하기 로직 - Toast 사용
+   // 수정된 찜하기 로직 - Toast 사용 + t 의존성 추가
    const handleFavoriteToggle = useCallback(
       async (moverId: string) => {
          try {
@@ -123,7 +124,7 @@ export default memo(function FavoriteDriverList({
             onFavoriteChange?.(moverId, false, newFavoriteCount);
 
             // Toast로 성공 메시지 표시
-            showToast(t("toggleError"), true);
+            showToast("찜 목록에서 제거되었습니다.", true);
 
             setTimeout(() => {
                loadFavoriteMovers();
@@ -133,7 +134,7 @@ export default memo(function FavoriteDriverList({
             showToast(t("toggleError"), false);
          }
       },
-      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showToast],
+      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showToast, t],
    );
 
    useEffect(() => {
