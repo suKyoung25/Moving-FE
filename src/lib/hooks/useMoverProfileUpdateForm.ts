@@ -91,7 +91,7 @@ function useMoverProfileUpdateForm() {
 
          if (res) {
             await refreshUser();
-            showSuccess("profileUpdated");
+            showSuccess(t("profileUpdated"));
             refreshUser(); // TODO: 이거 왜 한번 더 호출하는 건가요?
             router.push("/dashboard");
          }
