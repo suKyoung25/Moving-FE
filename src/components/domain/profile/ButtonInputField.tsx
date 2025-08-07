@@ -26,8 +26,8 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
    if (!control) return null;
 
    return (
-      <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-6 leading-8">
-         <div>
+      <div className="text-16-semibold lg:text-20-semibold flex flex-col leading-8">
+         <div className="mt-8 md:mt-4 lg:mt-8">
             {text}
             <span className="text-blue-300"> *</span>
             <ErrorText error={error?.message} position="left" />
@@ -53,7 +53,7 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
                   <div
                      className={
                         isArea
-                           ? "grid w-[90%] grid-cols-5 gap-x-2 gap-y-3 lg:gap-x-3.5 lg:gap-y-4.5"
+                           ? "grid w-[100%] grid-cols-5 gap-x-2 gap-y-3 md:w-[70%] lg:w-[70%] lg:gap-x-3.5 lg:gap-y-4.5"
                            : "flex gap-3"
                      }
                   >
@@ -68,7 +68,7 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
                               key={option}
                               type="button"
                               onClick={() => toggleOption(option)}
-                              className={`text-14-medium flex justify-center rounded-full border px-3 py-2.5 leading-6.5 transition ${
+                              className={`lg:text-18-medium text-14-medium md:text-16-medium flex justify-center rounded-full border px-3 py-2.5 leading-6.5 transition ${
                                  isSelected
                                     ? "border-primary-blue-300 text-primary-blue-300 bg-primary-blue-50"
                                     : "bg-bg-200 border-gray-100 text-gray-700"

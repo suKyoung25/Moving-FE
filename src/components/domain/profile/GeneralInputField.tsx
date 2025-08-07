@@ -41,8 +41,8 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
    };
 
    return (
-      <div className="flex flex-col gap-4 leading-8">
-         <div className="text-16-semibold lg:text-20-semibold">
+      <div className="flex flex-col leading-8">
+         <div className="text-16-semibold lg:text-20-semibold mt-8">
             {text}
             <span className="text-blue-300"> *</span>
          </div>
@@ -55,7 +55,7 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
             }}
             onBlur={handleBlur}
             onFocus={handleFocus}
-            className={`mg:h-13 bg-bg-200 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:h-16 ${error ? "border border-red-500" : ""}`}
+            className={`mg:h-13 bg-bg-200 mt-4 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:mb-4 lg:h-16 ${error ? "border border-red-500" : ""}`}
             placeholder={placeholder}
          />
 
