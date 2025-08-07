@@ -20,7 +20,7 @@ type MoverProfileProps = {
    reviewCount: number;
    career: number;
    estimateCount: number;
-   showHeart?: boolean; // 🔥 하트 표시 여부 제어
+   showHeart?: boolean; //  하트 표시 여부 제어
 };
 
 export default function MoverProfile({
@@ -35,7 +35,7 @@ export default function MoverProfile({
    reviewCount,
    career,
    estimateCount, // 스키마 필드명 그대로 사용했습니다
-   showHeart = true, // 🔥 기본값은 true (하트 표시)
+   showHeart = true, //  기본값은 true (하트 표시)
 }: MoverProfileProps) {
    const t = useTranslations("Reviews");
 
@@ -83,7 +83,7 @@ export default function MoverProfile({
                   {nickName} {t("mover")}
                </span>
 
-               {/* 🔥 showHeart가 true일 때만 하트와 찜 개수 표시 */}
+               {/*  showHeart가 true일 때만 하트와 찜 개수 표시 */}
                {showHeart && (
                   <div className="flex items-center">
                      <button onClick={handleLikedClick}>
