@@ -299,11 +299,128 @@
       "Client": {
          "pendingQuotes": "Pending Quotes",
          "receivedQuotes": "Received Quotes",
-         "requestedQuotes": "Requested Quotes"
+         "requestedQuotes": "Requested Quotes",
+         "myRequestTitle": "My Active Request",
+         "requestedAtLabel": "Requested at:",
+         "requestedAtDateFormat": "MMMM dd, yyyy",
+         "fromLabel": "Departure",
+         "toLabel": "Destination",
+         "moveDateLabel": "Move Date",
+         "moveDateFormat": "MMMM dd, yyyy (eee)",
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move",
+         "toast": {
+            "confirmed": "Estimate has been confirmed.",
+            "confirmFailed": "Failed to confirm estimate.",
+            "noReceivedEstimates": "No received estimates!",
+            "noConfirmedEstimate": "No confirmed estimates!"
+         },
+         "emptyMessage": "Drivers are diligently checking!",
+         "category": {
+            "moveDate": "Move Date",
+            "from": "From",
+            "to": "To"
+         },
+         "priceLabel": "Estimate Price",
+         "buttons": {
+            "confirmEstimate": "Confirm Estimate",
+            "viewDetails": "View Details"
+         },
+         "money": "KRW",
+         "estimateListTitle": "Estimate List",
+         "dropdown": {
+            "all": "All",
+            "confirmed": "Confirmed",
+            "recent": "Recent",
+            "oldest": "Oldest"
+         },
+         "loadingNextPage": "Loading next page...",
+         "requestInfoTitle": "Request Info",
+         "estimateInfoTitle": "Estimate Info",
+         "labels": {
+            "requestedAt": "Requested At",
+            "service": "Service",
+            "moveDate": "Move Date",
+            "from": "From",
+            "to": "To"
+         },
+         "loading": "Loading...",
+         "emptyRequestMessage": "No requests sent yet!",
+         "title": "Quote Requests",
+         "loadingMore": "Loading more...",
+         "Detail": {
+            "pageTitle": "Quote Details",
+            "estimatePriceTitle": "Estimate Price",
+            "shareQuoteText": "Share Quote",
+            "money": "KRW",
+            "button": {
+               "confirmEstimate": "Confirm Estimate"
+            },
+            "toast": {
+               "confirmed": "Estimate has been confirmed",
+               "confirmFailed": "Failed to confirm estimate"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "Sent Quotes",
-         "rejectedRequests": "Rejected Requests"
+         "rejectedRequests": "Rejected Requests",
+         "toast": {
+            "cancelSuccess": "The estimate has been successfully canceled.",
+            "cancelError": "An error occurred while canceling the estimate. Please try again."
+         },
+         "emptyMessage": "No sent estimates yet.",
+         "rejectedemptyMessage": "No rejected estimates yet.",
+         "modal": {
+            "title": "Cancel Estimate",
+            "description": "Are you sure you want to cancel this estimate?",
+            "title2": "Reject Estimate",
+            "description2": "Are you sure you want to reject this estimate?"
+         },
+         "closeButtonAlt": "Close button",
+         "confirmButtonText": "Confirm",
+         "confirmedLabel": "Estimate Confirmed",
+         "cancelButton": "Cancel",
+         "clientHonorific": "Client",
+         "moveDateLabel": "Move Date",
+         "departureLabel": "From",
+         "destinationLabel": "To",
+         "priceLabel": "Estimate Price",
+         "money": "KRW",
+         "weekday": {
+            "sun": "Sun",
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat"
+         },
+         "moveCompletedLabel": "This estimate is completed",
+         "detailsButton": "View Details",
+         "Detail": {
+            "pageTitle": "Estimate Details",
+            "shareQuoteText": "Share Quote",
+            "confirmedLabel": "Estimate Confirmed",
+            "clientHonorific": "Client",
+            "moveDateLabel": "Move Date",
+            "departureLabel": "Departure",
+            "destinationLabel": "Destination",
+            "estimatePriceTitle": "Estimate Price",
+            "money": "KRW",
+            "estimateInfoTitle": "Estimate Info",
+            "labels": {
+               "requestedAt": "Requested At",
+               "service": "Service",
+               "from": "From",
+               "to": "To"
+            },
+            "OFFICE": "Office Move",
+            "HOME": "Home Move",
+            "SMALL": "Small Move",
+            "estimateSuffix": "Move"
+         }
       }
    },
    "Header": {
@@ -341,7 +458,10 @@
       "passwordPlaceholder": "Enter your password",
       "close": "Close",
       "withdrawButton": "Withdraw",
-      "withdrawing": "Withdrawing..."
+      "withdrawing": "Withdrawing...",
+      "withdrawConfirmMessage": "To withdraw, please type 'Withdraw'",
+      "confirmMessageLabel": "Confirmation Message",
+      "confirmMessagePlaceholder": "Please type 'Withdraw' exactly"
    },
    "Notification": {
       "title": "Notifications",

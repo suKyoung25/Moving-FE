@@ -3,6 +3,7 @@
 import SolidButton from "@/components/common/SolidButton";
 import ToastPopup from "@/components/common/ToastPopup";
 import { postClientConfirmedQuote } from "@/lib/api/estimate/postClientConfirmedQuote";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -11,6 +12,8 @@ export default function ConfirmedButton({
 }: {
    estimateId: string;
 }) {
+   const t = useTranslations("MyQuotes.Client.Detail");
+
    const [toast, setToast] = useState<{
       id: number;
       text: string;
@@ -25,7 +28,7 @@ export default function ConfirmedButton({
 
          setToast({
             id: Date.now(),
-            text: "견적이 확정되었습니다",
+            text: t("toast.confirmed"),
             success: true,
          });
 
@@ -37,7 +40,7 @@ export default function ConfirmedButton({
       } catch (e) {
          setToast({
             id: Date.now(),
-            text: "견적 확정에 실패했습니다",
+            text: t("toast.confirmFailed"),
             success: false,
          });
          console.error(e);
@@ -47,7 +50,7 @@ export default function ConfirmedButton({
    return (
       <>
          <SolidButton onClick={() => handleClickConfirmed(estimateId)}>
-            견적 확정하기
+            {t("button.confirmEstimate")}
          </SolidButton>
 
          {toast && (

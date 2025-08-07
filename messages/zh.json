@@ -180,7 +180,7 @@
       "updating": "正在更新...",
       "update": "更新",
       "cancel": "取消",
-      "money": "元",
+      "money": "韩元",
       "moveTypes": {
          "SMALL": "小型搬家",
          "OFFICE": "办公室搬家",
@@ -268,7 +268,7 @@
       "price": "报价",
       "career": "经验",
       "loading": "加载中...",
-      "money": "元",
+      "money": "韩元",
       "reviewError": "提交评论时发生错误。",
       "noReview": "你还没有注册任何评论！",
       "goToWrite": "去写评论",
@@ -299,11 +299,128 @@
       "Client": {
          "pendingQuotes": "待处理报价",
          "receivedQuotes": "收到的报价",
-         "requestedQuotes": "请求报价"
+         "requestedQuotes": "请求报价",
+         "myRequestTitle": "我的活动请求",
+         "requestedAtLabel": "请求日期：",
+         "requestedAtDateFormat": "yyyy年 MM月 dd日",
+         "fromLabel": "出发地",
+         "toLabel": "目的地",
+         "moveDateLabel": "搬家日期",
+         "moveDateFormat": "yyyy年 MM月 dd日 (eee)",
+         "SMALL": "小型搬家",
+         "HOME": "家庭搬家",
+         "OFFICE": "办公室搬家",
+         "toast": {
+            "confirmed": "报价已确认",
+            "confirmFailed": "报价确认失败",
+            "noReceivedEstimates": "没有收到报价！",
+            "noConfirmedEstimate": "没有确认的报价！"
+         },
+         "emptyMessage": "司机们正在努力确认中！",
+         "category": {
+            "moveDate": "搬家日期",
+            "from": "出发",
+            "to": "到达"
+         },
+         "priceLabel": "报价金额",
+         "buttons": {
+            "confirmEstimate": "确认报价",
+            "viewDetails": "查看详情"
+         },
+         "money": "韩元",
+         "estimateListTitle": "报价列表",
+         "dropdown": {
+            "all": "全部",
+            "confirmed": "已确认报价",
+            "recent": "最近请求",
+            "oldest": "最早请求"
+         },
+         "loadingNextPage": "正在加载下一页...",
+         "requestInfoTitle": "请求信息",
+         "estimateInfoTitle": "报价信息",
+         "labels": {
+            "requestedAt": "请求日期",
+            "service": "服务",
+            "moveDate": "搬家日期",
+            "from": "出发地",
+            "to": "目的地"
+         },
+         "loading": "加载中...",
+         "emptyRequestMessage": "尚未发送请求！",
+         "title": "报价请求列表",
+         "loadingMore": "加载中...",
+         "Detail": {
+            "pageTitle": "报价详情",
+            "estimatePriceTitle": "报价金额",
+            "shareQuoteText": "分享报价单",
+            "money": "韩元",
+            "button": {
+               "confirmEstimate": "确认报价"
+            },
+            "toast": {
+               "confirmed": "报价已确认",
+               "confirmFailed": "报价确认失败"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "发送的报价",
-         "rejectedRequests": "被拒请求"
+         "rejectedRequests": "被拒请求",
+         "toast": {
+            "cancelSuccess": "报价已成功取消。",
+            "cancelError": "取消报价时发生错误。请重试。"
+         },
+         "emptyMessage": "尚无发送的报价。",
+         "rejectedemptyMessage": "尚无反驳的报价。",
+         "modal": {
+            "title": "取消报价",
+            "description": "您确定要取消此报价吗？",
+            "title2": "拒绝报价",
+            "description2": "您确定要拒绝此报价吗？"
+         },
+         "closeButtonAlt": "关闭按钮",
+         "confirmButtonText": "确认",
+         "confirmedLabel": "报价确认",
+         "cancelButton": "取消",
+         "clientHonorific": "客户",
+         "moveDateLabel": "搬家日期",
+         "departureLabel": "出发",
+         "destinationLabel": "抵达",
+         "priceLabel": "报价金额",
+         "money": "韩元",
+         "weekday": {
+            "sun": "日",
+            "mon": "一",
+            "tue": "二",
+            "wed": "三",
+            "thu": "四",
+            "fri": "五",
+            "sat": "六"
+         },
+         "moveCompletedLabel": "此报价已完成",
+         "detailsButton": "查看详情",
+         "Detail": {
+            "pageTitle": "报价详情",
+            "shareQuoteText": "分享报价单",
+            "confirmedLabel": "报价确认",
+            "clientHonorific": "客户",
+            "moveDateLabel": "搬家日期",
+            "departureLabel": "出发",
+            "destinationLabel": "目的地",
+            "estimatePriceTitle": "报价金额",
+            "money": "韩元",
+            "estimateInfoTitle": "报价信息",
+            "labels": {
+               "requestedAt": "请求日期",
+               "service": "服务",
+               "from": "出发地",
+               "to": "目的地"
+            },
+            "OFFICE": "办公室搬家",
+            "HOME": "家庭搬家",
+            "SMALL": "小型搬家",
+            "estimateSuffix": "搬家"
+         }
       }
    },
    "Header": {
@@ -341,7 +458,10 @@
       "passwordPlaceholder": "请输入您的密码",
       "close": "关闭",
       "withdrawButton": "注销账号",
-      "withdrawing": "正在注销..."
+      "withdrawing": "退出中...",
+      "withdrawConfirmMessage": "要退出，请输入“会员退出”",
+      "confirmMessageLabel": "确认信息",
+      "confirmMessagePlaceholder": "请准确输入“会员退出”"
    },
    "Notification": {
       "title": "通知",

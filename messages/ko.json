@@ -299,11 +299,128 @@
       "Client": {
          "pendingQuotes": "대기 중인 견적",
          "receivedQuotes": "받았던 견적",
-         "requestedQuotes": "요청한 견적"
+         "requestedQuotes": "요청한 견적",
+         "myRequestTitle": "내 견적 요청",
+         "requestedAtLabel": "견적 요청일:",
+         "requestedAtDateFormat": "yyyy년 MM월 dd일",
+         "fromLabel": "출발지",
+         "toLabel": "도착지",
+         "moveDateLabel": "이사 예정일",
+         "moveDateFormat": "yyyy년 MM월 dd일 (eee)",
+         "SMALL": "소형이사",
+         "HOME": "가정이사",
+         "OFFICE": "사무실이사",
+         "toast": {
+            "confirmed": "견적이 확정되었습니다",
+            "confirmFailed": "견적 확정에 실패했습니다",
+            "noReceivedEstimates": "받은 견적이 없어요!",
+            "noConfirmedEstimate": "확정된 견적이 없어요!"
+         },
+         "emptyMessage": "기사님들이 열심히 확인 중이에요!",
+         "category": {
+            "moveDate": "이사일",
+            "from": "출발",
+            "to": "도착"
+         },
+         "priceLabel": "견적 금액",
+         "buttons": {
+            "confirmEstimate": "견적 확정하기",
+            "viewDetails": "상세보기"
+         },
+         "money": "원",
+         "estimateListTitle": "견적서 목록",
+         "dropdown": {
+            "all": "전체",
+            "confirmed": "확정한 견적서",
+            "recent": "최근 요청순",
+            "oldest": "오래된 요청순"
+         },
+         "loadingNextPage": "다음 페이지 불러오는 중...",
+         "requestInfoTitle": "요청 정보",
+         "estimateInfoTitle": "견적 정보",
+         "labels": {
+            "requestedAt": "견적 요청일",
+            "service": "서비스",
+            "moveDate": "이사일",
+            "from": "출발지",
+            "to": "도착지"
+         },
+         "loading": "로딩중...",
+         "emptyRequestMessage": "아직 보낸 요청이 없어요!",
+         "title": "견적 요청 목록",
+         "loadingMore": "불러오는 중...",
+         "Detail": {
+            "pageTitle": "견적 상세",
+            "estimatePriceTitle": "견적가",
+            "shareQuoteText": "견적서 공유하기",
+            "money": "원",
+            "button": {
+               "confirmEstimate": "견적 확정하기"
+            },
+            "toast": {
+               "confirmed": "견적이 확정되었습니다",
+               "confirmFailed": "견적 확정에 실패했습니다"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "보낸 견적 조회",
-         "rejectedRequests": "반려요청"
+         "rejectedRequests": "반려요청",
+         "toast": {
+            "cancelSuccess": "견적이 성공적으로 취소되었습니다.",
+            "cancelError": "견적 취소 중 오류가 발생했습니다. 다시 시도해주세요."
+         },
+         "emptyMessage": "아직 보낸 견적이 없습니다.",
+         "rejectedemptyMessage": "아직 반려한 견적이 없습니다.",
+         "modal": {
+            "title": "견적 취소하기",
+            "description": "정말 이 견적을 취소하시겠습니까?",
+            "title2": "견적 반려하기",
+            "description2": "정말 이 견적을 반려하시겠습니까?"
+         },
+         "closeButtonAlt": "닫기 버튼",
+         "confirmButtonText": "확인하기",
+         "confirmedLabel": "견적 확정",
+         "cancelButton": "취소하기",
+         "clientHonorific": "고객님",
+         "moveDateLabel": "이사일",
+         "departureLabel": "출발",
+         "destinationLabel": "도착",
+         "priceLabel": "견적 금액",
+         "money": "원",
+         "weekday": {
+            "sun": "일",
+            "mon": "월",
+            "tue": "화",
+            "wed": "수",
+            "thu": "목",
+            "fri": "금",
+            "sat": "토"
+         },
+         "moveCompletedLabel": "이사 완료된 견적이에요",
+         "detailsButton": "견적 상세보기",
+         "Detail": {
+            "pageTitle": "견적 상세",
+            "shareQuoteText": "견적서 공유하기",
+            "confirmedLabel": "견적 확정",
+            "clientHonorific": "고객님",
+            "moveDateLabel": "이사일",
+            "departureLabel": "출발",
+            "destinationLabel": "도착",
+            "estimatePriceTitle": "견적가",
+            "money": "원",
+            "estimateInfoTitle": "견적 정보",
+            "labels": {
+               "requestedAt": "견적 요청일",
+               "service": "서비스",
+               "from": "출발지",
+               "to": "도착지"
+            },
+            "OFFICE": "사무실이사",
+            "HOME": "가정이사",
+            "SMALL": "소형이사",
+            "estimateSuffix": "이사"
+         }
       }
    },
    "Header": {
@@ -341,7 +458,10 @@
       "passwordPlaceholder": "비밀번호를 입력해 주세요",
       "close": "닫기",
       "withdrawButton": "탈퇴하기",
-      "withdrawing": "탈퇴 중..."
+      "withdrawing": "탈퇴 중...",
+      "withdrawConfirmMessage": "탈퇴하시려면 \"회원 탈퇴\"를 입력해주세요",
+      "confirmMessageLabel": "확인 메시지",
+      "confirmMessagePlaceholder": "'회원 탈퇴'를 정확히 입력해주세요"
    },
    "Notification": {
       "title": "알림",

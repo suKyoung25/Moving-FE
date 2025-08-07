@@ -89,7 +89,7 @@ export default function useClientProfilePostForm() {
             }
 
             // 알림
-            showSuccess("프로필이 수정되었습니다.");
+            showSuccess("프로필이 등록되었습니다.");
 
             // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
             setTimeout(async () => {

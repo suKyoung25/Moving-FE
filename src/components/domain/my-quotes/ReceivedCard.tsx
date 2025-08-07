@@ -3,6 +3,7 @@
 import { DesignatedRequest, Estimate } from "@/lib/types";
 import MoverProfileclient from "./MoverProfileClient";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface ReceivedCardProps {
    estimate: Estimate;
@@ -15,6 +16,8 @@ export default function ReceivedCard({
    designated,
    serviceType,
 }: ReceivedCardProps) {
+   const t = useTranslations("MyQuotes.Client");
+
    const router = useRouter();
 
    return (
@@ -45,9 +48,12 @@ export default function ReceivedCard({
             serviceType={serviceType}
          />
          <div className="mt-4 flex items-center justify-end gap-2">
-            <p className="text-14-medium lg:text-18-medium">견적금액</p>
+            <p className="text-14-medium lg:text-18-medium">
+               {t("priceLabel")}
+            </p>
             <p className="text-18-bold lg:text-24-bold">
-               {estimate.price.toLocaleString()}원
+               {estimate.price.toLocaleString()}
+               {t("money")}
             </p>
          </div>
       </div>
