@@ -54,7 +54,9 @@ export default async function MyQuoetesDetailPage({
                   <SocialShareGroup text={t("shareQuoteText")} />
                </article>
                <hr className="bg-line-100 h-px border-0 lg:hidden" />
-               <p className="text-16-semibold lg:text-24-semibold">견적 정보</p>
+               <p className="text-16-semibold lg:text-24-semibold">
+                  {t("estimateInfoTitle")}
+               </p>
                <QuotaionInfo request={data.request} />
             </section>
             <div

@@ -352,6 +352,7 @@
          "Detail": {
             "pageTitle": "报价详情",
             "estimatePriceTitle": "报价金额",
+            "estimateInfoTitle": "报价信息",
             "shareQuoteText": "分享报价单",
             "money": "韩元",
             "button": {
