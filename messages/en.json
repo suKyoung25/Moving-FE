@@ -695,5 +695,19 @@
       "pageNotFoundMessageLine2": "The page you are looking for does not currently exist.",
       "pageNotFoundMessageLine3": "Please check and try again.",
       "goToMain": "Go to Main"
+   },
+   "Support": {
+      "supportMessage": "Moving is with you.",
+      "nameLabel": "Name",
+      "emailLabel": "Email",
+      "titleLabel": "Title",
+      "numberLabel": "Contact Number",
+      "contentLabel": "Inquiry Content",
+      "fileUploadLabel": "Upload Attachment",
+      "defaultToastMessage": "Unable to confirm request result.",
+      "sendingInquiry": "Sending inquiry to Moving",
+      "sendInquiry": "Send inquiry to Moving",
+      "supportRegisteredMessage": "Your inquiry has been successfully submitted.",
+      "supportRegisterFailedMessage": "Failed to submit your inquiry. Please try again later."
    }
 }

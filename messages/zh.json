@@ -695,5 +695,19 @@
       "pageNotFoundMessageLine2": "目前该站点页面不存在。",
       "pageNotFoundMessageLine3": "请确认后重试。",
       "goToMain": "返回首页"
+   },
+   "Support": {
+      "supportMessage": "搬家与你同行。",
+      "nameLabel": "填写人姓名",
+      "emailLabel": "电子邮件",
+      "titleLabel": "标题",
+      "numberLabel": "联系方式",
+      "contentLabel": "咨询内容",
+      "fileUploadLabel": "附件上传",
+      "defaultToastMessage": "无法确认请求处理结果。",
+      "sendingInquiry": "正在向搬家咨询",
+      "sendInquiry": "向搬家咨询",
+      "supportRegisteredMessage": "您的咨询已成功提交。",
+      "supportRegisterFailedMessage": "提交咨询失败，请稍后再试。"
    }
 }
