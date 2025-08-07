@@ -13,8 +13,11 @@ import { useAuth } from "@/context/AuthContext";
 import { extractRegionNames } from "../utils/profile.util";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
+import { useTranslations } from "next-intl";
 
 function useMoverProfileUpdateForm() {
+   const t = useTranslations("Profile");
+
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { user, refreshUser } = useAuth();
@@ -86,7 +89,7 @@ function useMoverProfileUpdateForm() {
 
          if (res) {
             await refreshUser();
-            alert("프로필이 정상적으로 수정되었습니다."); //TODO: 토스트 알림으로 바꾸기
+            alert(t("profileUpdated")); //TODO: 토스트 알림으로 바꾸기
 
             refreshUser();
 

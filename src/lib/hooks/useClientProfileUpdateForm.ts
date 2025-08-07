@@ -14,8 +14,10 @@ import clientProfile from "../api/auth/requests/updateClientProfile";
 import { ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { useToast } from "@/context/ToastConText";
+import { useTranslations } from "next-intl";
 
 export default function useClientProfileUpdateForm() {
+   const t = useTranslations("Profile");
    // ✅ 상태 모음
    const router = useRouter();
    const { user, refreshUser } = useAuth();
@@ -117,7 +119,7 @@ export default function useClientProfileUpdateForm() {
          };
 
          await clientProfile.update(payload);
-         showSuccess("프로필이 수정되었습니다."); // 알림창
+         showSuccess(t("profileUpdated")); // 알림창
 
          // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
          setTimeout(async () => {

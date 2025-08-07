@@ -5,8 +5,11 @@ import { useAuth } from "@/context/AuthContext";
 import ClientProfileTitle from "@/components/domain/profile/ClientProfileTitle";
 import ClientProfilePostForm from "@/components/domain/profile/ClientProfilePostForm";
 import MoverProfilePostForm from "@/components/domain/profile/MoverProfilePostForms";
+import { useTranslations } from "next-intl";
 
 export default function CreateProfilePage() {
+   const t = useTranslations("Profile");
+
    const { user } = useAuth();
 
    // ✅ 일반으로 로그인한 회원의 경우
@@ -29,11 +32,11 @@ export default function CreateProfilePage() {
          <>
             <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
                <div className="text-18-semibold lg:text-32-semibold leading-8">
-                  기사님 프로필 등록
+                  {t("moverProfileTitle")}
                </div>
 
                <div className="lg:text-20-regular text-12-regular text-black-200 leading-8">
-                  추가 정보를 입력하여 프로필 등록을 완료해주세요
+                  {t("moverProfileDescription")}
                </div>
             </div>
 
@@ -47,7 +50,7 @@ export default function CreateProfilePage() {
    // 그외 예상치 못한 userType
    return (
       <div className="mt-20 text-center text-gray-500">
-         알 수 없는 사용자 유형입니다.
+         {t("unknownUserType")}
       </div>
    );
 }
