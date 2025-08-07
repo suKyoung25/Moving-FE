@@ -45,7 +45,7 @@ export function FavoriteButton({
          // 서버 응답으로 UI 업데이트
          setIsFavorite(result.isFavorite);
 
-         // 🔥 부모 컴포넌트에 상태 변경 알림
+         //  부모 컴포넌트에 상태 변경 알림
          onFavoriteChange?.(
             mover.id,
             result.isFavorite,
