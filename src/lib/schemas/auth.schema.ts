@@ -61,9 +61,6 @@ export const WithdrawFormSchema = z
    .superRefine((data, ctx) => {
       const isLocal = "password" in data;
 
-      console.log("스키마로 전달되는 data", data); //디버깅
-      console.log("스키마로 전달되는 isLocal", isLocal); //디버깅
-
       if (isLocal) {
          // 로컬 유저인 경우: password가 필수
          if (!data.password || data.password.trim() === "") {
