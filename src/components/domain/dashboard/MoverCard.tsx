@@ -1,13 +1,56 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import avatar from "@/assets/images/avatarIcon.svg";
 import EditButtons from "./EditButtons";
 import MoverInfo from "./MoverInfo";
 import { getMoverProfile } from "@/lib/api/mover/getMoverProfile";
 import { Mover } from "@/lib/types/auth.types";
 import { useTranslations } from "next-intl";
+
+// 🔧 Fixed: Replace any with specific type
+interface MoverCardErrorBoundaryProps {
+   children: React.ReactNode;
+   fallback: React.ComponentType<Record<string, never>>;
+}
+
+interface MoverCardErrorBoundaryState {
+   hasError: boolean;
+}
+
+// 에러 바운더리 컴포넌트
+class MoverCardErrorBoundary extends React.Component<
+   MoverCardErrorBoundaryProps,
+   MoverCardErrorBoundaryState
+> {
+   constructor(props: MoverCardErrorBoundaryProps) {
+      super(props);
+      this.state = { hasError: false };
+   }
+
+   static getDerivedStateFromError(): MoverCardErrorBoundaryState {
+      return { hasError: true };
+   }
+
+   render() {
+      if (this.state.hasError) {
+         return <this.props.fallback />;
+      }
+      return this.props.children;
+   }
+}
+
+const ErrorFallback = () => {
+   const t = useTranslations("Dashboard");
+   return (
+      <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
+         <div className="py-8 text-center text-red-500">
+            {t("profileLoadError")}
+         </div>
+      </section>
+   );
+};
 
 export default function MoverCard() {
    const t = useTranslations("Dashboard");
@@ -26,7 +69,7 @@ export default function MoverCard() {
          console.log("조회된 기사님 데이터:", moverData);
 
          setMover(moverData);
-         setRetryCount(0); // 성공 시 재시도 카운트 리셋
+         setRetryCount(0);
       } catch (err) {
          console.error("기사님 정보 조회 실패:", err);
 
@@ -34,31 +77,53 @@ export default function MoverCard() {
             err instanceof Error ? err.message : t("loadError");
          setError(errorMessage);
 
-         // 인증 관련 오류면 사용자에게 재로그인 안내
          if (errorMessage.includes("로그인") || errorMessage.includes("인증")) {
             setError(t("loginExpired"));
          }
       } finally {
          setLoading(false);
       }
-   }, []);
+   }, [t]);
 
-   // 재시도 함수
    const handleRetry = useCallback(() => {
       if (retryCount < 1) {
-         // 최대 3회까지만 재시도
          setRetryCount((prev) => prev + 1);
          fetchMoverData();
       } else {
          setError(t("maxRetryError"));
       }
-   }, [retryCount, fetchMoverData]);
+   }, [retryCount, fetchMoverData, t]);
 
    useEffect(() => {
       fetchMoverData();
    }, [fetchMoverData]);
 
-   // 데이터 로딩 중
+   const profileImage = useMemo(
+      () => (
+         <Image
+            src={mover?.profileImage || avatar}
+            alt={t("profileImageAlt")}
+            width={64}
+            height={64}
+            className="h-16 w-16 rounded-full object-cover"
+            onError={(e) => {
+               e.currentTarget.src = avatar;
+            }}
+            priority
+         />
+      ),
+      [mover?.profileImage, t],
+   );
+
+   const editButtonsDesktop = useMemo(
+      () => (
+         <div className="flex w-144 gap-4 max-lg:hidden lg:inline-flex">
+            <EditButtons />
+         </div>
+      ),
+      [],
+   );
+
    if (loading) {
       return (
          <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
@@ -79,7 +144,6 @@ export default function MoverCard() {
       );
    }
 
-   // 에러 상태
    if (error || !mover) {
       return (
          <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
@@ -113,56 +177,33 @@ export default function MoverCard() {
    }
 
    return (
-      <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
-         <div className="flex items-center gap-4 lg:justify-between">
-            <div className="block lg:hidden">
-               <Image
-                  src={mover.profileImage || avatar}
-                  alt={t("profileImageAlt")}
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 rounded-full object-cover"
-                  onError={(e) => {
-                     // 이미지 로드 실패 시 기본 아바타로 대체
-                     e.currentTarget.src = avatar;
-                  }}
-               />
+      <MoverCardErrorBoundary fallback={ErrorFallback}>
+         <section className="bg-bg-100 flex flex-col gap-4 rounded-2xl border border-gray-100 px-4 py-[14px] lg:p-6">
+            <div className="flex items-center gap-4 lg:justify-between">
+               <div className="block lg:hidden">{profileImage}</div>
+               <div className="flex-1 lg:space-y-2">
+                  <p className="font-semibold lg:text-2xl">
+                     {mover.nickName || mover.name || ""}
+                  </p>
+                  <p className="text-sm font-normal text-gray-400 lg:text-xl">
+                     {mover.introduction || t("noIntro")}
+                  </p>
+               </div>
+               {editButtonsDesktop}
             </div>
-            <div className="flex-1 lg:space-y-2">
-               <p className="font-semibold lg:text-2xl">
-                  {mover.nickName || mover.name || ""}
-               </p>
-               <p className="text-sm font-normal text-gray-400 lg:text-xl">
-                  {mover.introduction || t("noIntro")}
-               </p>
-            </div>
-            <div className="flex w-144 gap-4 max-lg:hidden lg:inline-flex">
-               <EditButtons />
-            </div>
-         </div>
 
-         <div className="border-line-200 rounded-md border p-2.5 lg:flex lg:items-center lg:gap-6 lg:px-[18px] lg:py-6">
-            <div className="hidden lg:block">
-               <Image
-                  src={mover.profileImage || avatar}
-                  alt={t("profileImageAlt")}
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 rounded-full object-cover"
-                  onError={(e) => {
-                     e.currentTarget.src = avatar;
-                  }}
+            <div className="border-line-200 rounded-md border p-2.5 lg:flex lg:items-center lg:gap-6 lg:px-[18px] lg:py-6">
+               <div className="hidden lg:block">{profileImage}</div>
+               <MoverInfo
+                  averageReviewRating={mover.averageReviewRating || 0}
+                  reviewCount={mover.reviewCount || 0}
+                  estimateCount={mover.estimateCount || 0}
+                  career={mover.career || 0}
+                  serviceType={mover.serviceType || []}
+                  serviceArea={mover.serviceArea || []}
                />
             </div>
-            <MoverInfo
-               averageReviewRating={mover.averageReviewRating || 0}
-               reviewCount={mover.reviewCount || 0}
-               estimateCount={mover.estimateCount || 0}
-               career={mover.career || 0}
-               serviceType={mover.serviceType || []}
-               serviceArea={mover.serviceArea || []}
-            />
-         </div>
-      </section>
+         </section>
+      </MoverCardErrorBoundary>
    );
 }

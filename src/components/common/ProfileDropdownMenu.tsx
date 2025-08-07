@@ -52,16 +52,16 @@ export default function ProfileDropDownMenu() {
             ))}
          </ul>
          <div className="bg-line-100 h-0.25 w-full"></div>
-         <div className="text-14-regular lg:text-16-regular flex flex-col justify-center gap-1 pt-2 text-gray-500">
+         <div className="text-14-regular lg:text-16-regular flex flex-col justify-center gap-2 pt-2 text-gray-500">
             <button onClick={handleLogout} className="block w-full">
                {t("logout")}
             </button>
-
+            <hr className="border-line-200" />
             <button
                onClick={() => {
                   setIsWithdrawModalOpen(true);
                }}
-               className="block w-full"
+               className="text-secondary-red-200 block w-full underline"
             >
                {t("withdraw")}
             </button>
