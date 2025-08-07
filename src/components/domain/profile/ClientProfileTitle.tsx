@@ -34,7 +34,7 @@ export default function ClientProfileTitle({ type, error }: Prop) {
                   *이용 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!
                </p>
             )}
-            <ErrorText error={error} position="left" />
+            {error && <ErrorText error={error} position="left" />}
          </section>
       );
    }
@@ -51,7 +51,7 @@ export default function ClientProfileTitle({ type, error }: Prop) {
                   *내가 사는 지역은 언제든 수정 가능해요!
                </p>
             )}
-            <ErrorText error={error} position="left" />
+            {error && <ErrorText error={error} position="left" />}
          </section>
       );
    }
