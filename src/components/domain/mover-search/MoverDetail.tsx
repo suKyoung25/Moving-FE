@@ -49,7 +49,7 @@ const LoadingSpinner = memo(function LoadingSpinner() {
       <div className="flex min-h-screen items-center justify-center">
          <div className="text-center">
             <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-b-2 border-blue-600"></div>
-            <p className="text-gray-600">{t("loadingMessage")}</p>
+            <p className="text-gray-600">{t("loading")}</p>
          </div>
       </div>
    );
@@ -87,7 +87,6 @@ export default memo(function MoverDetail() {
       [user],
    );
 
-   // 🔧 Fixed: Added t dependency
    const fetchMover = useCallback(async () => {
       if (!moverId) return;
 
@@ -147,7 +146,6 @@ export default memo(function MoverDetail() {
       });
    }, []);
 
-   // 🔧 Fixed: No need to pass t as props anymore
    if (state.loading) return <LoadingSpinner />;
    if (state.error || !state.mover) {
       return <ErrorDisplay error={state.error || t("error.notFound")} />;

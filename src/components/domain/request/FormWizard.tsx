@@ -10,7 +10,6 @@ import { CreateRequestDto, FormWizardState } from "@/lib/types";
 import { patchRequestDraft } from "@/lib/api/request/requests/requestDraftApi";
 import { debounce } from "lodash";
 import { createRequestAction } from "@/lib/actions/request.action";
-import ToastPopup from "@/components/common/ToastPopup";
 import { useFormWizard } from "@/context/FormWizardContext";
 import {
    useActiveRequest,
@@ -18,6 +17,8 @@ import {
 } from "@/lib/api/request/requests/query";
 import Step4 from "./Step4";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
+import { useQueryClient } from "@tanstack/react-query";
 
 const defaultState: FormWizardState = {
    moveType: undefined,
@@ -31,14 +32,10 @@ export default function FormWizard({}) {
    const { isLoading } = useAuth();
    const { currentStep, setCurrentStep, isPending, setIsPending } =
       useFormWizard();
+   const { showSuccess, showError } = useToast();
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
    const [isInitialized, setIsInitialized] = useState(false);
-
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
+   const queryClient = useQueryClient();
 
    const isFormValid =
       !!formState.moveType &&
@@ -110,22 +107,12 @@ export default function FormWizard({}) {
    const handleConfirm = async () => {
       try {
          await createRequestAction(formState as CreateRequestDto);
-
-         setToast({
-            id: Date.now(),
-            text: t("toast.success"),
-            success: true,
-         });
-
+         queryClient.invalidateQueries({ queryKey: ["activeRequest"] });
+         showSuccess(t("toast.success"));
          setCurrentStep(4);
       } catch (err) {
          console.error("견적 요청 실패:", err);
-
-         setToast({
-            id: Date.now(),
-            text: t("toast.fail"),
-            success: false,
-         });
+         showError(t("toast.fail"));
       }
    };
 
@@ -134,18 +121,7 @@ export default function FormWizard({}) {
    }
 
    if (currentStep === 4) {
-      return (
-         <>
-            <Step4 />
-            {toast && (
-               <ToastPopup
-                  key={toast.id}
-                  text={toast.text}
-                  success={toast.success}
-               />
-            )}
-         </>
-      );
+      return <Step4 />;
    }
 
    return (

@@ -5,7 +5,7 @@ import { Review, MoverReview } from "@/lib/types";
 import { format } from "date-fns";
 import ReviewStar from "./ReviewStar";
 import LineDivider from "@/components/common/LineDivider";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import { useTranslations } from "next-intl";
 
 interface ReviewListProps {

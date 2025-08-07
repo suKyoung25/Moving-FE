@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip from "@/components/common/MoveChip";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import EmptyState from "@/components/common/EmptyState";
 import SolidButton from "@/components/common/SolidButton";
 import { isChipType } from "@/lib/utils/moveChip.util";

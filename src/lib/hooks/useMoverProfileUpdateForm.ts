@@ -13,11 +13,13 @@ import { useAuth } from "@/context/AuthContext";
 import { extractRegionNames } from "../utils/profile.util";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
+import { useToast } from "@/context/ToastConText";
 
 function useMoverProfileUpdateForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { user, refreshUser } = useAuth();
+   const { showSuccess } = useToast();
 
    const {
       register,
@@ -86,10 +88,8 @@ function useMoverProfileUpdateForm() {
 
          if (res) {
             await refreshUser();
-            alert("프로필이 정상적으로 수정되었습니다."); //TODO: 토스트 알림으로 바꾸기
-
-            refreshUser();
-
+            showSuccess("프로필이 정상적으로 수정되었습니다.");
+            refreshUser(); // TODO: 이거 왜 한번 더 호출하는 건가요?
             router.push("/dashboard");
          }
       } catch (error) {
