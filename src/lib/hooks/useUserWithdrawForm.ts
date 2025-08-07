@@ -5,12 +5,10 @@ import { useState } from "react";
 import deleteUserInfo from "../api/auth/requests/deleteMoverInfo";
 import { AuthFetchError, UserType } from "../types";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/context/ToastConText";
 
 export function useUserWithdrawForm(onSuccess: () => void) {
    const [isLoading, setIsLoading] = useState(false);
-   const router = useRouter();
    const { user, logout } = useAuth();
    const { showSuccess } = useToast();
 
