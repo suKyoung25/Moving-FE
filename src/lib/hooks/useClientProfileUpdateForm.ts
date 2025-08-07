@@ -20,7 +20,7 @@ export default function useClientProfileUpdateForm() {
    const router = useRouter();
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
-   const { showSuccess } = useToast();
+   const { showSuccess, showError } = useToast();
 
    // ✅ 초깃값 보존 용도 기본값
    function getInitialValues(user: User | null): ClientProfileUpdateValue {
@@ -117,7 +117,7 @@ export default function useClientProfileUpdateForm() {
          };
 
          await clientProfile.update(payload);
-         showSuccess("프로필이 수정되었습니다."); // 알림 모달
+         showSuccess("프로필이 수정되었습니다."); // 알림창
 
          // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
          setTimeout(async () => {
@@ -131,6 +131,12 @@ export default function useClientProfileUpdateForm() {
 
          // 서버 오류 처리
          const customError = error as AuthFetchError;
+         const message = customError?.body.message;
+
+         // 비밀번호 등 프로필 수정 횟수 초과 오류 -> 알림창
+         if (customError.status === 429) {
+            if (message) showError(message);
+         }
 
          if (customError?.status) {
             Object.entries(customError.body.data!).forEach(([key, message]) => {

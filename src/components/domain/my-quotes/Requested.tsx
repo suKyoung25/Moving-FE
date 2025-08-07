@@ -9,9 +9,12 @@ import { isAfter } from "date-fns";
 import { useRouter } from "next/navigation";
 import ToastPopup from "@/components/common/ToastPopup";
 import { useRequestsQuery } from "@/lib/api/estimate/query";
+import { useTranslations } from "next-intl";
 
 // 요청한 견적
 export default function Requested() {
+   const t = useTranslations("MyQuotes.Client");
+
    const [dropdownName, setDropdownName] = useState("recent");
    const [toast, setToast] = useState<{
       id: number;
@@ -41,7 +44,7 @@ export default function Requested() {
       if (!request.estimates || request.estimates.length === 0) {
          setToast({
             id: Date.now(),
-            text: "받은 견적이 없어요!",
+            text: t("toast.noReceivedEstimates"),
             success: false,
          });
          return;
@@ -56,7 +59,7 @@ export default function Requested() {
       } else {
          setToast({
             id: Date.now(),
-            text: "확정된 견적이 없어요!",
+            text: t("toast.noConfirmedEstimate"),
             success: false,
          });
       }
@@ -83,21 +86,21 @@ export default function Requested() {
       return () => observer.unobserve(current);
    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-   if (isLoading) return <div>로딩중...</div>;
+   if (isLoading) return <div>{t("loading")}</div>;
 
    if (requests.length === 0)
-      return <EmptyState message="아직 보낸 요청이 없어요!" />;
+      return <EmptyState message={t("emptyRequestMessage")} />;
 
    return (
       <section className="flex flex-col gap-2 md:gap-4 lg:gap-8">
          <h2 className="text-18-semibold lg:text-24-semibold flex items-center justify-between">
-            견적 요청 목록
+            {t("title")}
             <Dropdown
                selectedValue={dropdownName}
                setSelectedValue={setDropdownName}
                options={[
-                  { label: "최근 요청순", value: "recent" },
-                  { label: "오래된 요청순", value: "oldest" },
+                  { label: t("dropdown.recent"), value: "recent" },
+                  { label: t("dropdown.oldest"), value: "oldest" },
                ]}
             />
          </h2>
@@ -130,7 +133,7 @@ export default function Requested() {
          <div ref={bottomRef} />
          {isFetchingNextPage && (
             <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
-               불러오는 중...
+               {t("loadingMore")}
             </div>
          )}
          {toast && (

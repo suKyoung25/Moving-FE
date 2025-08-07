@@ -8,6 +8,7 @@ import { areaMapping } from "@/constants/mover.constants";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import type { Mover } from "@/lib/types";
 import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
+import { useTranslations } from "next-intl";
 
 interface DriverListProps {
    filters: {
@@ -29,6 +30,8 @@ export default function DriverList({
    onFavoriteChange,
    refreshKey,
 }: DriverListProps) {
+   const t = useTranslations("MoverSearch");
+
    const [movers, setMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
@@ -81,7 +84,7 @@ export default function DriverList({
             setHasMore(response.hasMore);
          } catch (err) {
             console.error("Load movers error:", err);
-            setError("기사님 목록을 불러오는데 실패했습니다.");
+            setError(t("loadFailed"));
          } finally {
             setLoading(false);
          }
@@ -233,7 +236,7 @@ export default function DriverList({
             setHasMore(response.hasMore);
          } catch (err) {
             console.error("Load movers error:", err);
-            setError("기사님 목록을 불러오는데 실패했습니다.");
+            setError(t("loadFailed"));
          } finally {
             setLoading(false);
          }
@@ -255,7 +258,7 @@ export default function DriverList({
                   onClick={() => loadMovers(true)}
                   className="bg-primary-blue-300 hover:bg-primary-blue-400 rounded-lg px-4 py-2 text-white"
                >
-                  다시 시도
+                  {t("retry")}
                </button>
             </div>
          </div>
@@ -278,23 +281,23 @@ export default function DriverList({
                {loading ? (
                   <div className="flex items-center space-x-2">
                      <div className="border-primary-blue-300 h-6 w-6 animate-spin rounded-full border-b-2"></div>
-                     <span>로딩 중...</span>
+                     <span>{t("loading")}</span>
                   </div>
                ) : (
-                  <span>스크롤하여 더 보기</span>
+                  <span>{t("scrollToLoadMore")}</span>
                )}
             </div>
          )}
 
          {!hasMore && movers.length > 0 && (
             <div className="py-8 text-center">
-               <p className="text-gray-500">모든 기사님을 확인했습니다.</p>
+               <p className="text-gray-500">{t("allLoaded")}</p>
             </div>
          )}
 
          {!loading && movers.length === 0 && (
             <div className="py-8 text-center">
-               <p className="text-gray-500">검색 결과가 없습니다.</p>
+               <p className="text-gray-500">{t("noResults")}</p>
             </div>
          )}
       </div>

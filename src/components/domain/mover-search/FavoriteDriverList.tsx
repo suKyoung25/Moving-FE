@@ -9,6 +9,7 @@ import { tokenSettings } from "@/lib/utils/auth.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
 import { EstimateStatus } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface FavoriteDriverListProps {
    onFavoriteChange?: (moverId: string, isFavorite: boolean) => void;
@@ -17,6 +18,8 @@ interface FavoriteDriverListProps {
 export default function FavoriteDriverList({
    onFavoriteChange,
 }: FavoriteDriverListProps) {
+   const t = useTranslations("FavoriteMovers");
+
    const { user } = useAuth();
    const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
@@ -57,10 +60,10 @@ export default function FavoriteDriverList({
          console.error("찜한 기사님 목록 로드 실패:", err);
 
          if (err instanceof Error && err.message.includes("로그인")) {
-            setError("로그인이 필요한 서비스입니다.");
+            setError(t("loginRequired"));
             setIsAuthenticated(false);
          } else {
-            setError("찜한 기사님 목록을 불러오는데 실패했습니다.");
+            setError(t("loadFailed"));
          }
       } finally {
          setLoading(false);
@@ -87,7 +90,7 @@ export default function FavoriteDriverList({
             }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
-            alert("찜 처리 중 오류가 발생했습니다.");
+            alert(t("toggleError"));
          }
       },
       [onFavoriteChange, loadFavoriteMovers],
@@ -105,10 +108,12 @@ export default function FavoriteDriverList({
       return (
          <div className="mt-8 flex flex-col gap-4 rounded-lg">
             <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-               찜한 기사님
+               {t("title")}
             </h2>
             <div className="flex items-center justify-center py-8">
-               <div className="text-14-medium text-gray-500">로딩 중...</div>
+               <div className="text-14-medium text-gray-500">
+                  {t("loading")}
+               </div>
             </div>
          </div>
       );
@@ -118,7 +123,7 @@ export default function FavoriteDriverList({
       return (
          <div className="mt-8 flex flex-col gap-4 rounded-lg">
             <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-               찜한 기사님
+               {t("title")}
             </h2>
             <div className="flex items-center justify-center py-8">
                <div className="text-14-medium text-red-500">{error}</div>
@@ -131,11 +136,11 @@ export default function FavoriteDriverList({
       return (
          <div className="mt-8 flex flex-col gap-4 rounded-lg">
             <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-               찜한 기사님
+               {t("title")}
             </h2>
             <div className="flex items-center justify-center py-8">
                <div className="text-14-medium text-gray-500">
-                  찜한 기사님이 없습니다.
+                  {t("noFavorites")}
                </div>
             </div>
          </div>
@@ -156,7 +161,7 @@ export default function FavoriteDriverList({
    return (
       <div className="mt-8 flex flex-col gap-4 rounded-lg">
          <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-            찜한 기사님
+            {t("title")}
          </h2>
 
          {displayMovers.map((mover) => (

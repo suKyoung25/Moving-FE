@@ -52,10 +52,38 @@ export const SignInFormSchema = z.object({
 });
 
 // 회원탈퇴 스키마
-export const WithdrawFormSchema = z.object({
-   userId: z.string().optional(),
-   password: passwordSchema,
-});
+export const WithdrawFormSchema = z
+   .object({
+      userId: z.string().optional(),
+      password: passwordSchema.optional(),
+      confirmMessage: z.string().optional(),
+   })
+   .superRefine((data, ctx) => {
+      const isLocal = "password" in data;
+
+      console.log("스키마로 전달되는 data", data); //디버깅
+      console.log("스키마로 전달되는 isLocal", isLocal); //디버깅
+
+      if (isLocal) {
+         // 로컬 유저인 경우: password가 필수
+         if (!data.password || data.password.trim() === "") {
+            ctx.addIssue({
+               code: z.ZodIssueCode.custom,
+               path: ["password"],
+               message: "비밀번호를 입력해주세요.",
+            });
+         }
+      } else {
+         // 소셜 유저인 경우: confirmMessage가 "회원 탈퇴" 필수
+         if (data.confirmMessage?.trim() !== "회원 탈퇴") {
+            ctx.addIssue({
+               code: z.ZodIssueCode.custom,
+               path: ["confirmMessage"],
+               message: `정확히 입력해주세요.`,
+            });
+         }
+      }
+   });
 
 // ✅ 타입 반출
 export type SignUpFormValues = z.infer<typeof signUpFormSchema>;

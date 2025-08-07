@@ -1,4 +1,135 @@
 {
+   "MoverSearch": {
+      "findDriver": "Find Driver",
+      "areas": {
+         "all": "All",
+         "seoul": "Seoul",
+         "incheon": "Incheon",
+         "daejeon": "Daejeon",
+         "daegu": "Daegu",
+         "gwangju": "Gwangju",
+         "busan": "Busan",
+         "ulsan": "Ulsan",
+         "sejong": "Sejong",
+         "gyeonggi": "Gyeonggi",
+         "gangwon": "Gangwon",
+         "chungbuk": "Chungbuk",
+         "chungnam": "Chungnam",
+         "jeonbuk": "Jeonbuk",
+         "jeonnam": "Jeonnam",
+         "gyeongbuk": "Gyeongbuk",
+         "gyeongnam": "Gyeongnam",
+         "jeju": "Jeju"
+      },
+      "services": {
+         "all": "All",
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move"
+      },
+      "sorts": {
+         "mostReviewed": "Most Reviewed",
+         "highRating": "Highest Rating",
+         "highExperience": "Most Experienced",
+         "mostBooked": "Most Booked"
+      },
+      "filter": "Filter",
+      "reset": "Reset",
+      "selectArea": "Please select an area",
+      "selectService": "What service do you need?",
+      "all": "All",
+      "searchAlt": "Search icon",
+      "searchPlaceholder": "Search a driver's name",
+      "searchInputAria": "Driver name search input",
+      "clearSearchAria": "Clear search query",
+      "searching": "Searching",
+      "loadFailed": "Failed to load drivers list.",
+      "retry": "Retry",
+      "loading": "Loading...",
+      "scrollToLoadMore": "Scroll to load more",
+      "allLoaded": "You have seen all drivers.",
+      "noResults": "No results found.",
+      "error": {
+         "loggedInAsMover": "Movers cannot favorite other movers.",
+         "needLogin": "Login is required.",
+         "toggleFailed": "An error occurred while toggling favorite."
+      },
+      "defaultIntroduction": "We safely transport your items."
+   },
+   "MoverDetail": {
+      "requestDesignatedEstimate": "Request a designated estimate from the driver!",
+      "goToLogin": "Go to Login",
+      "alt": {
+         "favorite": "Favorite driver",
+         "unfavorite": "Unfavorite"
+      },
+      "loading": "Processing...",
+      "unfavorite": "Unfavorite",
+      "favoriteDriver": "Favorite driver",
+      "errorOccurred": "An error occurred while toggling favorite.",
+      "loginRequired": "Login is required for this feature.",
+      "error": {
+         "loginRequired": "Login is required.",
+         "loginRequiredAgain": "Login is required. Please login again.",
+         "requestFailed": "Failed to fetch the request.",
+         "designatedRequestFailed": "Failed to submit designated estimate request.",
+         "alreadyRequested": "You have already requested a designated estimate for this mover.",
+         "requestExpiredOrCompleted": "The request has expired or been completed.",
+         "noMoverInfo": "Mover information could not be found.",
+         "loadFailed": "Failed to load driver information.",
+         "notFound": "Driver information not found."
+      },
+      "toast": {
+         "alreadyInProgress": "A request is already in progress!",
+         "requestSuccess": "Designated estimate request sent successfully!"
+      },
+      "button": {
+         "requestCompleted": "Designated Estimate Requested",
+         "processing": "Processing...",
+         "requestEstimate": "Request Designated Estimate"
+      },
+      "designatedEstimateRequestTitle": "Request Designated Estimate",
+      "generalEstimateFirst": "Please proceed with a general estimate request first.",
+      "requestGeneralEstimateButton": "Request General Estimate",
+      "closeAlt": "Close",
+      "confirm": "Confirm",
+      "shareText": "Is this driver too good to keep to yourself?",
+      "section": {
+         "detailDescription": "Detail Description",
+         "providedServices": "Provided Services",
+         "serviceRegions": "Service Regions"
+      },
+      "noDescription": "No description available.",
+      "noServices": "No services registered.",
+      "noRegions": "No regions registered.",
+      "serviceLabels": {
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move",
+         "DESIGNATED": "Designated Estimate",
+         "PENDING": "Pending",
+         "CONFIRMED": "Confirmed"
+      },
+      "regions": {
+         "서울": "Seoul",
+         "인천": "Incheon",
+         "대전": "Daejeon",
+         "대구": "Daegu",
+         "광주": "Gwangju",
+         "부산": "Busan",
+         "울산": "Ulsan",
+         "세종": "Sejong",
+         "경기": "Gyeonggi",
+         "강원": "Gangwon",
+         "충북": "Chungbuk",
+         "충남": "Chungnam",
+         "전북": "Jeonbuk",
+         "전남": "Jeonnam",
+         "경북": "Gyeongbuk",
+         "경남": "Gyeongnam",
+         "제주": "Jeju"
+      }
+   },
    "Dashboard": {
       "title": "My Page",
       "loading": "Loading mover information...",
@@ -157,17 +288,139 @@
    "FavoriteMovers": {
       "title": "Favorite Movers",
       "noFavoriteMover": "No favorite movers yet",
-      "goToFavorite": "Go to favorites"
+      "goToFavorite": "Go to favorites",
+      "loading": "Loading...",
+      "loginRequired": "Login is required for this service.",
+      "loadFailed": "Failed to load favorite drivers.",
+      "noFavorites": "No favorite drivers found.",
+      "toggleError": "An error occurred while toggling favorite."
    },
    "MyQuotes": {
       "Client": {
          "pendingQuotes": "Pending Quotes",
          "receivedQuotes": "Received Quotes",
-         "requestedQuotes": "Requested Quotes"
+         "requestedQuotes": "Requested Quotes",
+         "myRequestTitle": "My Active Request",
+         "requestedAtLabel": "Requested at:",
+         "requestedAtDateFormat": "MMMM dd, yyyy",
+         "fromLabel": "Departure",
+         "toLabel": "Destination",
+         "moveDateLabel": "Move Date",
+         "moveDateFormat": "MMMM dd, yyyy (eee)",
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move",
+         "toast": {
+            "confirmed": "Estimate has been confirmed.",
+            "confirmFailed": "Failed to confirm estimate.",
+            "noReceivedEstimates": "No received estimates!",
+            "noConfirmedEstimate": "No confirmed estimates!"
+         },
+         "emptyMessage": "Drivers are diligently checking!",
+         "category": {
+            "moveDate": "Move Date",
+            "from": "From",
+            "to": "To"
+         },
+         "priceLabel": "Estimate Price",
+         "buttons": {
+            "confirmEstimate": "Confirm Estimate",
+            "viewDetails": "View Details"
+         },
+         "money": "KRW",
+         "estimateListTitle": "Estimate List",
+         "dropdown": {
+            "all": "All",
+            "confirmed": "Confirmed",
+            "recent": "Recent",
+            "oldest": "Oldest"
+         },
+         "loadingNextPage": "Loading next page...",
+         "requestInfoTitle": "Request Info",
+         "estimateInfoTitle": "Estimate Info",
+         "labels": {
+            "requestedAt": "Requested At",
+            "service": "Service",
+            "moveDate": "Move Date",
+            "from": "From",
+            "to": "To"
+         },
+         "loading": "Loading...",
+         "emptyRequestMessage": "No requests sent yet!",
+         "title": "Quote Requests",
+         "loadingMore": "Loading more...",
+         "Detail": {
+            "pageTitle": "Quote Details",
+            "estimatePriceTitle": "Estimate Price",
+            "shareQuoteText": "Share Quote",
+            "money": "KRW",
+            "button": {
+               "confirmEstimate": "Confirm Estimate"
+            },
+            "toast": {
+               "confirmed": "Estimate has been confirmed",
+               "confirmFailed": "Failed to confirm estimate"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "Sent Quotes",
-         "rejectedRequests": "Rejected Requests"
+         "rejectedRequests": "Rejected Requests",
+         "toast": {
+            "cancelSuccess": "The estimate has been successfully canceled.",
+            "cancelError": "An error occurred while canceling the estimate. Please try again."
+         },
+         "emptyMessage": "No sent estimates yet.",
+         "rejectedemptyMessage": "No rejected estimates yet.",
+         "modal": {
+            "title": "Cancel Estimate",
+            "description": "Are you sure you want to cancel this estimate?",
+            "title2": "Reject Estimate",
+            "description2": "Are you sure you want to reject this estimate?"
+         },
+         "closeButtonAlt": "Close button",
+         "confirmButtonText": "Confirm",
+         "confirmedLabel": "Estimate Confirmed",
+         "cancelButton": "Cancel",
+         "clientHonorific": "Client",
+         "moveDateLabel": "Move Date",
+         "departureLabel": "From",
+         "destinationLabel": "To",
+         "priceLabel": "Estimate Price",
+         "money": "KRW",
+         "weekday": {
+            "sun": "Sun",
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat"
+         },
+         "moveCompletedLabel": "This estimate is completed",
+         "detailsButton": "View Details",
+         "Detail": {
+            "pageTitle": "Estimate Details",
+            "shareQuoteText": "Share Quote",
+            "confirmedLabel": "Estimate Confirmed",
+            "clientHonorific": "Client",
+            "moveDateLabel": "Move Date",
+            "departureLabel": "Departure",
+            "destinationLabel": "Destination",
+            "estimatePriceTitle": "Estimate Price",
+            "money": "KRW",
+            "estimateInfoTitle": "Estimate Info",
+            "labels": {
+               "requestedAt": "Requested At",
+               "service": "Service",
+               "from": "From",
+               "to": "To"
+            },
+            "OFFICE": "Office Move",
+            "HOME": "Home Move",
+            "SMALL": "Small Move",
+            "estimateSuffix": "Move"
+         }
       }
    },
    "Header": {
@@ -205,7 +458,10 @@
       "passwordPlaceholder": "Enter your password",
       "close": "Close",
       "withdrawButton": "Withdraw",
-      "withdrawing": "Withdrawing..."
+      "withdrawing": "Withdrawing...",
+      "withdrawConfirmMessage": "To withdraw, please type 'Withdraw'",
+      "confirmMessageLabel": "Confirmation Message",
+      "confirmMessagePlaceholder": "Please type 'Withdraw' exactly"
    },
    "Notification": {
       "title": "Notifications",
@@ -223,12 +479,25 @@
       "small": "Small",
       "home": "Home",
       "office": "Office",
-      "designated": "Designated Estimate Request",
+      "designated": "Designated Estimate",
       "matching_success": "Matching Success",
       "matching_failed": "Matching Failed",
       "pending": "Estimate Pending",
       "confirmed": "Confirmed Estimate",
       "done": "Moved Completed"
+   },
+   "ShareButton": {
+      "copied": "Copied!",
+      "copyUrl": "Copy URL to clipboard",
+      "ariaLabel": "Link share button",
+      "altText": "Share link icon",
+      "kakao": {
+         "title": "Start your move with Moving – Trustworthy Movers!",
+         "description": "From getting quotes to choosing your mover, prepare for your move easily and quickly! Check it out now on Moving.",
+         "buttonText": "View on Moving",
+         "ariaLabel": "KakaoTalk share button",
+         "altText": "KakaoTalk share icon"
+      }
    },
    "Validations": {
       "invalidRequest": "Invalid request.",

@@ -1,7 +1,8 @@
 import MoveChip from "@/components/common/MoveChip";
 import { isChipType } from "@/lib/utils";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import { format, Locale } from "date-fns";
+import { enUS, ko, zhCN } from "date-fns/locale";
+import { useLocale, useTranslations } from "next-intl";
 
 interface QuotaionInfoProps {
    fromAddress: string;
@@ -13,16 +14,6 @@ interface QuotaionInfoProps {
    isRequestedTap?: boolean;
 }
 
-const formatMoveType = (moveType: string) => {
-   const typeMap: Record<typeof moveType, string> = {
-      SMALL: "소형이사",
-      HOME: "가정이사",
-      OFFICE: "사무실이사",
-   };
-
-   return typeMap[moveType] ?? moveType;
-};
-
 export default function QuotaionInfo({
    fromAddress,
    moveDate,
@@ -32,10 +23,21 @@ export default function QuotaionInfo({
    chipType,
    isRequestedTap,
 }: QuotaionInfoProps) {
+   const t = useTranslations("MyQuotes.Client");
+   const locale = useLocale();
+
+   // date-fns locale 매핑
+   const localeMap: Record<string, Locale> = {
+      ko,
+      en: enUS,
+      zh: zhCN,
+   };
+   const currentLocale = localeMap[locale] || ko;
+
    return (
       <article>
          <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
-            {isRequestedTap ? "요청 정보" : "견적 정보"}
+            {isRequestedTap ? t("requestInfoTitle") : t("estimateInfoTitle")}
          </p>
          <ul className="border-line-100 bg-bg-100 text-14-regular lg:text-18-regular flex flex-col gap-2.5 rounded-2xl border px-5 py-4">
             <li>
@@ -44,28 +46,38 @@ export default function QuotaionInfo({
                )}
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">견적 요청일</p>
-               <p className="">{format(requestedAt, "yy.MM.dd")}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.requestedAt")}
+               </p>
+               <p>{format(requestedAt, "yy.MM.dd")}</p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">서비스</p>
-               <p className="">{formatMoveType(moveType)}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.service")}
+               </p>
+               <p>{t(`${moveType}`)}</p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">이사일</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.moveDate")}
+               </p>
                <p className="">
                   {format(moveDate, "yyyy. MM. dd(eee) aa hh:mm", {
-                     locale: ko,
+                     locale: currentLocale,
                   })}
                </p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">출발지</p>
-               <p className="">{fromAddress}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.from")}
+               </p>
+               <p>{fromAddress}</p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">도착지</p>
-               <p className="">{toAddress}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.to")}
+               </p>
+               <p>{toAddress}</p>
             </li>
          </ul>
       </article>
