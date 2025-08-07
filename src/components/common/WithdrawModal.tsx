@@ -27,8 +27,6 @@ export default function WithdrawModal({ onClose }: Props) {
    // provider가 LOCAL / SOCIAL인지에 따라 UI 분기처리
    const isLocal = userProvider === "LOCAL";
 
-   console.log("userProvider", userProvider); //디버깅
-
    return (
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}

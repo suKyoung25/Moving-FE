@@ -11,11 +11,13 @@ import {
    MoverBasicInfoSchema,
 } from "../schemas/dashboard.schema";
 import updateMoverBasicInfo from "../api/auth/requests/updateMoverInfo";
+import { useToast } from "@/context/ToastConText";
 
 function useMoverBasicInfo() {
    const { user, refreshUser } = useAuth();
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
+   const { showSuccess, showError } = useToast();
 
    const {
       register,
@@ -87,15 +89,26 @@ function useMoverBasicInfo() {
 
          const res = await updateMoverBasicInfo(payload);
 
-         refreshUser();
-
-         if (res) {
-            router.push("/dashboard");
+         if (res.message) {
+            showSuccess("기본정보가 정상적으로 수정되었습니다.");
          }
+
+         setTimeout(async () => {
+            await refreshUser();
+            setTimeout(() => {
+               router.replace("/dashboard");
+            }, 500);
+         }, 1500);
       } catch (error) {
          console.error("기사님 기본정보 수정 실패:", error);
 
          const customError = error as AuthFetchError;
+         const message = customError?.body.message;
+
+         // 비밀번호 등 프로필 수정 횟수 초과 오류 -> 알림창
+         if (customError.status === 429) {
+            if (message) showError(message);
+         }
 
          if (customError?.status && customError.body?.data) {
             Object.entries(customError.body.data).forEach(([key, message]) => {
