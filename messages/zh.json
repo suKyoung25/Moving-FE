@@ -389,7 +389,8 @@
       "loginRequired": "需要登录才能使用此服务。",
       "loadFailed": "无法加载收藏的司机列表。",
       "noFavorites": "没有收藏的司机。",
-      "toggleError": "收藏操作时发生错误。"
+      "toggleError": "收藏操作时发生错误。",
+      "removeSuccess": "已从收藏中移除。"
    },
    "MyQuotes": {
       "Client": {
