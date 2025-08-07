@@ -5,12 +5,10 @@ import { useState } from "react";
 import deleteUserInfo from "../api/auth/requests/deleteMoverInfo";
 import { AuthFetchError, UserType } from "../types";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/context/ToastConText";
 
-export function useMoverWithdrawForm(onSuccess: () => void) {
+export function useUserWithdrawForm(onSuccess: () => void) {
    const [isLoading, setIsLoading] = useState(false);
-   const router = useRouter();
    const { user, logout } = useAuth();
    const { showSuccess } = useToast();
 
@@ -37,16 +35,13 @@ export function useMoverWithdrawForm(onSuccess: () => void) {
       try {
          const res = await deleteUserInfo(type, payload);
 
-         if (res.message === "Mover 회원 삭제 성공") {
+         if (res.message.includes("탈퇴")) {
             onSuccess();
 
             showSuccess("정상적으로 회원탈퇴가 진행되었습니다");
 
             setTimeout(async () => {
-               logout();
-               setTimeout(() => {
-                  router.replace("/mover-search");
-               }, 500);
+               logout(); // 로그아웃하면 자동으로 mover-search로 이동하게 되어 있어서 router.replace를 쓰면 오히려 충돌이 날 수 있어 해당 코드 삭제했습니다. (이 주석 확인하시고 나서 지워 주세요.)
             }, 1500);
          }
       } catch (error) {

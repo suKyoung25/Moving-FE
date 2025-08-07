@@ -15,7 +15,15 @@ export const livingAreaSchema = z
    .min(1, "* 지역을 1개 이상 선택해야 합니다.")
    .max(5, "* 지역은 최대 5개까지 선택할 수 있습니다.");
 
-const passwordSchema = z.string().optional();
+const passwordSchema = z
+   .string()
+   .min(8, "최소 8자리 이상이어야합니다.")
+   .max(16, "최대 16자리 이하여야합니다.")
+   .regex(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,16}$/,
+      "문자와 숫자, 특수문자를 섞어 비밀번호를 작성해 주세요.",
+   )
+   .optional();
 
 // ✅ 일반 프로필 등록 스키마
 export const ClientProfilePostSchema = z.object({

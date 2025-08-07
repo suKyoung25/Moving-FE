@@ -3,7 +3,7 @@
 // import AuthSpinner from "@/components/spinner/AuthSpinner";
 import authApi from "@/lib/api/auth/requests/getMe";
 import { User } from "@/lib/types/auth.types";
-import { tokenSettings } from "@/lib/utils/auth.util";
+import { hasToken, tokenSettings } from "@/lib/utils/auth.util";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import {
    createContext,
@@ -81,6 +81,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
    useEffect(() => {
       if (user) return;
+      if (!user && hasToken()) {
+         refreshUser();
+      } // 회원탈퇴하면서 사용자가 없어지면 토큰도 날려야 함
+
       refreshUser();
    }, [user, refreshUser]);
 
