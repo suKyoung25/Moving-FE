@@ -13,9 +13,12 @@ import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { useAuth } from "@/context/AuthContext";
 import { tokenSettings } from "../utils";
+import { useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
 
 function useMoverProfilePostForm() {
+   const t = useTranslations("Profile");
+
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { setUser } = useAuth();
@@ -69,7 +72,7 @@ function useMoverProfilePostForm() {
                router.replace("/dashboard");
             }, 100); // user 상태 갱신: 미들웨어가 인식할 시간을 줌
 
-            showSuccess("프로필이 정상적으로 등록되었습니다.");
+            showSuccess(t("profileRegistered"));
          }
       } catch (error) {
          console.error("기사님 프로필 등록 실패: ", error);

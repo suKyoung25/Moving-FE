@@ -8,12 +8,14 @@ import Link from "next/link";
 import useSignUpForm from "@/lib/hooks/useSignUpForm";
 import { UserType } from "@/lib/types";
 import { SignUpFormValues } from "@/lib/schemas";
+import { useTranslations } from "next-intl";
 
 interface Prop {
    userType: UserType;
 }
 
 export default function SignUpForm({ userType }: Prop) {
+   const t = useTranslations("Sign");
    // ✅ 함수 모음
    const { register, errors, isValid, isLoading, handleSubmit, onSubmit } =
       useSignUpForm();
@@ -27,38 +29,38 @@ export default function SignUpForm({ userType }: Prop) {
          <AuthInput<SignUpFormValues>
             type="text"
             name="name"
-            label="이름"
-            placeholder="성함을 입력해 주세요"
+            label={t("nameLabel")}
+            placeholder={t("namePlaceholder")}
             register={register}
             error={errors.name?.message}
          />
          <AuthInput<SignUpFormValues>
             type="email"
             name="email"
-            label="이메일"
-            placeholder="이메일을 입력해 주세요"
+            label={t("emailLabel")}
+            placeholder={t("emailPlaceholder")}
             register={register}
             error={errors.email?.message}
          />
          <AuthInput<SignUpFormValues>
             type="text"
             name="phone"
-            label="전화번호"
-            placeholder="숫자만 입력해 주세요"
+            label={t("phoneLabel")}
+            placeholder={t("phonePlaceholder")}
             register={register}
             error={errors.phone?.message}
          />
          <PasswordInput<SignUpFormValues>
             name="password"
-            label="비밀번호"
-            placeholder="비밀번호를 입력해 주세요"
+            label={t("passwordLabel")}
+            placeholder={t("passwordPlaceholder")}
             register={register}
             error={errors.password?.message}
          />
          <PasswordInput<SignUpFormValues>
             name="passwordConfirmation"
-            label="비밀번호 확인"
-            placeholder="비밀번호를 다시 한번 입력해 주세요"
+            label={t("passwordConfirmationLabel")}
+            placeholder={t("passwordConfirmationPlaceholder")}
             register={register}
             error={errors.passwordConfirmation?.message}
          />
@@ -66,17 +68,17 @@ export default function SignUpForm({ userType }: Prop) {
          {/* ✅ 회원가입 버튼 */}
          <section className="mt-4 lg:mt-10">
             <SolidButton type="submit" disabled={!isValid || isLoading}>
-               {isLoading ? "로딩 중..." : "시작하기"}
+               {isLoading ? t("loadingText") : t("signUpButton")}
             </SolidButton>
             <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">
                <p className="text-black-100 text-12-regular lg:text-20-regular">
-                  이미 무빙 회원이신가요?
+                  {t("alreadyMemberText")}
                </p>
                <Link
                   href={`/sign-in/${userType}`}
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
                >
-                  로그인
+                  {t("loginLinkText")}
                </Link>
             </div>
          </section>
