@@ -7,6 +7,7 @@ import { useReceivedEstimates } from "@/lib/api/estimate/query";
 import { useInView } from "react-intersection-observer";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
+import { useTranslations } from "next-intl";
 import ReceivedSection from "./ReceivedSection";
 
 function groupByRequest(data: DataItem[]): GroupedByRequest[] {
@@ -29,6 +30,8 @@ function groupByRequest(data: DataItem[]): GroupedByRequest[] {
 
 // 받았던 견적
 export default function Received() {
+   const t = useTranslations("MyQuotes.Client");
+
    const { ref, inView } = useInView();
 
    const {
@@ -54,7 +57,7 @@ export default function Received() {
       );
 
    if (allData.length === 0 || isError)
-      return <EmptyState message="기사님들이 열심히 확인 중이에요!" />;
+      return <EmptyState message={t("emptyMessage")} />;
 
    const groupedData: GroupedByRequest[] = groupByRequest(allData);
 
@@ -68,7 +71,7 @@ export default function Received() {
                ref={ref}
             />
          ))}
-         {isFetchingNextPage && <div>다음 페이지 불러오는 중...</div>}
+         {isFetchingNextPage && <div>{t("loadingNextPage")}</div>}
       </div>
    );
 }

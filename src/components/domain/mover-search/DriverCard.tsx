@@ -9,6 +9,7 @@ import { validateServiceTypes } from "@/lib/utils/moveChip.util";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
 import { EstimateStatus } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface DriverCardProps {
    mover: Mover;
@@ -31,6 +32,8 @@ export default function DriverCard({
    mover,
    onFavoriteChange,
 }: DriverCardProps) {
+   const t = useTranslations("MoverSearch");
+
    const router = useRouter();
    const pathname = usePathname();
    const { user } = useAuth();
@@ -56,12 +59,12 @@ export default function DriverCard({
       e.stopPropagation();
 
       if (isLoggedInAsMover) {
-         alert("기사님은 다른 기사님을 찜할 수 없습니다.");
+         alert(t("error.loggedInAsMover"));
          return;
       }
 
       if (!user) {
-         alert("로그인이 필요합니다.");
+         alert(t("error.needLogin"));
          return;
       }
 
@@ -84,10 +87,10 @@ export default function DriverCard({
       } catch (error) {
          console.error("찜 처리 중 오류:", error);
 
-         let errorMessage = "찜 처리 중 오류가 발생했습니다.";
+         let errorMessage = t("error.toggleFailed");
          if (error instanceof Error) {
             if (error.message.includes("로그인")) {
-               errorMessage = "로그인이 필요합니다.";
+               errorMessage = t("error.needLogin");
             } else {
                errorMessage = error.message;
             }
@@ -120,8 +123,7 @@ export default function DriverCard({
             {/* 소개글 */}
             <div className="mb-4">
                <p className="text-14-medium md:text-16-medium lg:text-18-medium line-clamp-2 leading-relaxed break-words text-gray-700">
-                  {mover.introduction ||
-                     "고객님의 물품을 안전하게 운송해 드립니다."}
+                  {mover.introduction || t("defaultIntroduction")}
                </p>
             </div>
 

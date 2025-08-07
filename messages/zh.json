@@ -1,4 +1,135 @@
 {
+   "MoverSearch": {
+      "findDriver": "寻找司机",
+      "areas": {
+         "all": "全部",
+         "seoul": "首尔",
+         "incheon": "仁川",
+         "daejeon": "大田",
+         "daegu": "大邱",
+         "gwangju": "光州",
+         "busan": "釜山",
+         "ulsan": "蔚山",
+         "sejong": "世宗",
+         "gyeonggi": "京畿",
+         "gangwon": "江原",
+         "chungbuk": "忠北",
+         "chungnam": "忠南",
+         "jeonbuk": "全北",
+         "jeonnam": "全南",
+         "gyeongbuk": "庆北",
+         "gyeongnam": "庆南",
+         "jeju": "济州"
+      },
+      "services": {
+         "all": "全部",
+         "SMALL": "小型搬家",
+         "HOME": "家庭搬家",
+         "OFFICE": "办公室搬家"
+      },
+      "sorts": {
+         "mostReviewed": "好评最多",
+         "highRating": "评分最高",
+         "highExperience": "经验丰富",
+         "mostBooked": "预订最多"
+      },
+      "filter": "筛选",
+      "reset": "重置",
+      "selectArea": "请选择地区",
+      "selectService": "您需要什么服务？",
+      "all": "全部",
+      "searchAlt": "搜索图标",
+      "searchPlaceholder": "请输入司机名字进行搜索",
+      "searchInputAria": "司机名字搜索输入框",
+      "clearSearchAria": "清除搜索内容",
+      "searching": "搜索中",
+      "loadFailed": "加载司机列表失败。",
+      "retry": "重试",
+      "loading": "加载中...",
+      "scrollToLoadMore": "滚动以加载更多",
+      "allLoaded": "您已查看所有司机。",
+      "noResults": "未找到结果。",
+      "error": {
+         "loggedInAsMover": "搬运工无法收藏其他搬运工。",
+         "needLogin": "需要登录。",
+         "toggleFailed": "收藏操作时发生错误。"
+      },
+      "defaultIntroduction": "我们安全地运输您的物品。"
+   },
+   "MoverDetail": {
+      "requestDesignatedEstimate": "向司机请求指定报价！",
+      "goToLogin": "去登录",
+      "alt": {
+         "favorite": "收藏司机",
+         "unfavorite": "取消收藏"
+      },
+      "loading": "处理中...",
+      "unfavorite": "取消收藏",
+      "favoriteDriver": "收藏司机",
+      "errorOccurred": "收藏时发生错误。",
+      "loginRequired": "此功能需要登录。",
+      "error": {
+         "loginRequired": "需要登录。",
+         "loginRequiredAgain": "需要登录。请重新登录。",
+         "requestFailed": "请求获取失败。",
+         "designatedRequestFailed": "指定报价请求失败。",
+         "alreadyRequested": "您已对该司机提出指定报价请求。",
+         "requestExpiredOrCompleted": "请求已过期或已完成。",
+         "noMoverInfo": "找不到司机信息。",
+         "loadFailed": "无法加载司机信息。",
+         "notFound": "找不到司机信息。"
+      },
+      "toast": {
+         "alreadyInProgress": "已有正在进行的请求！",
+         "requestSuccess": "指定报价请求已成功发送！"
+      },
+      "button": {
+         "requestCompleted": "已请求指定报价",
+         "processing": "处理中...",
+         "requestEstimate": "请求指定报价"
+      },
+      "designatedEstimateRequestTitle": "请求指定报价",
+      "generalEstimateFirst": "请先进行一般报价请求",
+      "requestGeneralEstimateButton": "请求一般报价",
+      "closeAlt": "关闭",
+      "confirm": "确认",
+      "shareText": "这是你不愿分享的司机吗？",
+      "section": {
+         "detailDescription": "详细说明",
+         "providedServices": "提供的服务",
+         "serviceRegions": "服务区域"
+      },
+      "noDescription": "暂无介绍。",
+      "noServices": "暂无提供的服务。",
+      "noRegions": "暂无服务地区。",
+      "serviceLabels": {
+         "SMALL": "小型搬家",
+         "HOME": "家庭搬家",
+         "OFFICE": "办公室搬家",
+         "DESIGNATED": "指定报价",
+         "PENDING": "待定",
+         "CONFIRMED": "已确认"
+      },
+      "regions": {
+         "서울": "首尔",
+         "인천": "仁川",
+         "대전": "大田",
+         "대구": "大邱",
+         "광주": "光州",
+         "부산": "釜山",
+         "울산": "蔚山",
+         "세종": "世宗",
+         "경기": "京畿",
+         "강원": "江原",
+         "충북": "忠北",
+         "충남": "忠南",
+         "전북": "全北",
+         "전남": "全南",
+         "경북": "庆北",
+         "경남": "庆南",
+         "제주": "济州"
+      }
+   },
    "Dashboard": {
       "title": "我的页面",
       "loading": "正在加载搬运工信息...",
@@ -49,7 +180,7 @@
       "updating": "正在更新...",
       "update": "更新",
       "cancel": "取消",
-      "money": "元",
+      "money": "韩元",
       "moveTypes": {
          "SMALL": "小型搬家",
          "OFFICE": "办公室搬家",
@@ -137,7 +268,7 @@
       "price": "报价",
       "career": "经验",
       "loading": "加载中...",
-      "money": "元",
+      "money": "韩元",
       "reviewError": "提交评论时发生错误。",
       "noReview": "你还没有注册任何评论！",
       "goToWrite": "去写评论",
@@ -157,17 +288,139 @@
    "FavoriteMovers": {
       "title": "收藏的搬运工",
       "noFavoriteMover": "您还没有收藏的搬运工",
-      "goToFavorite": "去收藏"
+      "goToFavorite": "去收藏",
+      "loading": "加载中...",
+      "loginRequired": "需要登录才能使用此服务。",
+      "loadFailed": "无法加载收藏的司机列表。",
+      "noFavorites": "没有收藏的司机。",
+      "toggleError": "收藏操作时发生错误。"
    },
    "MyQuotes": {
       "Client": {
          "pendingQuotes": "待处理报价",
          "receivedQuotes": "收到的报价",
-         "requestedQuotes": "请求报价"
+         "requestedQuotes": "请求报价",
+         "myRequestTitle": "我的活动请求",
+         "requestedAtLabel": "请求日期：",
+         "requestedAtDateFormat": "yyyy年 MM月 dd日",
+         "fromLabel": "出发地",
+         "toLabel": "目的地",
+         "moveDateLabel": "搬家日期",
+         "moveDateFormat": "yyyy年 MM月 dd日 (eee)",
+         "SMALL": "小型搬家",
+         "HOME": "家庭搬家",
+         "OFFICE": "办公室搬家",
+         "toast": {
+            "confirmed": "报价已确认",
+            "confirmFailed": "报价确认失败",
+            "noReceivedEstimates": "没有收到报价！",
+            "noConfirmedEstimate": "没有确认的报价！"
+         },
+         "emptyMessage": "司机们正在努力确认中！",
+         "category": {
+            "moveDate": "搬家日期",
+            "from": "出发",
+            "to": "到达"
+         },
+         "priceLabel": "报价金额",
+         "buttons": {
+            "confirmEstimate": "确认报价",
+            "viewDetails": "查看详情"
+         },
+         "money": "韩元",
+         "estimateListTitle": "报价列表",
+         "dropdown": {
+            "all": "全部",
+            "confirmed": "已确认报价",
+            "recent": "最近请求",
+            "oldest": "最早请求"
+         },
+         "loadingNextPage": "正在加载下一页...",
+         "requestInfoTitle": "请求信息",
+         "estimateInfoTitle": "报价信息",
+         "labels": {
+            "requestedAt": "请求日期",
+            "service": "服务",
+            "moveDate": "搬家日期",
+            "from": "出发地",
+            "to": "目的地"
+         },
+         "loading": "加载中...",
+         "emptyRequestMessage": "尚未发送请求！",
+         "title": "报价请求列表",
+         "loadingMore": "加载中...",
+         "Detail": {
+            "pageTitle": "报价详情",
+            "estimatePriceTitle": "报价金额",
+            "shareQuoteText": "分享报价单",
+            "money": "韩元",
+            "button": {
+               "confirmEstimate": "确认报价"
+            },
+            "toast": {
+               "confirmed": "报价已确认",
+               "confirmFailed": "报价确认失败"
+            }
+         }
       },
       "Mover": {
          "sentQuotes": "发送的报价",
-         "rejectedRequests": "被拒请求"
+         "rejectedRequests": "被拒请求",
+         "toast": {
+            "cancelSuccess": "报价已成功取消。",
+            "cancelError": "取消报价时发生错误。请重试。"
+         },
+         "emptyMessage": "尚无发送的报价。",
+         "rejectedemptyMessage": "尚无反驳的报价。",
+         "modal": {
+            "title": "取消报价",
+            "description": "您确定要取消此报价吗？",
+            "title2": "拒绝报价",
+            "description2": "您确定要拒绝此报价吗？"
+         },
+         "closeButtonAlt": "关闭按钮",
+         "confirmButtonText": "确认",
+         "confirmedLabel": "报价确认",
+         "cancelButton": "取消",
+         "clientHonorific": "客户",
+         "moveDateLabel": "搬家日期",
+         "departureLabel": "出发",
+         "destinationLabel": "抵达",
+         "priceLabel": "报价金额",
+         "money": "韩元",
+         "weekday": {
+            "sun": "日",
+            "mon": "一",
+            "tue": "二",
+            "wed": "三",
+            "thu": "四",
+            "fri": "五",
+            "sat": "六"
+         },
+         "moveCompletedLabel": "此报价已完成",
+         "detailsButton": "查看详情",
+         "Detail": {
+            "pageTitle": "报价详情",
+            "shareQuoteText": "分享报价单",
+            "confirmedLabel": "报价确认",
+            "clientHonorific": "客户",
+            "moveDateLabel": "搬家日期",
+            "departureLabel": "出发",
+            "destinationLabel": "目的地",
+            "estimatePriceTitle": "报价金额",
+            "money": "韩元",
+            "estimateInfoTitle": "报价信息",
+            "labels": {
+               "requestedAt": "请求日期",
+               "service": "服务",
+               "from": "出发地",
+               "to": "目的地"
+            },
+            "OFFICE": "办公室搬家",
+            "HOME": "家庭搬家",
+            "SMALL": "小型搬家",
+            "estimateSuffix": "搬家"
+         }
       }
    },
    "Header": {
@@ -205,7 +458,10 @@
       "passwordPlaceholder": "请输入您的密码",
       "close": "关闭",
       "withdrawButton": "注销账号",
-      "withdrawing": "正在注销..."
+      "withdrawing": "退出中...",
+      "withdrawConfirmMessage": "要退出，请输入“会员退出”",
+      "confirmMessageLabel": "确认信息",
+      "confirmMessagePlaceholder": "请准确输入“会员退出”"
    },
    "Notification": {
       "title": "通知",
@@ -229,6 +485,19 @@
       "pending": "报价等待",
       "confirmed": "已确认报价",
       "done": "董事完毕"
+   },
+   "ShareButton": {
+      "copied": "已复制！",
+      "copyUrl": "将 URL 复制到剪贴板",
+      "ariaLabel": "链接分享按钮",
+      "altText": "分享链接图标",
+      "kakao": {
+         "title": "值得信赖的搬家，从Moving开始。",
+         "description": "从报价到选择司机，让搬家准备简单又快捷！现在就在Moving查看吧。",
+         "buttonText": "在Moving查看",
+         "ariaLabel": "KakaoTalk分享按钮",
+         "altText": "KakaoTalk分享图标"
+      }
    },
    "Validations": {
       "invalidRequest": "无效的请求。",

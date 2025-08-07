@@ -2,8 +2,9 @@
 
 import MoveChip from "@/components/common/MoveChip";
 import { isChipType } from "@/lib/utils";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import { format, Locale } from "date-fns";
+import { enUS, ko, zhCN } from "date-fns/locale";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import more from "@/assets/images/moreGrayIcon.svg";
 import { useRef, useState } from "react";
@@ -20,22 +21,23 @@ interface QuotaionInfoProps {
    onClick?: () => void;
 }
 
-const formatMoveType = (moveType: string) => {
-   const typeMap: Record<typeof moveType, string> = {
-      SMALL: "소형이사",
-      HOME: "가정이사",
-      OFFICE: "사무실이사",
-   };
-
-   return typeMap[moveType] ?? moveType;
-};
-
 export default function QuotaionInfo({
    request,
    chipType,
    isPending,
    onClick,
 }: QuotaionInfoProps) {
+   const t = useTranslations("MyQuotes.Client");
+   const locale = useLocale();
+
+   // date-fns locale 매핑
+   const localeMap: Record<string, Locale> = {
+      ko,
+      en: enUS,
+      zh: zhCN,
+   };
+   const currentLocale = localeMap[locale] || ko;
+
    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -50,28 +52,38 @@ export default function QuotaionInfo({
                )}
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">견적 요청일</p>
-               <p className="">{format(request.requestedAt, "yy.MM.dd")}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.requestedAt")}
+               </p>
+               <p>{format(request.requestedAt, "yy.MM.dd")}</p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">서비스</p>
-               <p className="">{formatMoveType(request.moveType)}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.service")}
+               </p>
+               <p>{t(`${request.moveType}`)}</p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">이사일</p>
-               <p className="">
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.moveDate")}
+               </p>
+               <p>
                   {format(request.moveDate, "yyyy. MM. dd(eee) aa hh:mm", {
-                     locale: ko,
+                     locale: currentLocale,
                   })}
                </p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">출발지</p>
-               <p className="">{request.fromAddress}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.from")}
+               </p>
+               <p>{request.fromAddress}</p>
             </li>
             <li className="flex items-center gap-10">
-               <p className="w-16.5 text-gray-300 lg:w-22.5">도착지</p>
-               <p className="">{request.toAddress}</p>
+               <p className="w-16.5 text-gray-300 lg:w-22.5">
+                  {t("labels.to")}
+               </p>
+               <p>{request.toAddress}</p>
             </li>
          </ul>
          {isPending && (

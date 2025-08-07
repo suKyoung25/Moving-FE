@@ -12,8 +12,11 @@ import ToastPopup from "@/components/common/ToastPopup";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { deleteEstimate } from "@/lib/api/estimate/requests/deleteEstimate";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 export default function RejectedRequestsList() {
+   const t = useTranslations("MyQuotes.Mover");
+
    const [page, setPage] = useState(1);
    const { data, isLoading } = useRejectedEstimates(page);
    const [toast, setToast] = useState<{
@@ -40,7 +43,7 @@ export default function RejectedRequestsList() {
       if (res) {
          setToast({
             id: Date.now(),
-            text: "견적이 성공적으로 취소되었습니다.",
+            text: t("toast.cancelSuccess"),
             success: true,
          });
 
@@ -49,7 +52,7 @@ export default function RejectedRequestsList() {
       } else {
          setToast({
             id: Date.now(),
-            text: "견적 취소 중 오류가 발생했습니다. 다시 시도해주세요.",
+            text: t("toast.cancelError"),
             success: false,
          });
       }
@@ -76,7 +79,7 @@ export default function RejectedRequestsList() {
             </div>
          ) : (
             <div className="flex items-center justify-center">
-               <EmptyState message="아직 반려한 견적이 없습니다." />
+               <EmptyState message={t("rejectedemptyMessage")} />
             </div>
          )}
 
@@ -99,8 +102,8 @@ export default function RejectedRequestsList() {
                isOpen={!!selectedEstimateId}
                onClose={() => setSelectedEstimateId(null)}
                onConfirm={handleCancelEstimate}
-               title="견적 반려하기"
-               description="정말 이 견적을 반려하시겠습니까?"
+               title={t("modal.title2")}
+               description={t("modal.description2")}
             />
          )}
       </div>

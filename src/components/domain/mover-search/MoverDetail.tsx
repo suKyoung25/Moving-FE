@@ -15,8 +15,11 @@ import LineDivider from "../../common/LineDivider";
 import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
 import DashboardReviewSection from "@/components/domain/dashboard/ReviewSection";
+import { useTranslations } from "next-intl";
 
 export default function MoverDetail() {
+   const t = useTranslations("MoverDetail");
+
    const params = useParams();
    const { user } = useAuth();
    const [loading, setLoading] = useState(true);
@@ -43,7 +46,7 @@ export default function MoverDetail() {
             setMover(moverData);
          } catch (err) {
             console.error("Error fetching mover:", err);
-            setError("기사님 정보를 불러오는데 실패했습니다.");
+            setError(t("error.loadFailed"));
          } finally {
             setLoading(false);
          }
@@ -85,7 +88,7 @@ export default function MoverDetail() {
          <div className="flex min-h-screen items-center justify-center">
             <div className="text-center">
                <div className="mx-auto mb-4 h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-               <p className="text-gray-600">로딩 중...</p>
+               <p className="text-gray-600">{t("loading")}</p>
             </div>
          </div>
       );
@@ -96,7 +99,7 @@ export default function MoverDetail() {
          <div className="flex min-h-screen items-center justify-center">
             <div className="text-center">
                <p className="text-lg text-red-600">
-                  {error || "기사님 정보를 찾을 수 없습니다."}
+                  {error || t("error.notFound")}
                </p>
             </div>
          </div>
@@ -114,7 +117,7 @@ export default function MoverDetail() {
             />
             <LineDivider />
             <div className="p-4">
-               <SocialShareGroup text="나만 알기엔 아쉬운 기사님인가요?" />
+               <SocialShareGroup text={t("shareText")} />
                <div className="pt-5 lg:hidden">
                   <LineDivider />
                </div>
@@ -155,7 +158,7 @@ export default function MoverDetail() {
                   <LineDivider />
                </div>
                <div className="lg:p-5">
-                  <SocialShareGroup text="나만 알기엔 아쉬운 기사님인가요?" />
+                  <SocialShareGroup text={t("shareText")} />
                   <div className="lg:hidden">
                      <LineDivider />
                   </div>

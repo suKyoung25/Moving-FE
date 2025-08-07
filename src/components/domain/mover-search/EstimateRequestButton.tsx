@@ -7,6 +7,7 @@ import { Mover } from "@/lib/types";
 import ToastPopup from "@/components/common/ToastPopup";
 import { useAuth } from "@/context/AuthContext";
 import { useActiveRequest } from "@/lib/api/request/requests/query";
+import { useTranslations } from "next-intl";
 
 interface EstimateRequestButtonProps {
    moverId: string;
@@ -23,6 +24,8 @@ export function EstimateRequestButton({
    setErrorMessage,
    setIsResultModalOpen,
 }: EstimateRequestButtonProps) {
+   const t = useTranslations("MoverDetail");
+
    const { user } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
    const [showNoRequestModal, setShowNoRequestModal] = useState(false);
@@ -45,7 +48,7 @@ export function EstimateRequestButton({
 
    const handleClick = async () => {
       if (!user) {
-         setErrorMessage("로그인이 필요한 기능입니다.");
+         setErrorMessage(t("error.loginRequired"));
          setIsResultModalOpen(true);
          return;
       }
@@ -62,7 +65,7 @@ export function EstimateRequestButton({
          } else if (!activeRequest.isPending) {
             setToast({
                id: Date.now(),
-               text: "이미 진행중인 견적이 있어요!",
+               text: t("toast.alreadyInProgress"),
                success: false,
             });
             return;
@@ -71,10 +74,10 @@ export function EstimateRequestButton({
       } catch (error) {
          console.error("활성 요청 조회 실패:", error);
 
-         let errorMessage = "요청 조회에 실패했습니다.";
+         let errorMessage = t("error.requestFailed");
          if (error instanceof Error) {
             if (error.message.includes("로그인")) {
-               errorMessage = "로그인이 필요합니다. 다시 로그인해주세요.";
+               errorMessage = t("error.loginRequiredAgain");
             } else {
                errorMessage = error.message;
             }
@@ -99,7 +102,7 @@ export function EstimateRequestButton({
 
          setToast({
             id: Date.now(),
-            text: "지정 견적 요청이 성공적으로 전송되었습니다!",
+            text: t("toast.requestSuccess"),
             success: true,
          });
 
@@ -110,7 +113,7 @@ export function EstimateRequestButton({
       } catch (error) {
          console.error("지정 견적 요청 실패:", error);
 
-         let errorMessage = "지정 견적 요청에 실패했습니다.";
+         let errorMessage = t("error.designatedRequestFailed");
          if (error instanceof Error) {
             const errorText = error.message;
 
@@ -118,16 +121,16 @@ export function EstimateRequestButton({
                errorText.includes("이미 지정 견적을 요청한 기사님입니다") ||
                errorText.includes("Unique constraint failed")
             ) {
-               errorMessage = "이미 이 기사님에게 지정 견적을 요청하셨습니다.";
+               errorMessage = t("error.alreadyRequested");
                setIsRequestSuccess(true); // 이미 요청한 경우도 성공 상태로 처리
             } else if (
                errorText.includes("진행 중인 요청을 찾을 수 없습니다")
             ) {
-               errorMessage = "요청이 만료되었거나 이미 완료되었습니다.";
+               errorMessage = t("error.requestExpiredOrCompleted");
             } else if (errorText.includes("기사님을 찾을 수 없습니다")) {
-               errorMessage = "기사님 정보를 찾을 수 없습니다.";
+               errorMessage = t("error.noMoverInfo");
             } else if (errorText.includes("로그인")) {
-               errorMessage = "로그인이 필요합니다. 다시 로그인해주세요.";
+               errorMessage = t("error.loginRequiredAgain");
             } else {
                errorMessage = errorText;
             }
@@ -161,12 +164,12 @@ export function EstimateRequestButton({
 
    const getButtonText = () => {
       if (isRequestSuccess) {
-         return "지정 견적 요청 완료";
+         return t("button.requestCompleted");
       }
       if (isLoading) {
-         return "처리 중...";
+         return t("button.processing");
       }
-      return "지정 견적 요청하기";
+      return t("button.requestEstimate");
    };
 
    return (

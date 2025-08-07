@@ -8,12 +8,15 @@ import EmptyState from "@/components/common/EmptyState";
 import { isAfter } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useRequestsQuery } from "@/lib/api/estimate/query";
+import { useTranslations } from "next-intl";
 import { cancelRequest } from "@/lib/api/estimate/requests/cancelRequest";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/context/ToastConText";
 
 // 요청한 견적
 export default function Requested() {
+   const t = useTranslations("MyQuotes.Client");
+
    const [dropdownName, setDropdownName] = useState("recent");
    const { showSuccess, showError } = useToast();
    const router = useRouter();
@@ -44,7 +47,7 @@ export default function Requested() {
       if (confirmed) {
          router.push(`/my-quotes/client/${confirmed.id}`);
       } else {
-         showError("확정된 견적이 없어요!");
+         showError(t("toast.noConfirmedEstimate"));
       }
    };
 
@@ -81,21 +84,21 @@ export default function Requested() {
       return () => observer.unobserve(current);
    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-   if (isLoading) return <div>로딩중...</div>;
+   if (isLoading) return <div>{t("loading")}</div>;
 
    if (requests.length === 0)
-      return <EmptyState message="아직 보낸 요청이 없어요!" />;
+      return <EmptyState message={t("emptyRequestMessage")} />;
 
    return (
       <section className="flex flex-col gap-2 md:gap-4 lg:gap-8">
          <h2 className="text-18-semibold lg:text-24-semibold flex items-center justify-between">
-            견적 요청 목록
+            {t("title")}
             <Dropdown
                selectedValue={dropdownName}
                setSelectedValue={setDropdownName}
                options={[
-                  { label: "최근 요청순", value: "recent" },
-                  { label: "오래된 요청순", value: "oldest" },
+                  { label: t("dropdown.recent"), value: "recent" },
+                  { label: t("dropdown.oldest"), value: "oldest" },
                ]}
             />
          </h2>
@@ -108,7 +111,7 @@ export default function Requested() {
                return (
                   <div key={request.id}>
                      <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
-                        요청 정보
+                        {t("requestInfoTitle")}
                      </p>
                      {!request.isPending ? (
                         <div
@@ -136,7 +139,7 @@ export default function Requested() {
          <div ref={bottomRef} />
          {isFetchingNextPage && (
             <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
-               불러오는 중...
+               {t("loadingMore")}
             </div>
          )}
       </section>
