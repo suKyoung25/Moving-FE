@@ -60,7 +60,12 @@ export default function FormWizard({}) {
       if (draftRes?.data) {
          const { moveType, moveDate, fromAddress, toAddress, currentStep } =
             draftRes.data;
-         setFormState({ moveType, moveDate, fromAddress, toAddress });
+         setFormState({
+            moveType,
+            moveDate: moveDate ? new Date(moveDate) : undefined,
+            fromAddress,
+            toAddress,
+         });
          setCurrentStep(currentStep);
       } else {
          setFormState(defaultState);
