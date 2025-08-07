@@ -3,11 +3,14 @@ import PageTitle from "@/components/layout/PageTitle";
 import { Suspense } from "react";
 import ReceivedRequestDetailContent from "./ReceivedRequestDetailContent";
 import ReceivedRequestDetailSkeleton from "./ReceivedRequestDetailSkeleton";
+import { getTranslations } from "next-intl/server";
 
-export default function ReceivedRequestDetail({ id }: { id: string }) {
+export default async function ReceivedRequestDetail({ id }: { id: string }) {
+   const t = await getTranslations("ReceivedRequests.Detail");
+
    return (
       <div>
-         <PageTitle title="요청 상세" />
+         <PageTitle title={t("pageTitle")} />
          <div className="mt-4 lg:flex lg:gap-40">
             <article className="flex flex-col gap-6 lg:flex-1 lg:gap-10">
                <Suspense fallback={<ReceivedRequestDetailSkeleton />}>
@@ -15,7 +18,7 @@ export default function ReceivedRequestDetail({ id }: { id: string }) {
                </Suspense>
             </article>
             <article className="hidden h-fit w-60 lg:block">
-               <SocialShareGroup text="견적서 공유하기" />
+               <SocialShareGroup text={t("shareQuoteText")} />
             </article>
          </div>
       </div>

@@ -7,6 +7,7 @@ import { useReceivedRequestsQuery } from "@/lib/api/request/query";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import RequestCardSkeleton from "./RequestCardSkeleton";
 import ToastPopup from "@/components/common/ToastPopup";
+import { useTranslations } from "next-intl";
 
 export default function ReceivedRequestsList({
    moveType,
@@ -16,6 +17,8 @@ export default function ReceivedRequestsList({
    onTotalCountChange,
    onLoadingChange,
 }: ReceivedRequestsProps) {
+   const t = useTranslations("ReceivedRequests");
+
    const observerRef = useRef<HTMLDivElement | null>(null);
    const [toast, setToast] = useState<{
       id: number;
@@ -76,11 +79,11 @@ export default function ReceivedRequestsList({
          <div className="py-4">
             <p ref={observerRef} />
             {isFetchingNextPage && (
-               <p className="text-center text-gray-500">불러오는 중...</p>
+               <p className="text-center text-gray-500">{t("loadingMore")}</p>
             )}
             {!hasNextPage && (
                <p className="text-center text-gray-400">
-                  견적 요청이 모두 도착했습니다
+                  {t("noMoreRequests")}
                </p>
             )}
          </div>
