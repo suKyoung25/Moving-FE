@@ -10,10 +10,10 @@ interface Prop {
 // 회원가입 & 로그인 페이지 제목 로고 및 링크 (일반 회원)
 export default function MoverTitle({ type }: Prop) {
    return (
-      <div className="mb-10">
-         <Link href="/mover-search">
+      <header className="mb-10 text-center" role="banner">
+         <Link href="/mover-search" aria-label="홈으로 이동">
             <figure className="relative mx-auto h-11 w-22 lg:h-13 lg:w-26">
-               <Image src={logo} alt="무빙 로고" fill />
+               <Image src={logo} alt="무빙 로고" fill priority />
             </figure>
          </Link>
          <div className="lg:mt- mt-4 flex gap-1 lg:gap-2">
@@ -27,6 +27,6 @@ export default function MoverTitle({ type }: Prop) {
                일반 유저 전용 페이지
             </Link>
          </div>
-      </div>
+      </header>
    );
 }

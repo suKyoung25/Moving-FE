@@ -27,26 +27,35 @@ export default function EasyLoginForm({ userType }: Prop) {
    };
 
    return (
-      <section className="my-12 flex flex-col items-center gap-6 lg:my-18">
-         <p className="text-black-100 text-12-regular lg:text-20-regular">
+      <section
+         className="my-12 flex flex-col items-center gap-6 lg:my-18"
+         aria-labelledby="sns-login-heading"
+      >
+         <p
+            id="sns-login-heading"
+            className="text-black-100 text-12-regular lg:text-20-regular"
+         >
             SNS 계정으로 간편 가입하기
          </p>
          <div className="flex gap-6 lg:gap-8">
             <figure
                onClick={handleGoogleLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
+               aria-label="구글 계정으로 로그인"
             >
                <Image src={googleIcon} alt="구글 로그인" fill />
             </figure>
             <figure
                onClick={handlekakaoLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
+               aria-label="카카오 계정으로 로그인"
             >
                <Image src={kakaoIcon} alt="카카오 로그인" fill />
             </figure>
             <figure
                onClick={handlenaverLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
+               aria-label="네이버 계정으로 로그인"
             >
                <Image src={naverIcon} alt="네이버 로그인" fill />
             </figure>

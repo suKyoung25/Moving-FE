@@ -28,7 +28,12 @@ export default function SignInForm({ userType }: Prop) {
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
          className="flex w-full flex-col"
+         aria-labelledby="login-form-heading"
       >
+         <h2 id="login-form-heading" className="sr-only">
+            로그인 입력 폼
+         </h2>
+
          {/* ✅ Input */}
          <AuthInput
             type="email"
@@ -51,6 +56,7 @@ export default function SignInForm({ userType }: Prop) {
             <SolidButton
                type="submit"
                disabled={!isValid || isLoading || isLoginBlock}
+               aria-disabled={!isValid || isLoading || isLoginBlock}
             >
                {isLoading ? "로딩 중..." : "로그인"}
             </SolidButton>
@@ -61,6 +67,7 @@ export default function SignInForm({ userType }: Prop) {
                <Link
                   href={`/sign-up/${userType}`}
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
+                  aria-label="회원가입 페이지로 이동"
                >
                   이메일로 회원가입하기
                </Link>
