@@ -10,8 +10,11 @@ import usePreventScroll from "@/lib/hooks/usePreventScroll";
 import MoveTypeFilterSidebar from "@/components/domain/received-requests/MoveTypeFilterSidebar";
 import { moveTypeOptions, sortOptions } from "@/constants";
 import MoveTypeFilterModal from "@/components/domain/received-requests/MoveTypeFilterModal";
+import { useTranslations } from "next-intl";
 
 export default function ReceivedRequestsPage() {
+   const t = useTranslations("ReceivedRequests");
+
    usePreventScroll(true);
 
    const [moveType, setMoveType] = useState<string[]>([
@@ -50,10 +53,15 @@ export default function ReceivedRequestsPage() {
       setIsDesignated((prev) => !prev);
    };
 
+   const translatedSortOptions = sortOptions.map((opt) => ({
+      ...opt,
+      label: t(`sort.${opt.value}`),
+   }));
+
    return (
       <div>
          <div className="hidden lg:block">
-            <PageTitle title="받은 요청" />
+            <PageTitle title={t("pageTitle")} />
          </div>
          {/* 데스크탑 */}
          <div className="mt-6 hidden gap-20 lg:flex">
@@ -71,15 +79,15 @@ export default function ReceivedRequestsPage() {
                <div className="flex items-center justify-between">
                   <p className="lg:text-16-medium">
                      {isLoading
-                        ? "요청 목록을 불러오는 중입니다..."
-                        : `총 ${totalCount}건의 요청이 있습니다`}
+                        ? t("loading")
+                        : t("totalCount", { count: totalCount })}
                   </p>
                   <SortSelect
                      value={sort}
                      onChange={(v) =>
                         setSort(v as "moveDate-asc" | "moveDate-desc")
                      }
-                     options={sortOptions}
+                     options={translatedSortOptions}
                   />
                </div>
                <div className="scrollbar-hide flex-1 overflow-y-auto">
@@ -98,15 +106,15 @@ export default function ReceivedRequestsPage() {
          {/* 테블릿 + 모바일 */}
          <div className="flex h-[calc(100vh-6.25rem)] flex-col gap-3 md:gap-4 lg:hidden">
             <div className="lg:hidden">
-               <PageTitle title="받은 요청" />
+               <PageTitle title={t("pageTitle")} />
             </div>
             <div className="sticky top-0 z-10 flex flex-col gap-3 bg-white pb-2 md:gap-4 lg:hidden">
                <KeywordSearchInput value={keyword} onChange={setKeyword} />
                <div className="flex items-center gap-3">
                   <p className="text-14-medium flex-1">
                      {isLoading
-                        ? "요청 목록을 불러오는 중입니다..."
-                        : `총 ${totalCount}건의 요청이 있습니다`}
+                        ? t("loading")
+                        : t("totalCount", { count: totalCount })}
                   </p>
                   <SortSelect
                      value={sort}
@@ -118,7 +126,7 @@ export default function ReceivedRequestsPage() {
                   <button onClick={() => setIsFilterModalOpen(true)}>
                      <Image
                         src={filterActiveIcon}
-                        alt="filterActiveIcon"
+                        alt={t("filterIconAlt")}
                         width={32}
                         height={32}
                      />

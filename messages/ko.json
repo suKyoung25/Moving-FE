@@ -424,6 +424,87 @@
          }
       }
    },
+   "ReceivedRequests": {
+      "pageTitle": "받은 요청",
+      "loading": "요청 목록을 불러오는 중입니다...",
+      "totalCount": "총 {count}건의 요청이 있습니다",
+      "filterIconAlt": "필터 열기",
+      "sidebar": {
+         "moveTypeTitle": "이사 유형",
+         "filterTitle": "필터",
+         "selectAll": "전체 선택",
+         "selectAllAlt": "전체 선택",
+         "singleSelectAlt": "{type} 선택",
+         "onlyDesignated": "지정 견적 요청만 보기",
+         "onlyDesignatedAlt": "지정 견적 요청만 보기"
+      },
+      "moveTypes": {
+         "SMALL": "소형이사",
+         "HOME": "가정이사",
+         "OFFICE": "사무실이사"
+      },
+      "searchInput": {
+         "placeholder": "어떤 고객님을 찾고 계세요?",
+         "iconAlt": "검색"
+      },
+      "sort": {
+         "moveDate-asc": "이사일 빠른순",
+         "moveDate-desc": "이사일 느린순"
+      },
+      "loadingMore": "불러오는 중...",
+      "noMoreRequests": "견적 요청이 모두 도착했습니다",
+      "clientHonorific": "고객님",
+      "moveDateLabel": "이사일",
+      "departureLabel": "출발",
+      "destinationLabel": "도착",
+      "sendEstimateButton": "견적 보내기",
+      "rejectButton": "반려",
+      "modal": {
+         "title": "이사 유형 및 필터",
+         "closeAlt": "닫기 버튼",
+         "selectAll": "전체선택",
+         "selectAllAlt": "전체 선택",
+         "singleSelectAlt": "{type} 선택",
+         "onlyDesignated": "지정 견적 요청만 보기",
+         "onlyDesignatedAlt": "지정 견적 요청만 보기",
+         "sendTitle": "견적 보내기",
+         "rejectTitle": "요청 반려",
+         "sendButton": "견적 보내기",
+         "rejectButton": "반려하기"
+      },
+      "priceLabel": "견적 금액",
+      "pricePlaceholder": "금액을 입력하세요",
+      "commentLabel": "코멘트를 입력해 주세요",
+      "commentPlaceholder": "견적에 대한 메모를 입력해주세요",
+      "rejectReasonLabel": "반려 사유",
+      "rejectReasonPlaceholder": "반려 사유를 입력해주세요",
+      "toast": {
+         "sendSuccess": "고객님께 견적을 성공적으로 발송했습니다.",
+         "rejectSuccess": "견적 요청을 반려 처리했습니다.",
+         "requestFailed": "요청에 실패했습니다. 다시 시도해주세요."
+      },
+      "Detail": {
+         "pageTitle": "요청 상세",
+         "shareQuoteText": "견적서 공유하기",
+         "clientHonorific": "고객님",
+         "moveDateLabel": "이사일",
+         "departureLabel": "출발",
+         "destinationLabel": "도착",
+         "estimateInfoTitle": "견적 정보",
+         "labels": {
+            "requestedAt": "견적 요청일",
+            "service": "서비스",
+            "from": "출발지",
+            "to": "도착지"
+         },
+         "moveTypes": {
+            "OFFICE": "사무실",
+            "HOME": "가정",
+            "SMALL": "소형"
+         },
+         "estimateSuffix": "이사"
+      }
+   },
    "Header": {
       "logoAlt": "메인 로고",
       "logoMobileAlt": "모바일 메인 로고",
