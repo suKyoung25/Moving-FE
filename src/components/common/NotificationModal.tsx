@@ -17,6 +17,8 @@ import { useNotificationsQuery } from "@/lib/api/notification/query";
 import { useQueryClient } from "@tanstack/react-query";
 import { FiCheckSquare } from "react-icons/fi";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
+import { getRequest } from "@/lib/api/estimate/requests/getClientRequest";
 
 export default function NotificationModal({
    setIsNotiModalOpen,
@@ -25,6 +27,7 @@ export default function NotificationModal({
 }) {
    const t = useTranslations("Notification");
    const { realtimeNotifications } = useNotification();
+   const { showError } = useToast();
    const router = useRouter();
    const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -49,6 +52,11 @@ export default function NotificationModal({
       try {
          await readNotification(item.id);
          queryClient.invalidateQueries({ queryKey: ["notifications"] });
+         const { data } = await getRequest(item.targetId!);
+         if (!data) {
+            showError("존재하지 않는 견적 요청입니다.");
+            return;
+         }
          router.push(item.targetUrl ?? "");
          setIsNotiModalOpen(false);
       } catch (err) {

@@ -15,3 +15,7 @@ export async function getRequests({ cursor, sort }: PageParms) {
 
    return await tokenFetch(`/requests/client?${queryParams.toString()}`);
 }
+
+export async function getRequest(requestId: string) {
+   return await tokenFetch(`/requests/${requestId}`);
+}

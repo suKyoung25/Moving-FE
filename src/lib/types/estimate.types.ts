@@ -48,9 +48,9 @@ export interface Quotes {
    requestId: string;
    fromAddress: string;
    toAddress: string;
-   moveDate: string;
+   moveDate: Date;
    moveType: string;
-   requestedAt: string;
+   requestedAt: Date;
    isPending?: boolean;
    estimates: Estimate[];
    designatedRequest: DesignatedRequest[];
@@ -106,7 +106,7 @@ export interface ReceivedEstimateData {
    request: EstimateRequest;
 }
 
-interface RequestType {
+export interface RequestType {
    requestId: string;
    fromAddress: string;
    moveDate: Date;

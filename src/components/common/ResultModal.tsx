@@ -62,7 +62,7 @@ export default function ResultModal({
             <button
                type="button"
                onClick={onClick}
-               className="bg-primary-blue-300 hover:bg-primary-blue-200 mx-4 rounded-2xl p-4 font-semibold text-white max-md:text-sm"
+               className="bg-primary-blue-300 hover:bg-primary-blue-200 mx-4 mt-6 rounded-2xl p-4 font-semibold text-white max-md:text-sm"
             >
                {buttonText ?? t("confirm")}
             </button>

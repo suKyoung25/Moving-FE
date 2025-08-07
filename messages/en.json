@@ -1,4 +1,100 @@
 {
+   "Sign": {
+      "logoAlt": "Moving Logo",
+      "moverQuestion": "Are you a mover?",
+      "moverUserPage": "Mover Exclusive Page",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Please enter your email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Please enter your password",
+      "loadingText": "Loading...",
+      "loginButton": "Login",
+      "signupPrompt": "Not a Moving member yet?",
+      "signupLinkText": "Sign up with email",
+      "easyLoginPrompt": "Quick Sign-up with SNS accounts",
+      "googleAlt": "Google Login",
+      "kakaoAlt": "Kakao Login",
+      "naverAlt": "Naver Login",
+      "generalUserQuestion": "Are you a general user?",
+      "generalUserPage": "General User Exclusive Page",
+      "nameLabel": "Name",
+      "namePlaceholder": "Please enter your name",
+      "phoneLabel": "Phone number",
+      "phonePlaceholder": "Please enter numbers only",
+      "passwordConfirmationLabel": "Confirm Password",
+      "passwordConfirmationPlaceholder": "Please enter your password again",
+      "signUpButton": "Get Started",
+      "alreadyMemberText": "Already a Moving member?",
+      "loginLinkText": "Login"
+   },
+   "Profile": {
+      "moverProfileTitle": "Mover Profile Registration",
+      "moverProfileDescription": "Please fill out additional information to complete your profile.",
+      "unknownUserType": "Unknown user type.",
+      "createProfileTitle": "Profile Registration",
+      "createProfileDescription": "Please fill out additional information to complete your sign up.",
+      "serviceTitle": "Services Used",
+      "serviceDescription": "*You can select multiple services and modify anytime!",
+      "regionTitle": "My Living Area",
+      "regionDescription": "*You can modify your area at any time!",
+      "editProfileTitle": "Edit Profile",
+      "profileImageLabel": "Profile Image",
+      "loadingText": "Loading...",
+      "startButton": "Get Started",
+      "moveTypes": {
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move"
+      },
+      "regions": {
+         "서울": "Seoul",
+         "부산": "Busan",
+         "대구": "Daegu",
+         "인천": "Incheon",
+         "광주": "Gwangju",
+         "대전": "Daejeon",
+         "울산": "Ulsan",
+         "세종": "Sejong",
+         "경기": "Gyeonggi",
+         "강원": "Gangwon",
+         "충북": "Chungbuk",
+         "충남": "Chungnam",
+         "전북": "Jeonbuk",
+         "전남": "Jeonnam",
+         "경북": "Gyeongbuk",
+         "경남": "Gyeongnam",
+         "제주": "Jeju"
+      },
+      "nickNameLabel": "Nickname",
+      "nickNamePlaceholder": "Enter a name to display on the site",
+      "careerLabel": "Career",
+      "careerPlaceholder": "Enter your career experience",
+      "introductionLabel": "One-line Introduction",
+      "introductionPlaceholder": "Please enter a one-line introduction",
+      "descriptionLabel": "Detailed Description",
+      "descriptionPlaceholder": "Please enter the detailed content",
+      "providedServicesLabel": "Provided Services",
+      "serviceAreasLabel": "Service Areas",
+      "loadingRegister": "Registering...",
+      "profileRegistered": "Profile has been registered.",
+      "moverProfileEditTitle": "Edit Mover Profile",
+      "moverProfileEditDescription": "Please fill out additional information to complete your profile update.",
+      "updatingText": "Updating...",
+      "updateButton": "Update",
+      "cancelButton": "Cancel",
+      "nameLabel": "Name",
+      "namePlaceholder": "Kim Code",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "Please enter numbers only.",
+      "currentPasswordLabel": "Current Password",
+      "currentPasswordPlaceholder": "Please enter your current password.",
+      "newPasswordLabel": "New Password",
+      "newPasswordPlaceholder": "Please enter a new password.",
+      "newPasswordConfirmLabel": "Confirm New Password",
+      "newPasswordConfirmPlaceholder": "Please re-enter your new password.",
+      "profileUpdated": "Profile has been updated."
+   },
    "MoverSearch": {
       "findDriver": "Find Driver",
       "areas": {
@@ -293,7 +389,8 @@
       "loginRequired": "Login is required for this service.",
       "loadFailed": "Failed to load favorite drivers.",
       "noFavorites": "No favorite drivers found.",
-      "toggleError": "An error occurred while toggling favorite."
+      "toggleError": "An error occurred while toggling favorite.",
+      "removeSuccess": "Removed from favorites."
    },
    "MyQuotes": {
       "Client": {
@@ -352,6 +449,7 @@
          "Detail": {
             "pageTitle": "Quote Details",
             "estimatePriceTitle": "Estimate Price",
+            "estimateInfoTitle": "Estimate Info",
             "shareQuoteText": "Share Quote",
             "money": "KRW",
             "button": {
@@ -421,6 +519,88 @@
             "SMALL": "Small Move",
             "estimateSuffix": "Move"
          }
+      }
+   },
+   "ReceivedRequests": {
+      "pageTitle": "Received Requests",
+      "loading": "Loading request list...",
+      "totalCount": "There are {count} requests in total",
+      "filterIconAlt": "Open filters",
+      "sidebar": {
+         "moveTypeTitle": "Move Types",
+         "filterTitle": "Filters",
+         "selectAll": "Select All",
+         "selectAllAlt": "Select all",
+         "singleSelectAlt": "Select {type}",
+         "onlyDesignated": "Show Designated Requests Only",
+         "onlyDesignatedAlt": "Show only designated requests"
+      },
+      "moveTypes": {
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move"
+      },
+      "searchInput": {
+         "placeholder": "Which customer are you searching for?",
+         "iconAlt": "Search"
+      },
+      "sort": {
+         "moveDate-asc": "Earliest Move Date",
+         "moveDate-desc": "Latest Move Date"
+      },
+      "loadingMore": "Loading more...",
+      "noMoreRequests": "All requests have arrived",
+      "clientHonorific": "Client",
+      "moveDateLabel": "Move Date",
+      "departureLabel": "From",
+      "destinationLabel": "To",
+      "sendEstimateButton": "Send Estimate",
+      "rejectButton": "Reject",
+      "modal": {
+         "title": "Move Types and Filters",
+         "closeAlt": "Close button",
+         "selectAll": "Select All",
+         "selectAllAlt": "Select all",
+         "singleSelectAlt": "Select {type}",
+         "onlyDesignated": "Show Designated Requests Only",
+         "onlyDesignatedAlt": "Show only designated requests",
+         "sendTitle": "Send Estimate",
+         "rejectTitle": "Reject Request",
+         "sendButton": "Send Estimate",
+         "rejectButton": "Reject"
+      },
+      "priceLabel": "Estimate Price",
+      "pricePlaceholder": "Enter amount",
+      "commentLabel": "Please enter a comment",
+      "commentPlaceholder": "Write a note about the estimate",
+      "rejectReasonLabel": "Rejection Reason",
+      "rejectReasonPlaceholder": "Enter the reason for rejection",
+      "toast": {
+         "sendSuccess": "Estimate sent successfully to the client.",
+         "rejectSuccess": "The request has been rejected.",
+         "requestFailed": "Request failed. Please try again."
+      },
+      "Detail": {
+         "pageTitle": "Request Details",
+         "shareQuoteText": "Share Quote",
+         "clientHonorific": "Client",
+         "moveDateLabel": "Move Date",
+         "departureLabel": "From",
+         "destinationLabel": "To",
+         "estimateInfoTitle": "Estimate Info",
+         "labels": {
+            "requestedAt": "Requested At",
+            "service": "Service",
+            "from": "From",
+            "to": "To"
+         },
+         "moveTypes": {
+            "OFFICE": "Office",
+            "HOME": "Home",
+            "SMALL": "Small"
+         },
+         "estimateSuffix": "Move",
+         "confirmedLabel": "Estimate Confirmed"
       }
    },
    "Header": {
@@ -504,5 +684,31 @@
       "selectRating": "Please select a rating.",
       "maxRating": "Maximum rating is 5.",
       "minContent": "Please enter at least 10 characters in your review."
+   },
+   "NotFound": {
+      "logoAlt": "Logo",
+      "earthAlt": "Earth image",
+      "moverAlt": "Moving man image",
+      "truckMoverAlt": "Truck moving man image",
+      "starAlt": "Star image",
+      "pageNotFoundTitle": "The page you are trying to access\ndoes not exist.",
+      "pageNotFoundMessageLine1": "We apologize for the inconvenience.",
+      "pageNotFoundMessageLine2": "The page you are looking for does not currently exist.",
+      "pageNotFoundMessageLine3": "Please check and try again.",
+      "goToMain": "Go to Main"
+   },
+   "Support": {
+      "supportMessage": "Moving is with you.",
+      "nameLabel": "Name",
+      "emailLabel": "Email",
+      "titleLabel": "Title",
+      "numberLabel": "Contact Number",
+      "contentLabel": "Inquiry Content",
+      "fileUploadLabel": "Upload Attachment",
+      "defaultToastMessage": "Unable to confirm request result.",
+      "sendingInquiry": "Sending inquiry to Moving",
+      "sendInquiry": "Send inquiry to Moving",
+      "supportRegisteredMessage": "Your inquiry has been successfully submitted.",
+      "supportRegisterFailedMessage": "Failed to submit your inquiry. Please try again later."
    }
 }

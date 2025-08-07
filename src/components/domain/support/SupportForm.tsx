@@ -9,8 +9,11 @@ import SupportInput from "./SupportInput";
 import { createSupport } from "@/lib/actions/support.action";
 import ToastPopup from "@/components/common/ToastPopup";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SupportForm() {
+   const t = useTranslations("Support");
+
    const methods = useForm<SupportFormSchema>({
       resolver: zodResolver(supportFormSchema),
       mode: "onChange",
@@ -43,7 +46,7 @@ export default function SupportForm() {
 
       setToast({
          id: Date.now(),
-         text: res.message ?? "요청 처리 결과를 확인할 수 없습니다.",
+         text: res.message ?? t("defaultToastMessage"),
          success: res.success,
       });
 
@@ -70,21 +73,25 @@ export default function SupportForm() {
             className="mt-4 flex w-full flex-col md:mt-6"
          >
             <div className="md:flex md:gap-10 lg:gap-20">
-               <SupportInput name="name" label="작성자 성함" important />
-               <SupportInput name="email" label="이메일" important />
+               <SupportInput name="name" label={t("nameLabel")} important />
+               <SupportInput name="email" label={t("emailLabel")} important />
             </div>
             <div className="md:flex md:gap-10 lg:gap-20">
-               <SupportInput name="title" label="글제목" important />
-               <SupportInput name="number" label="연락처" />
+               <SupportInput name="title" label={t("titleLabel")} important />
+               <SupportInput name="number" label={t("numberLabel")} />
             </div>
             <div>
                <SupportInput
                   name="content"
-                  label="문의내용"
+                  label={t("contentLabel")}
                   important
                   textarea
                />
-               <SupportInput name="file" label="첨부파일업로드" fileupload />
+               <SupportInput
+                  name="file"
+                  label={t("fileUploadLabel")}
+                  fileupload
+               />
             </div>
             <div
                className={`mt-4 flex justify-center transition-opacity duration-500 ease-in-out md:mt-6 ${

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, memo, useMemo } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover"; // API 함수 추가
 import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { useAuth } from "@/context/AuthContext";
@@ -47,7 +48,7 @@ export default memo(function FavoriteDriverList({
    const t = useTranslations("FavoriteMovers");
 
    const { user } = useAuth();
-   const { showToast } = useToast();
+   const { showSuccess, showError } = useToast();
 
    const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
@@ -108,14 +109,8 @@ export default memo(function FavoriteDriverList({
    const handleFavoriteToggle = useCallback(
       async (moverId: string) => {
          try {
-            // 해제하려는 기사님의 현재 정보 가져오기
-            const targetMover = favoriteMovers.find(
-               (mover) => mover.id === moverId,
-            );
-            const newFavoriteCount = Math.max(
-               (targetMover?.favoriteCount || 1) - 1,
-               0,
-            );
+            // 실제 API 호출
+            const result = await toggleFavoriteMover(moverId);
 
             // 즉시 UI에서 제거 (낙관적 업데이트)
             setFavoriteMovers((prev) =>
@@ -123,10 +118,14 @@ export default memo(function FavoriteDriverList({
             );
 
             // 부모 컴포넌트에 변경사항 알림
-            onFavoriteChange?.(moverId, false, newFavoriteCount);
+            onFavoriteChange?.(
+               moverId,
+               result.isFavorite,
+               result.favoriteCount || 0,
+            );
 
             // Toast로 성공 메시지 표시
-            showToast("찜 목록에서 제거되었습니다.", true);
+            showSuccess(t("removeSuccess"));
 
             // 약간의 지연 후 최신 데이터로 새로고침
             setTimeout(() => {
@@ -134,12 +133,19 @@ export default memo(function FavoriteDriverList({
             }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
-            showToast(t("toggleError"), false);
+            showError(t("toggleError"));
             // 에러 시 데이터 새로고침으로 상태 복구
             loadFavoriteMovers();
          }
       },
-      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showToast, t],
+      [
+         onFavoriteChange,
+         loadFavoriteMovers,
+         favoriteMovers,
+         showSuccess,
+         showError,
+         t,
+      ],
    );
 
    // 외부 refreshKey 변화에 따른 데이터 새로고침

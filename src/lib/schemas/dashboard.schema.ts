@@ -35,7 +35,16 @@ const rawMoverBasicInfoSchema = {
       .min(10, "최소 10자리 이상이어야 합니다.")
       .max(11, "최대 11자리 이하여야 합니다.")
       .regex(/^\d+$/, "숫자만 입력해주세요."),
-   newPassword: z.string().optional(),
+   newPassword: z
+      .string()
+      .min(8, "최소 8자리 이상이어야합니다.")
+      .max(16, "최대 16자리 이하여야합니다.")
+      .regex(
+         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,16}$/,
+         "문자와 숫자, 특수문자를 섞어 비밀번호를 작성해 주세요.",
+      )
+      .optional()
+      .or(z.literal("")),
    newPasswordConfirmation: z.string().optional(),
 };
 

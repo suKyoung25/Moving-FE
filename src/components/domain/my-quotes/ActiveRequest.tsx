@@ -18,7 +18,6 @@ export default function ActiveRequest() {
 
    const { data: result, isPending } = useActiveRequest();
    const activeRequest = result?.data;
-   console.log(activeRequest);
 
    // date-fns locale을 next-intl의 locale에 맞게 매핑
    const localeMap: Record<string, Locale> = {
