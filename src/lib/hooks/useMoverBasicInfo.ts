@@ -88,7 +88,10 @@ function useMoverBasicInfo() {
          }
 
          const res = await updateMoverBasicInfo(payload);
-         showSuccess("기본정보가 정상적으로 수정되었습니다.");
+
+         if (res.message) {
+            showSuccess("기본정보가 정상적으로 수정되었습니다.");
+         }
 
          setTimeout(async () => {
             await refreshUser();
