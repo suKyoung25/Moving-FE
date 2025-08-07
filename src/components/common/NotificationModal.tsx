@@ -54,7 +54,7 @@ export default function NotificationModal({
          queryClient.invalidateQueries({ queryKey: ["notifications"] });
          const { data } = await getRequest(item.targetId!);
          if (!data) {
-            showError("취소된 견적 요청입니다.");
+            showError("존재하지 않는 견적 요청입니다.");
             return;
          }
          router.push(item.targetUrl ?? "");

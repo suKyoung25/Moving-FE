@@ -11,7 +11,7 @@ import { useRef, useState } from "react";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 import { Quotes } from "@/lib/types";
 
-interface QuotaionInfoProps {
+interface QuotationInfoProps {
    request: Pick<
       Quotes,
       "fromAddress" | "toAddress" | "moveDate" | "moveType" | "requestedAt"
@@ -21,12 +21,12 @@ interface QuotaionInfoProps {
    onClick?: () => void;
 }
 
-export default function QuotaionInfo({
+export default function QuotationInfo({
    request,
    chipType,
    isPending,
    onClick,
-}: QuotaionInfoProps) {
+}: QuotationInfoProps) {
    const t = useTranslations("MyQuotes.Client");
    const locale = useLocale();
 

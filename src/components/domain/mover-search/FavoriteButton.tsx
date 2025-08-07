@@ -7,6 +7,7 @@ import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
 
 interface FavoriteButtonProps {
    mover: Mover;
@@ -27,6 +28,7 @@ export function FavoriteButton({
 }: FavoriteButtonProps) {
    const t = useTranslations("MoverDetail");
 
+   const { showSuccess } = useToast();
    const [isLoading, setIsLoading] = useState(false);
    const [isFavorite, setIsFavorite] = useState(mover.isFavorite ?? false);
 
@@ -56,7 +58,7 @@ export function FavoriteButton({
             result.action === "added"
                ? "찜 목록에 추가되었습니다."
                : "찜 목록에서 제거되었습니다.";
-         console.log(message);
+         showSuccess(message);
       } catch (error) {
          console.error("찜 처리 실패:", error);
 

@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { NoRequestModal } from "./NoRequestModal";
 import { createDesignatedEstimate } from "@/lib/api/estimate/requests/createDesignatedEstimate";
 import { Mover } from "@/lib/types";
-import ToastPopup from "@/components/common/ToastPopup";
 import { useAuth } from "@/context/AuthContext";
 import { useActiveRequest } from "@/lib/api/request/requests/query";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
 
 interface EstimateRequestButtonProps {
    moverId: string;
@@ -27,16 +27,12 @@ export function EstimateRequestButton({
    const t = useTranslations("MoverDetail");
 
    const { user } = useAuth();
+   const { showSuccess, showError } = useToast();
    const [isLoading, setIsLoading] = useState(false);
    const [showNoRequestModal, setShowNoRequestModal] = useState(false);
    const [isRequestSuccess, setIsRequestSuccess] = useState(
       mover.hasDesignatedRequest ?? false,
    );
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    const { data: result, isPending } = useActiveRequest();
    const activeRequest = result?.data;
@@ -63,11 +59,7 @@ export function EstimateRequestButton({
             setShowNoRequestModal(true);
             return;
          } else if (!activeRequest.isPending) {
-            setToast({
-               id: Date.now(),
-               text: t("toast.alreadyInProgress"),
-               success: false,
-            });
+            showError(t("toast.alreadyInProgress"));
             return;
          }
          await submitDesignatedEstimate(activeRequest.id);
@@ -82,12 +74,7 @@ export function EstimateRequestButton({
                errorMessage = error.message;
             }
          }
-
-         setToast({
-            id: Date.now(),
-            text: errorMessage,
-            success: false,
-         });
+         showError(errorMessage);
       } finally {
          setIsLoading(false);
       }
@@ -99,13 +86,7 @@ export function EstimateRequestButton({
 
          // 이때 DesignatedRequest 테이블에 레코드 생성됨
          await createDesignatedEstimate(moverId, requestId);
-
-         setToast({
-            id: Date.now(),
-            text: t("toast.requestSuccess"),
-            success: true,
-         });
-
+         showSuccess(t("toast.requestSuccess"));
          setIsRequestSuccess(true);
 
          // 성공 시 부모에게 알림 (DESIGNATED 칩 표시용)
@@ -136,11 +117,7 @@ export function EstimateRequestButton({
             }
          }
 
-         setToast({
-            id: Date.now(),
-            text: errorMessage,
-            success: false,
-         });
+         showError(errorMessage);
       } finally {
          setIsLoading(false);
       }
@@ -187,14 +164,6 @@ export function EstimateRequestButton({
             onClose={() => setShowNoRequestModal(false)}
             onConfirm={handleNoRequestConfirm}
          />
-
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
-         )}
       </>
    );
 }

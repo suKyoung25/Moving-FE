@@ -9,15 +9,7 @@ import { useRouter } from "next/navigation";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
 import { useTranslations } from "next-intl";
 
-export default function RequestCard({
-   req,
-   setToast,
-}: {
-   req: ReceivedRequest;
-   setToast: (
-      toast: { id: number; text: string; success: boolean } | null,
-   ) => void;
-}) {
+export default function RequestCard({ req }: { req: ReceivedRequest }) {
    const t = useTranslations("ReceivedRequests");
 
    const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,7 +91,6 @@ export default function RequestCard({
                isOpen={isModalOpen}
                onClose={closeModal}
                modalType={modalType}
-               setToast={setToast}
                request={req}
                requestId={req.id}
                clientId={req.clientId}

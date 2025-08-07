@@ -14,6 +14,7 @@ import { extractRegionNames } from "../utils/profile.util";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
 
 function useMoverProfileUpdateForm() {
    const t = useTranslations("Profile");
@@ -21,6 +22,7 @@ function useMoverProfileUpdateForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { user, refreshUser } = useAuth();
+   const { showSuccess } = useToast();
 
    const {
       register,
@@ -89,10 +91,8 @@ function useMoverProfileUpdateForm() {
 
          if (res) {
             await refreshUser();
-            alert(t("profileUpdated")); //TODO: 토스트 알림으로 바꾸기
-
-            refreshUser();
-
+            showSuccess("profileUpdated");
+            refreshUser(); // TODO: 이거 왜 한번 더 호출하는 건가요?
             router.push("/dashboard");
          }
       } catch (error) {

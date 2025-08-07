@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import QuotaionInfo from "./QuotaionInfo";
+import QuotationInfo from "./QuotationInfo";
 import Dropdown from "./Dropdown";
 import ReceivedCard from "./ReceivedCard";
 import { Estimate, RequestType } from "@/lib/types";
@@ -29,7 +29,7 @@ export default function ReceivedSection({
          <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
             {t("estimateInfoTitle")}
          </p>
-         <QuotaionInfo request={request} />
+         <QuotationInfo request={request} />
          <main className="mt-8 lg:mt-10.5">
             <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
                {t("estimateListTitle")}
