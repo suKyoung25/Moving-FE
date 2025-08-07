@@ -6,6 +6,8 @@ import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoveTextCard from "../my-quotes/MoveTextCard";
 import RequestActionModal from "./RequestActionModal";
 import { useRouter } from "next/navigation";
+import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
+import { useTranslations } from "next-intl";
 
 export default function RequestCard({
    req,
@@ -16,6 +18,8 @@ export default function RequestCard({
       toast: { id: number; text: string; success: boolean } | null,
    ) => void;
 }) {
+   const t = useTranslations("ReceivedRequests");
+
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [modalType, setModalType] = useState<"accept" | "reject" | null>(null);
    const router = useRouter();
@@ -47,28 +51,26 @@ export default function RequestCard({
                   {req.isDesignated && <MoveChip type="DESIGNATED" />}
                </div>
                <span className="text-16-semibold lg:text-20-semibold">
-                  {req.clientName} 고객님
+                  {req.clientName} {t("clientHonorific")}
                </span>
                <div className="flex flex-col">
                   <div className="flex items-center md:hidden">
-                     <MoveTextCard text="이사일" />
+                     <MoveTextCard text={t("moveDateLabel")} />
                      <span>
-                        {req.moveDate.slice(0, 10)} (
-                        {"일월화수목금토"[new Date(req.moveDate).getDay()]})
+                        <FormattedDateWithDay dateString={req.moveDate} />
                      </span>
                   </div>
                   <div className="bg-line-100 h-[1px]"></div>
                   <div className="[&_span]:lg:text-18-medium flex items-center">
                      <div className="hidden items-center md:flex">
-                        <MoveTextCard text="이사일" />
+                        <MoveTextCard text={t("moveDateLabel")} />
                         <span>
-                           {req.moveDate.slice(0, 10)} (
-                           {"일월화수목금토"[new Date(req.moveDate).getDay()]})
+                           <FormattedDateWithDay dateString={req.moveDate} />
                         </span>
                      </div>
-                     <MoveTextCard text="출발" />
+                     <MoveTextCard text={t("departureLabel")} />
                      <span>{req.fromAddress.slice(0, 6)}</span>
-                     <MoveTextCard text="도착" />
+                     <MoveTextCard text={t("destinationLabel")} />
                      <span>{req.toAddress.slice(0, 6)}</span>
                   </div>
                </div>
@@ -80,13 +82,13 @@ export default function RequestCard({
                      className="bg-primary-blue-300 w-full text-white"
                      onClick={() => openModal("accept")}
                   >
-                     견적 보내기
+                     {t("sendEstimateButton")}
                   </button>
                   <button
                      className="border-primary-blue-300 text-primary-blue-300 w-full border"
                      onClick={() => openModal("reject")}
                   >
-                     반려
+                     {t("rejectButton")}
                   </button>
                </div>
             </div>
