@@ -82,7 +82,7 @@ function useMoverProfileUpdateForm() {
          // 이미지 처리 후 나머지 데이터 처리
          const processedData = {
             ...data,
-            image: imageUrl, // 업로드된 이미지 URL 또는 undefined
+            image: data.image instanceof File ? imageUrl : data.image, // 업로드된 이미지 URL 또는 undefined
             career: Number(data.career), // string > number로 변환
             serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
          };
