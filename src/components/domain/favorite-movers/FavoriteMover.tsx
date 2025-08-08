@@ -10,7 +10,6 @@ import EmptyState from "@/components/common/EmptyState";
 import SolidButton from "@/components/common/SolidButton";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { FavoriteMoverState } from "@/lib/types";
-import ToastPopup from "@/components/common/ToastPopup";
 import { useFavoriteMovers } from "@/lib/api/favorite/query";
 import { useToggleFavoriteMover } from "@/lib/api/favorite/mutation";
 
@@ -24,11 +23,6 @@ export default function FavoriteMover() {
       limit: 6,
       totalPages: 1,
    });
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    // 찜한 기사님 리스트 패치
    const { data, isPending, error } = useFavoriteMovers({
@@ -40,7 +34,6 @@ export default function FavoriteMover() {
    const { mutate } = useToggleFavoriteMover({
       page: pagination.page,
       limit: pagination.limit,
-      onToast: setToast,
    });
 
    const handleLikedClick = (e: React.MouseEvent, moverId: string) => {
@@ -122,13 +115,6 @@ export default function FavoriteMover() {
                   {t("goToFavorite")}
                </SolidButton>
             </div>
-         )}
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
          )}
       </>
    );

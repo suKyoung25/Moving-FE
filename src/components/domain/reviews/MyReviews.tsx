@@ -52,7 +52,7 @@ export default function MyReviews() {
    const handleRefresh = () => {
       refetch();
       queryClient.refetchQueries({ queryKey: ["writableReviews"] }); // writableReviews 리패칭
-      showSuccess("리뷰가 성공적으로 수정/삭제되었습니다.");
+      showSuccess(t("reviewModifiedSuccess"));
    };
 
    // 리뷰 목록
