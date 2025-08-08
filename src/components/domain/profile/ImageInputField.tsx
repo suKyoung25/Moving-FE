@@ -55,7 +55,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
 
                      {/* 커스텀 업로드 버튼 (SVG 사용) */}
                      {previewUrl ? null : (
-                        <div>
+                        <div className="mb-4">
                            <button
                               type="button"
                               onClick={() => fileInputRef.current?.click()}
@@ -78,7 +78,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
                            alt="미리보기"
                            width={160}
                            height={160}
-                           className="cursor-pointer rounded-lg object-cover"
+                           className="mb-4 cursor-pointer rounded-lg object-cover"
                            onClick={() => fileInputRef.current?.click()} // 클릭 시 파일 선택창 열기
                         />
                      )}

@@ -40,19 +40,17 @@ export default function MoverProfileUpdateForm() {
                   error={errors.image}
                />
 
-               <hr className="border-line-100 m-0 my-8 hidden border-t p-0 lg:block" />
+               <hr className="border-line-100 m-0 hidden border-t p-0 lg:block" />
 
-               <div className="mt-8">
-                  <GeneralInputField
-                     name="nickName"
-                     text={t("nickNameLabel")}
-                     placeholder={t("nickNamePlaceholder")}
-                     register={register}
-                     error={errors.nickName}
-                  />
-               </div>
+               <GeneralInputField
+                  name="nickName"
+                  text={t("nickNameLabel")}
+                  placeholder={t("nickNamePlaceholder")}
+                  register={register}
+                  error={errors.nickName}
+               />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField
                   name="career"
@@ -62,7 +60,7 @@ export default function MoverProfileUpdateForm() {
                   error={errors.career}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField
                   name="introduction"
@@ -72,7 +70,7 @@ export default function MoverProfileUpdateForm() {
                   error={errors.introduction}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0 lg:hidden" />
+               <hr className="border-line-100 m-0 border-t p-0 lg:hidden" />
             </div>
 
             <div className="flex-1">
@@ -84,7 +82,7 @@ export default function MoverProfileUpdateForm() {
                   error={errors.description}
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 border-t p-0" />
 
                <ButtonInputField
                   name="serviceType"
@@ -98,7 +96,7 @@ export default function MoverProfileUpdateForm() {
                   }
                />
 
-               <hr className="border-line-100 m-0 my-8 border-t p-0" />
+               <hr className="border-line-100 m-0 mt-8 border-t p-0" />
 
                <ButtonInputField
                   name="serviceArea"

@@ -30,21 +30,21 @@ export default function MoverProfilePostForm() {
       >
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex flex-1 flex-col">
+               <ImageInputField
+                  name="image"
+                  text={t("profileImageLabel")}
+                  control={control}
+                  error={errors.image}
+               />
+
+               <hr className="border-line-100 m-0 border-t p-0" />
+
                <GeneralInputField<MoverProfileInput>
                   name="nickName"
                   text={t("nickNameLabel")}
                   placeholder={t("nickNamePlaceholder")}
                   register={register}
                   error={errors.nickName}
-               />
-
-               <hr className="border-line-100 m-0 border-t p-0" />
-
-               <ImageInputField
-                  name="image"
-                  text={t("profileImageLabel")}
-                  control={control}
-                  error={errors.image}
                />
 
                <hr className="border-line-100 m-0 border-t p-0" />
@@ -93,7 +93,7 @@ export default function MoverProfilePostForm() {
                   }
                />
 
-               <hr className="border-line-100 m-0 border-t p-0" />
+               <hr className="border-line-100 mt-8 border-t p-0" />
 
                <ButtonInputField
                   name="serviceArea"
@@ -109,7 +109,7 @@ export default function MoverProfilePostForm() {
             </div>
          </div>
 
-         <div className="mt-17 lg:pl-185">
+         <div className="mt-8 lg:pl-185">
             <SolidButton disabled={!isValid || isLoading} type="submit">
                {isLoading ? t("loadingRegister") : t("startButton")}
             </SolidButton>
