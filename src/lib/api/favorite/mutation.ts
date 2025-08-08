@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { FavoriteMoversResponse, FavoriteMoverState } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface UseToggleFavoriteMoverParams {
    page: number;
@@ -13,6 +14,7 @@ export function useToggleFavoriteMover({
    limit,
    onToast,
 }: UseToggleFavoriteMoverParams) {
+   const t = useTranslations("FavoriteMovers");
    const queryClient = useQueryClient();
 
    return useMutation({
@@ -43,7 +45,7 @@ export function useToggleFavoriteMover({
          if (onToast) {
             onToast({
                id: Date.now(),
-               text: "찜이 성공적으로 변경되었습니다.",
+               text: t("favoriteToggleSuccess"),
                success: true,
             });
          }
@@ -52,7 +54,7 @@ export function useToggleFavoriteMover({
          if (onToast) {
             onToast({
                id: Date.now(),
-               text: "찜 처리 중 오류가 발생했습니다.",
+               text: t("favoriteToggleError"),
                success: false,
             });
          }

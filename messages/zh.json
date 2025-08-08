@@ -389,7 +389,9 @@
       "starAria": "{point}分",
       "reviewModifiedSuccess": "评价成功修改/删除。",
       "editDeleteAria": "编辑和删除评价",
-      "editDeleteAlt": "编辑和删除图标"
+      "editDeleteAlt": "编辑和删除图标",
+      "deleteConfirmTitle": "您确定要删除这条评价吗？",
+      "deleteConfirmDescription": "此操作不可撤销。"
    },
    "FavoriteMovers": {
       "title": "收藏的搬运工",
@@ -400,7 +402,9 @@
       "loadFailed": "无法加载收藏的司机列表。",
       "noFavorites": "没有收藏的司机。",
       "toggleError": "收藏操作时发生错误。",
-      "errorOccurred": "发生错误。"
+      "errorOccurred": "发生错误。",
+      "favoriteToggleSuccess": "收藏状态已成功更新。",
+      "favoriteToggleError": "更新收藏状态时发生错误。"
    },
    "MyQuotes": {
       "Client": {

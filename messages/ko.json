@@ -389,7 +389,9 @@
       "starAria": "{point}점",
       "reviewModifiedSuccess": "리뷰가 성공적으로 수정/삭제되었습니다.",
       "editDeleteAria": "리뷰 수정 및 삭제",
-      "editDeleteAlt": "수정 및 삭제 아이콘"
+      "editDeleteAlt": "수정 및 삭제 아이콘",
+      "deleteConfirmTitle": "리뷰를 삭제하시겠습니까?",
+      "deleteConfirmDescription": "이 작업은 되돌릴 수 없습니다."
    },
    "FavoriteMovers": {
       "title": "찜한 기사님",
@@ -400,7 +402,9 @@
       "loadFailed": "찜한 기사님 목록을 불러오는데 실패했습니다.",
       "noFavorites": "찜한 기사님이 없습니다.",
       "toggleError": "찜 처리 중 오류가 발생했습니다.",
-      "errorOccurred": "오류가 발생했습니다."
+      "errorOccurred": "오류가 발생했습니다.",
+      "favoriteToggleSuccess": "찜이 성공적으로 변경되었습니다.",
+      "favoriteToggleError": "찜 처리 중 오류가 발생했습니다."
    },
    "MyQuotes": {
       "Client": {

@@ -43,7 +43,10 @@ export default function FavoriteMover() {
       onToast: setToast,
    });
 
-   const handleLikedClick = (moverId: string) => mutate(moverId);
+   const handleLikedClick = (e: React.MouseEvent, moverId: string) => {
+      e.stopPropagation(); // 이벤트 버블링 방지
+      mutate(moverId);
+   };
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
@@ -92,7 +95,7 @@ export default function FavoriteMover() {
                         big={true}
                         profileImage={mover.profileImage}
                         isLiked={mover.isLiked}
-                        handleLikedClick={() => handleLikedClick(mover.id)}
+                        handleLikedClick={(e) => handleLikedClick(e, mover.id)}
                         nickName={mover.nickName}
                         favoriteCount={mover.favoriteCount}
                         averageReviewRating={mover.averageReviewRating}
