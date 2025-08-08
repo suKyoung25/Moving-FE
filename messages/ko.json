@@ -468,7 +468,10 @@
       "editDeleteAria": "리뷰 수정 및 삭제",
       "editDeleteAlt": "수정 및 삭제 아이콘",
       "deleteConfirmTitle": "리뷰를 삭제하시겠습니까?",
-      "deleteConfirmDescription": "이 작업은 되돌릴 수 없습니다."
+      "deleteConfirmDescription": "이 작업은 되돌릴 수 없습니다.",
+      "editConfirmTitle": "리뷰 수정",
+      "editConfirmDescription": "리뷰를 수정하시겠습니까?",
+      "noChangesError": "변경된 내용이 없습니다."
    },
    "FavoriteMovers": {
       "title": "찜한 기사님",
