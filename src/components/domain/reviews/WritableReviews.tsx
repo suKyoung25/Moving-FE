@@ -14,11 +14,12 @@ import { formatIsoToYMD } from "@/lib/utils";
 import { WritableReview } from "@/lib/types";
 import { useWritableReviews } from "@/lib/api/review/query";
 import { useToast } from "@/context/ToastConText";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function WritableReviews() {
    const t = useTranslations("Reviews");
    const { showSuccess } = useToast();
-
+   const queryClient = useQueryClient();
    // 페이지네이션 상태
    const [pagination, setPagination] = useState({
       page: 1,
@@ -49,6 +50,7 @@ export default function WritableReviews() {
    // 리뷰 작성 성공 시 상태 토글해서 refetch
    const handleReviewSuccess = () => {
       refetch();
+      queryClient.refetchQueries({ queryKey: ["myReviews"] }); // myReview 리패칭
       showSuccess("리뷰가 성공적으로 등록되었습니다.");
    };
 

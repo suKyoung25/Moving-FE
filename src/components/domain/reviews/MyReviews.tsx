@@ -18,11 +18,13 @@ import { MyReview } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMyReviews } from "@/lib/api/review/query";
 import { useToast } from "@/context/ToastConText";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function MyReviews() {
    const t = useTranslations("Reviews");
    const router = useRouter();
    const { showSuccess } = useToast();
+   const queryClient = useQueryClient();
 
    // 페이지네이션 상태
    const [pagination, setPagination] = useState({
@@ -49,6 +51,7 @@ export default function MyReviews() {
    // 리뷰 수정/삭제 완료 시 리스트 새로고침
    const handleRefresh = () => {
       refetch();
+      queryClient.refetchQueries({ queryKey: ["writableReviews"] }); // writableReviews 리패칭
       showSuccess("리뷰가 성공적으로 수정/삭제되었습니다.");
    };
 
