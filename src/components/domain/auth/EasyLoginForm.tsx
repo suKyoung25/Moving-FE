@@ -30,11 +30,21 @@ export default function EasyLoginForm({ userType }: Prop) {
    };
 
    return (
-      <section className="my-12 flex flex-col items-center gap-6 lg:my-18">
-         <p className="text-black-100 text-12-regular lg:text-20-regular">
+      <section
+         aria-labelledby="easy-login-form"
+         className="my-12 flex flex-col items-center gap-6 lg:my-18"
+      >
+         <p
+            id="easy-login-form"
+            className="text-black-100 text-12-regular lg:text-20-regular"
+         >
             {t("easyLoginPrompt")}
          </p>
-         <div className="flex gap-6 lg:gap-8">
+         <div
+            role="group"
+            aria-label="SNS 로그인 옵션"
+            className="flex gap-6 lg:gap-8"
+         >
             <figure
                onClick={handleGoogleLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
