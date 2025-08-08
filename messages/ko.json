@@ -150,7 +150,12 @@
          "needLogin": "로그인이 필요합니다.",
          "toggleFailed": "찜 처리 중 오류가 발생했습니다."
       },
-      "defaultIntroduction": "고객님의 물품을 안전하게 운송해 드립니다."
+      "defaultIntroduction": "고객님의 물품을 안전하게 운송해 드립니다.",
+      "toast": {
+         "addedToFavorites": "찜 목록에 추가되었습니다.",
+         "removedFromFavorites": "찜 목록에서 제거되었습니다."
+      },
+      "goToLogin": "로그인하러 가기"
    },
    "MoverDetail": {
       "requestDesignatedEstimate": "기사님에게 지정 견적을 요청해보세요!",
@@ -176,6 +181,8 @@
          "notFound": "기사님 정보를 찾을 수 없습니다."
       },
       "toast": {
+         "addedToFavorites": "찜 목록에 추가되었습니다.",
+         "removedFromFavorites": "찜 목록에서 제거되었습니다.",
          "alreadyInProgress": "이미 진행중인 견적이 있어요!",
          "requestSuccess": "지정 견적 요청이 성공적으로 전송되었습니다!"
       },
