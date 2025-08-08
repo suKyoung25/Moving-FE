@@ -1,4 +1,74 @@
 {
+   "Landing": {
+      "logo1Alt": "Default color logo",
+      "logo2Alt": "Alternative color logo",
+      "sideNavItemAria": "Go to section {index}",
+      "scrollIconAlt": "Scroll",
+      "bannerImageAlt": "Moving banner image {number}",
+      "banner1": {
+         "title1": "On moving day,",
+         "title2": "without worries",
+         "title3": "cleanly",
+         "subtitle1": "A reliable,",
+         "subtitle2": "professional matching service"
+      },
+      "banner2": {
+         "title1": "Like a new home,",
+         "title2": "anytime, anywhere",
+         "title3": "cleanly",
+         "subtitle1": "Your space,",
+         "subtitle2": "transformed by a professional's touch"
+      },
+      "banner3": {
+         "title1": "All your booked items,",
+         "title2": "with responsibility",
+         "title3": "assured",
+         "subtitle1": "From start to finish,",
+         "subtitle2": "for your peace of mind"
+      },
+      "browseService": "Browse Services",
+      "compareMoving": {
+         "title": "Compare Moving",
+         "subtitle1": "The standard for moving quote",
+         "subtitle2": "comparison you can trust.",
+         "desc1": "Quickly compare movers matching your conditions",
+         "desc2": "and view reasonable quotes",
+         "desc3": "at a glance."
+      },
+      "locationMatching": {
+         "title": "Location-based Matching",
+         "subtitle1": "Local experts,",
+         "subtitle2": "directly connected",
+         "desc1": "Consider your residence, moving date, and house type",
+         "desc2": "for accurate matching that ensures",
+         "desc3": "a fail-safe move."
+      },
+      "reviewBased": {
+         "title": "Review-Based",
+         "subtitle1": "Only stories from",
+         "subtitle2": "people who really moved.",
+         "desc1": "Recommendations based on reviews",
+         "desc2": "from customers who have moved",
+         "desc3": "to trusted movers."
+      },
+      "yourLoad": {
+         "title": "More than your load,\nwe move your heart.",
+         "nav": {
+            "browseServices": "Browse Services",
+            "estimateCalculator": "Estimate Calculator",
+            "contactUs": "Contact Us"
+         },
+         "footer": {
+            "copyright": "©CODEIT FULLSTACK TEAM 4",
+            "teamName": "Team: Moving / Advanced Fullstack Project",
+            "organization": "Organization: Codeit Fullstack Class 6",
+            "members": "Members: 7 (Fullstack Developers)",
+            "period": "Development Period: 2025.07.01 ~ 2025.08.13",
+            "techStack": "Tech Stack: Next.js, Tailwind, Express, Prisma, etc.",
+            "contact": "Contact:"
+         }
+      }
+   },
    "Sign": {
       "logoAlt": "Moving Logo",
       "moverQuestion": "Are you a mover?",

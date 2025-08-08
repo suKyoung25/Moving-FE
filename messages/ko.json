@@ -1,4 +1,74 @@
 {
+   "Landing": {
+      "logo1Alt": "기본 색상 로고",
+      "logo2Alt": "다른 색상 로고",
+      "sideNavItemAria": "{index}번째 섹션으로 이동",
+      "scrollIconAlt": "스크롤",
+      "bannerImageAlt": "무빙 배너 이미지 {number}",
+      "banner1": {
+         "title1": "이삿날에도,",
+         "title2": "걱정 없이",
+         "title3": "깔끔하게",
+         "subtitle1": "믿을 수 있는,",
+         "subtitle2": "전문가 매칭 서비스"
+      },
+      "banner2": {
+         "title1": "새집처럼,",
+         "title2": "언제 어디서나",
+         "title3": "깔끔하게",
+         "subtitle1": "당신의 공간,",
+         "subtitle2": "전문가의 손길로 바뀝니다"
+      },
+      "banner3": {
+         "title1": "예약한 모든 짐,",
+         "title2": "책임감을 가지고",
+         "title3": "확실하게",
+         "subtitle1": "처음부터 끝까지,",
+         "subtitle2": "안심할 수 있도록"
+      },
+      "browseService": "서비스 둘러보기",
+      "compareMoving": {
+         "title": "비교이사",
+         "subtitle1": "이사 견적 비교의",
+         "subtitle2": "기준이 됩니다.",
+         "desc1": "내 조건에 맞는 기사님을",
+         "desc2": "빠르게 비교하고 합리적인 견적을",
+         "desc3": "한 눈에 확인하세요."
+      },
+      "locationMatching": {
+         "title": "지역 기반 매칭",
+         "subtitle1": "내 동네 전문가,",
+         "subtitle2": "바로 연결",
+         "desc1": "사는 곳, 이삿날, 집 유형까지 고려한",
+         "desc2": "정확한 매칭으로 실패 없는",
+         "desc3": "이사를 시작하세요."
+      },
+      "reviewBased": {
+         "title": "실제 후기 기반",
+         "subtitle1": "진짜 이사한 사람들의",
+         "subtitle2": "이야기만 보여드립니다.",
+         "desc1": "직접 이사를 경험한 고객의",
+         "desc2": "리뷰를 기반으로 신뢰도 높은",
+         "desc3": "기사님만 추천해드려요."
+      },
+      "yourLoad": {
+         "title": "당신의 짐보다,\n당신의 마음을 옮깁니다.",
+         "nav": {
+            "browseServices": "서비스 둘러보기",
+            "estimateCalculator": "견적계산기",
+            "contactUs": "문의하기"
+         },
+         "footer": {
+            "copyright": "©CODEIT FULLSTACK TEAM 4",
+            "teamName": "팀명: 무빙(Moving) / 풀스택 고급 프로젝트",
+            "organization": "소속: 코드잇 풀스택 과정 6기",
+            "members": "참여 인원: 7명 (풀스택 개발자)",
+            "period": "개발 기간: 2025.07.01 ~ 2025.08.13",
+            "techStack": "기술 스택: Next.js, Tailwind, express, Prisma 외",
+            "contact": "문의:"
+         }
+      }
+   },
    "Sign": {
       "logoAlt": "무빙 로고",
       "moverQuestion": "기사님이신가요?",

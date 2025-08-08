@@ -1,16 +1,24 @@
 import Lottie from "lottie-react";
 import MarketingContent from "./MarketingContent";
 import reviewAnimation from "@/components/effects/review.json";
+import { useTranslations } from "next-intl";
 
 // components/MarketingSection4.tsx
 export default function MarketingSection4() {
+   const t = useTranslations("Landing");
+
+   // 다국어 메시지 조각을 합쳐 HTML 태그 포함 문자열로 만듭니다.
+   const titleText = t("reviewBased.title");
+   const subtitleText = `${t("reviewBased.subtitle1")}<br/>${t("reviewBased.subtitle2")}`;
+   const descText = `${t("reviewBased.desc1")}<br/>${t("reviewBased.desc2")}&nbsp;<br class="md:hidden" />${t("reviewBased.desc3")}`;
+
    return (
       <section className="scroll-snap-start relative h-screen overflow-hidden">
          <div className="bg-primary-blue-300 absolute inset-0 h-full w-full">
             <MarketingContent
-               titleText="실제 후기 기반"
-               subtitleText="진짜 이사한 사람들의<br/>이야기만 보여드립니다."
-               descText={`직접 이사를 경험한 고객의<br/>리뷰를 기반으로 신뢰도 높은&nbsp;<br class='md:hidden' />기사님만 추천해드려요.`}
+               titleText={titleText}
+               subtitleText={subtitleText}
+               descText={descText}
             />
          </div>
          <div className="absolute bottom-16 w-full md:bottom-4">
