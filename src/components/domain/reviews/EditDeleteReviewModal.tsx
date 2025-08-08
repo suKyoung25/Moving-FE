@@ -141,6 +141,7 @@ export default function EditDeleteReviewModal({
                className="mt-2 w-full bg-red-500"
                disabled={loading}
                onClick={handleDelete}
+               aria-label={t("deleteReview")}
             >
                {deleteMutation.isPending ? t("deleting") : t("deleteReview")}
             </SolidButton>

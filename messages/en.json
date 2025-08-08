@@ -379,7 +379,17 @@
       "deleteReview": "Delete Review",
       "confirmed": "Confirmed",
       "year": "Y",
-      "cases": ""
+      "cases": "",
+      "profileAlt": "Profile Image",
+      "errorOccurred": "An error has occurred.",
+      "loadingText": "Loading...",
+      "reviewRegistered": "Your review has been successfully registered.",
+      "yellowStarAlt": "Yellow star",
+      "grayStarAlt": "Gray star",
+      "starAria": "{point} stars",
+      "reviewModifiedSuccess": "Review successfully modified/deleted.",
+      "editDeleteAria": "Edit and delete review",
+      "editDeleteAlt": "Edit and delete icon"
    },
    "FavoriteMovers": {
       "title": "Favorite Movers",
@@ -389,7 +399,8 @@
       "loginRequired": "Login is required for this service.",
       "loadFailed": "Failed to load favorite drivers.",
       "noFavorites": "No favorite drivers found.",
-      "toggleError": "An error occurred while toggling favorite."
+      "toggleError": "An error occurred while toggling favorite.",
+      "errorOccurred": "An error has occurred."
    },
    "MyQuotes": {
       "Client": {

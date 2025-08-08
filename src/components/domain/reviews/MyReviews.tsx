@@ -60,11 +60,11 @@ export default function MyReviews() {
    const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
 
    if (error) {
-      return <div>{t("errorOccurred") || "오류가 발생했습니다."}</div>;
+      return <div>{t("errorOccurred")}</div>;
    }
 
    if (isLoading || isFetching) {
-      return <div>로딩중...</div>;
+      return <div>{t("loadingText")}</div>;
    }
 
    return (
@@ -93,8 +93,7 @@ export default function MyReviews() {
                      <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                         <Image
                            src={review.moverProfileImage || profile}
-                           alt="프로필"
-                           fill
+                           alt={t("profileAlt")}
                            className="object-cover"
                         />
                      </div>
@@ -115,7 +114,7 @@ export default function MyReviews() {
                                  src={more}
                                  width={24}
                                  height={24}
-                                 alt="수정 및 삭제"
+                                 alt={t("editDeleteAlt")}
                                  style={{ transform: "rotate(90deg)" }}
                               />
                            </button>
@@ -145,7 +144,7 @@ export default function MyReviews() {
                                     src={yellowStar}
                                     width={24}
                                     height={24}
-                                    alt="별점"
+                                    alt={t("yellowStarAlt")}
                                  />
                               ))}
                            {Array(5 - Number(review.rating))
@@ -156,7 +155,7 @@ export default function MyReviews() {
                                     src={grayStar}
                                     width={24}
                                     height={24}
-                                    alt="별점"
+                                    alt={t("grayStarAlt")}
                                  />
                               ))}
                         </div>

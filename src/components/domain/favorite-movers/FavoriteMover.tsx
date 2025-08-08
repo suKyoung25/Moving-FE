@@ -52,9 +52,9 @@ export default function FavoriteMover() {
    const movers: FavoriteMoverState[] = data?.data?.movers ?? [];
    const pageInfo = data?.data?.pagination ?? pagination;
 
-   if (isPending) return <div>로딩 중...</div>;
+   if (isPending) return <div>{t("loading")}</div>;
    if (error) {
-      return <div>오류가 발생했습니다.</div>;
+      return <div>{t("errorOccurred")}</div>;
    }
 
    return (

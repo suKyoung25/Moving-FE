@@ -51,17 +51,17 @@ export default function WritableReviews() {
    const handleReviewSuccess = () => {
       refetch();
       queryClient.refetchQueries({ queryKey: ["myReviews"] }); // myReview 리패칭
-      showSuccess("리뷰가 성공적으로 등록되었습니다.");
+      showSuccess(t("reviewRegistered"));
    };
 
    const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
 
    if (error) {
-      return <div>{t("errorOccurred") || "오류가 발생했습니다."}</div>;
+      return <div>{t("errorOccurred")}</div>;
    }
 
    if (isLoading || isFetching) {
-      return <div>로딩중...</div>;
+      return <div>{t("loadingText")}</div>;
    }
 
    return (
@@ -85,7 +85,7 @@ export default function WritableReviews() {
                         <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                            <Image
                               src={writableReview.moverProfileImage || profile}
-                              alt="프로필"
+                              alt={t("profileAlt")}
                               fill
                               className="object-cover"
                            />

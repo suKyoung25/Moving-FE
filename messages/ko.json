@@ -379,7 +379,17 @@
       "deleteReview": "리뷰 삭제",
       "confirmed": "확정",
       "year": "년",
-      "cases": "건"
+      "cases": "건",
+      "profileAlt": "프로필 이미지",
+      "errorOccurred": "오류가 발생했습니다.",
+      "loadingText": "로딩중...",
+      "reviewRegistered": "리뷰가 성공적으로 등록되었습니다.",
+      "yellowStarAlt": "노란별",
+      "grayStarAlt": "회색별",
+      "starAria": "{point}점",
+      "reviewModifiedSuccess": "리뷰가 성공적으로 수정/삭제되었습니다.",
+      "editDeleteAria": "리뷰 수정 및 삭제",
+      "editDeleteAlt": "수정 및 삭제 아이콘"
    },
    "FavoriteMovers": {
       "title": "찜한 기사님",
@@ -389,7 +399,8 @@
       "loginRequired": "로그인이 필요한 서비스입니다.",
       "loadFailed": "찜한 기사님 목록을 불러오는데 실패했습니다.",
       "noFavorites": "찜한 기사님이 없습니다.",
-      "toggleError": "찜 처리 중 오류가 발생했습니다."
+      "toggleError": "찜 처리 중 오류가 발생했습니다.",
+      "errorOccurred": "오류가 발생했습니다."
    },
    "MyQuotes": {
       "Client": {
