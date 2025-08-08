@@ -49,6 +49,10 @@ export default function FavoriteMover() {
       setPagination((prev) => ({ ...prev, page }));
    };
 
+   const handleProfileClick = (moverId: string) => {
+      router.push(`/mover-search/${moverId}`); // 기사 상세페이지 경로
+   };
+
    const movers: FavoriteMoverState[] = data?.data?.movers ?? [];
    const pageInfo = data?.data?.pagination ?? pagination;
 
@@ -72,18 +76,31 @@ export default function FavoriteMover() {
                         ) : null,
                      )}
                   </div>
-                  <MoverProfile
-                     big={true}
-                     profileImage={mover.profileImage}
-                     isLiked={mover.isLiked}
-                     handleLikedClick={() => handleLikedClick(mover.id)}
-                     nickName={mover.nickName}
-                     favoriteCount={mover.favoriteCount}
-                     averageReviewRating={mover.averageReviewRating}
-                     reviewCount={mover.reviewCount}
-                     career={mover.career!}
-                     estimateCount={mover.estimateCount}
-                  />
+                  <div
+                     role="button"
+                     tabIndex={0}
+                     onClick={() => handleProfileClick(mover.id)}
+                     onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                           e.preventDefault();
+                           handleProfileClick(mover.id);
+                        }
+                     }}
+                     className="cursor-pointer"
+                  >
+                     <MoverProfile
+                        big={true}
+                        profileImage={mover.profileImage}
+                        isLiked={mover.isLiked}
+                        handleLikedClick={() => handleLikedClick(mover.id)}
+                        nickName={mover.nickName}
+                        favoriteCount={mover.favoriteCount}
+                        averageReviewRating={mover.averageReviewRating}
+                        reviewCount={mover.reviewCount}
+                        career={mover.career!}
+                        estimateCount={mover.estimateCount}
+                     />
+                  </div>
                </div>
             ))}
          </div>
