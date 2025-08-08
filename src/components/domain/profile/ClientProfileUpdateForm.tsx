@@ -65,7 +65,11 @@ export default function ClientProfileUpdateForm() {
                   />
                   {/* 이메일은 변경할 수 있는 데이터가 아님 */}
                   <section className="flex w-full cursor-not-allowed flex-col gap-2 lg:gap-4">
-                     <label className="text-black-300 text-16-semibold lg:text-20-semibold">
+                     <label
+                        role="textbox"
+                        aria-readonly="true"
+                        className="text-black-300 text-16-semibold lg:text-20-semibold"
+                     >
                         {t("emailLabel")}
                      </label>
                      <div className="text-black-400 bg-bg-200 flex h-14 items-center rounded-2xl p-3.5 lg:h-16">
