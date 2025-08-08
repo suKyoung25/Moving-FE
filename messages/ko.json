@@ -1,4 +1,29 @@
 {
+   "Landing": {
+      "logo1Alt": "기본 색상 로고",
+      "logo2Alt": "다른 색상 로고",
+      "sideNavItemAria": "{index}번째 섹션으로 이동",
+      "scrollIconAlt": "스크롤",
+      "bannerImageAlt": "무빙 배너 이미지 {number}",
+      "banner1": {
+         "title": "이삿날에도,<br/>걱정 없이&nbsp;<br class=\"md:hidden\" />깔끔하게",
+         "subtitle": "믿을 수 있는,&nbsp;<br class=\"md:hidden\" />전문가 매칭 서비스"
+      },
+      "banner2": {
+         "title": "새집처럼,<br/>언제 어디서나&nbsp;<br class=\"md:hidden\" />깔끔하게",
+         "subtitle": "당신의 공간,<br />전문가의 손길로 바뀝니다"
+      },
+      "banner3": {
+         "title": "예약한 모든 짐,&nbsp;<br/>책임감을 가지고&nbsp;<br class=\"md:hidden\" />확실하게",
+         "subtitle": "처음부터 끝까지,<br/>안심할 수 있도록"
+      },
+      "browseService": "서비스 둘러보기",
+      "compareMoving": {
+         "title": "비교이사",
+         "subtitle": "이사 견적 비교의<br/>기준이 됩니다.",
+         "description": "내 조건에 맞는 기사님을<br/>빠르게 비교하고 합리적인 견적을&nbsp;<br class='md:hidden' />한 눈에 확인하세요."
+      }
+   },
    "Sign": {
       "logoAlt": "무빙 로고",
       "moverQuestion": "기사님이신가요?",

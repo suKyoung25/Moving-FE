@@ -12,12 +12,15 @@ import MarketingSection2 from "@/components/domain/marketing/MarketingSection2";
 import MarketingSection3 from "@/components/domain/marketing/MarketingSection3";
 import MarketingSection4 from "@/components/domain/marketing/MarketingSection4";
 import MarketingSection5 from "@/components/domain/marketing/MarketingSection5";
+import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollToPlugin);
 
 const TOTAL_SECTIONS = 5;
 
 export default function MarketingPage() {
+   const t = useTranslations("Landing");
+
    const [currentSection, setCurrentSection] = useState(0);
    const [isScrolling, setIsScrolling] = useState(false);
    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -179,7 +182,7 @@ export default function MarketingPage() {
                {/* 로고1 */}
                <Image
                   src={otherLogo}
-                  alt="기본 색상 로고"
+                  alt={t("logo1Alt")}
                   width={90}
                   className={`absolute top-0 left-0 transition-opacity duration-500 md:w-29 ${
                      currentSection === 4 ? "opacity-0" : "opacity-100"
@@ -188,7 +191,7 @@ export default function MarketingPage() {
                {/* 로고2 */}
                <Image
                   src={logo}
-                  alt="다른 색상 로고"
+                  alt={t("logo2Alt")}
                   width={90}
                   className={`absolute top-0 left-0 transition-opacity duration-500 md:w-29 ${
                      currentSection === 4 ? "opacity-100" : "opacity-0"
@@ -217,6 +220,15 @@ export default function MarketingPage() {
                               : "bg-white opacity-50 hover:bg-white hover:opacity-80"
                         }`}
                         onClick={() => scrollToSection(i)}
+                        aria-label={t("sideNavItemAria", { index: i + 1 })}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                           if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              scrollToSection(i);
+                           }
+                        }}
                      />
                   ))}
                </div>
@@ -233,7 +245,7 @@ export default function MarketingPage() {
          >
             <Image
                src={scrollIcon}
-               alt="스크롤"
+               alt={t("scrollIconAlt")}
                width={58}
                height={58}
                className="md:size-17"

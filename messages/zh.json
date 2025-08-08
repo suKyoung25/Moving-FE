@@ -1,4 +1,29 @@
 {
+   "Landing": {
+      "logo1Alt": "默认颜色标志",
+      "logo2Alt": "其他颜色标志",
+      "sideNavItemAria": "跳转到第 {index} 节",
+      "scrollIconAlt": "滚动",
+      "bannerImageAlt": "搬家横幅图片 {number}",
+      "banner1": {
+         "title": "搬家当天，\n无忧\n干净利落",
+         "subtitle": "值得信赖的\n专家匹配服务"
+      },
+      "banner2": {
+         "title": "如新居，\n随时随地\n干净利落",
+         "subtitle": "您的空间，\n由专业人士呵护"
+      },
+      "banner3": {
+         "title": "所有预订的物品，\n负责到底\n确保无忧",
+         "subtitle": "从头到尾，\n让您安心"
+      },
+      "browseService": "浏览服务",
+      "compareMoving": {
+         "title": "比较搬家",
+         "subtitle": "搬家报价比较的标准<br/>值得信赖。",
+         "description": "快速比较符合您条件的搬运工<br/>并一目了然地查看合理报价&nbsp;<br class='md:hidden' />轻松无忧。"
+      }
+   },
    "Sign": {
       "logoAlt": "搬家标志",
       "moverQuestion": "您是搬运工吗？",

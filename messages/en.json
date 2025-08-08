@@ -1,4 +1,29 @@
 {
+   "Landing": {
+      "logo1Alt": "Default color logo",
+      "logo2Alt": "Alternative color logo",
+      "sideNavItemAria": "Go to section {index}",
+      "scrollIconAlt": "Scroll",
+      "bannerImageAlt": "Moving banner image {number}",
+      "banner1": {
+         "title": "On moving day,\nwithout worries\ncleanly",
+         "subtitle": "A reliable\nprofessional matching service"
+      },
+      "banner2": {
+         "title": "Like a new home,\nanytime, anywhere\ncleanly",
+         "subtitle": "Your space,\ntransformed by a professional's touch"
+      },
+      "banner3": {
+         "title": "All your booked items,\nwith responsibility\nand assurance",
+         "subtitle": "From start to finish,\nfor your peace of mind"
+      },
+      "browseService": "Browse Services",
+      "compareMoving": {
+         "title": "Compare Moving",
+         "subtitle": "The standard for moving quote comparison<br/>you can trust.",
+         "description": "Quickly compare movers matching your criteria<br/>and view reasonable quotes all at a glance&nbsp;<br class='md:hidden' />without hassle."
+      }
+   },
    "Sign": {
       "logoAlt": "Moving Logo",
       "moverQuestion": "Are you a mover?",
