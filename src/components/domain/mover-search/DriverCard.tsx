@@ -17,7 +17,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastConText";
 import { EstimateStatus, Mover } from "@/lib/types";
 import { useTranslations } from "next-intl";
-import ResultModal from "@/components/common/ResultModal";
+import LoginRequiredModal from "./LoginRequiredModal";
 
 interface DriverCardProps {
    mover: Mover;
@@ -39,7 +39,7 @@ export default memo(function DriverCard({
    const { user } = useAuth();
    const { showSuccess, showError } = useToast();
 
-   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
    const [isPending, startTransition] = useTransition();
 
    // 계산값들을 메모이제이션
@@ -84,7 +84,7 @@ export default memo(function DriverCard({
       });
    }, [router, mover.id]);
 
-   // 찜하기 핸들러 - Toast 사용 + t 의존성 추가
+   // 찜하기 핸들러
    const handleLikedClick = useCallback(
       async (e: React.MouseEvent) => {
          e.stopPropagation();
@@ -97,7 +97,7 @@ export default memo(function DriverCard({
 
          // 로그인 상태 체크
          if (!user) {
-            showError(t("error.needLogin"));
+            setIsLoginModalOpen(true);
             return;
          }
 
@@ -114,11 +114,11 @@ export default memo(function DriverCard({
                result.favoriteCount || mover.favoriteCount,
             );
 
-            // 성공 메시지 Toast로 표시
+            // 다국어 처리된 성공 메시지
             const message =
                result.action === "added"
-                  ? "찜 목록에 추가되었습니다."
-                  : "찜 목록에서 제거되었습니다.";
+                  ? t("toast.addedToFavorites")
+                  : t("toast.removedFromFavorites");
 
             showSuccess(message);
          } catch (error) {
@@ -127,7 +127,8 @@ export default memo(function DriverCard({
             let errorMessage = t("error.toggleFailed");
             if (error instanceof Error) {
                if (error.message.includes("로그인")) {
-                  errorMessage = t("error.needLogin");
+                  setIsLoginModalOpen(true);
+                  return;
                } else {
                   errorMessage = error.message;
                }
@@ -144,6 +145,7 @@ export default memo(function DriverCard({
          mover.id,
          mover.favoriteCount,
          onFavoriteChange,
+         showSuccess,
          showError,
          t,
       ],
@@ -157,58 +159,57 @@ export default memo(function DriverCard({
    }, [isPending]);
 
    return (
-      <div onClick={handleCardClick} className={cardClassName}>
-         {/* 로딩 인디케이터 */}
-         {isPending && (
-            <div className="absolute top-2 right-2 z-10">
-               <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
-            </div>
-         )}
+      <>
+         <div onClick={handleCardClick} className={cardClassName}>
+            {/* 로딩 인디케이터 */}
+            {isPending && (
+               <div className="absolute top-2 right-2 z-10">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
+               </div>
+            )}
 
-         <div className="flex flex-col">
-            {/* 서비스 타입 칩들 */}
-            <div className="mb-2 flex items-center gap-2">
-               {validServiceTypes.map((type) => (
-                  <MoveChip key={type} type={type} mini={false} />
-               ))}
-               {shouldShowDesignated && (
-                  <MoveChip type="DESIGNATED" mini={false} />
-               )}
-            </div>
+            <div className="flex flex-col">
+               {/* 서비스 타입 칩들 */}
+               <div className="mb-2 flex items-center gap-2">
+                  {validServiceTypes.map((type) => (
+                     <MoveChip key={type} type={type} mini={false} />
+                  ))}
+                  {shouldShowDesignated && (
+                     <MoveChip type="DESIGNATED" mini={false} />
+                  )}
+               </div>
 
-            {/* 소개 텍스트 */}
-            <div className="mb-4">
-               <p className="text-14-medium md:text-16-medium lg:text-18-medium line-clamp-2 leading-relaxed break-words text-gray-700">
-                  {mover.introduction || t("defaultIntroduction")}
-               </p>
-            </div>
+               {/* 소개 텍스트 */}
+               <div className="mb-4">
+                  <p className="text-14-medium md:text-16-medium lg:text-18-medium line-clamp-2 leading-relaxed break-words text-gray-700">
+                     {mover.introduction || t("defaultIntroduction")}
+                  </p>
+               </div>
 
-            {/* 기사님 프로필 */}
-            <div className="box-border h-20 w-72 md:w-[34rem] lg:h-24 lg:w-[56rem]">
-               <MoverProfile
-                  big={false}
-                  isLiked={currentFavoriteState}
-                  handleLikedClick={handleLikedClick}
-                  nickName={mover.nickName ?? " "}
-                  favoriteCount={mover.favoriteCount}
-                  averageReviewRating={mover.averageReviewRating}
-                  reviewCount={mover.reviewCount}
-                  career={Number(mover.career) || 0}
-                  estimateCount={mover.estimateCount}
-                  profileImage={mover.profileImage}
-                  showHeart={!isLoggedInAsMover}
-               />
+               {/* 기사님 프로필 */}
+               <div className="box-border h-20 w-72 md:w-[34rem] lg:h-24 lg:w-[56rem]">
+                  <MoverProfile
+                     big={false}
+                     isLiked={currentFavoriteState}
+                     handleLikedClick={handleLikedClick}
+                     nickName={mover.nickName ?? " "}
+                     favoriteCount={mover.favoriteCount}
+                     averageReviewRating={mover.averageReviewRating}
+                     reviewCount={mover.reviewCount}
+                     career={Number(mover.career) || 0}
+                     estimateCount={mover.estimateCount}
+                     profileImage={mover.profileImage}
+                     showHeart={!isLoggedInAsMover}
+                  />
+               </div>
             </div>
          </div>
-         {isResultModalOpen && (
-            <ResultModal
-               isOpen={isResultModalOpen}
-               message={t("loginRequired")}
-               buttonText={t("goToLogin")}
-               onClose={() => setIsResultModalOpen(false)}
-               onClick={() => router.push("/sign-in/client")}
-            />
-         )}
-      </div>
+
+         {/* 모달을 카드 외부로 이동 */}
+         <LoginRequiredModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+         />
+      </>
    );
 });
