@@ -220,7 +220,12 @@
          "needLogin": "需要登录。",
          "toggleFailed": "收藏操作时发生错误。"
       },
-      "defaultIntroduction": "我们安全地运输您的物品。"
+      "defaultIntroduction": "我们安全地运输您的物品。",
+      "toast": {
+         "addedToFavorites": "已添加到收藏。",
+         "removedFromFavorites": "已从收藏中移除。"
+      },
+      "goToLogin": "去登录"
    },
    "MoverDetail": {
       "requestDesignatedEstimate": "向司机请求指定报价！",
@@ -246,6 +251,8 @@
          "notFound": "找不到司机信息。"
       },
       "toast": {
+         "addedToFavorites": "已添加到收藏。",
+         "removedFromFavorites": "已从收藏中移除。",
          "alreadyInProgress": "已有正在进行的请求！",
          "requestSuccess": "指定报价请求已成功发送！"
       },

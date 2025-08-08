@@ -1,6 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo, useMemo } from "react";
+import {
+   useState,
+   useEffect,
+   useCallback,
+   memo,
+   useMemo,
+   useTransition,
+} from "react";
+import { useRouter } from "next/navigation";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
@@ -46,6 +54,7 @@ export default memo(function FavoriteDriverList({
    refreshKey, // refreshKey prop 추가
 }: FavoriteDriverListProps) {
    const t = useTranslations("FavoriteMovers");
+   const router = useRouter();
 
    const { user } = useAuth();
    const { showSuccess, showError } = useToast();
@@ -54,6 +63,7 @@ export default memo(function FavoriteDriverList({
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+   const [isPending, startTransition] = useTransition();
 
    // 계산값을 메모이제이션
    const isLoggedInAsMover = useMemo(
@@ -107,7 +117,9 @@ export default memo(function FavoriteDriverList({
 
    // 찜하기 토글 핸들러
    const handleFavoriteToggle = useCallback(
-      async (moverId: string) => {
+      async (e: React.MouseEvent, moverId: string) => {
+         e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
+
          try {
             // 실제 API 호출
             const result = await toggleFavoriteMover(moverId);
@@ -138,14 +150,17 @@ export default memo(function FavoriteDriverList({
             loadFavoriteMovers();
          }
       },
-      [
-         onFavoriteChange,
-         loadFavoriteMovers,
-         favoriteMovers,
-         showSuccess,
-         showError,
-         t,
-      ],
+      [onFavoriteChange, loadFavoriteMovers, showSuccess, showError, t],
+   );
+
+   // 카드 클릭 핸들러 추가
+   const handleCardClick = useCallback(
+      (moverId: string) => {
+         startTransition(() => {
+            router.push(`/mover-search/${moverId}`);
+         });
+      },
+      [router],
    );
 
    // 외부 refreshKey 변화에 따른 데이터 새로고침
@@ -233,8 +248,18 @@ export default memo(function FavoriteDriverList({
          {displayMovers.map((mover) => (
             <div
                key={mover.id}
-               className="flex flex-col gap-2 rounded-lg border border-gray-50 bg-white p-3 shadow-sm"
+               onClick={() => handleCardClick(mover.id)}
+               className={`flex cursor-pointer flex-col gap-2 rounded-lg border border-gray-50 bg-white p-3 shadow-sm transition hover:shadow-md ${
+                  isPending ? "opacity-75" : ""
+               }`}
             >
+               {/* 로딩 인디케이터 */}
+               {isPending && (
+                  <div className="absolute top-2 right-2 z-10">
+                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
+                  </div>
+               )}
+
                <div className="flex gap-1">
                   {mover.serviceType?.map((type: string, index: number) => {
                      const chipType = type.toUpperCase() as ChipType;
@@ -264,7 +289,7 @@ export default memo(function FavoriteDriverList({
                   forceMobileStyle={true}
                   big={false}
                   isLiked={true}
-                  handleLikedClick={() => handleFavoriteToggle(mover.id)}
+                  handleLikedClick={(e) => handleFavoriteToggle(e, mover.id)}
                   nickName={mover.nickName || " "}
                   favoriteCount={mover.favoriteCount || 0}
                   averageReviewRating={mover.averageReviewRating || 0}

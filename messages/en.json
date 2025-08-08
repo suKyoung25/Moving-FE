@@ -220,7 +220,12 @@
          "needLogin": "Login is required.",
          "toggleFailed": "An error occurred while toggling favorite."
       },
-      "defaultIntroduction": "We safely transport your items."
+      "defaultIntroduction": "We safely transport your items.",
+      "toast": {
+         "addedToFavorites": "Added to favorites.",
+         "removedFromFavorites": "Removed from favorites."
+      },
+      "goToLogin": "Go to Login"
    },
    "MoverDetail": {
       "requestDesignatedEstimate": "Request a designated estimate from the driver!",
@@ -246,6 +251,8 @@
          "notFound": "Driver information not found."
       },
       "toast": {
+         "addedToFavorites": "Added to favorites.",
+         "removedFromFavorites": "Removed from favorites.",
          "alreadyInProgress": "A request is already in progress!",
          "requestSuccess": "Designated estimate request sent successfully!"
       },
