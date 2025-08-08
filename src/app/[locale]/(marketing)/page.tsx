@@ -33,7 +33,7 @@ export default function MarketingPage() {
          setCurrentSection(sectionIndex);
 
          gsap.to("#scrollContainer", {
-            duration: 1.0,
+            duration: 1.2,
             scrollTo: { y: sectionIndex * window.innerHeight },
             ease: "power2.inOut",
             onComplete: () => {
