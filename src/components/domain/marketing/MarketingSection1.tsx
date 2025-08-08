@@ -1,59 +1,56 @@
-// components/Section1.tsx
 "use client";
 
 import { useRef, useEffect, useMemo } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import { HiOutlineExternalLink } from "react-icons/hi";
+import { useTranslations } from "next-intl";
 
 export default function MarketingSection1() {
+   const t = useTranslations("Landing");
    const heroImageRef = useRef<HTMLDivElement>(null);
 
-   // 랜덤한 배너를 생성합니다.
-   const { bannerNumber, bannerImage, titleText, subtitleText } =
-      useMemo(() => {
-         const bannerNumber = Math.floor(Math.random() * 3) + 1; // 1~3
-         const bannerImage = `/images/banners/banner${bannerNumber}.jpg`;
+   // bannerNumber는 useMemo로 관리 (랜덤 한번 생성)
+   const bannerNumber = useMemo(() => Math.floor(Math.random() * 3) + 1, []);
 
-         let titleText = "";
-         let subtitleText = "";
+   // 다국어 문자열 조합 함수 (bannerNumber에 따라 다르게 처리)
+   const getTitleText = () => {
+      switch (bannerNumber) {
+         case 1:
+            return `${t("banner1.title1")}<br/>${t("banner1.title2")}&nbsp;<br class="md:hidden" />${t("banner1.title3")}`;
+         case 2:
+            return `${t("banner2.title1")}<br/>${t("banner2.title2")}&nbsp;<br class="md:hidden" />${t("banner2.title3")}`;
+         case 3:
+            return `${t("banner3.title1")}&nbsp;<br/>${t("banner3.title2")}&nbsp;<br class="md:hidden" />${t("banner3.title3")}`;
+         default:
+            return `${t("banner2.title1")}<br/>${t("banner2.title2")}&nbsp;<br class="md:hidden" />${t("banner2.title3")}`;
+      }
+   };
 
-         switch (bannerNumber) {
-            case 1:
-               titleText = `이삿날에도,<br/>걱정 없이&nbsp;<br class="md:hidden" />깔끔하게`;
-               subtitleText = `믿을 수 있는,&nbsp;<br class="md:hidden" />전문가 매칭 서비스`;
-               break;
-            case 2:
-               titleText =
-                  '새집처럼,<br/>언제 어디서나&nbsp;<br class="md:hidden" />깔끔하게';
-               subtitleText = "당신의 공간,<br />전문가의 손길로 바뀝니다";
-               break;
-            case 3:
-               titleText = `예약한 모든 짐,&nbsp;<br/>책임감을 가지고&nbsp;<br class="md:hidden" />확실하게`;
-               subtitleText = "처음부터 끝까지,<br/>안심할 수 있도록";
-               break;
-            default:
-               titleText = "새집처럼,\n언제 어디서나\n깔끔하게";
-               subtitleText = "당신의 공간,\n전문가의 손길로 바뀝니다";
-         }
+   const getSubtitleText = () => {
+      switch (bannerNumber) {
+         case 1:
+            return `${t("banner1.subtitle1")}&nbsp;<br class="md:hidden" />${t("banner1.subtitle2")}`;
+         case 2:
+            return `${t("banner2.subtitle1")}<br />${t("banner2.subtitle2")}`;
+         case 3:
+            return `${t("banner3.subtitle1")}<br/>${t("banner3.subtitle2")}`;
+         default:
+            return `${t("banner2.subtitle1")}<br />${t("banner2.subtitle2")}`;
+      }
+   };
 
-         return { bannerNumber, bannerImage, titleText, subtitleText };
-      }, []);
+   const titleText = getTitleText();
+   const subtitleText = getSubtitleText();
+
+   const bannerImage = `/images/banners/banner${bannerNumber}.jpg`;
 
    useEffect(() => {
       if (heroImageRef.current) {
          gsap.fromTo(
             heroImageRef.current,
-            {
-               scale: 1.8,
-               opacity: 0,
-            },
-            {
-               duration: 2,
-               scale: 1,
-               opacity: 1,
-               ease: "power2.out",
-            },
+            { scale: 1.8, opacity: 0 },
+            { duration: 2, scale: 1, opacity: 1, ease: "power2.out" },
          );
       }
 
@@ -75,7 +72,7 @@ export default function MarketingSection1() {
          >
             <img
                src={bannerImage}
-               alt={`무빙 배너 이미지 ${bannerNumber}`}
+               alt={t("bannerImageAlt", { number: bannerNumber })}
                className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 h-full w-full bg-black/50" />
@@ -85,22 +82,18 @@ export default function MarketingSection1() {
             {/* 설명 영역 */}
             <div className="font-inherit absolute z-10 flex flex-col gap-5 px-5 pt-30 md:top-1/2 md:-translate-y-1/2 md:gap-6 md:px-10 md:pt-0 lg:gap-7">
                <h2
-                  dangerouslySetInnerHTML={{
-                     __html: titleText,
-                  }}
+                  dangerouslySetInnerHTML={{ __html: titleText }}
                   className="font-paperlogy text-5xl leading-tight font-semibold text-white md:text-6xl lg:text-7xl"
                />
                <p
-                  dangerouslySetInnerHTML={{
-                     __html: subtitleText,
-                  }}
+                  dangerouslySetInnerHTML={{ __html: subtitleText }}
                   className="font-paperlogy text-3xl leading-8 text-white md:text-4xl md:leading-10 lg:text-5xl lg:leading-14"
                />
                <Link
                   href={"/mover-search"}
                   className="bg-primary-blue-300 mt-4 flex w-fit items-center gap-1.5 rounded-4xl p-5 font-bold text-white transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-[#007ae8] hover:shadow-md md:mt-6 md:text-xl lg:mt-8"
                >
-                  서비스 둘러보기
+                  {t("browseService")}
                   <HiOutlineExternalLink className="text-xl" />
                </Link>
             </div>

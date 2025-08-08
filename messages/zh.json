@@ -6,22 +6,67 @@
       "scrollIconAlt": "滚动",
       "bannerImageAlt": "搬家横幅图片 {number}",
       "banner1": {
-         "title": "搬家当天，\n无忧\n干净利落",
-         "subtitle": "值得信赖的\n专家匹配服务"
+         "title1": "搬家当天，",
+         "title2": "无忧",
+         "title3": "干净利落",
+         "subtitle1": "值得信赖的，",
+         "subtitle2": "专家匹配服务"
       },
       "banner2": {
-         "title": "如新居，\n随时随地\n干净利落",
-         "subtitle": "您的空间，\n由专业人士呵护"
+         "title1": "如新居，",
+         "title2": "随时随地",
+         "title3": "干净利落",
+         "subtitle1": "您的空间，",
+         "subtitle2": "由专业人士呵护"
       },
       "banner3": {
-         "title": "所有预订的物品，\n负责到底\n确保无忧",
-         "subtitle": "从头到尾，\n让您安心"
+         "title1": "所有预订的物品，",
+         "title2": "负责到底",
+         "title3": "确保无忧",
+         "subtitle1": "从头到尾，",
+         "subtitle2": "让您安心"
       },
       "browseService": "浏览服务",
       "compareMoving": {
          "title": "比较搬家",
-         "subtitle": "搬家报价比较的标准<br/>值得信赖。",
-         "description": "快速比较符合您条件的搬运工<br/>并一目了然地查看合理报价&nbsp;<br class='md:hidden' />轻松无忧。"
+         "subtitle1": "搬家报价比较的",
+         "subtitle2": "标准，值得信赖。",
+         "desc1": "快速比较符合您条件的搬运工",
+         "desc2": "并查看合理的报价",
+         "desc3": "一目了然。"
+      },
+      "locationMatching": {
+         "title": "基于地区的匹配",
+         "subtitle1": "本地专家，",
+         "subtitle2": "直接连接",
+         "desc1": "考虑您的居住地、搬家日期和房屋类型",
+         "desc2": "提供准确的匹配，确保",
+         "desc3": "搬家无忧。"
+      },
+      "reviewBased": {
+         "title": "基于真实评价",
+         "subtitle1": "只展示",
+         "subtitle2": "真实搬家人的故事。",
+         "desc1": "基于实际搬家客户的评价",
+         "desc2": "推荐值得信赖的搬运工",
+         "desc3": "为您服务。"
+      },
+      "yourLoad": {
+         "title": "搬运您的负担，\n搬运您的心。",
+         "nav": {
+            "browseServices": "浏览服务",
+            "estimateCalculator": "估价计算器",
+            "contactUs": "联系"
+         },
+         "footer": {
+            "copyright": "©CODEIT FULLSTACK TEAM 4",
+            "teamName": "团队名: Moving / 高级全栈项目",
+            "organization": "机构: Codeit 全栈班第6期",
+            "members": "成员: 7名（全栈开发者）",
+            "period": "开发周期: 2025.07.01 ~ 2025.08.13",
+            "techStack": "技术栈: Next.js, Tailwind, Express, Prisma 等",
+            "contact": "联系："
+         }
       }
    },
    "Sign": {
