@@ -6,6 +6,7 @@ import { getMyReviews } from "./reviews/getMyReviews";
 interface UseReviewsParams {
    page: number;
    limit: number;
+   targetLang?: string;
 }
 
 export function useWritableReviews({ page, limit }: UseReviewsParams) {
@@ -20,10 +21,10 @@ export function useWritableReviews({ page, limit }: UseReviewsParams) {
    });
 }
 
-export function useMyReviews({ page, limit }: UseReviewsParams) {
+export function useMyReviews({ page, limit, targetLang }: UseReviewsParams) {
    return useQuery<MyReviewsResponse>({
-      queryKey: ["myReviews", page, limit],
-      queryFn: () => getMyReviews(page, limit),
+      queryKey: ["myReviews", page, limit, targetLang],
+      queryFn: () => getMyReviews(page, limit, targetLang),
       placeholderData: keepPreviousData,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
