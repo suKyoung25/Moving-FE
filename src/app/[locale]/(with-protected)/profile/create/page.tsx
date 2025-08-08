@@ -16,7 +16,18 @@ export default function CreateProfilePage() {
    if (user?.userType === "client") {
       return (
          <>
-            <div className="pt-4 pb-10 lg:pt-6">
+            <div
+               id="client-profile-create-main"
+               role="main"
+               tabIndex={-1}
+               aria-labelledby="create-profile-page-title"
+               className="pt-4 pb-10 lg:pt-6"
+            >
+               {/* screen reader 전용 페이지 제목 */}
+               <h1 id="create-profile-page-title" className="sr-only">
+                  프로필 등록 페이지
+               </h1>
+
                <div className="mx-auto max-w-82 lg:max-w-160">
                   <ClientProfileTitle type="생성" />
                   <ClientProfilePostForm />
