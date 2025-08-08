@@ -10,10 +10,10 @@ import React, {
 import { Notification } from "@/lib/types/notification.types";
 import { connectSSE } from "@/lib/api/notification/notification";
 import { useAuth } from "./AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface NotificationContextValue {
    realtimeNotifications: Notification[];
-   addRealtimeNotification: (notification: Notification) => void;
 }
 
 const NotificationContext = createContext<NotificationContextValue | null>(
@@ -25,23 +25,19 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       Notification[]
    >([]);
    const { user } = useAuth();
+   const queryClient = useQueryClient();
 
    useEffect(() => {
       if (!user) return; // 인증된 유저만 SSE 연결
       const es = connectSSE((newNoti) => {
          setRealtimeNotifications((prev) => [newNoti, ...prev]);
+         queryClient.invalidateQueries({ queryKey: ["notifications"] });
       });
       return () => es?.close();
    }, [user]);
 
-   const addRealtimeNotification = (notification: Notification) => {
-      setRealtimeNotifications((prev) => [notification, ...prev]);
-   };
-
    return (
-      <NotificationContext.Provider
-         value={{ realtimeNotifications, addRealtimeNotification }}
-      >
+      <NotificationContext.Provider value={{ realtimeNotifications }}>
          {children}
       </NotificationContext.Provider>
    );

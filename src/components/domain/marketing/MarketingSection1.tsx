@@ -98,7 +98,7 @@ export default function MarketingSection1() {
                />
                <Link
                   href={"/mover-search"}
-                  className="bg-primary-blue-300 mt-4 flex w-fit items-center gap-1.5 rounded-4xl p-5 font-bold text-white transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-[#007ae8] hover:shadow-md md:text-xl"
+                  className="bg-primary-blue-300 mt-4 flex w-fit items-center gap-1.5 rounded-4xl p-5 font-bold text-white transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-[#007ae8] hover:shadow-md md:mt-6 md:text-xl lg:mt-8"
                >
                   서비스 둘러보기
                   <HiOutlineExternalLink className="text-xl" />

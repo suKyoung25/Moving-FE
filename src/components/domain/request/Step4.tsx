@@ -17,13 +17,13 @@ export default function Step4() {
             alt={t("inProgressAlt")}
             className="w-61 lg:mb-8 lg:w-[402px]"
          />
-         <p className="flex justify-center text-center text-sm text-gray-400 lg:text-xl">
+         <p className="text-14-regular lg:text-20-regular flex justify-center text-center text-gray-400">
             {t("inProgressMessageLine1")}
             <br />
             {t("inProgressMessageLine2")}
          </p>
          <Link href="/my-quotes/client">
-            <SolidButton className="max-w-[196px] px-6">
+            <SolidButton className="max-w-49 px-6">
                {t("goToReceivedQuotesButton")}
             </SolidButton>
          </Link>

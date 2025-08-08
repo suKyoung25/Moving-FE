@@ -404,7 +404,8 @@
       "toggleError": "收藏操作时发生错误。",
       "errorOccurred": "发生错误。",
       "favoriteToggleSuccess": "收藏状态已成功更新。",
-      "favoriteToggleError": "更新收藏状态时发生错误。"
+      "favoriteToggleError": "更新收藏状态时发生错误。",
+      "removeSuccess": "已从收藏中移除。"
    },
    "MyQuotes": {
       "Client": {

@@ -4,19 +4,21 @@ import { useState, useEffect, useCallback, memo, useMemo } from "react";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover"; // API 함수 추가
+import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastConText";
-import { EstimateStatus, Mover } from "@/lib/types";
+import { EstimateStatus } from "@/lib/types";
 import { useTranslations } from "next-intl";
 
-// 타입 수정: favoriteCount 매개변수 추가
 interface FavoriteDriverListProps {
    onFavoriteChange?: (
       moverId: string,
       isFavorite: boolean,
       favoriteCount: number,
    ) => void;
+   refreshKey?: number; // 추가된 refreshKey prop
 }
 
 // 함수를 컴포넌트 외부로 이동하여 메모이제이션
@@ -41,6 +43,7 @@ const VALID_CHIP_TYPES: ChipType[] = [
 // 메인 컴포넌트를 memo로 최적화
 export default memo(function FavoriteDriverList({
    onFavoriteChange,
+   refreshKey, // refreshKey prop 추가
 }: FavoriteDriverListProps) {
    const t = useTranslations("FavoriteMovers");
 
@@ -63,7 +66,7 @@ export default memo(function FavoriteDriverList({
       return Boolean(tokenSettings.get());
    }, []);
 
-   // t 의존성 추가
+   // 찜한 기사님 목록 로드 함수
    const loadFavoriteMovers = useCallback(async () => {
       const authStatus = checkAuthStatus();
       setIsAuthenticated(authStatus);
@@ -102,40 +105,67 @@ export default memo(function FavoriteDriverList({
       }
    }, [checkAuthStatus, isLoggedInAsMover, t]);
 
-   // 수정된 찜하기 로직 - Toast 사용 + t 의존성 추가
+   // 찜하기 토글 핸들러
    const handleFavoriteToggle = useCallback(
       async (moverId: string) => {
          try {
-            // 해제하려는 기사님의 현재 정보 가져오기
-            const targetMover = favoriteMovers.find(
-               (mover) => mover.id === moverId,
-            );
-            const newFavoriteCount = Math.max(
-               (targetMover?.favoriteCount || 1) - 1,
-               0,
-            );
+            // 실제 API 호출
+            const result = await toggleFavoriteMover(moverId);
 
+            // 즉시 UI에서 제거 (낙관적 업데이트)
             setFavoriteMovers((prev) =>
                prev.filter((mover) => mover.id !== moverId),
             );
 
-            // favoriteCount도 함께 전달
-            onFavoriteChange?.(moverId, false, newFavoriteCount);
+            // 부모 컴포넌트에 변경사항 알림
+            onFavoriteChange?.(
+               moverId,
+               result.isFavorite,
+               result.favoriteCount || 0,
+            );
 
             // Toast로 성공 메시지 표시
-            showSuccess("찜 목록에서 제거되었습니다.");
+            showSuccess(t("removeSuccess"));
 
+            // 약간의 지연 후 최신 데이터로 새로고침
             setTimeout(() => {
                loadFavoriteMovers();
             }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
             showError(t("toggleError"));
+            // 에러 시 데이터 새로고침으로 상태 복구
+            loadFavoriteMovers();
          }
       },
-      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showError, t],
+      [
+         onFavoriteChange,
+         loadFavoriteMovers,
+         favoriteMovers,
+         showSuccess,
+         showError,
+         t,
+      ],
    );
 
+   // 외부 refreshKey 변화에 따른 데이터 새로고침
+   useEffect(() => {
+      if (refreshKey && refreshKey > 0) {
+         console.log(
+            "FavoriteDriverList refreshing due to refreshKey:",
+            refreshKey,
+         );
+
+         // 약간의 지연을 두어 다른 컴포넌트의 상태 변경이 완료된 후 새로고침
+         const timeoutId = setTimeout(() => {
+            loadFavoriteMovers();
+         }, 300);
+
+         return () => clearTimeout(timeoutId);
+      }
+   }, [refreshKey, loadFavoriteMovers]);
+
+   // 초기 데이터 로드
    useEffect(() => {
       loadFavoriteMovers();
    }, [loadFavoriteMovers]);

@@ -7,6 +7,7 @@ import Image from "next/image";
 import scrollIcon from "@/assets/images/scrollIcon.png";
 import MarketingSection1 from "@/components/domain/marketing/MarketingSection1";
 import otherLogo from "@/assets/images/otherLogo.png";
+import logo from "@/assets/images/logo.svg";
 import MarketingSection2 from "@/components/domain/marketing/MarketingSection2";
 import MarketingSection3 from "@/components/domain/marketing/MarketingSection3";
 import MarketingSection4 from "@/components/domain/marketing/MarketingSection4";
@@ -32,7 +33,7 @@ export default function MarketingPage() {
          setCurrentSection(sectionIndex);
 
          gsap.to("#scrollContainer", {
-            duration: 1.5, // 좀 더 길게 설정
+            duration: 1.2,
             scrollTo: { y: sectionIndex * window.innerHeight },
             ease: "power2.inOut",
             onComplete: () => {
@@ -174,18 +175,37 @@ export default function MarketingPage() {
       <div>
          {/* 전체 헤더  */}
          <div className="fixed top-5 left-5 z-30 flex w-full justify-center md:top-10 md:left-10">
-            <div className="w-full max-w-350">
+            <div className="relative w-full max-w-350">
+               {/* 로고1 */}
                <Image
                   src={otherLogo}
+                  alt="기본 색상 로고"
+                  width={90}
+                  className={`absolute top-0 left-0 transition-opacity duration-500 md:w-29 ${
+                     currentSection === 4 ? "opacity-0" : "opacity-100"
+                  }`}
+               />
+               {/* 로고2 */}
+               <Image
+                  src={logo}
                   alt="다른 색상 로고"
                   width={90}
-                  className="block md:w-29"
+                  className={`absolute top-0 left-0 transition-opacity duration-500 md:w-29 ${
+                     currentSection === 4 ? "opacity-100" : "opacity-0"
+                  }`}
                />
             </div>
          </div>
 
          {/* 사이드 네비게이션 */}
-         <div className="fixed top-1/2 z-50 flex w-full -translate-y-1/2 justify-center">
+
+         <div
+            className={`fixed top-1/2 z-50 flex w-full -translate-y-1/2 justify-center transition-opacity duration-500 ${
+               currentSection === 4
+                  ? "pointer-events-none opacity-0"
+                  : "opacity-100"
+            }`}
+         >
             <div className="relative w-full max-w-350">
                <div className="absolute top-1/2 right-10 hidden -translate-y-1/2 flex-col items-end space-y-4 md:flex">
                   {[...Array(TOTAL_SECTIONS)].map((_, i) => (
@@ -204,7 +224,13 @@ export default function MarketingPage() {
          </div>
 
          {/* 스크롤 인디케이터 */}
-         <div className="animate-slow-bounce fixed bottom-8 left-1/2 z-20 -translate-x-1/2 transform text-3xl text-white">
+         <div
+            className={`animate-slow-bounce fixed bottom-8 left-1/2 z-20 -translate-x-1/2 transform text-3xl text-white transition-opacity duration-500 ${
+               currentSection === 4
+                  ? "pointer-events-none opacity-0"
+                  : "opacity-100"
+            }`}
+         >
             <Image
                src={scrollIcon}
                alt="스크롤"

@@ -10,7 +10,7 @@ export default async function SupportPage() {
             {t("supportMessage")}
          </p>
          {/* 추후 Let's Work Together 이미지 처리 */}
-         <h2 className="mt-2.5 text-5xl font-bold md:mt-5 md:text-7xl">
+         <h2 className="font-paperlogy mt-2.5 text-5xl leading-14 font-bold md:mt-5 md:text-7xl md:leading-20">
             Let’s Work Together
          </h2>
          <SupportForm />

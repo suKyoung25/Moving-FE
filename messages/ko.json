@@ -404,7 +404,8 @@
       "toggleError": "찜 처리 중 오류가 발생했습니다.",
       "errorOccurred": "오류가 발생했습니다.",
       "favoriteToggleSuccess": "찜이 성공적으로 변경되었습니다.",
-      "favoriteToggleError": "찜 처리 중 오류가 발생했습니다."
+      "favoriteToggleError": "찜 처리 중 오류가 발생했습니다.",
+      "removeSuccess": "찜 목록에서 제거되었습니다."
    },
    "MyQuotes": {
       "Client": {

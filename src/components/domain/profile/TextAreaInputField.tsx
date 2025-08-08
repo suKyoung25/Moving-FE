@@ -13,14 +13,14 @@ function TextAreaInputField<T extends Record<string, FieldValue>>({
    error,
 }: InputFieldProps<T>) {
    return (
-      <div className="flex flex-col gap-4">
-         <div className="text-16-semibold lg:text-20-semibold">
+      <div className="flex flex-col">
+         <div className="text-16-semibold lg:text-20-semibold mt-8 lg:mt-0">
             {text}
             <span className="text-blue-300"> *</span>
          </div>
          <textarea
             {...register?.(name)}
-            className={`mg:h-13 bg-bg-200 h-13 w-full rounded-2xl pt-3.5 pl-3.5 placeholder:text-gray-300 lg:h-40 ${error ? "border border-red-500" : ""}`}
+            className={`bg-bg-200 mt-4 h-13 w-full rounded-2xl pt-3.5 pl-3.5 placeholder:text-gray-300 md:h-40 lg:h-40 ${error ? "border border-red-500" : ""}`}
             placeholder={placeholder}
          />
 
