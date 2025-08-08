@@ -146,7 +146,10 @@ export default function ImageEditModal({
                Math.min(rect.width, rect.height) / 2,
             );
 
-            let newRadius = Math.min(Math.max(distance, MIN_RADIUS), maxRadius);
+            const newRadius = Math.min(
+               Math.max(distance, MIN_RADIUS),
+               maxRadius,
+            );
 
             const constrained = getConstrainedPosition(
                centerX,

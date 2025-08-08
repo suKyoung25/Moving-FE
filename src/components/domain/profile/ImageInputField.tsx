@@ -6,6 +6,7 @@ import { Controller, useWatch } from "react-hook-form";
 import profileUploader from "@/assets/images/profileUploaderIcon.svg";
 import Image from "next/image";
 import ImageEditModal from "./ImageEditModal";
+import { ControllerRenderProps, Path } from "react-hook-form";
 
 function ImageInputField<T extends Record<string, FieldValue>>({
    name,
@@ -26,10 +27,13 @@ function ImageInputField<T extends Record<string, FieldValue>>({
       if (typeof watchedValue === "string" && watchedValue !== previewUrl) {
          setPreviewUrl(watchedValue);
       }
-   }, [watchedValue]);
+   }, [watchedValue, previewUrl]);
 
    // 선택한 파일은 RHF에 저장하고 수정 모달을 띄움
-   const handleFileSelection = (file: File, field: any) => {
+   const handleFileSelection = (
+      file: File,
+      field: ControllerRenderProps<T, Path<T>>,
+   ) => {
       const reader = new FileReader();
       reader.onloadend = () => {
          const imageUrl = reader.result as string; // 선택한 이미지를 url 변환
@@ -41,7 +45,10 @@ function ImageInputField<T extends Record<string, FieldValue>>({
    };
 
    // 이미지 드래그가 끝난 후 실행
-   const handleDrop = (e: React.DragEvent, field: any) => {
+   const handleDrop = (
+      e: React.DragEvent,
+      field: ControllerRenderProps<T, Path<T>>,
+   ) => {
       e.preventDefault();
       setIsDragOver(false);
       const file = e.dataTransfer.files?.[0];
@@ -53,7 +60,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
    // 새로운 이미지를 선택
    const handleFileInputChange = (
       e: React.ChangeEvent<HTMLInputElement>,
-      field: any,
+      field: ControllerRenderProps<T, Path<T>>,
    ) => {
       const file = e.target.files?.[0];
       if (file) {
@@ -72,7 +79,10 @@ function ImageInputField<T extends Record<string, FieldValue>>({
    };
 
    // 이미지 수정
-   const handleEditConfirm = async (croppedImageUrl: string, field: any) => {
+   const handleEditConfirm = async (
+      croppedImageUrl: string,
+      field: ControllerRenderProps<T, Path<T>>,
+   ) => {
       setPreviewUrl(croppedImageUrl);
 
       field.onChange(croppedImageUrl);
@@ -81,7 +91,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
    };
 
    // 기존 이미지 삭제
-   const handleDelete = (field: any) => {
+   const handleDelete = (field: ControllerRenderProps<T, Path<T>>) => {
       setPreviewUrl(null);
       setOriginalImageUrl(null);
       field.onChange("");

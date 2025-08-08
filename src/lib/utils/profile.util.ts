@@ -2,7 +2,6 @@
 
 import { serviceTypeMap } from "@/constants";
 import { Region } from "../types";
-import { useCallback } from "react";
 import { CropCircle } from "@/components/domain/profile/ImageEditModal";
 
 // Region[] > string[] 으로 변환 (regionName만 추출)
