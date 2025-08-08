@@ -10,7 +10,6 @@ import EmptyState from "@/components/common/EmptyState";
 import SolidButton from "@/components/common/SolidButton";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { FavoriteMoverState } from "@/lib/types";
-import ToastPopup from "@/components/common/ToastPopup";
 import { useFavoriteMovers } from "@/lib/api/favorite/query";
 import { useToggleFavoriteMover } from "@/lib/api/favorite/mutation";
 
@@ -24,11 +23,6 @@ export default function FavoriteMover() {
       limit: 6,
       totalPages: 1,
    });
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    // 찜한 기사님 리스트 패치
    const { data, isPending, error } = useFavoriteMovers({
@@ -40,21 +34,27 @@ export default function FavoriteMover() {
    const { mutate } = useToggleFavoriteMover({
       page: pagination.page,
       limit: pagination.limit,
-      onToast: setToast,
    });
 
-   const handleLikedClick = (moverId: string) => mutate(moverId);
+   const handleLikedClick = (e: React.MouseEvent, moverId: string) => {
+      e.stopPropagation(); // 이벤트 버블링 방지
+      mutate(moverId);
+   };
 
    const handlePageChange = (page: number) => {
       setPagination((prev) => ({ ...prev, page }));
    };
 
+   const handleProfileClick = (moverId: string) => {
+      router.push(`/mover-search/${moverId}`); // 기사 상세페이지 경로
+   };
+
    const movers: FavoriteMoverState[] = data?.data?.movers ?? [];
    const pageInfo = data?.data?.pagination ?? pagination;
 
-   if (isPending) return <div>로딩 중...</div>;
+   if (isPending) return <div>{t("loading")}</div>;
    if (error) {
-      return <div>오류가 발생했습니다.</div>;
+      return <div>{t("errorOccurred")}</div>;
    }
 
    return (
@@ -72,18 +72,31 @@ export default function FavoriteMover() {
                         ) : null,
                      )}
                   </div>
-                  <MoverProfile
-                     big={true}
-                     profileImage={mover.profileImage}
-                     isLiked={mover.isLiked}
-                     handleLikedClick={() => handleLikedClick(mover.id)}
-                     nickName={mover.nickName}
-                     favoriteCount={mover.favoriteCount}
-                     averageReviewRating={mover.averageReviewRating}
-                     reviewCount={mover.reviewCount}
-                     career={mover.career!}
-                     estimateCount={mover.estimateCount}
-                  />
+                  <div
+                     role="button"
+                     tabIndex={0}
+                     onClick={() => handleProfileClick(mover.id)}
+                     onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                           e.preventDefault();
+                           handleProfileClick(mover.id);
+                        }
+                     }}
+                     className="cursor-pointer"
+                  >
+                     <MoverProfile
+                        big={true}
+                        profileImage={mover.profileImage}
+                        isLiked={mover.isLiked}
+                        handleLikedClick={(e) => handleLikedClick(e, mover.id)}
+                        nickName={mover.nickName}
+                        favoriteCount={mover.favoriteCount}
+                        averageReviewRating={mover.averageReviewRating}
+                        reviewCount={mover.reviewCount}
+                        career={mover.career!}
+                        estimateCount={mover.estimateCount}
+                     />
+                  </div>
                </div>
             ))}
          </div>
@@ -102,13 +115,6 @@ export default function FavoriteMover() {
                   {t("goToFavorite")}
                </SolidButton>
             </div>
-         )}
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
          )}
       </>
    );

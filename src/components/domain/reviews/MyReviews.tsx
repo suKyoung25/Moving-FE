@@ -18,11 +18,13 @@ import { MyReview } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMyReviews } from "@/lib/api/review/query";
 import { useToast } from "@/context/ToastConText";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function MyReviews() {
    const t = useTranslations("Reviews");
    const router = useRouter();
    const { showSuccess } = useToast();
+   const queryClient = useQueryClient();
 
    // 페이지네이션 상태
    const [pagination, setPagination] = useState({
@@ -49,7 +51,8 @@ export default function MyReviews() {
    // 리뷰 수정/삭제 완료 시 리스트 새로고침
    const handleRefresh = () => {
       refetch();
-      showSuccess("리뷰가 성공적으로 수정/삭제되었습니다.");
+      queryClient.refetchQueries({ queryKey: ["writableReviews"] }); // writableReviews 리패칭
+      showSuccess(t("reviewModifiedSuccess"));
    };
 
    // 리뷰 목록
@@ -57,11 +60,11 @@ export default function MyReviews() {
    const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
 
    if (error) {
-      return <div>{t("errorOccurred") || "오류가 발생했습니다."}</div>;
+      return <div>{t("errorOccurred")}</div>;
    }
 
    if (isLoading || isFetching) {
-      return <div>로딩중...</div>;
+      return <div>{t("loadingText")}</div>;
    }
 
    return (
@@ -90,8 +93,7 @@ export default function MyReviews() {
                      <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                         <Image
                            src={review.moverProfileImage || profile}
-                           alt="프로필"
-                           fill
+                           alt={t("profileAlt")}
                            className="object-cover"
                         />
                      </div>
@@ -112,7 +114,7 @@ export default function MyReviews() {
                                  src={more}
                                  width={24}
                                  height={24}
-                                 alt="수정 및 삭제"
+                                 alt={t("editDeleteAlt")}
                                  style={{ transform: "rotate(90deg)" }}
                               />
                            </button>
@@ -142,7 +144,7 @@ export default function MyReviews() {
                                     src={yellowStar}
                                     width={24}
                                     height={24}
-                                    alt="별점"
+                                    alt={t("yellowStarAlt")}
                                  />
                               ))}
                            {Array(5 - Number(review.rating))
@@ -153,7 +155,7 @@ export default function MyReviews() {
                                     src={grayStar}
                                     width={24}
                                     height={24}
-                                    alt="별점"
+                                    alt={t("grayStarAlt")}
                                  />
                               ))}
                         </div>

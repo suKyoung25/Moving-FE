@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
 import { useUpdateReview, useDeleteReview } from "@/lib/api/review/mutation";
 import SolidButton from "@/components/common/SolidButton";
+import ConfirmModal from "@/components/common/ConfirmModal";
 
 interface EditDeleteReviewModalProps {
    isOpen: boolean;
@@ -45,6 +46,7 @@ export default function EditDeleteReviewModal({
 
    const [apiMessage, setApiMessage] = useState("");
    const [hovered, setHovered] = useState<number | null>(null);
+   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
    // 수정
    const updateMutation = useUpdateReview({
@@ -91,10 +93,13 @@ export default function EditDeleteReviewModal({
    };
 
    const handleDelete = () => {
-      if (!window.confirm(t("deleteConfirm"))) return;
       setApiMessage("");
       deleteMutation.mutate(review.id);
+      closeConfirmModal();
    };
+
+   const openConfirmModal = () => setIsConfirmOpen(true);
+   const closeConfirmModal = () => setIsConfirmOpen(false);
 
    const loading = updateMutation.isPending || deleteMutation.isPending;
 
@@ -117,6 +122,7 @@ export default function EditDeleteReviewModal({
                   : t("editReview")
             }
             isActive={isActive && !loading}
+            isConfirmOpen={isConfirmOpen}
          >
             <ReviewFormBody
                estimate={review as WritableReview}
@@ -140,11 +146,21 @@ export default function EditDeleteReviewModal({
                type="button"
                className="mt-2 w-full bg-red-500"
                disabled={loading}
-               onClick={handleDelete}
+               onClick={openConfirmModal}
+               aria-label={t("deleteReview")}
             >
                {deleteMutation.isPending ? t("deleting") : t("deleteReview")}
             </SolidButton>
          </InputModal>
+
+         {/* 최종 확인 모달 */}
+         <ConfirmModal
+            isOpen={isConfirmOpen}
+            onClose={closeConfirmModal}
+            onConfirm={handleDelete}
+            title={t("deleteConfirmTitle")}
+            description={t("deleteConfirmDescription")}
+         />
       </form>
    );
 }

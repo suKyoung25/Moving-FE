@@ -386,7 +386,19 @@
       "deleteReview": "Delete Review",
       "confirmed": "Confirmed",
       "year": "Y",
-      "cases": ""
+      "cases": "",
+      "profileAlt": "Profile Image",
+      "errorOccurred": "An error has occurred.",
+      "loadingText": "Loading...",
+      "reviewRegistered": "Your review has been successfully registered.",
+      "yellowStarAlt": "Yellow star",
+      "grayStarAlt": "Gray star",
+      "starAria": "{point} stars",
+      "reviewModifiedSuccess": "Review successfully modified/deleted.",
+      "editDeleteAria": "Edit and delete review",
+      "editDeleteAlt": "Edit and delete icon",
+      "deleteConfirmTitle": "Are you sure you want to delete this review?",
+      "deleteConfirmDescription": "This action cannot be undone."
    },
    "FavoriteMovers": {
       "title": "Favorite Movers",
@@ -397,6 +409,9 @@
       "loadFailed": "Failed to load favorite drivers.",
       "noFavorites": "No favorite drivers found.",
       "toggleError": "An error occurred while toggling favorite.",
+      "errorOccurred": "An error has occurred.",
+      "favoriteToggleSuccess": "Favorite status has been successfully updated.",
+      "favoriteToggleError": "An error occurred while updating favorite status.",
       "removeSuccess": "Removed from favorites."
    },
    "MyQuotes": {

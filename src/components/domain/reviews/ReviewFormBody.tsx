@@ -47,7 +47,7 @@ export function ReviewFormBody({
             <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                <Image
                   src={estimate.moverProfileImage || profile}
-                  alt="프로필"
+                  alt={t("profileAlt")}
                   fill
                   className="object-cover"
                />
@@ -96,13 +96,17 @@ export function ReviewFormBody({
                      onMouseEnter={() => setHovered(star)}
                      onMouseLeave={() => setHovered(null)}
                      className="focus:outline-none"
-                     aria-label={`${star}점`}
+                     aria-label={t("starAria", { point: star })}
                   >
                      <Image
                         src={
                            star <= (hovered ?? rating) ? yellowStar : grayStar
                         }
-                        alt={star <= (hovered ?? rating) ? "노란별" : "회색별"}
+                        alt={
+                           star <= (hovered ?? rating)
+                              ? t("yellowStarAlt")
+                              : t("grayStarAlt")
+                        }
                         width={48}
                         height={48}
                         className="h-6 w-6 lg:h-12 lg:w-12"
