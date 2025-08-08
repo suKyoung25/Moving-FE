@@ -15,7 +15,6 @@ export default function AuthInput<T extends FieldValues>({
    error,
 }: AuthInputProps<T>) {
    const hasError = Boolean(error);
-   const errorId = hasError ? `${name}-error` : undefined;
 
    return (
       <section className="flex w-full flex-col gap-2 lg:gap-4">
