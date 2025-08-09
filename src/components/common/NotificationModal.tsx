@@ -19,6 +19,7 @@ import { FiCheckSquare } from "react-icons/fi";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
 import { getRequest } from "@/lib/api/estimate/requests/getClientRequest";
+import { getEstimate } from "@/lib/api/estimate/getClientQuoteDetail";
 
 export default function NotificationModal({
    setIsNotiModalOpen,
@@ -52,10 +53,21 @@ export default function NotificationModal({
       try {
          await readNotification(item.id);
          queryClient.invalidateQueries({ queryKey: ["notifications"] });
-         const { data } = await getRequest(item.targetId!);
-         if (!data) {
-            showError("존재하지 않는 견적 요청입니다.");
+         if (!item.targetId) {
             return;
+         }
+         if (item.targetUrl?.startsWith("/my-quotes")) {
+            const estimate = await getEstimate(item.targetId);
+            if (!estimate) {
+               showError("취소된 견적입니다.");
+               return;
+            }
+         } else {
+            const { data: request } = await getRequest(item.targetId);
+            if (!request) {
+               showError("취소된 견적 요청입니다.");
+               return;
+            }
          }
          router.push(item.targetUrl ?? "");
          setIsNotiModalOpen(false);
