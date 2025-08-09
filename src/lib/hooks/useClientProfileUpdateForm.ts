@@ -11,14 +11,18 @@ import {
    updateClientProfileSchema,
 } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
-import { NotiSetting, ServiceType } from "../types/client.types";
+import { ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
+import { useToast } from "@/context/ToastConText";
+import { useTranslations } from "next-intl";
 
-export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
+export default function useClientProfileUpdateForm() {
+   const t = useTranslations("Profile");
    // ✅ 상태 모음
    const router = useRouter();
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
+   const { showSuccess, showError } = useToast();
 
    // ✅ 초깃값 보존 용도 기본값
    function getInitialValues(user: User | null): ClientProfileUpdateValue {
@@ -115,12 +119,7 @@ export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
          };
 
          await clientProfile.update(payload);
-
-         setToast({
-            id: Date.now(),
-            text: "프로필이 수정되었습니다.",
-            success: true,
-         });
+         showSuccess(t("profileUpdated")); // 알림창
 
          // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
          setTimeout(async () => {
@@ -134,6 +133,12 @@ export default function useClientProfileUpdateForm({ setToast }: NotiSetting) {
 
          // 서버 오류 처리
          const customError = error as AuthFetchError;
+         const message = customError?.body.message;
+
+         // 비밀번호 등 프로필 수정 횟수 초과 오류 -> 알림창
+         if (customError.status === 429) {
+            if (message) showError(message);
+         }
 
          if (customError?.status) {
             Object.entries(customError.body.data!).forEach(([key, message]) => {

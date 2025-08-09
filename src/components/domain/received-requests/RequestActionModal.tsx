@@ -14,15 +14,14 @@ import {
 } from "@/lib/schemas";
 import { useQueryClient } from "@tanstack/react-query";
 import { receivedRequestsQueryKey } from "@/lib/api/request/query";
+import { useToast } from "@/context/ToastConText";
+import { useTranslations } from "next-intl";
+import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
 
 interface Props {
    isOpen: boolean;
    onClose: () => void;
    modalType: "accept" | "reject";
-   setToast: (
-      toast: { id: number; text: string; success: boolean } | null,
-   ) => void;
-
    request: ReceivedRequest;
    requestId: string;
    clientId: string;
@@ -32,12 +31,14 @@ export default function RequestActionModal({
    isOpen,
    onClose,
    modalType,
-   setToast,
    request,
    requestId,
    clientId,
 }: Props) {
+   const t = useTranslations("ReceivedRequests");
+
    const queryClient = useQueryClient();
+   const { showSuccess } = useToast();
 
    const {
       register,
@@ -79,14 +80,11 @@ export default function RequestActionModal({
       } catch (error) {
          console.error("요청 실패:", error);
       } finally {
-         setToast({
-            id: Date.now(),
-            text:
-               modalType === "accept"
-                  ? "고객님께 견적을 성공적으로 발송했습니다."
-                  : "견적 요청을 반려 처리했습니다.",
-            success: true,
-         });
+         showSuccess(
+            modalType === "accept"
+               ? t("toast.sendSuccess")
+               : t("toast.rejectSuccess"),
+         );
          onClose();
          reset();
       }
@@ -102,8 +100,16 @@ export default function RequestActionModal({
                onClose();
                reset();
             }}
-            title={modalType === "accept" ? "견적 보내기" : "요청 반려"}
-            buttonTitle={modalType === "accept" ? "견적 보내기" : "반려하기"}
+            title={
+               modalType === "accept"
+                  ? t("modal.sendTitle")
+                  : t("modal.rejectTitle")
+            }
+            buttonTitle={
+               modalType === "accept"
+                  ? t("modal.sendButton")
+                  : t("modal.rejectButton")
+            }
             isActive={isValid && !isSubmitting}
          >
             <div className="flex flex-col gap-2 lg:gap-4">
@@ -114,13 +120,12 @@ export default function RequestActionModal({
                   {request.isDesignated && <MoveChip type="DESIGNATED" />}
                </div>
                <span className="text-14-semibold lg:text-24-semibold mt-3">
-                  {request.clientName} 고객님
+                  {request.clientName} {t("clientHonorific")}
                </span>
                <div className="flex items-center gap-2 lg:gap-2.5">
-                  <MoveTextCard text="이사일" />
+                  <MoveTextCard text={t("moveDateLabel")} />
                   <span className="text-14-medium lg:text-20-medium">
-                     {request.moveDate.slice(0, 10)} (
-                     {"일월화수목금토"[new Date(request.moveDate).getDay()]})
+                     <FormattedDateWithDay dateString={request.moveDate} />
                   </span>
                </div>
             </div>
@@ -137,12 +142,12 @@ export default function RequestActionModal({
                {modalType === "accept" && (
                   <div className="flex flex-col gap-3">
                      <label className="text-16-semibold lg:text-20-semibold">
-                        견적 금액
+                        {t("priceLabel")}
                      </label>
                      <input
                         type="text"
                         inputMode="numeric"
-                        placeholder="금액을 입력하세요"
+                        placeholder={t("pricePlaceholder")}
                         className="bg-bg-200 w-full rounded-2xl p-3.5"
                         value={price ?? ""}
                         onChange={(e) => {
@@ -165,15 +170,15 @@ export default function RequestActionModal({
                <div className="flex flex-col gap-3">
                   <label className="text-16-semibold lg:text-20-semibold">
                      {modalType === "accept"
-                        ? "코멘트를 입력해 주세요"
-                        : "반려 사유"}
+                        ? t("commentLabel")
+                        : t("rejectReasonLabel")}
                   </label>
                   <textarea
                      className="bg-bg-200 w-full rounded-2xl p-3.5"
                      placeholder={
                         modalType === "accept"
-                           ? "견적에 대한 메모를 입력해주세요."
-                           : "반려 사유를 입력해주세요."
+                           ? t("commentPlaceholder")
+                           : t("rejectReasonPlaceholder")
                      }
                      rows={5}
                      {...register("comment")}

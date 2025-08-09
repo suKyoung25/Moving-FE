@@ -6,21 +6,20 @@ import SkeletonLayout from "@/components/common/SkeletonLayout";
 import RejectedRequestsSkeleton from "./RejectedRequestsSkeleton";
 import { useState } from "react";
 import { MyEstimateDetail } from "@/lib/types";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import { useRejectedEstimates } from "@/lib/api/estimate/query";
-import ToastPopup from "@/components/common/ToastPopup";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { deleteEstimate } from "@/lib/api/estimate/requests/deleteEstimate";
 import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/context/ToastConText";
+import { useTranslations } from "next-intl";
 
 export default function RejectedRequestsList() {
+   const t = useTranslations("MyQuotes.Mover");
+
    const [page, setPage] = useState(1);
    const { data, isLoading } = useRejectedEstimates(page);
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
+   const { showSuccess, showError } = useToast();
 
    const [selectedEstimateId, setSelectedEstimateId] = useState<string | null>(
       null,
@@ -38,20 +37,11 @@ export default function RejectedRequestsList() {
       setSelectedEstimateId(null);
 
       if (res) {
-         setToast({
-            id: Date.now(),
-            text: "견적이 성공적으로 취소되었습니다.",
-            success: true,
-         });
-
+         showSuccess(t("toast.cancelSuccess"));
          queryClient.invalidateQueries({ queryKey: ["sentEstimates"] });
          queryClient.invalidateQueries({ queryKey: ["rejectedEstimates"] });
       } else {
-         setToast({
-            id: Date.now(),
-            text: "견적 취소 중 오류가 발생했습니다. 다시 시도해주세요.",
-            success: false,
-         });
+         showError(t("toast.cancelError"));
       }
    };
 
@@ -76,7 +66,7 @@ export default function RejectedRequestsList() {
             </div>
          ) : (
             <div className="flex items-center justify-center">
-               <EmptyState message="아직 반려한 견적이 없습니다." />
+               <EmptyState message={t("rejectedemptyMessage")} />
             </div>
          )}
 
@@ -86,21 +76,13 @@ export default function RejectedRequestsList() {
             onPageChange={setPage}
          />
 
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
-         )}
-
          {selectedEstimateId && (
             <ConfirmModal
                isOpen={!!selectedEstimateId}
                onClose={() => setSelectedEstimateId(null)}
                onConfirm={handleCancelEstimate}
-               title="견적 반려하기"
-               description="정말 이 견적을 반려하시겠습니까?"
+               title={t("modal.title2")}
+               description={t("modal.description2")}
             />
          )}
       </div>

@@ -13,6 +13,7 @@ interface InputModalProps {
    children?: React.ReactNode;
    buttonTitle: string;
    isActive: boolean;
+   isConfirmOpen?: boolean;
 }
 
 export default function InputModal({
@@ -22,11 +23,12 @@ export default function InputModal({
    children,
    buttonTitle,
    isActive,
+   isConfirmOpen,
 }: InputModalProps) {
    const modalRef = useRef<HTMLDivElement>(null);
 
    useOutsideClick(modalRef, () => {
-      onClose();
+      if (!isConfirmOpen) onClose();
    });
 
    if (!isOpen) return null;

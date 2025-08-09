@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import yellowStar from "@/assets/images/starFilledIcon.svg";
 import grayStar from "@/assets/images/starOutlineIcon.svg";
+import { useTranslations } from "next-intl";
 
 export default function ReviewStar({
    rating,
@@ -10,6 +13,8 @@ export default function ReviewStar({
    rating: number;
    size?: string;
 }) {
+   const t = useTranslations("Dashboard");
+
    return (
       <div className="flex">
          {[1, 2, 3, 4, 5].map((idx) => {
@@ -23,7 +28,7 @@ export default function ReviewStar({
                <Image
                   key={idx}
                   src={src}
-                  alt={yellowStar ? "노란별" : "회색별"}
+                  alt={yellowStar ? t("yellowStarAlt") : t("grayStarAlt")}
                   className={size}
                />
             );

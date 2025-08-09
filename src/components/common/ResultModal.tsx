@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import xIcon from "@/assets/images/xIcon.svg";
+import { useTranslations } from "next-intl";
 
 type ResultModalProps = {
    isOpen: boolean;
@@ -19,6 +20,7 @@ export default function ResultModal({
    onClose,
    onClick,
 }: ResultModalProps) {
+   const t = useTranslations("MoverDetail");
    // 배경 영역 클릭 시 닫기
    const handleClosed = (e: React.MouseEvent<HTMLDivElement>) => {
       if (
@@ -39,8 +41,17 @@ export default function ResultModal({
          <div className="absolute top-1/2 left-1/2 mx-auto flex w-4/5 max-w-80 -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-3xl bg-white px-4 py-6 md:max-w-100 md:gap-10">
             {/* 닫기 버튼 */}
             <div className="flex justify-end">
-               <button type="button" onClick={onClose}>
-                  <Image src={xIcon} alt="close" width={24} height={24} />
+               <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label={t("closeAlt")}
+               >
+                  <Image
+                     src={xIcon}
+                     alt={t("closeAlt")}
+                     width={24}
+                     height={24}
+                  />
                </button>
             </div>
 
@@ -51,9 +62,9 @@ export default function ResultModal({
             <button
                type="button"
                onClick={onClick}
-               className="bg-primary-blue-300 hover:bg-primary-blue-200 mx-4 rounded-2xl p-4 font-semibold text-white max-md:text-sm"
+               className="bg-primary-blue-300 hover:bg-primary-blue-200 mx-4 mt-6 rounded-2xl p-4 font-semibold text-white max-md:text-sm"
             >
-               {buttonText ?? "확인"}
+               {buttonText ?? t("confirm")}
             </button>
          </div>
       </div>

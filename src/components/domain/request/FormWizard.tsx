@@ -10,13 +10,15 @@ import { CreateRequestDto, FormWizardState } from "@/lib/types";
 import { patchRequestDraft } from "@/lib/api/request/requests/requestDraftApi";
 import { debounce } from "lodash";
 import { createRequestAction } from "@/lib/actions/request.action";
-import ToastPopup from "@/components/common/ToastPopup";
 import { useFormWizard } from "@/context/FormWizardContext";
 import {
    useActiveRequest,
    useRequestDraft,
 } from "@/lib/api/request/requests/query";
 import Step4 from "./Step4";
+import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
+import { useQueryClient } from "@tanstack/react-query";
 
 const defaultState: FormWizardState = {
    moveType: undefined,
@@ -26,17 +28,14 @@ const defaultState: FormWizardState = {
 };
 
 export default function FormWizard({}) {
+   const t = useTranslations("Request");
    const { isLoading } = useAuth();
    const { currentStep, setCurrentStep, isPending, setIsPending } =
       useFormWizard();
+   const { showSuccess, showError } = useToast();
    const [formState, setFormState] = useState<FormWizardState>(defaultState);
    const [isInitialized, setIsInitialized] = useState(false);
-
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
+   const queryClient = useQueryClient();
 
    const isFormValid =
       !!formState.moveType &&
@@ -61,7 +60,12 @@ export default function FormWizard({}) {
       if (draftRes?.data) {
          const { moveType, moveDate, fromAddress, toAddress, currentStep } =
             draftRes.data;
-         setFormState({ moveType, moveDate, fromAddress, toAddress });
+         setFormState({
+            moveType,
+            moveDate: moveDate ? new Date(moveDate) : undefined,
+            fromAddress,
+            toAddress,
+         });
          setCurrentStep(currentStep);
       } else {
          setFormState(defaultState);
@@ -108,50 +112,26 @@ export default function FormWizard({}) {
    const handleConfirm = async () => {
       try {
          await createRequestAction(formState as CreateRequestDto);
-
-         setToast({
-            id: Date.now(),
-            text: "견적 요청이 완료되었어요!",
-            success: true,
-         });
-
+         queryClient.invalidateQueries({ queryKey: ["activeRequest"] });
+         showSuccess(t("toast.success"));
          setCurrentStep(4);
       } catch (err) {
          console.error("견적 요청 실패:", err);
-
-         setToast({
-            id: Date.now(),
-            text: "이미 진행 중인 견적 요청이 있어요.",
-            success: false,
-         });
+         showError(t("toast.fail"));
       }
    };
 
    if (isPending) {
-      return <div className="text-center text-gray-400">로딩 중...</div>;
+      return <div className="text-center text-gray-400">{t("loading")}</div>;
    }
 
    if (currentStep === 4) {
-      return (
-         <>
-            <Step4 />
-            {toast && (
-               <ToastPopup
-                  key={toast.id}
-                  text={toast.text}
-                  success={toast.success}
-               />
-            )}
-         </>
-      );
+      return <Step4 />;
    }
 
    return (
       <form className="flex flex-col gap-2 lg:gap-6">
-         <ChatMessage
-            type="system"
-            message="몇 가지 정보만 알려주시면 최대 5개의 견적을 받을 수 있어요 :)"
-         />
+         <ChatMessage type="system" message={t("systemInfoMessage")} />
          {currentStep >= 0 && (
             <Step1
                value={formState.moveType}

@@ -17,6 +17,7 @@
       "dompurify": "^3.2.6",
       "event-source-polyfill": "^1.0.31",
       "framer-motion": "^12.23.6",
+      "gsap": "^3.13.0",
       "html-react-parser": "^5.2.6",
       "jose": "^6.0.12",
       "lodash": "^4.17.21",

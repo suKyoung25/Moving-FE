@@ -1,13 +1,21 @@
 import { tokenFetch } from "@/lib/utils/fetch-client";
-
-export async function getClientActiveRequest() {
-   return await tokenFetch("/requests/client/active", {
-      method: "GET",
-   });
+interface PageParms {
+   cursor?: string;
+   sort?: "asc" | "desc";
 }
 
-export async function getRequests() {
-   return await tokenFetch("/requests/client", {
-      method: "GET",
-   });
+export async function getClientActiveRequest() {
+   return await tokenFetch("/requests/client/active");
+}
+
+export async function getRequests({ cursor, sort }: PageParms) {
+   const queryParams = new URLSearchParams();
+   queryParams.append("sort", sort as string);
+   if (cursor) queryParams.append("cursor", cursor);
+
+   return await tokenFetch(`/requests/client?${queryParams.toString()}`);
+}
+
+export async function getRequest(requestId: string) {
+   return await tokenFetch(`/requests/${requestId}`);
 }

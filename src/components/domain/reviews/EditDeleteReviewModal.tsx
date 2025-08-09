@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
 import { useUpdateReview, useDeleteReview } from "@/lib/api/review/mutation";
 import SolidButton from "@/components/common/SolidButton";
+import ConfirmModal from "@/components/common/ConfirmModal";
 
 interface EditDeleteReviewModalProps {
    isOpen: boolean;
@@ -45,6 +46,8 @@ export default function EditDeleteReviewModal({
 
    const [apiMessage, setApiMessage] = useState("");
    const [hovered, setHovered] = useState<number | null>(null);
+   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+   const [isEditConfirmOpen, setIsEditConfirmOpen] = useState(false);
 
    // 수정
    const updateMutation = useUpdateReview({
@@ -76,6 +79,8 @@ export default function EditDeleteReviewModal({
          reset({ rating: review.rating, content: review.content });
          setApiMessage("");
          setHovered(null);
+         setIsDeleteConfirmOpen(false); // 모달 처음 열릴 때는 확인 모달 닫힘
+         setIsEditConfirmOpen(false);
       }
    }, [isOpen, review, reset]);
 
@@ -85,23 +90,46 @@ export default function EditDeleteReviewModal({
 
    if (!isOpen) return null;
 
+   // 폼 유효성 검사 및 제출 함수
    const onSubmit = (data: UpdateReviewDto) => {
       setApiMessage("");
       updateMutation.mutate({ id: review.id, data });
+      setIsEditConfirmOpen(false);
+   };
+
+   // 폼 제출 이벤트 핸들러: 실제 제출 지연시키고 확인 모달 띄움
+   const onFormSubmit = (event: React.FormEvent) => {
+      event.preventDefault(); // 폼 제출 기본동작 차단
+      const rating = watch("rating") ?? 0;
+      const content = watch("content") ?? "";
+
+      // 변경사항 없는 경우
+      if (rating === review.rating && content === review.content) {
+         setApiMessage(t("noChangesError"));
+         // 수정 확인 모달은 열지 않음
+         return;
+      }
+
+      setApiMessage("");
+      setIsEditConfirmOpen(true); // 확인 모달 열기
    };
 
    const handleDelete = () => {
-      if (!window.confirm(t("deleteConfirm"))) return;
       setApiMessage("");
       deleteMutation.mutate(review.id);
+      closeDeleteConfirmModal();
    };
+
+   const openDeleteConfirmModal = () => setIsDeleteConfirmOpen(true);
+   const closeDeleteConfirmModal = () => setIsDeleteConfirmOpen(false);
+   const closeEditConfirmModal = () => setIsEditConfirmOpen(false);
 
    const loading = updateMutation.isPending || deleteMutation.isPending;
 
    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onFormSubmit}>
          <InputModal
-            isOpen={isOpen}
+            isOpen={isOpen && !isDeleteConfirmOpen && !isEditConfirmOpen}
             onClose={() => {
                onClose();
                reset();
@@ -117,6 +145,7 @@ export default function EditDeleteReviewModal({
                   : t("editReview")
             }
             isActive={isActive && !loading}
+            isConfirmOpen={isDeleteConfirmOpen && isEditConfirmOpen}
          >
             <ReviewFormBody
                estimate={review as WritableReview}
@@ -140,11 +169,30 @@ export default function EditDeleteReviewModal({
                type="button"
                className="mt-2 w-full bg-red-500"
                disabled={loading}
-               onClick={handleDelete}
+               onClick={openDeleteConfirmModal}
+               aria-label={t("deleteReview")}
             >
                {deleteMutation.isPending ? t("deleting") : t("deleteReview")}
             </SolidButton>
          </InputModal>
+
+         {/* 수정 확인 모달 */}
+         <ConfirmModal
+            isOpen={isEditConfirmOpen}
+            onClose={closeEditConfirmModal}
+            onConfirm={handleSubmit(onSubmit)}
+            title={t("editConfirmTitle")}
+            description={t("editConfirmDescription")}
+         />
+
+         {/* 삭제 확인 모달 */}
+         <ConfirmModal
+            isOpen={isDeleteConfirmOpen}
+            onClose={closeDeleteConfirmModal}
+            onConfirm={handleDelete}
+            title={t("deleteConfirmTitle")}
+            description={t("deleteConfirmDescription")}
+         />
       </form>
    );
 }

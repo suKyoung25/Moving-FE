@@ -8,6 +8,7 @@ import Image from "next/image";
 import chekcedIcon from "@/assets/images/roundActiveIcon.svg";
 import uncheckedIcon from "@/assets/images/roundDefaultIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
+import { useTranslations } from "next-intl";
 
 interface Step1Props {
    value?: Request["moveType"];
@@ -17,15 +18,17 @@ interface Step1Props {
 
 // 이사 종류 선택 단계
 export default function Step1({ value, onChange, onNext }: Step1Props) {
+   const t = useTranslations("Request");
+
    const [selected, setSelected] = useState<Request["moveType"] | undefined>(
       value,
    );
    const [isEditing, setIsEditing] = useState<boolean>(false);
 
    const selectOptions = [
-      { label: "소형이사 (원룸, 투룸, 20평대 미만)", value: "SMALL" },
-      { label: "가정이사 (쓰리룸, 20평대 이상)", value: "HOME" },
-      { label: "사무실이사 (사무실, 상업공간)", value: "OFFICE" },
+      { label: t("moveTypes.SMALL"), value: "SMALL" },
+      { label: t("moveTypes.HOME"), value: "HOME" },
+      { label: t("moveTypes.OFFICE"), value: "OFFICE" },
    ] as const;
 
    const selectedLabel = selectOptions.find(
@@ -46,7 +49,7 @@ export default function Step1({ value, onChange, onNext }: Step1Props) {
    return (
       <>
          {/* 시스템 메시지 */}
-         <ChatMessage type="system" message="이사 종류를 선택해 주세요." />
+         <ChatMessage type="system" message={t("selectMoveTypePrompt")} />
 
          {/* 유저 메세지 */}
          {value && !isEditing ? ( // 선택 완료 시
@@ -65,7 +68,7 @@ export default function Step1({ value, onChange, onNext }: Step1Props) {
                            type="button"
                            key={option.value}
                            onClick={() => handleSelect(option.value)}
-                           className={`hover:border-primary-blue-300 flex h-13 w-full cursor-pointer items-center rounded-2xl border px-4 py-[14px] text-left break-keep lg:h-21 lg:w-140 ${
+                           className={`hover:border-primary-blue-300 flex h-13 w-full items-center rounded-2xl border px-4 py-3.5 text-left break-keep lg:h-21 lg:w-140 ${
                               selected === option.value
                                  ? "border-primary-blue-300 bg-primary-blue-50"
                                  : "border-line-200"
@@ -77,10 +80,14 @@ export default function Step1({ value, onChange, onNext }: Step1Props) {
                                     ? chekcedIcon
                                     : uncheckedIcon
                               }
-                              alt={`라디오 버튼 ${selected === option.value ? "선택됨" : "선택안됨"}`}
+                              alt={t(
+                                 selected === option.value
+                                    ? "radioSelectedAlt"
+                                    : "radioUnselectedAlt",
+                              )}
                               className="aspect-square w-6 lg:w-9"
                            />
-                           <span className="ml-2 text-sm font-semibold lg:text-lg">
+                           <span className="text-14-semibold lg:text-18-semibold ml-2">
                               {option.label}
                            </span>
                         </button>
@@ -88,16 +95,16 @@ export default function Step1({ value, onChange, onNext }: Step1Props) {
                   </div>
 
                   <SolidButton onClick={handleSubmit} disabled={!selected}>
-                     선택완료
+                     {t("completeSelection")}
                   </SolidButton>
                </ChatWrapper>
                {isEditing && (
                   <button
                      type="button"
-                     className="mr-2 text-right font-medium text-gray-500 underline max-lg:text-xs"
+                     className="text-16-semibold max-lg:text-12-medium mr-2 text-right text-gray-500 underline"
                      onClick={() => setIsEditing(false)}
                   >
-                     수정취소
+                     {t("cancelEdit")}
                   </button>
                )}
             </>

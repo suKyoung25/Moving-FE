@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
    const token = req.nextUrl.searchParams.get("token");
    const error = req.nextUrl.searchParams.get("error");
-
    if (error) {
       return NextResponse.redirect(new URL(`/sign-in?error=${error}`, req.url));
    }

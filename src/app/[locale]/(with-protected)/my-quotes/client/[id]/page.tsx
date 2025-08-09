@@ -1,9 +1,10 @@
 import PageTitle from "@/components/layout/PageTitle";
 import MoverProfileclient from "@/components/domain/my-quotes/MoverProfileClient";
-import QuotaionInfo from "@/components/domain/my-quotes/QuotaionInfo";
+import QuotationInfo from "@/components/domain/my-quotes/QuotationInfo";
 import { fetchClientQuoteDetail } from "@/lib/api/estimate/getClientQuoteDetail";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
 import ConfirmedButton from "@/components/domain/my-quotes/ConfirmedButton";
+import { getTranslations } from "next-intl/server";
 
 // 견적 관리 상세
 export default async function MyQuoetesDetailPage({
@@ -11,13 +12,15 @@ export default async function MyQuoetesDetailPage({
 }: {
    params: Promise<{ id: string }>;
 }) {
+   const t = await getTranslations("MyQuotes.Client.Detail");
+
    const { id } = await params;
 
    const { data } = await fetchClientQuoteDetail(id);
 
    return (
       <div>
-         <PageTitle title="견적 상세" />
+         <PageTitle title={t("pageTitle")} />
          <div className="item flex justify-between">
             <section className="items mt-2 mb-27 flex w-full flex-col gap-6 lg:mt-6 lg:max-w-238.5 lg:gap-10">
                <article className="border-line-100 rounded-2xl border bg-white px-3.5 py-4 lg:px-6 lg:py-5">
@@ -34,29 +37,27 @@ export default async function MyQuoetesDetailPage({
                      favoriteCount={data.mover.favoriteCount}
                      quotesStatus={data.status}
                      moverId={data.mover.id}
+                     comment={data.comment}
                   />
                </article>
                <hr className="bg-line-100 h-px border-0" />
                <article>
                   <p className="text-16-semibold lg:text-24-semibold mb-4">
-                     견적가
+                     {t("estimatePriceTitle")}
                   </p>
                   <p className="text-20-bold lg:text-32-bold">
-                     {data.price.toLocaleString()}원
+                     {data.price.toLocaleString()} {t("money")}
                   </p>
                </article>
                <hr className="bg-line-100 h-px border-0" />
                <article className="lg:hidden">
-                  <SocialShareGroup text="견적서 공유하기" />
+                  <SocialShareGroup text={t("shareQuoteText")} />
                </article>
                <hr className="bg-line-100 h-px border-0 lg:hidden" />
-               <QuotaionInfo
-                  fromAddress={data.request.fromAddress}
-                  moveDate={data.request.moveDate}
-                  moveType={data.request.moveType}
-                  requestedAt={data.request.requestedAt}
-                  toAddress={data.request.toAddress}
-               />
+               <p className="text-16-semibold lg:text-24-semibold">
+                  {t("estimateInfoTitle")}
+               </p>
+               <QuotationInfo request={data.request} />
             </section>
             <div
                style={{ boxShadow: "0px 4px 8px 0px rgba(0, 0, 0, 0.16)" }}
@@ -75,7 +76,7 @@ export default async function MyQuoetesDetailPage({
                )}
 
                <article>
-                  <SocialShareGroup text="견적서 공유하기" />
+                  <SocialShareGroup text={t("shareQuoteText")} />
                </article>
             </div>
          </div>

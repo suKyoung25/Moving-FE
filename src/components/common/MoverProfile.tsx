@@ -8,7 +8,7 @@ import profile from "@/assets/images/profileUploaderIcon.svg";
 import star from "@/assets/images/starFilledIcon.svg";
 import { useTranslations } from "next-intl";
 
-type MoverProfileProps = {
+interface MoverProfileProps {
    profileImage?: string;
    big?: boolean;
    isLiked?: boolean;
@@ -20,8 +20,8 @@ type MoverProfileProps = {
    reviewCount: number;
    career: number;
    estimateCount: number;
-   showHeart?: boolean; // 🔥 하트 표시 여부 제어
-};
+   showHeart?: boolean; //  하트 표시 여부 제어
+}
 
 export default function MoverProfile({
    profileImage, // 기사님 이미지
@@ -35,7 +35,7 @@ export default function MoverProfile({
    reviewCount,
    career,
    estimateCount, // 스키마 필드명 그대로 사용했습니다
-   showHeart = true, // 🔥 기본값은 true (하트 표시)
+   showHeart = true, //  기본값은 true (하트 표시)
 }: MoverProfileProps) {
    const t = useTranslations("Reviews");
 
@@ -83,7 +83,7 @@ export default function MoverProfile({
                   {nickName} {t("mover")}
                </span>
 
-               {/* 🔥 showHeart가 true일 때만 하트와 찜 개수 표시 */}
+               {/*  showHeart가 true일 때만 하트와 찜 개수 표시 */}
                {showHeart && (
                   <div className="flex items-center">
                      <button onClick={handleLikedClick}>
@@ -118,7 +118,9 @@ export default function MoverProfile({
             >
                <span className="flex items-center gap-0.5">
                   <Image src={star} width={16} height={16} alt="별점" />
-                  <span className="text-black-300">{averageReviewRating}</span>
+                  <span className="text-black-300">
+                     {averageReviewRating.toFixed(1)}
+                  </span>
                   <span>({reviewCount})</span>
                </span>
                <span

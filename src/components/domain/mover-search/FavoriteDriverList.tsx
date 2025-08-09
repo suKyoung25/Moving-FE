@@ -1,34 +1,82 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import {
+   useState,
+   useEffect,
+   useCallback,
+   memo,
+   useMemo,
+   useTransition,
+} from "react";
+import { useRouter } from "next/navigation";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover"; // API 함수 추가
 import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastConText";
 import { EstimateStatus } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface FavoriteDriverListProps {
-   onFavoriteChange?: (moverId: string, isFavorite: boolean) => void;
+   onFavoriteChange?: (
+      moverId: string,
+      isFavorite: boolean,
+      favoriteCount: number,
+   ) => void;
+   refreshKey?: number; // 추가된 refreshKey prop
 }
 
-export default function FavoriteDriverList({
+// 함수를 컴포넌트 외부로 이동하여 메모이제이션
+function shouldShowDesignatedChip(mover: Mover): boolean {
+   return !!(
+      mover.hasDesignatedRequest &&
+      mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
+      mover.designatedEstimateStatus !== EstimateStatus.REJECTED
+   );
+}
+
+// 상수를 컴포넌트 외부로 이동
+const VALID_CHIP_TYPES: ChipType[] = [
+   "SMALL",
+   "HOME",
+   "OFFICE",
+   "DESIGNATED",
+   "PENDING",
+   "CONFIRMED",
+];
+
+// 메인 컴포넌트를 memo로 최적화
+export default memo(function FavoriteDriverList({
    onFavoriteChange,
+   refreshKey, // refreshKey prop 추가
 }: FavoriteDriverListProps) {
+   const t = useTranslations("FavoriteMovers");
+   const router = useRouter();
+
    const { user } = useAuth();
+   const { showSuccess, showError } = useToast();
+
    const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+   const [isPending, startTransition] = useTransition();
 
-   const isLoggedInAsMover = user?.userType === "mover";
+   // 계산값을 메모이제이션
+   const isLoggedInAsMover = useMemo(
+      () => user?.userType === "mover",
+      [user?.userType],
+   );
 
+   // 함수들을 useCallback으로 최적화
    const checkAuthStatus = useCallback(() => {
       return Boolean(tokenSettings.get());
    }, []);
 
+   // 찜한 기사님 목록 로드 함수
    const loadFavoriteMovers = useCallback(async () => {
       const authStatus = checkAuthStatus();
       setIsAuthenticated(authStatus);
@@ -57,46 +105,93 @@ export default function FavoriteDriverList({
          console.error("찜한 기사님 목록 로드 실패:", err);
 
          if (err instanceof Error && err.message.includes("로그인")) {
-            setError("로그인이 필요한 서비스입니다.");
+            setError(t("loginRequired"));
             setIsAuthenticated(false);
          } else {
-            setError("찜한 기사님 목록을 불러오는데 실패했습니다.");
+            setError(t("loadFailed"));
          }
       } finally {
          setLoading(false);
       }
-   }, [checkAuthStatus, isLoggedInAsMover]);
+   }, [checkAuthStatus, isLoggedInAsMover, t]);
 
+   // 찜하기 토글 핸들러
    const handleFavoriteToggle = useCallback(
-      async (moverId: string) => {
-         try {
-            const response = await toggleFavoriteMover(moverId);
-            console.log("❤️ FavoriteDriverList 찜 해제:", {
-               moverId,
-               response,
-            });
+      async (e: React.MouseEvent, moverId: string) => {
+         e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
 
+         try {
+            // 실제 API 호출
+            const result = await toggleFavoriteMover(moverId);
+
+            // 즉시 UI에서 제거 (낙관적 업데이트)
             setFavoriteMovers((prev) =>
                prev.filter((mover) => mover.id !== moverId),
             );
 
-            onFavoriteChange?.(moverId, false);
+            // 부모 컴포넌트에 변경사항 알림
+            onFavoriteChange?.(
+               moverId,
+               result.isFavorite,
+               result.favoriteCount || 0,
+            );
 
+            // Toast로 성공 메시지 표시
+            showSuccess(t("removeSuccess"));
+
+            // 약간의 지연 후 최신 데이터로 새로고침
             setTimeout(() => {
                loadFavoriteMovers();
             }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
-            alert("찜 처리 중 오류가 발생했습니다.");
+            showError(t("toggleError"));
+            // 에러 시 데이터 새로고침으로 상태 복구
+            loadFavoriteMovers();
          }
       },
-      [onFavoriteChange, loadFavoriteMovers],
+      [onFavoriteChange, loadFavoriteMovers, showSuccess, showError, t],
    );
 
+   // 카드 클릭 핸들러 추가
+   const handleCardClick = useCallback(
+      (moverId: string) => {
+         startTransition(() => {
+            router.push(`/mover-search/${moverId}`);
+         });
+      },
+      [router],
+   );
+
+   // 외부 refreshKey 변화에 따른 데이터 새로고침
+   useEffect(() => {
+      if (refreshKey && refreshKey > 0) {
+         console.log(
+            "FavoriteDriverList refreshing due to refreshKey:",
+            refreshKey,
+         );
+
+         // 약간의 지연을 두어 다른 컴포넌트의 상태 변경이 완료된 후 새로고침
+         const timeoutId = setTimeout(() => {
+            loadFavoriteMovers();
+         }, 300);
+
+         return () => clearTimeout(timeoutId);
+      }
+   }, [refreshKey, loadFavoriteMovers]);
+
+   // 초기 데이터 로드
    useEffect(() => {
       loadFavoriteMovers();
    }, [loadFavoriteMovers]);
 
+   // 표시할 기사 목록을 메모이제이션
+   const displayMovers = useMemo(
+      () => favoriteMovers.slice(0, 3),
+      [favoriteMovers],
+   );
+
+   // 조건부 렌더링
    if (!isAuthenticated || isLoggedInAsMover) {
       return null;
    }
@@ -105,10 +200,12 @@ export default function FavoriteDriverList({
       return (
          <div className="mt-8 flex flex-col gap-4 rounded-lg">
             <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-               찜한 기사님
+               {t("title")}
             </h2>
             <div className="flex items-center justify-center py-8">
-               <div className="text-14-medium text-gray-500">로딩 중...</div>
+               <div className="text-14-medium text-gray-500">
+                  {t("loading")}
+               </div>
             </div>
          </div>
       );
@@ -118,7 +215,7 @@ export default function FavoriteDriverList({
       return (
          <div className="mt-8 flex flex-col gap-4 rounded-lg">
             <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-               찜한 기사님
+               {t("title")}
             </h2>
             <div className="flex items-center justify-center py-8">
                <div className="text-14-medium text-red-500">{error}</div>
@@ -131,52 +228,43 @@ export default function FavoriteDriverList({
       return (
          <div className="mt-8 flex flex-col gap-4 rounded-lg">
             <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-               찜한 기사님
+               {t("title")}
             </h2>
             <div className="flex items-center justify-center py-8">
                <div className="text-14-medium text-gray-500">
-                  찜한 기사님이 없습니다.
+                  {t("noFavorites")}
                </div>
             </div>
          </div>
       );
    }
 
-   const displayMovers = favoriteMovers.slice(0, 3);
-
-   function shouldShowDesignatedChip(mover: Mover): boolean {
-      // 지정견적 요청이 있고, 아직 처리되지 않은 경우 (CONFIRMED나 REJECTED가 아닌 경우)
-      return !!(
-         mover.hasDesignatedRequest &&
-         mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
-         mover.designatedEstimateStatus !== EstimateStatus.REJECTED
-      );
-   }
-
    return (
       <div className="mt-8 flex flex-col gap-4 rounded-lg">
          <h2 className="text-18-semibold border-b border-b-gray-100 pb-5">
-            찜한 기사님
+            {t("title")}
          </h2>
 
          {displayMovers.map((mover) => (
             <div
                key={mover.id}
-               className="flex flex-col gap-2 rounded-lg border border-gray-50 bg-white p-3 shadow-sm"
+               onClick={() => handleCardClick(mover.id)}
+               className={`flex cursor-pointer flex-col gap-2 rounded-lg border border-gray-50 bg-white p-3 shadow-sm transition hover:shadow-md ${
+                  isPending ? "opacity-75" : ""
+               }`}
             >
+               {/* 로딩 인디케이터 */}
+               {isPending && (
+                  <div className="absolute top-2 right-2 z-10">
+                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
+                  </div>
+               )}
+
                <div className="flex gap-1">
                   {mover.serviceType?.map((type: string, index: number) => {
                      const chipType = type.toUpperCase() as ChipType;
-                     const validChipTypes: ChipType[] = [
-                        "SMALL",
-                        "HOME",
-                        "OFFICE",
-                        "DESIGNATED",
-                        "PENDING",
-                        "CONFIRMED",
-                     ];
 
-                     if (validChipTypes.includes(chipType)) {
+                     if (VALID_CHIP_TYPES.includes(chipType)) {
                         return (
                            <MoveChip key={index} type={chipType} mini={false} />
                         );
@@ -184,7 +272,7 @@ export default function FavoriteDriverList({
                      return null;
                   })}
 
-                  {/* 🔥 DESIGNATED 칩 추가 */}
+                  {/* DESIGNATED 칩 로직 */}
                   {shouldShowDesignatedChip(mover) && (
                      <MoveChip type="DESIGNATED" mini={false} />
                   )}
@@ -201,7 +289,7 @@ export default function FavoriteDriverList({
                   forceMobileStyle={true}
                   big={false}
                   isLiked={true}
-                  handleLikedClick={() => handleFavoriteToggle(mover.id)}
+                  handleLikedClick={(e) => handleFavoriteToggle(e, mover.id)}
                   nickName={mover.nickName || " "}
                   favoriteCount={mover.favoriteCount || 0}
                   averageReviewRating={mover.averageReviewRating || 0}
@@ -214,4 +302,4 @@ export default function FavoriteDriverList({
          ))}
       </div>
    );
-}
+});

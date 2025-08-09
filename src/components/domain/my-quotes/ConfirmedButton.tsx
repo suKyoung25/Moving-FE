@@ -1,62 +1,35 @@
 "use client";
 
 import SolidButton from "@/components/common/SolidButton";
-import ToastPopup from "@/components/common/ToastPopup";
+import { useToast } from "@/context/ToastConText";
 import { postClientConfirmedQuote } from "@/lib/api/estimate/postClientConfirmedQuote";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 export default function ConfirmedButton({
    estimateId,
 }: {
    estimateId: string;
 }) {
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
+   const t = useTranslations("MyQuotes.Client.Detail");
 
-   const router = useRouter();
+   const { showSuccess, showError } = useToast();
+   const queryClient = useQueryClient();
 
    const handleClickConfirmed = async (estimateId: string) => {
       try {
          await postClientConfirmedQuote(estimateId);
-
-         setToast({
-            id: Date.now(),
-            text: "견적이 확정되었습니다",
-            success: true,
-         });
-
-         // TODO: 토스트 알림 안뜸
-         setTimeout(() => {
-            setToast(null);
-            router.refresh();
-         }, 2000);
+         showSuccess(t("toast.confirmed"));
+         queryClient.invalidateQueries({ queryKey: ["pendingEstimates"] });
       } catch (e) {
-         setToast({
-            id: Date.now(),
-            text: "견적 확정에 실패했습니다",
-            success: false,
-         });
+         showError(t("toast.confirmFailed"));
          console.error(e);
       }
    };
 
    return (
-      <>
-         <SolidButton onClick={() => handleClickConfirmed(estimateId)}>
-            견적 확정하기
-         </SolidButton>
-
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
-         )}
-      </>
+      <SolidButton onClick={() => handleClickConfirmed(estimateId)}>
+         {t("button.confirmEstimate")}
+      </SolidButton>
    );
 }

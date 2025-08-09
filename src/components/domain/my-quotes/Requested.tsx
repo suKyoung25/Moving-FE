@@ -1,27 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Quotes } from "@/lib/types";
-import QuotaionInfo from "./QuotaionInfo";
+import QuotationInfo from "./QuotationInfo";
 import Dropdown from "./Dropdown";
 import EmptyState from "@/components/common/EmptyState";
-import { getRequests } from "@/lib/api/estimate/requests/getClientRequest";
 import { isAfter } from "date-fns";
 import { useRouter } from "next/navigation";
-import ToastPopup from "@/components/common/ToastPopup";
+import { useRequestsQuery } from "@/lib/api/estimate/query";
+import { useTranslations } from "next-intl";
+import { cancelRequest } from "@/lib/api/estimate/requests/cancelRequest";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/context/ToastConText";
 
 // 요청한 견적
 export default function Requested() {
-   const [dropdownName, setDropdownName] = useState("all");
-   const [data, setData] = useState<Quotes[]>();
-   const [isLoading, setIsLoading] = useState<boolean>(false);
-   const router = useRouter();
+   const t = useTranslations("MyQuotes.Client");
 
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
+   const [dropdownName, setDropdownName] = useState("recent");
+   const { showSuccess, showError } = useToast();
+   const router = useRouter();
+   const bottomRef = useRef<HTMLDivElement | null>(null);
+
+   const sort = dropdownName === "recent" ? "desc" : "asc";
+   const queryClient = useQueryClient();
+
+   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+      useRequestsQuery(sort);
+   const requests =
+      data?.pages?.flatMap((page) => page.requests).filter(Boolean) ?? [];
 
    const chipTypeMap = (moveDate: Date, isPending: boolean) => {
       const now = new Date();
@@ -34,90 +41,106 @@ export default function Requested() {
    };
 
    const handleClick = (request: Quotes) => {
-      if (!request.estimates || request.estimates.length === 0) {
-         setToast({
-            id: Date.now(),
-            text: "받은 견적이 없어요!",
-            success: false,
-         });
-         return;
-      }
-
       const confirmed = request.estimates.find(
          (e) => e.isClientConfirmed === true,
       );
 
-      console.log(confirmed);
-
       if (confirmed) {
          router.push(`/my-quotes/client/${confirmed.id}`);
       } else {
-         setToast({
-            id: Date.now(),
-            text: "확정된 견적이 없어요!",
-            success: false,
-         });
+         showError(t("toast.noConfirmedEstimate"));
+      }
+   };
+
+   const handleCancel = async (requestId: string) => {
+      try {
+         await cancelRequest(requestId);
+         queryClient.invalidateQueries({ queryKey: ["requests", sort] });
+         queryClient.invalidateQueries({ queryKey: ["activeRequest"] });
+         showSuccess("견적 요청이 취소되었어요");
+      } catch (error) {
+         console.error("견적 요청 취소 실패:", error);
       }
    };
 
    useEffect(() => {
-      async function getMyReceivedQuotes() {
-         try {
-            setIsLoading(true);
-            const result = await getRequests();
-            setData(result.data);
-            setIsLoading(false);
-         } catch (e) {
-            throw e;
-         }
-      }
+      if (!bottomRef.current) return;
+      const observer = new IntersectionObserver(
+         (entries) => {
+            if (
+               entries[0].isIntersecting &&
+               hasNextPage &&
+               !isFetchingNextPage
+            ) {
+               fetchNextPage();
+            }
+         },
+         { threshold: 1.0 },
+      );
 
-      getMyReceivedQuotes();
-   }, [dropdownName]);
+      const current = bottomRef.current;
+      observer.observe(current);
 
-   if (isLoading) return <div>로딩중...</div>;
+      return () => observer.unobserve(current);
+   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-   if (!data || data.length === 0)
-      return <EmptyState message="아직 보낸 요청이 없어요!" />;
+   if (isLoading) return <div>{t("loading")}</div>;
+
+   if (requests.length === 0)
+      return <EmptyState message={t("emptyRequestMessage")} />;
 
    return (
       <section className="flex flex-col gap-2 md:gap-4 lg:gap-8">
          <h2 className="text-18-semibold lg:text-24-semibold flex items-center justify-between">
-            견적 요청 목록
+            {t("title")}
             <Dropdown
-               dropdownName={dropdownName}
-               setDropdownName={setDropdownName}
+               selectedValue={dropdownName}
+               setSelectedValue={setDropdownName}
+               options={[
+                  { label: t("dropdown.recent"), value: "recent" },
+                  { label: t("dropdown.oldest"), value: "oldest" },
+               ]}
             />
          </h2>
          <article className="mt-4 flex flex-col gap-6 md:gap-8 lg:mt-8 lg:gap-14">
-            {data.map((d, idx) => {
-               const chipType = chipTypeMap(new Date(d.moveDate), d.isPending!);
-
+            {requests.map((request) => {
+               const chipType = chipTypeMap(
+                  new Date(request.moveDate),
+                  request.isPending!,
+               );
                return (
-                  <div
-                     key={idx}
-                     onClick={() => handleClick(d)}
-                     className="cursor-pointer"
-                  >
-                     <QuotaionInfo
-                        fromAddress={d.fromAddress}
-                        moveDate={d.moveDate}
-                        moveType={d.moveType}
-                        toAddress={d.toAddress}
-                        requestedAt={d.requestedAt}
-                        chipType={chipType}
-                        isRequestedTap={true}
-                     />
+                  <div key={request.id}>
+                     <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
+                        {t("requestInfoTitle")}
+                     </p>
+                     {!request.isPending ? (
+                        <div
+                           key={request.id}
+                           onClick={() => handleClick(request)}
+                           className="cursor-pointer"
+                        >
+                           <QuotationInfo
+                              request={request}
+                              chipType={chipType}
+                           />
+                        </div>
+                     ) : (
+                        <QuotationInfo
+                           request={request}
+                           chipType={chipType}
+                           isPending={true}
+                           onClick={() => handleCancel(request.id)}
+                        />
+                     )}
                   </div>
                );
             })}
          </article>
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
+         <div ref={bottomRef} />
+         {isFetchingNextPage && (
+            <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
+               {t("loadingMore")}
+            </div>
          )}
       </section>
    );

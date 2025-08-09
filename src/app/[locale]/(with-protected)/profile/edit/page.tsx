@@ -1,25 +1,32 @@
 "use client";
 
-import ToastPopup from "@/components/common/ToastPopup";
 import ClientProfileTitle from "@/components/domain/profile/ClientProfileTitle";
 import ClientProfileUpdateForm from "@/components/domain/profile/ClientProfileUpdateForm";
 import MoverProfileUpdateForm from "@/components/domain/profile/MoverProfileUpdateForms";
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function EditProfilePage() {
+   const t = useTranslations("Profile");
+
    const { user } = useAuth();
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    // ✅ 일반으로 로그인한 회원의 경우
    if (user?.userType === "client") {
       return (
          <>
-            <div className="pt-4 pb-10 lg:pt-6">
+            <div
+               id="client-profile-edit-main"
+               role="main"
+               tabIndex={-1}
+               aria-labelledby="edit-profile-page-title"
+               className="pt-4 pb-10 lg:pt-6"
+            >
+               {/* screen reader 전용 페이지 제목 */}
+               <h1 id="edit-profile-page-title" className="sr-only">
+                  프로필 수정 페이지
+               </h1>
+
                <div
                   className={
                      user?.provider === "LOCAL"
@@ -28,16 +35,9 @@ export default function EditProfilePage() {
                   }
                >
                   <ClientProfileTitle type="수정" />
-                  <ClientProfileUpdateForm setToast={setToast} />
+                  <ClientProfileUpdateForm />
                </div>
             </div>
-            {toast && (
-               <ToastPopup
-                  key={toast.id}
-                  text={toast.text}
-                  success={toast.success}
-               />
-            )}
          </>
       );
    }
@@ -48,11 +48,11 @@ export default function EditProfilePage() {
          <>
             <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
                <div className="text-18-semibold lg:text-32-semibold leading-8">
-                  기사님 프로필 수정
+                  {t("moverProfileEditTitle")}
                </div>
 
                <div className="lg:text-20-regular text-12-regular text-black-200 leading-8">
-                  추가 정보를 입력하여 프로필 수정을 완료해주세요
+                  {t("moverProfileEditDescription")}
                </div>
             </div>
 

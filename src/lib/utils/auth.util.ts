@@ -94,3 +94,13 @@ export const tokenSettings = {
       }
    },
 };
+
+export function hasToken(): boolean {
+   // 서버 환경에선 토큰이 없다고 간주 - 회원 탈퇴 시만 쓸 거니까 다른 곳에서는 쓰지 마세요
+   if (typeof window === "undefined") {
+      return false;
+   }
+   return document.cookie
+      .split(";")
+      .some((cookie) => cookie.trim().startsWith("accessToken="));
+}

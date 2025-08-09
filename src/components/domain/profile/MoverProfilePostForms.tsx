@@ -8,8 +8,11 @@ import TextAreaInputField from "./TextAreaInputField";
 import ButtonInputField from "./ButtonInputField";
 import SolidButton from "@/components/common/SolidButton";
 import { MoverProfileInput } from "@/lib/schemas/profile.schema";
+import { useTranslations } from "next-intl";
 
 export default function MoverProfilePostForm() {
+   const t = useTranslations("Profile");
+
    const {
       register,
       control,
@@ -27,19 +30,9 @@ export default function MoverProfilePostForm() {
       >
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex flex-1 flex-col">
-               <GeneralInputField<MoverProfileInput>
-                  name="nickName"
-                  text="별명"
-                  placeholder="사이트에 노출될 이름을 입력해주세요"
-                  register={register}
-                  error={errors.nickName}
-               />
-
-               <hr className="border-line-100 m-0 border-t p-0" />
-
                <ImageInputField
                   name="image"
-                  text="프로필 이미지"
+                  text={t("profileImageLabel")}
                   control={control}
                   error={errors.image}
                />
@@ -47,9 +40,19 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField<MoverProfileInput>
+                  name="nickName"
+                  text={t("nickNameLabel")}
+                  placeholder={t("nickNamePlaceholder")}
+                  register={register}
+                  error={errors.nickName}
+               />
+
+               <hr className="border-line-100 m-0 border-t p-0" />
+
+               <GeneralInputField<MoverProfileInput>
                   name="career"
-                  text="경력"
-                  placeholder="기사님의 경력을 입력해주세요"
+                  text={t("careerLabel")}
+                  placeholder={t("careerPlaceholder")}
                   register={register}
                   error={errors.career}
                />
@@ -58,8 +61,8 @@ export default function MoverProfilePostForm() {
 
                <GeneralInputField<MoverProfileInput>
                   name="introduction"
-                  text="한 줄 소개"
-                  placeholder="한 줄 소개를 입력해주세요"
+                  text={t("introductionLabel")}
+                  placeholder={t("introductionPlaceholder")}
                   register={register}
                   error={errors.introduction}
                />
@@ -70,8 +73,8 @@ export default function MoverProfilePostForm() {
             <div className="flex-1">
                <TextAreaInputField
                   name="description"
-                  text="상세 설명"
-                  placeholder="상세 내용을 입력해주세요"
+                  text={t("descriptionLabel")}
+                  placeholder={t("descriptionPlaceholder")}
                   register={register}
                   error={errors.description}
                />
@@ -80,7 +83,7 @@ export default function MoverProfilePostForm() {
 
                <ButtonInputField
                   name="serviceType"
-                  text="제공 서비스"
+                  text={t("providedServicesLabel")}
                   isServiceType={true}
                   control={control}
                   error={
@@ -90,11 +93,11 @@ export default function MoverProfilePostForm() {
                   }
                />
 
-               <hr className="border-line-100 m-0 border-t p-0" />
+               <hr className="border-line-100 mt-8 border-t p-0" />
 
                <ButtonInputField
                   name="serviceArea"
-                  text="서비스 가능 지역"
+                  text={t("serviceAreasLabel")}
                   isArea={true}
                   control={control}
                   error={
@@ -106,9 +109,9 @@ export default function MoverProfilePostForm() {
             </div>
          </div>
 
-         <div className="mt-17 lg:pl-185">
+         <div className="mt-8 lg:pl-185">
             <SolidButton disabled={!isValid || isLoading} type="submit">
-               {isLoading ? "등록 중..." : "시작하기"}
+               {isLoading ? t("loadingRegister") : t("startButton")}
             </SolidButton>
          </div>
       </form>

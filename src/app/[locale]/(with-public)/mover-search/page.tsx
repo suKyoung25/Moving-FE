@@ -1,11 +1,14 @@
 import PageTitle from "@/components/layout/PageTitle";
-import FindDriverLayout from "@/components/domain/mover-search/FindDriverLayout";
+import MoverSearchLayout from "@/components/domain/mover-search/MoverSearchLayout";
+import { getTranslations } from "next-intl/server";
 
-export default function FindDriverPage() {
+export default async function MoverSearchPage() {
+   const t = await getTranslations("MoverSearch");
+
    return (
       <div>
-         <PageTitle title="기사님 찾기" />
-         <FindDriverLayout />
+         <PageTitle title={t("findDriver")} />
+         <MoverSearchLayout />
       </div>
    );
 }

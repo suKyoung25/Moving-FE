@@ -16,13 +16,18 @@ import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
 import { useQueryClient } from "@tanstack/react-query";
 import { FiCheckSquare } from "react-icons/fi";
+import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
+import { getRequest } from "@/lib/api/estimate/requests/getClientRequest";
 
 export default function NotificationModal({
    setIsNotiModalOpen,
 }: {
    setIsNotiModalOpen: (val: boolean) => void;
 }) {
+   const t = useTranslations("Notification");
    const { realtimeNotifications } = useNotification();
+   const { showError } = useToast();
    const router = useRouter();
    const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,6 +52,11 @@ export default function NotificationModal({
       try {
          await readNotification(item.id);
          queryClient.invalidateQueries({ queryKey: ["notifications"] });
+         const { data } = await getRequest(item.targetId!);
+         if (!data) {
+            showError("존재하지 않는 견적 요청입니다.");
+            return;
+         }
          router.push(item.targetUrl ?? "");
          setIsNotiModalOpen(false);
       } catch (err) {
@@ -83,18 +93,27 @@ export default function NotificationModal({
    return (
       <div className="border-line-200 absolute top-10 -left-6 z-10 flex h-80 w-78 -translate-x-1/2 flex-col rounded-3xl border bg-white px-4 py-2.5 md:-left-8 lg:top-12 lg:-left-4 lg:h-88 lg:w-90">
          <div className="flex items-center justify-between py-3.5 pr-3 pl-4 md:-left-8 lg:top-12 lg:pl-6">
-            <span className="lg:text-18-bold text-16-bold">알림</span>
+            <span className="lg:text-18-bold text-16-bold">{t("title")}</span>
             <div className="inline-flex items-center gap-2">
                <button
                   type="button"
                   onClick={handleReadAll}
                   className="group relative"
+                  aria-label={t("readAllAria")}
                >
-                  <div className="tooltip">모두 읽음 처리</div>
+                  <div className="tooltip">{t("readAllTooltip")}</div>
                   <FiCheckSquare className="text-gray-500" />
                </button>
-               <button type="button" onClick={() => setIsNotiModalOpen(false)}>
-                  <Image src={closeIcon} alt="알림 닫기" className="h-6 w-6" />
+               <button
+                  type="button"
+                  onClick={() => setIsNotiModalOpen(false)}
+                  aria-label={t("closeAria")}
+               >
+                  <Image
+                     src={closeIcon}
+                     alt={t("closeAlt")}
+                     className="h-6 w-6"
+                  />
                </button>
             </div>
          </div>
@@ -102,7 +121,7 @@ export default function NotificationModal({
             {isLoading ? (
                // TODO: skeleton 넣어주세요
                <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
-                  잠시만요
+                  {t("loading")}
                </div>
             ) : notifications.length > 0 ? (
                notifications.map((item, idx) => (
@@ -128,13 +147,13 @@ export default function NotificationModal({
                ))
             ) : (
                <div className="mt-10 flex justify-center text-gray-400 max-lg:text-sm">
-                  알림이 존재하지 않습니다.
+                  {t("empty")}
                </div>
             )}
             <div ref={bottomRef} />
             {isFetchingNextPage && (
                <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
-                  불러오는 중...
+                  {t("loadingMore")}
                </div>
             )}
          </ul>

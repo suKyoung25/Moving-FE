@@ -1,4 +1,7 @@
+"use client";
+
 import { Review } from "@/lib/types";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 interface ReviewBreakdownProps {
@@ -6,6 +9,7 @@ interface ReviewBreakdownProps {
 }
 
 export default function ReviewBreakdown({ reviews }: ReviewBreakdownProps) {
+   const t = useTranslations("Dashboard");
    /**
     * acc: 누적합, score: 현재값
     * 각 점수별 리뷰 개수 누적해서 reviewStats에 저장
@@ -43,7 +47,8 @@ export default function ReviewBreakdown({ reviews }: ReviewBreakdownProps) {
                      className="my-1 flex items-center gap-4 text-sm font-medium lg:gap-[30px] lg:text-xl"
                   >
                      <span className={`w-9 ${score === 5 && "font-bold"}`}>
-                        {score}점
+                        {score}
+                        {t("scoreUnit")}
                      </span>
                      <div className="bg-bg-300 relative h-2 w-44 rounded-full lg:w-96">
                         <div

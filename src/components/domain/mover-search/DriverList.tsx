@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import DriverCard from "./DriverCard";
 import { getMovers } from "@/lib/api/mover/getMover";
 import { GetMoversParams } from "@/lib/types/mover.types";
@@ -8,6 +8,7 @@ import { areaMapping } from "@/constants/mover.constants";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import type { Mover } from "@/lib/types";
 import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
+import { useTranslations } from "next-intl";
 
 interface DriverListProps {
    filters: {
@@ -24,18 +25,20 @@ interface DriverListProps {
    refreshKey?: number;
 }
 
-export default function DriverList({
+export default memo(function DriverList({
    filters,
    onFavoriteChange,
    refreshKey,
 }: DriverListProps) {
+   const t = useTranslations("MoverSearch");
+
    const [movers, setMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
    const [hasMore, setHasMore] = useState(true);
    const [currentPage, setCurrentPage] = useState(1);
 
-   // 기사님 데이터 로드 함수
+   // 기사님 데이터 로드 함수 + useCallback으로 최적화 + t 의존성 추가
    const loadMovers = useCallback(
       async (reset = false) => {
          try {
@@ -81,7 +84,7 @@ export default function DriverList({
             setHasMore(response.hasMore);
          } catch (err) {
             console.error("Load movers error:", err);
-            setError("기사님 목록을 불러오는데 실패했습니다.");
+            setError(t("loadFailed"));
          } finally {
             setLoading(false);
          }
@@ -92,10 +95,10 @@ export default function DriverList({
          filters.serviceType,
          filters.sortBy,
          currentPage,
+         t, // t 의존성 추가
       ],
    );
 
-   // 다음 페이지 로드
    const loadMore = useCallback(() => {
       if (!hasMore || loading) return;
       loadMovers(false);
@@ -110,15 +113,9 @@ export default function DriverList({
       threshold: 0.1,
    });
 
-   // 찜 상태 변경 핸들러
+   //  찜 상태 변경 핸들러 + useCallback으로 최적화
    const handleFavoriteChange = useCallback(
       (moverId: string, isFavorite: boolean, favoriteCount: number) => {
-         console.log("📋 DriverList 찜 상태 변경:", {
-            moverId,
-            isFavorite,
-            favoriteCount,
-         });
-
          setMovers((prev) =>
             prev.map((mover) =>
                mover.id === moverId
@@ -132,11 +129,9 @@ export default function DriverList({
       [onFavoriteChange],
    );
 
-   // 외부에서 refreshKey 변경 시 특정 기사의 찜 상태만 업데이트
+   //  외부 refreshKey 처리 로직
    useEffect(() => {
       if (refreshKey && refreshKey > 0) {
-         console.log("📋 DriverList 외부 새로고침 요청:", refreshKey);
-
          const refreshFavoriteStates = async () => {
             try {
                const currentMovers = movers;
@@ -172,7 +167,6 @@ export default function DriverList({
                            ...existingMover,
                            isFavorite: updatedMover.isFavorite,
                            favoriteCount: updatedMover.favoriteCount,
-                           // 지정견적 상태도 업데이트
                            hasDesignatedRequest:
                               updatedMover.hasDesignatedRequest,
                            designatedEstimateStatus:
@@ -198,7 +192,7 @@ export default function DriverList({
       movers,
    ]);
 
-   // 필터 변경 시 데이터 리셋
+   //  필터 변경 시 데이터 리셋 + t 의존성 추가
    useEffect(() => {
       setCurrentPage(1);
       setHasMore(true);
@@ -233,7 +227,7 @@ export default function DriverList({
             setHasMore(response.hasMore);
          } catch (err) {
             console.error("Load movers error:", err);
-            setError("기사님 목록을 불러오는데 실패했습니다.");
+            setError(t("loadFailed"));
          } finally {
             setLoading(false);
          }
@@ -244,7 +238,7 @@ export default function DriverList({
       }, 300);
 
       return () => clearTimeout(timeoutId);
-   }, [filters.search, filters.area, filters.serviceType, filters.sortBy]);
+   }, [filters.search, filters.area, filters.serviceType, filters.sortBy, t]);
 
    if (error) {
       return (
@@ -255,7 +249,7 @@ export default function DriverList({
                   onClick={() => loadMovers(true)}
                   className="bg-primary-blue-300 hover:bg-primary-blue-400 rounded-lg px-4 py-2 text-white"
                >
-                  다시 시도
+                  {t("retry")}
                </button>
             </div>
          </div>
@@ -269,7 +263,6 @@ export default function DriverList({
                key={mover.id}
                mover={mover}
                onFavoriteChange={handleFavoriteChange}
-               // 🔥 onDesignatedEstimateSuccess prop 제거 (DriverCard에서 받지 않음)
             />
          ))}
 
@@ -278,25 +271,25 @@ export default function DriverList({
                {loading ? (
                   <div className="flex items-center space-x-2">
                      <div className="border-primary-blue-300 h-6 w-6 animate-spin rounded-full border-b-2"></div>
-                     <span>로딩 중...</span>
+                     <span>{t("loading")}</span>
                   </div>
                ) : (
-                  <span>스크롤하여 더 보기</span>
+                  <span>{t("scrollToLoadMore")}</span>
                )}
             </div>
          )}
 
          {!hasMore && movers.length > 0 && (
             <div className="py-8 text-center">
-               <p className="text-gray-500">모든 기사님을 확인했습니다.</p>
+               <p className="text-gray-500">{t("allLoaded")}</p>
             </div>
          )}
 
          {!loading && movers.length === 0 && (
             <div className="py-8 text-center">
-               <p className="text-gray-500">검색 결과가 없습니다.</p>
+               <p className="text-gray-500">{t("noResults")}</p>
             </div>
          )}
       </div>
    );
-}
+});

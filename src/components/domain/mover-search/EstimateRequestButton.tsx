@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { NoRequestModal } from "./NoRequestModal";
 import { createDesignatedEstimate } from "@/lib/api/estimate/requests/createDesignatedEstimate";
 import { Mover } from "@/lib/types";
-import ToastPopup from "@/components/common/ToastPopup";
 import { useAuth } from "@/context/AuthContext";
 import { useActiveRequest } from "@/lib/api/request/requests/query";
+import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
 
 interface EstimateRequestButtonProps {
    moverId: string;
@@ -23,17 +24,15 @@ export function EstimateRequestButton({
    setErrorMessage,
    setIsResultModalOpen,
 }: EstimateRequestButtonProps) {
+   const t = useTranslations("MoverDetail");
+
    const { user } = useAuth();
+   const { showSuccess, showError } = useToast();
    const [isLoading, setIsLoading] = useState(false);
    const [showNoRequestModal, setShowNoRequestModal] = useState(false);
    const [isRequestSuccess, setIsRequestSuccess] = useState(
       mover.hasDesignatedRequest ?? false,
    );
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    const { data: result, isPending } = useActiveRequest();
    const activeRequest = result?.data;
@@ -45,11 +44,11 @@ export function EstimateRequestButton({
 
    const handleClick = async () => {
       if (!user) {
-         setErrorMessage("로그인이 필요한 기능입니다.");
+         setErrorMessage(t("error.loginRequired"));
          setIsResultModalOpen(true);
          return;
       }
-      // 🔥 이미 성공한 경우 클릭 막기
+      //  이미 성공한 경우 클릭 막기
       if (isRequestSuccess) return;
 
       try {
@@ -60,31 +59,22 @@ export function EstimateRequestButton({
             setShowNoRequestModal(true);
             return;
          } else if (!activeRequest.isPending) {
-            setToast({
-               id: Date.now(),
-               text: "이미 진행중인 견적이 있어요!",
-               success: false,
-            });
+            showError(t("toast.alreadyInProgress"));
             return;
          }
          await submitDesignatedEstimate(activeRequest.id);
       } catch (error) {
          console.error("활성 요청 조회 실패:", error);
 
-         let errorMessage = "요청 조회에 실패했습니다.";
+         let errorMessage = t("error.requestFailed");
          if (error instanceof Error) {
             if (error.message.includes("로그인")) {
-               errorMessage = "로그인이 필요합니다. 다시 로그인해주세요.";
+               errorMessage = t("error.loginRequiredAgain");
             } else {
                errorMessage = error.message;
             }
          }
-
-         setToast({
-            id: Date.now(),
-            text: errorMessage,
-            success: false,
-         });
+         showError(errorMessage);
       } finally {
          setIsLoading(false);
       }
@@ -96,13 +86,7 @@ export function EstimateRequestButton({
 
          // 이때 DesignatedRequest 테이블에 레코드 생성됨
          await createDesignatedEstimate(moverId, requestId);
-
-         setToast({
-            id: Date.now(),
-            text: "지정 견적 요청이 성공적으로 전송되었습니다!",
-            success: true,
-         });
-
+         showSuccess(t("toast.requestSuccess"));
          setIsRequestSuccess(true);
 
          // 성공 시 부모에게 알림 (DESIGNATED 칩 표시용)
@@ -110,7 +94,7 @@ export function EstimateRequestButton({
       } catch (error) {
          console.error("지정 견적 요청 실패:", error);
 
-         let errorMessage = "지정 견적 요청에 실패했습니다.";
+         let errorMessage = t("error.designatedRequestFailed");
          if (error instanceof Error) {
             const errorText = error.message;
 
@@ -118,26 +102,22 @@ export function EstimateRequestButton({
                errorText.includes("이미 지정 견적을 요청한 기사님입니다") ||
                errorText.includes("Unique constraint failed")
             ) {
-               errorMessage = "이미 이 기사님에게 지정 견적을 요청하셨습니다.";
+               errorMessage = t("error.alreadyRequested");
                setIsRequestSuccess(true); // 이미 요청한 경우도 성공 상태로 처리
             } else if (
                errorText.includes("진행 중인 요청을 찾을 수 없습니다")
             ) {
-               errorMessage = "요청이 만료되었거나 이미 완료되었습니다.";
+               errorMessage = t("error.requestExpiredOrCompleted");
             } else if (errorText.includes("기사님을 찾을 수 없습니다")) {
-               errorMessage = "기사님 정보를 찾을 수 없습니다.";
+               errorMessage = t("error.noMoverInfo");
             } else if (errorText.includes("로그인")) {
-               errorMessage = "로그인이 필요합니다. 다시 로그인해주세요.";
+               errorMessage = t("error.loginRequiredAgain");
             } else {
                errorMessage = errorText;
             }
          }
 
-         setToast({
-            id: Date.now(),
-            text: errorMessage,
-            success: false,
-         });
+         showError(errorMessage);
       } finally {
          setIsLoading(false);
       }
@@ -148,7 +128,7 @@ export function EstimateRequestButton({
       window.location.href = "/request";
    };
 
-   // 🔥 버튼 스타일과 텍스트 결정
+   //  버튼 스타일과 텍스트 결정
    const getButtonStyle = () => {
       if (isRequestSuccess) {
          return "cursor-not-allowed bg-gray-100 text-white";
@@ -161,19 +141,19 @@ export function EstimateRequestButton({
 
    const getButtonText = () => {
       if (isRequestSuccess) {
-         return "지정 견적 요청 완료";
+         return t("button.requestCompleted");
       }
       if (isLoading) {
-         return "처리 중...";
+         return t("button.processing");
       }
-      return "지정 견적 요청하기";
+      return t("button.requestEstimate");
    };
 
    return (
       <>
          <button
             onClick={handleClick}
-            disabled={isLoading || isRequestSuccess} // 🔥 성공 시에도 비활성화
+            disabled={isLoading || isRequestSuccess} //  성공 시에도 비활성화
             className={`w-full rounded-lg px-4 py-3 font-medium transition-colors ${getButtonStyle()}`}
          >
             {getButtonText()}
@@ -184,14 +164,6 @@ export function EstimateRequestButton({
             onClose={() => setShowNoRequestModal(false)}
             onConfirm={handleNoRequestConfirm}
          />
-
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
-         )}
       </>
    );
 }

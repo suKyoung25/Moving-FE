@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { getMyReviews } from "@/lib/api/review/reviews/getMyReviews";
 import { getMoverReviews } from "@/lib/api/review/reviews/getMoverReviews";
 import { useAuth } from "@/context/AuthContext";
@@ -8,77 +8,82 @@ import ReviewBreakdown from "./ReviewBreakdown";
 import ReviewStar from "./ReviewStar";
 import ReviewList from "./ReviewList";
 import { Review } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface DashboardReviewSectionProps {
-   moverId?: string; // 상세페이지에서 기사 ID를 받을 수 있도록
+   moverId?: string;
 }
 
 export default function DashboardReviewSection({
    moverId,
 }: DashboardReviewSectionProps) {
-   const [reviews, setReviews] = useState([]);
+   const t = useTranslations("Dashboard");
+   const [reviews, setReviews] = useState<Review[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
    const { user } = useAuth();
 
-   // 리뷰 데이터에서 평균 평점과 총 개수 계산
-   const reviewCount = reviews.length;
-   const averageReviewRating =
-      reviewCount > 0
-         ? reviews.reduce((sum, review: Review) => sum + review.rating, 0) /
-           reviewCount
-         : 0;
+   // 계산된 값들 메모이제이션
+   const { reviewCount, averageReviewRating, sectionTitle } = useMemo(() => {
+      const count = reviews.length;
+      const average =
+         count > 0
+            ? reviews.reduce((sum, review) => sum + review.rating, 0) / count
+            : 0;
 
-   useEffect(() => {
-      const fetchReviews = async () => {
-         try {
-            setLoading(true);
-            setError(null);
-
-            let response;
-
-            // 🔥 수정된 로직: moverId가 있으면 user 없이도 실행
-            if (moverId) {
-               // 상세페이지에서 특정 기사의 리뷰 조회 (로그인 불필요)
-               response = await getMoverReviews(1, 20, moverId);
-            } else if (user?.userType === "mover") {
-               // 기사님: 본인에게 달린 리뷰 조회
-               response = await getMoverReviews(1, 20);
-            } else if (user?.userType === "client") {
-               // 마이페이지에서 본인이 작성한 리뷰 조회
-               response = await getMyReviews(1, 20);
-            } else {
-               setLoading(false);
-               return;
-            }
-
-            // API 응답 구조에 따라 데이터 추출
-            const reviewsData =
-               response.data?.reviews || response.reviews || [];
-            setReviews(reviewsData);
-         } catch (err) {
-            setError(
-               err instanceof Error
-                  ? err.message
-                  : "알 수 없는 오류가 발생했습니다.",
-            );
-         } finally {
-            setLoading(false);
-         }
-      };
-
-      // 🔥 조건 수정: moverId가 있거나 user가 있으면 실행
-      if (moverId || user?.userType) {
-         fetchReviews();
+      let title = t("reviewTitle");
+      if (moverId) {
+         title = t("moverReviewsTitle", { count });
+      } else if (user?.userType === "mover") {
+         title = t("receivedReviewsTitle", { count });
       } else {
+         title = t("writtenReviewsTitle", { count });
+      }
+
+      return {
+         reviewCount: count,
+         averageReviewRating: average,
+         sectionTitle: title,
+      };
+   }, [reviews, moverId, user?.userType, t]);
+
+   // 리뷰 데이터 페칭 최적화
+   const fetchReviews = useCallback(async () => {
+      if (!moverId && !user?.userType) {
+         setLoading(false);
+         return;
+      }
+
+      try {
+         setLoading(true);
+         setError(null);
+
+         let response;
+         if (moverId) {
+            response = await getMoverReviews(1, 20, moverId);
+         } else if (user?.userType === "mover") {
+            response = await getMoverReviews(1, 20);
+         } else if (user?.userType === "client") {
+            response = await getMyReviews(1, 20);
+         }
+
+         const reviewsData = response?.data?.reviews || response?.reviews || [];
+         setReviews(reviewsData);
+      } catch (err) {
+         setError(err instanceof Error ? err.message : t("unknownError"));
+      } finally {
          setLoading(false);
       }
-   }, [user?.userType, moverId]);
+   }, [moverId, user?.userType, t]);
+
+   useEffect(() => {
+      fetchReviews();
+   }, [fetchReviews]);
 
    if (loading) {
       return (
          <section>
-            <h1 className="font-bold lg:text-2xl">리뷰</h1>
+            <h1 className="font-bold lg:text-2xl">{t("reviewTitle")}</h1>
             <div className="mt-8 h-64 animate-pulse rounded-lg bg-gray-200"></div>
          </section>
       );
@@ -87,28 +92,17 @@ export default function DashboardReviewSection({
    if (error) {
       return (
          <section>
-            <h1 className="font-bold lg:text-2xl">리뷰</h1>
+            <h1 className="font-bold lg:text-2xl">{t("reviewTitle")}</h1>
             <div className="mt-8 rounded-lg bg-red-100 p-4 text-red-700">
-               리뷰를 불러오는데 실패했습니다: {error}
+               {t("reviewLoadFail")}: {error}
             </div>
          </section>
       );
    }
 
-   // 🔥 제목 텍스트를 상황에 따라 변경
-   const getSectionTitle = () => {
-      if (moverId) {
-         return `기사님 리뷰 (${reviewCount})`;
-      } else if (user?.userType === "mover") {
-         return `받은 리뷰 (${reviewCount})`;
-      } else {
-         return `작성한 리뷰 (${reviewCount})`;
-      }
-   };
-
    return (
       <section>
-         <h1 className="font-bold lg:text-2xl">{getSectionTitle()}</h1>
+         <h1 className="font-bold lg:text-2xl">{sectionTitle}</h1>
 
          {reviewCount > 0 ? (
             <>
@@ -137,10 +131,10 @@ export default function DashboardReviewSection({
             <div className="mt-8 rounded-lg bg-gray-50 p-8 text-center">
                <p className="mb-4 text-gray-500">
                   {moverId
-                     ? "아직 작성된 리뷰가 없습니다."
+                     ? t("noReviewsYet")
                      : user?.userType === "mover"
-                       ? "아직 받은 리뷰가 없습니다."
-                       : "아직 작성한 리뷰가 없습니다."}
+                       ? t("noReceivedReviewsYet")
+                       : t("noWrittenReviewsYet")}
                </p>
                {user?.userType === "client" && !moverId && (
                   <button
@@ -149,7 +143,7 @@ export default function DashboardReviewSection({
                      }
                      className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
                   >
-                     리뷰 작성하러 가기
+                     {t("writeReviewButton")}
                   </button>
                )}
             </div>

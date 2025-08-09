@@ -8,15 +8,20 @@ import { ClientProfilePostSchema, ClientProfilePostValue } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { AuthFetchError } from "../types";
-import { NotiSetting, ServiceType } from "../types/client.types";
+import { ServiceType } from "../types/client.types";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { tokenSettings } from "../utils";
+import { useToast } from "@/context/ToastConText";
+import { useTranslations } from "next-intl";
 
-export default function useClientProfilePostForm({ setToast }: NotiSetting) {
+export default function useClientProfilePostForm() {
+   const t = useTranslations("Profile");
+
    // ✅ 상태 모음
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { refreshUser } = useAuth();
+   const { showSuccess } = useToast();
 
    // react-hook-form
    const {
@@ -87,11 +92,7 @@ export default function useClientProfilePostForm({ setToast }: NotiSetting) {
             }
 
             // 알림
-            setToast({
-               id: Date.now(),
-               text: "프로필이 등록되었습니다.",
-               success: true,
-            });
+            showSuccess(t("profileRegistered"));
 
             // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
             setTimeout(async () => {

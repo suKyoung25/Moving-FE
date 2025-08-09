@@ -8,12 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormSchema, SignInFormValues } from "../schemas/auth.schema";
 import { AuthFetchError, UserType } from "../types";
 import createSignIn from "../api/auth/requests/createSignIn";
+import { useToast } from "@/context/ToastConText";
 
 export default function useSignInForm() {
    // ✅ 상태 모음
    const router = useRouter();
    const { getUser, refreshUser } = useAuth();
+   const { showError } = useToast();
    const [isLoading, setIsLoading] = useState(false);
+   const [isLoginBlock, setIsLoginBlock] = useState(false);
 
    // ✅ react-hook-form
    const {
@@ -34,7 +37,7 @@ export default function useSignInForm() {
          const res = await createSignIn(type, data);
          await getUser(res.data.user, res.data.accessToken);
 
-         // 가져온 유저정보 업데이트
+         // 가져온 사용자 정보 업데이트
          await refreshUser();
 
          // 프로필 등록 안 했으면 프로필 등록(라우트 가드), 아니면 받은 견적 페이지로 이동
@@ -46,12 +49,17 @@ export default function useSignInForm() {
       } catch (error) {
          console.error("로그인 실패: ", error);
 
-         // 오류 처리: 메시지로
          const customError = error as AuthFetchError;
+         const message = customError?.body.message;
 
+         // 오류 처리1: 로그인 횟수 제한에 걸릴 때
+         if (customError?.status === 429) {
+            if (message) showError(message);
+            setIsLoginBlock(true);
+         }
+
+         // 오류 처리2: 메시지로
          if (customError?.body.message) {
-            const message = customError?.body.message;
-
             if (message === "사용자를 찾을 수 없습니다.") {
                setError("email", {
                   type: "server",
@@ -78,5 +86,6 @@ export default function useSignInForm() {
       onSubmit,
       isLoading,
       handleSubmit,
+      isLoginBlock,
    };
 }

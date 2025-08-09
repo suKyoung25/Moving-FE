@@ -21,6 +21,7 @@ import NotificationModal from "../common/NotificationModal";
 import { routing } from "@/i18n/routing"; // locales 배열 접근용
 import LanguageSwitcherDesktop from "./LanguageSwitcherDesktop";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
+import { useTranslations } from "next-intl";
 
 function getPathnameWithoutLocale(
    pathname: string,
@@ -35,6 +36,7 @@ function getPathnameWithoutLocale(
 }
 
 export default function Header({ children }: { children?: React.ReactNode }) {
+   const t = useTranslations("Header");
    const { user } = useAuth();
    const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
    const [isProfileDropDownOpen, setIsProfileDropDownOpen] = useState(false);
@@ -74,14 +76,14 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                <Link href={"/mover-search"}>
                   <Image
                      src={logo}
-                     alt="main-logo"
+                     alt={t("logoAlt")}
                      width={88}
                      height={34}
                      className="!hidden md:!block lg:h-11 lg:w-29"
                   />
                   <Image
                      src={logoMobile}
-                     alt="main-mobileLogo"
+                     alt={t("logoMobileAlt")}
                      className="block md:!hidden"
                   />
                </Link>
@@ -93,26 +95,26 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      href="/mover-search"
                      className={linkClass("/mover-search")}
                   >
-                     기사님 찾기
+                     {t("nav.findMovers")}
                   </Link>
                )}
 
                {user?.userType === "client" && (
                   <>
                      <Link href="/request" className={linkClass("/request")}>
-                        견적 요청
+                        {t("nav.requestQuote")}
                      </Link>
                      <Link
                         href="/mover-search"
                         className={linkClass("/mover-search")}
                      >
-                        기사님 찾기
+                        {t("nav.findMovers")}
                      </Link>
                      <Link
                         href="/my-quotes/client"
                         className={linkClass("/my-quotes/client")}
                      >
-                        내 견적 관리
+                        {t("nav.myQuotes")}
                      </Link>
                      <Link
                         href="/cost-calculate"
@@ -129,13 +131,13 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         href="/received-requests"
                         className={linkClass("/received-requests")}
                      >
-                        받은 요청
+                        {t("nav.receivedRequests")}
                      </Link>
                      <Link
                         href="/my-quotes/mover?tab=1"
                         className={linkClass("/my-quotes/mover")}
                      >
-                        내 견적 관리
+                        {t("nav.myQuotes")}
                      </Link>
                   </>
                )}
@@ -147,7 +149,9 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                >
                   <Image
                      src={isHamburgerOpen ? close : hamburgerMenu}
-                     alt="hamburger-menu"
+                     alt={
+                        isHamburgerOpen ? t("closeAlt") : t("hamburgerMenuAlt")
+                     }
                      width={28}
                      height={28}
                   />
@@ -157,21 +161,21 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      <LanguageSwitcherDesktop />
                      <div className="bg-primary-blue-300 [&_*]:text-18-medium relative hidden min-h-11 min-w-32 rounded-2xl p-4 lg:block [&_*]:text-nowrap [&_*]:text-white [&_*]:transition-all [&_*]:duration-500 hover:[&>div]:opacity-100 hover:[&>span]:opacity-0">
                         <span className="absolute top-1/2 left-1/2 -translate-1/2 opacity-100">
-                           로그인
+                           {t("login")}
                         </span>
                         <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center gap-2 opacity-0">
                            <Link
                               href={"/sign-in/client"}
                               className="hidden will-change-transform hover:scale-[1.05] lg:block"
                            >
-                              고객
+                              {t("loginClient")}
                            </Link>
                            <span>/</span>
                            <Link
                               href={"/sign-in/mover"}
                               className="hidden will-change-transform hover:scale-[1.05] lg:block"
                            >
-                              기사
+                              {t("loginMover")}
                            </Link>
                         </div>
                      </div>
@@ -188,7 +192,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         >
                            <Image
                               src={alarmIcon}
-                              alt="alarm"
+                              alt={t("alarmAlt")}
                               className="lg:w-full"
                            />
                            {unreadCount && (
@@ -217,7 +221,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                            {user?.profileImage ? (
                               <Image
                                  src={user.profileImage}
-                                 alt="profile"
+                                 alt={t("profileAlt")}
                                  width={32}
                                  height={32}
                                  className="h-full w-full rounded-full"
@@ -225,7 +229,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                            ) : (
                               <Image
                                  src={profileIcon}
-                                 alt="default profile"
+                                 alt={t("profileDefaultAlt")}
                                  className="lg:w-full"
                               />
                            )}
@@ -233,7 +237,8 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         {isProfileDropDownOpen && <ProfileDropDownMenu />}
                      </div>
                      <span className="text-18-medium hidden lg:block">
-                        {user.name}님
+                        {user.name}
+                        {t("honorific")}
                      </span>
                      <LanguageSwitcherDesktop />
                   </div>
