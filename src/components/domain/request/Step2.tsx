@@ -54,7 +54,7 @@ export default function Step2({ value, onChange, onNext }: Step2Props) {
          <ChatMessage type="system" message={t("selectMoveDatePrompt")} />
 
          {/* 유저 메세지 */}
-         {value instanceof Date && !isNaN(value.getTime()) && !isEditing ? (
+         {value && !isEditing ? (
             <ChatMessage
                type="user"
                message={format(value, "yyyy년 MM월 dd일")}
