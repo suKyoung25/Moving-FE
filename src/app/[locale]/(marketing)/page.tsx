@@ -240,15 +240,20 @@ export default function MarketingPage() {
             className={`animate-slow-bounce fixed bottom-8 left-1/2 z-20 -translate-x-1/2 transform text-3xl text-white transition-opacity duration-500 ${
                currentSection === 4
                   ? "pointer-events-none opacity-0"
-                  : "opacity-100"
+                  : "pointer-events-auto opacity-100"
             }`}
+            onClick={() => {
+               if (currentSection < TOTAL_SECTIONS - 1) {
+                  scrollToSection(currentSection + 1);
+               }
+            }}
          >
             <Image
                src={scrollIcon}
                alt={t("scrollIconAlt")}
                width={58}
                height={58}
-               className="md:size-17"
+               className="cursor-pointer md:size-17"
             />
          </div>
 
