@@ -8,6 +8,8 @@ import AddressSearch from "./AddressSearch";
 import OutlinedButton from "@/components/common/OutlinedButton";
 import SolidButton from "@/components/common/SolidButton";
 import { useTranslations } from "next-intl";
+import { useSaveRequestDraft } from "@/lib/api/request/mutation";
+import { useFormWizard } from "@/context/FormWizardContext";
 
 interface Step3Props {
    isFormValid: boolean;
@@ -32,13 +34,8 @@ export default function Step3({
    onNext,
 }: Step3Props) {
    const t = useTranslations("Request");
-
-   const [fromAddress, setFromAddress] = useState<
-      Request["fromAddress"] | undefined
-   >(from);
-   const [toAddress, setToAddress] = useState<Request["toAddress"] | undefined>(
-      to,
-   );
+   const saveDraft = useSaveRequestDraft();
+   const { currentStep } = useFormWizard();
    const [targetField, setTargetField] = useState<"from" | "to" | undefined>(
       undefined,
    ); // 현재 열려있는 주소 필드
@@ -47,20 +44,30 @@ export default function Step3({
    // 주소 선택 완료 시 실행
    const handleComplete = (addr: string) => {
       if (targetField === "from") {
-         setFromAddress(addr);
          onFromChange(addr);
       } else if (targetField === "to") {
-         setToAddress(addr);
          onToChange(addr);
       }
       setShowModal(false);
    };
 
+   const handleReset = async () => {
+      onReset();
+      console.log(currentStep);
+      await saveDraft.mutateAsync({
+         state: {
+            moveType: undefined,
+            moveDate: undefined,
+            fromAddress: undefined,
+            toAddress: undefined,
+         },
+         currentStep: 0,
+      });
+   };
+
    useEffect(() => {
-      if (fromAddress && toAddress) {
-         onNext();
-      }
-   }, [fromAddress, toAddress, onNext]);
+      if (from && to) onNext();
+   }, [from, to, onNext]);
 
    return (
       <>
@@ -78,7 +85,7 @@ export default function Step3({
                   setShowModal(true);
                }}
             >
-               {fromAddress || t("selectFromAddress")}
+               {from || t("selectFromAddress")}
             </OutlinedButton>
             <label className="text-14-medium lg:text-18-medium">
                {t("to")}
@@ -90,7 +97,7 @@ export default function Step3({
                   setShowModal(true);
                }}
             >
-               {toAddress || t("selectToAddress")}
+               {to || t("selectToAddress")}
             </OutlinedButton>
             <SolidButton onClick={onConfirm} disabled={!isFormValid}>
                {t("confirmEstimate")}
@@ -104,10 +111,10 @@ export default function Step3({
                onClose={() => setShowModal(false)}
             />
          )}
-         {fromAddress && toAddress && (
+         {from && to && (
             <button
                type="button"
-               onClick={onReset}
+               onClick={handleReset}
                className="text-16-medium max-lg:text-12-medium mr-2 text-right text-gray-500 underline"
             >
                {t("resetSelection")}

@@ -1,6 +1,8 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getReceivedRequests } from "./requests/getAllRequests";
 import { ReceivedRequestsProps, ReceivedRequestsResponse } from "@/lib/types";
+import { getClientActiveRequest } from "../estimate/requests/getClientRequest";
+import { getRequestDraft } from "./requests/requestDraftApi";
 
 export const receivedRequestsQueryKey = "receivedRequests";
 export let totalCount = 0;
@@ -36,3 +38,19 @@ export function useReceivedRequestsQuery({
       totalCount,
    };
 }
+
+export const useActiveRequest = () => {
+   return useQuery({
+      queryKey: ["activeRequest"],
+      queryFn: getClientActiveRequest,
+      staleTime: 1000 * 60 * 1,
+   });
+};
+
+export const useRequestDraft = () => {
+   return useQuery({
+      queryKey: ["requestDraft"],
+      queryFn: getRequestDraft,
+      staleTime: 0,
+   });
+};

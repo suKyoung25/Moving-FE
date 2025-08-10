@@ -1,6 +1,6 @@
 "use client";
 
-import { useActiveRequest } from "@/lib/api/request/requests/query";
+import { useActiveRequest } from "@/lib/api/request/query";
 import { format, Locale } from "date-fns";
 import { enUS, ko, zhCN } from "date-fns/locale";
 import { useLocale, useTranslations } from "next-intl";
