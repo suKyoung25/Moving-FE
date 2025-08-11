@@ -11,7 +11,7 @@ export default function LineDivider({
 }) {
    return (
       <span
-         className={`bg-line-200 border-line-100 flex border ${className} ${isVertical && verticalClass}`}
+         className={`bg-line-200 border-line-100 flex border-b-1 ${className} ${isVertical && verticalClass}`}
       ></span>
    );
 }
