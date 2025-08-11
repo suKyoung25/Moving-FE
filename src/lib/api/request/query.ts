@@ -40,18 +40,17 @@ export function useReceivedRequestsQuery(
    };
 }
 
-export const useActiveRequest = () => {
+export const useActiveRequest = (targetLang: string) => {
    return useQuery({
-      queryKey: ["activeRequest"],
-      queryFn: getClientActiveRequest,
+      queryKey: ["activeRequest", targetLang],
+      queryFn: () => getClientActiveRequest(targetLang),
       staleTime: 1000 * 60 * 1,
    });
 };
 
-export const useRequestDraft = () => {
+export const useRequestDraft = (targetLang: string) => {
    return useQuery({
-      queryKey: ["requestDraft"],
-      queryFn: getRequestDraft,
-      staleTime: 0,
+      queryKey: ["requestDraft", targetLang],
+      queryFn: () => getRequestDraft(targetLang),
    });
 };

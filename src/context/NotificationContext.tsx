@@ -13,6 +13,7 @@ import {
    getNotifications,
 } from "@/lib/api/notification/notification";
 import { useAuth } from "./AuthContext";
+import { useLocale } from "next-intl";
 
 interface NotificationContextValue {
    realtimeNotifications: Notification[];
@@ -30,11 +31,12 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
    >([]);
    const [unreadCount, setUnreadCount] = useState<number | null>(null);
    const { user } = useAuth();
+   const locale = useLocale();
 
    // unreadCount 새로고침 함수
    const refreshUnreadCount = () => {
       if (!user) return;
-      getNotifications({ limit: 1 }).then((res) => {
+      getNotifications({ limit: 1 }, locale).then((res) => {
          const rawCount = res.unreadCount ?? 0;
          setUnreadCount(rawCount > 0 ? rawCount : null);
       });

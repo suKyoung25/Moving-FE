@@ -14,7 +14,9 @@ export async function fetchClientQuoteDetail(
    }
 }
 
-export async function getEstimate(estimateId: string) {
-   const res = await tokenFetch(`/estimates/${estimateId}`);
+export async function getEstimate(estimateId: string, targetLang?: string) {
+   const res = await tokenFetch(
+      `/estimates/${estimateId}?targetLang=${targetLang}`,
+   );
    return res?.data ?? null;
 }
