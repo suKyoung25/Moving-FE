@@ -2,7 +2,7 @@
 
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supportFormSchema, SupportFormSchema } from "@/lib/schemas/index";
+import { SupportFormSchema, useSupportFormSchema } from "@/lib/schemas/index";
 
 import SupportSubmitButton from "./SupportSubmitButton";
 import SupportInput from "./SupportInput";
@@ -13,6 +13,7 @@ import { useTranslations } from "next-intl";
 
 export default function SupportForm() {
    const t = useTranslations("Support");
+   const { supportFormSchema } = useSupportFormSchema();
 
    const methods = useForm<SupportFormSchema>({
       resolver: zodResolver(supportFormSchema),

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpFormSchema, SignUpFormValues } from "../schemas/auth.schema";
+import { SignUpFormValues, useAuthSchemas } from "../schemas/auth.schema";
 import { AuthFetchError, UserType } from "../types";
 import createSignUp from "../api/auth/requests/createSignUp";
 
@@ -14,6 +14,7 @@ export default function useSignUpForm() {
    const router = useRouter();
    const { getUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
+   const { signUpFormSchema } = useAuthSchemas();
 
    // ✅ react-hook-form
    const {

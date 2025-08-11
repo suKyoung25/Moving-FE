@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthFetchError, MoveType } from "../types";
 import {
    MoverProfileInput,
-   MoverProfileSchema,
+   useMoverProfileSchemas,
 } from "../schemas/profile.schema";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
@@ -23,6 +23,7 @@ function useMoverProfilePostForm() {
    const [isLoading, setIsLoading] = useState(false);
    const { setUser } = useAuth();
    const { showSuccess } = useToast();
+   const { moverProfileSchema } = useMoverProfileSchemas();
 
    const {
       register,
@@ -31,7 +32,7 @@ function useMoverProfilePostForm() {
       control,
       formState: { errors, isValid },
    } = useForm<MoverProfileInput>({
-      resolver: zodResolver(MoverProfileSchema),
+      resolver: zodResolver(moverProfileSchema),
       mode: "onChange",
    });
 
