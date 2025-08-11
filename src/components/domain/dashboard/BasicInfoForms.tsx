@@ -29,10 +29,18 @@ export default function BasicInfoForms() {
       useMoverBasicInfo();
 
    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+         onSubmit={handleSubmit(onSubmit)}
+         aria-labelledby="basic-info-form-title"
+      >
+         <h2 id="basic-info-form-title" className="sr-only">
+            {t("basicInfoEditTitle")}
+         </h2>
+
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex-1">
                <BasicInputField<MoverBasicInfoInput>
+                  labelId="name-label"
                   name="name"
                   text={t("name")}
                   placeholder={t("namePlaceholder")}
@@ -43,6 +51,7 @@ export default function BasicInfoForms() {
                <hr className="p-o border-line-100 my-8 border-t" />
 
                <BasicInputField<MoverBasicInfoInput>
+                  labelId="email-label"
                   name="email"
                   text={t("email")}
                   register={register}
@@ -52,6 +61,7 @@ export default function BasicInfoForms() {
                <hr className="p-o border-line-100 my-8 border-t" />
 
                <BasicInputField<MoverBasicInfoInput>
+                  labelId="phone-label"
                   name="phone"
                   text={t("phone")}
                   placeholder={t("phonePlaceholder")}

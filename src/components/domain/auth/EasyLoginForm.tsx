@@ -48,18 +48,21 @@ export default function EasyLoginForm({ userType }: Prop) {
             <figure
                onClick={handleGoogleLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
+               aria-label="구글 계정으로 로그인"
             >
                <Image src={googleIcon} alt={t("googleAlt")} fill />
             </figure>
             <figure
                onClick={handlekakaoLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
+               aria-label="카카오 계정으로 로그인"
             >
                <Image src={kakaoIcon} alt={t("kakaoAlt")} fill />
             </figure>
             <figure
                onClick={handlenaverLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
+               aria-label="네이버 계정으로 로그인"
             >
                <Image src={naverIcon} alt={t("naverAlt")} fill />
             </figure>

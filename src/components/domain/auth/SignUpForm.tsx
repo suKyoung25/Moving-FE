@@ -23,10 +23,13 @@ export default function SignUpForm({ userType }: Prop) {
    return (
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
-         aria-labelledby="signup-form"
          className="flex w-full flex-col"
+         aria-labelledby="signup-form-heading"
       >
-         {/* ✅ Input */}
+         <h2 id="signup-form-heading" className="sr-only">
+            회원가입 입력 폼
+         </h2>
+
          <AuthInput<SignUpFormValues>
             type="text"
             name="name"
@@ -65,19 +68,23 @@ export default function SignUpForm({ userType }: Prop) {
             register={register}
             error={errors.passwordConfirmation?.message}
          />
-
          {/* ✅ 회원가입 버튼 */}
          <section className="mt-4 lg:mt-10">
             <SolidButton type="submit" disabled={!isValid || isLoading}>
                {isLoading ? t("loadingText") : t("signUpButton")}
             </SolidButton>
-            <div className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2">
+            <div
+               className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2"
+               role="group"
+               aria-label="이미 가입한 사용자 안내"
+            >
                <p className="text-black-100 text-12-regular lg:text-20-regular">
                   {t("alreadyMemberText")}
                </p>
                <Link
                   href={`/sign-in/${userType}`}
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
+                  aria-label="로그인 페이지로 이동"
                >
                   {t("loginLinkText")}
                </Link>

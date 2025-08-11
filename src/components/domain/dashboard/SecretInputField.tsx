@@ -20,14 +20,26 @@ function SecretInputField<T extends FieldValues>({
 
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
 
+   const inputId = `input-${name}`;
+   const errorId = error ? `${inputId}-error` : undefined;
+
    return (
       <div className="relative flex flex-col leading-8">
-         <div className="text-16-semibold lg:text-20-semibold">{text}</div>
+         <label
+            htmlFor={inputId}
+            className="text-16-semibold lg:text-20-semibold cursor-pointer"
+         >
+            {text}
+         </label>
+
          <input
+            id={inputId}
             type={isVisible ? "text" : "password"}
             placeholder={placeholder}
             {...register(name)}
             name={name}
+            aria-describedby={errorId}
+            aria-invalid={!!error}
             className={`bg-bg-200 mg:h-13 mt-4 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:h-16 ${error ? "border border-red-500" : ""}`}
          />
          <Image
