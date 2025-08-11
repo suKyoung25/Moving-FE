@@ -7,8 +7,10 @@ import SolidButton from "../../common/SolidButton";
 import { MOVE_TYPES, moveType, regions } from "@/constants";
 import useClientProfilePostForm from "@/lib/hooks/useClientProfilePostForm";
 import ImageInputField from "./ImageInputField";
+import { useTranslations } from "next-intl";
 
 export default function ClientProfilePostForm() {
+   const t = useTranslations("Profile");
    // ✅ 함수 등 모음
    const {
       isValid,
@@ -27,7 +29,7 @@ export default function ClientProfilePostForm() {
          {/* ✅ 이미지 */}
          <ImageInputField
             name="profileImage"
-            text="프로필 이미지"
+            text={t("profileImageLabel")}
             control={control}
          />
 
@@ -52,7 +54,7 @@ export default function ClientProfilePostForm() {
                      isSelected={(watch("serviceType") || []).includes(value)}
                      onClick={() => handleServiceToggle(value)}
                   >
-                     {service}
+                     {t(`moveTypes.${value}`)}
                   </ProfileFieldButton>
                );
             })}
@@ -77,7 +79,7 @@ export default function ClientProfilePostForm() {
                      isSelected={(watch("livingArea") || []).includes(region)}
                      onClick={() => handleRegionToggle(region)}
                   >
-                     {region}
+                     {t(`regions.${region}`)}
                   </ProfileFieldButton>
                ))}
             </div>
@@ -85,7 +87,7 @@ export default function ClientProfilePostForm() {
 
          {/* ✅ 제출 버튼 */}
          <SolidButton type="submit" disabled={!isValid || isLoading}>
-            {isLoading ? "로딩 중..." : "시작하기"}
+            {isLoading ? t("loadingText") : t("startButton")}
          </SolidButton>
       </form>
    );

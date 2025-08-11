@@ -46,12 +46,14 @@ export default function PasswordInput<T extends FieldValues>({
             <button
                type="button"
                onClick={toggleEyeIcon}
-               aria-label={isVisible ? "비밀번호 숨기기" : "비밀번호 보기"}
+               aria-label={
+                  isVisible ? "비밀번호 숨김 모드" : "비밀번호 보기 모드"
+               }
                className="absolute top-1/2 right-3 -translate-y-1/2"
             >
                <Image
                   src={isVisible ? openedEye : closedEye}
-                  alt="비밀번호 토글 아이콘"
+                  alt=""
                   priority
                   width={24}
                   height={24}

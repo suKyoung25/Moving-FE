@@ -1,9 +1,18 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo, useMemo } from "react";
+import {
+   useState,
+   useEffect,
+   useCallback,
+   memo,
+   useMemo,
+   useTransition,
+} from "react";
+import { useRouter } from "next/navigation";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
+import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover"; // API 함수 추가
 import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { useAuth } from "@/context/AuthContext";
@@ -11,13 +20,13 @@ import { useToast } from "@/context/ToastConText";
 import { EstimateStatus } from "@/lib/types";
 import { useTranslations } from "next-intl";
 
-// 타입 수정: favoriteCount 매개변수 추가
 interface FavoriteDriverListProps {
    onFavoriteChange?: (
       moverId: string,
       isFavorite: boolean,
       favoriteCount: number,
    ) => void;
+   refreshKey?: number; // 추가된 refreshKey prop
 }
 
 // 함수를 컴포넌트 외부로 이동하여 메모이제이션
@@ -42,16 +51,19 @@ const VALID_CHIP_TYPES: ChipType[] = [
 // 메인 컴포넌트를 memo로 최적화
 export default memo(function FavoriteDriverList({
    onFavoriteChange,
+   refreshKey, // refreshKey prop 추가
 }: FavoriteDriverListProps) {
    const t = useTranslations("FavoriteMovers");
+   const router = useRouter();
 
    const { user } = useAuth();
-   const { showToast } = useToast();
+   const { showSuccess, showError } = useToast();
 
    const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+   const [isPending, startTransition] = useTransition();
 
    // 계산값을 메모이제이션
    const isLoggedInAsMover = useMemo(
@@ -64,7 +76,7 @@ export default memo(function FavoriteDriverList({
       return Boolean(tokenSettings.get());
    }, []);
 
-   // t 의존성 추가
+   // 찜한 기사님 목록 로드 함수
    const loadFavoriteMovers = useCallback(async () => {
       const authStatus = checkAuthStatus();
       setIsAuthenticated(authStatus);
@@ -103,40 +115,72 @@ export default memo(function FavoriteDriverList({
       }
    }, [checkAuthStatus, isLoggedInAsMover, t]);
 
-   // 수정된 찜하기 로직 - Toast 사용 + t 의존성 추가
+   // 찜하기 토글 핸들러
    const handleFavoriteToggle = useCallback(
-      async (moverId: string) => {
-         try {
-            // 해제하려는 기사님의 현재 정보 가져오기
-            const targetMover = favoriteMovers.find(
-               (mover) => mover.id === moverId,
-            );
-            const newFavoriteCount = Math.max(
-               (targetMover?.favoriteCount || 1) - 1,
-               0,
-            );
+      async (e: React.MouseEvent, moverId: string) => {
+         e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
 
+         try {
+            // 실제 API 호출
+            const result = await toggleFavoriteMover(moverId);
+
+            // 즉시 UI에서 제거 (낙관적 업데이트)
             setFavoriteMovers((prev) =>
                prev.filter((mover) => mover.id !== moverId),
             );
 
-            // favoriteCount도 함께 전달
-            onFavoriteChange?.(moverId, false, newFavoriteCount);
+            // 부모 컴포넌트에 변경사항 알림
+            onFavoriteChange?.(
+               moverId,
+               result.isFavorite,
+               result.favoriteCount || 0,
+            );
 
             // Toast로 성공 메시지 표시
-            showToast("찜 목록에서 제거되었습니다.", true);
+            showSuccess(t("removeSuccess"));
 
+            // 약간의 지연 후 최신 데이터로 새로고침
             setTimeout(() => {
                loadFavoriteMovers();
             }, 500);
          } catch (err) {
             console.error("찜 토글 실패:", err);
-            showToast(t("toggleError"), false);
+            showError(t("toggleError"));
+            // 에러 시 데이터 새로고침으로 상태 복구
+            loadFavoriteMovers();
          }
       },
-      [onFavoriteChange, loadFavoriteMovers, favoriteMovers, showToast, t],
+      [onFavoriteChange, loadFavoriteMovers, showSuccess, showError, t],
    );
 
+   // 카드 클릭 핸들러 추가
+   const handleCardClick = useCallback(
+      (moverId: string) => {
+         startTransition(() => {
+            router.push(`/mover-search/${moverId}`);
+         });
+      },
+      [router],
+   );
+
+   // 외부 refreshKey 변화에 따른 데이터 새로고침
+   useEffect(() => {
+      if (refreshKey && refreshKey > 0) {
+         console.log(
+            "FavoriteDriverList refreshing due to refreshKey:",
+            refreshKey,
+         );
+
+         // 약간의 지연을 두어 다른 컴포넌트의 상태 변경이 완료된 후 새로고침
+         const timeoutId = setTimeout(() => {
+            loadFavoriteMovers();
+         }, 300);
+
+         return () => clearTimeout(timeoutId);
+      }
+   }, [refreshKey, loadFavoriteMovers]);
+
+   // 초기 데이터 로드
    useEffect(() => {
       loadFavoriteMovers();
    }, [loadFavoriteMovers]);
@@ -204,8 +248,18 @@ export default memo(function FavoriteDriverList({
          {displayMovers.map((mover) => (
             <div
                key={mover.id}
-               className="flex flex-col gap-2 rounded-lg border border-gray-50 bg-white p-3 shadow-sm"
+               onClick={() => handleCardClick(mover.id)}
+               className={`flex cursor-pointer flex-col gap-2 rounded-lg border border-gray-50 bg-white p-3 shadow-sm transition hover:shadow-md ${
+                  isPending ? "opacity-75" : ""
+               }`}
             >
+               {/* 로딩 인디케이터 */}
+               {isPending && (
+                  <div className="absolute top-2 right-2 z-10">
+                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
+                  </div>
+               )}
+
                <div className="flex gap-1">
                   {mover.serviceType?.map((type: string, index: number) => {
                      const chipType = type.toUpperCase() as ChipType;
@@ -235,7 +289,7 @@ export default memo(function FavoriteDriverList({
                   forceMobileStyle={true}
                   big={false}
                   isLiked={true}
-                  handleLikedClick={() => handleFavoriteToggle(mover.id)}
+                  handleLikedClick={(e) => handleFavoriteToggle(e, mover.id)}
                   nickName={mover.nickName || " "}
                   favoriteCount={mover.favoriteCount || 0}
                   averageReviewRating={mover.averageReviewRating || 0}

@@ -1,9 +1,12 @@
 "use server";
 
+import { getTranslations } from "next-intl/server";
 import nodemailer from "nodemailer";
 
 // 문의 지원 메일 전송 함수
 export async function createSupport(_: unknown, formData: FormData) {
+   const t = await getTranslations("Support");
+
    try {
       // 폼에서 전달받은 데이터 추출
       const email = {
@@ -60,14 +63,14 @@ export async function createSupport(_: unknown, formData: FormData) {
       // 성공 응답 반환
       return {
          success: true,
-         message: "문의가 정상적으로 등록되었습니다.",
+         message: t("supportRegisteredMessage"),
       };
    } catch (error) {
       // 에러 발생 시 콘솔 출력 및 실패 응답 반환
       console.error(error);
       return {
          success: false,
-         message: "문의 접수에 실패했습니다. 잠시 후 다시 시도해주세요.",
+         message: t("supportRegisterFailedMessage"),
       };
    }
 }

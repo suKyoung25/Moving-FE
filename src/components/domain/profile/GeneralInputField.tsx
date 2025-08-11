@@ -64,7 +64,7 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
             }}
             onBlur={handleBlur}
             onFocus={handleFocus}
-            className={`mg:h-13 bg-bg-200 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:h-16 ${error ? "border border-red-500" : ""}`}
+            className={`mg:h-13 bg-bg-200 mt-4 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:mb-4 lg:h-16 ${error ? "border border-red-500" : ""}`}
             placeholder={placeholder}
             aria-describedby={error ? `${labelId}-error` : undefined}
             aria-invalid={!!error}

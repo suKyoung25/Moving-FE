@@ -1,4 +1,170 @@
 {
+   "Landing": {
+      "logo1Alt": "Default color logo",
+      "logo2Alt": "Alternative color logo",
+      "sideNavItemAria": "Go to section {index}",
+      "scrollIconAlt": "Scroll",
+      "bannerImageAlt": "Moving banner image {number}",
+      "banner1": {
+         "title1": "On moving day,",
+         "title2": "without worries",
+         "title3": "cleanly",
+         "subtitle1": "A reliable,",
+         "subtitle2": "professional matching service"
+      },
+      "banner2": {
+         "title1": "Like a new home,",
+         "title2": "anytime, anywhere",
+         "title3": "cleanly",
+         "subtitle1": "Your space,",
+         "subtitle2": "transformed by a professional's touch"
+      },
+      "banner3": {
+         "title1": "All your booked items,",
+         "title2": "with responsibility",
+         "title3": "assured",
+         "subtitle1": "From start to finish,",
+         "subtitle2": "for your peace of mind"
+      },
+      "browseService": "Browse Services",
+      "compareMoving": {
+         "title": "Compare Moving",
+         "subtitle1": "The standard for moving quote",
+         "subtitle2": "comparison you can trust.",
+         "desc1": "Quickly compare movers matching your conditions",
+         "desc2": "and view reasonable quotes",
+         "desc3": "at a glance."
+      },
+      "locationMatching": {
+         "title": "Location-based Matching",
+         "subtitle1": "Local experts,",
+         "subtitle2": "directly connected",
+         "desc1": "Consider your residence, moving date, and house type",
+         "desc2": "for accurate matching that ensures",
+         "desc3": "a fail-safe move."
+      },
+      "reviewBased": {
+         "title": "Review-Based",
+         "subtitle1": "Only stories from",
+         "subtitle2": "people who really moved.",
+         "desc1": "Recommendations based on reviews",
+         "desc2": "from customers who have moved",
+         "desc3": "to trusted movers."
+      },
+      "yourLoad": {
+         "title": "More than your load,\nwe move your heart.",
+         "nav": {
+            "browseServices": "Browse Services",
+            "estimateCalculator": "Estimate Calculator",
+            "contactUs": "Contact Us"
+         },
+         "footer": {
+            "copyright": "©CODEIT FULLSTACK TEAM 4",
+            "teamName": "Team: Moving / Advanced Fullstack Project",
+            "organization": "Organization: Codeit Fullstack Class 6",
+            "members": "Members: 7 (Fullstack Developers)",
+            "period": "Development Period: 2025.07.01 ~ 2025.08.13",
+            "techStack": "Tech Stack: Next.js, Tailwind, Express, Prisma, etc.",
+            "contact": "Contact:"
+         }
+      }
+   },
+   "Sign": {
+      "logoAlt": "Moving Logo",
+      "moverQuestion": "Are you a mover?",
+      "moverUserPage": "Mover Exclusive Page",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Please enter your email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Please enter your password",
+      "loadingText": "Loading...",
+      "loginButton": "Login",
+      "signupPrompt": "Not a Moving member yet?",
+      "signupLinkText": "Sign up with email",
+      "easyLoginPrompt": "Quick Sign-up with SNS accounts",
+      "googleAlt": "Google Login",
+      "kakaoAlt": "Kakao Login",
+      "naverAlt": "Naver Login",
+      "generalUserQuestion": "Are you a general user?",
+      "generalUserPage": "General User Exclusive Page",
+      "nameLabel": "Name",
+      "namePlaceholder": "Please enter your name",
+      "phoneLabel": "Phone number",
+      "phonePlaceholder": "Please enter numbers only",
+      "passwordConfirmationLabel": "Confirm Password",
+      "passwordConfirmationPlaceholder": "Please enter your password again",
+      "signUpButton": "Get Started",
+      "alreadyMemberText": "Already a Moving member?",
+      "loginLinkText": "Login"
+   },
+   "Profile": {
+      "moverProfileTitle": "Mover Profile Registration",
+      "moverProfileDescription": "Please fill out additional information to complete your profile.",
+      "unknownUserType": "Unknown user type.",
+      "createProfileTitle": "Profile Registration",
+      "createProfileDescription": "Please fill out additional information to complete your sign up.",
+      "serviceTitle": "Services Used",
+      "serviceDescription": "*You can select multiple services and modify anytime!",
+      "regionTitle": "My Living Area",
+      "regionDescription": "*You can modify your area at any time!",
+      "editProfileTitle": "Edit Profile",
+      "profileImageLabel": "Profile Image",
+      "loadingText": "Loading...",
+      "startButton": "Get Started",
+      "moveTypes": {
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move"
+      },
+      "regions": {
+         "서울": "Seoul",
+         "부산": "Busan",
+         "대구": "Daegu",
+         "인천": "Incheon",
+         "광주": "Gwangju",
+         "대전": "Daejeon",
+         "울산": "Ulsan",
+         "세종": "Sejong",
+         "경기": "Gyeonggi",
+         "강원": "Gangwon",
+         "충북": "Chungbuk",
+         "충남": "Chungnam",
+         "전북": "Jeonbuk",
+         "전남": "Jeonnam",
+         "경북": "Gyeongbuk",
+         "경남": "Gyeongnam",
+         "제주": "Jeju"
+      },
+      "nickNameLabel": "Nickname",
+      "nickNamePlaceholder": "Enter a name to display on the site",
+      "careerLabel": "Career",
+      "careerPlaceholder": "Enter your career experience",
+      "introductionLabel": "One-line Introduction",
+      "introductionPlaceholder": "Please enter a one-line introduction",
+      "descriptionLabel": "Detailed Description",
+      "descriptionPlaceholder": "Please enter the detailed content",
+      "providedServicesLabel": "Provided Services",
+      "serviceAreasLabel": "Service Areas",
+      "loadingRegister": "Registering...",
+      "profileRegistered": "Profile has been registered.",
+      "moverProfileEditTitle": "Edit Mover Profile",
+      "moverProfileEditDescription": "Please fill out additional information to complete your profile update.",
+      "updatingText": "Updating...",
+      "updateButton": "Update",
+      "cancelButton": "Cancel",
+      "nameLabel": "Name",
+      "namePlaceholder": "Kim Code",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "Please enter numbers only.",
+      "currentPasswordLabel": "Current Password",
+      "currentPasswordPlaceholder": "Please enter your current password.",
+      "newPasswordLabel": "New Password",
+      "newPasswordPlaceholder": "Please enter a new password.",
+      "newPasswordConfirmLabel": "Confirm New Password",
+      "newPasswordConfirmPlaceholder": "Please re-enter your new password.",
+      "profileUpdated": "Profile has been updated."
+   },
    "MoverSearch": {
       "findDriver": "Find Driver",
       "areas": {
@@ -54,7 +220,12 @@
          "needLogin": "Login is required.",
          "toggleFailed": "An error occurred while toggling favorite."
       },
-      "defaultIntroduction": "We safely transport your items."
+      "defaultIntroduction": "We safely transport your items.",
+      "toast": {
+         "addedToFavorites": "Added to favorites.",
+         "removedFromFavorites": "Removed from favorites."
+      },
+      "goToLogin": "Go to Login"
    },
    "MoverDetail": {
       "requestDesignatedEstimate": "Request a designated estimate from the driver!",
@@ -80,6 +251,8 @@
          "notFound": "Driver information not found."
       },
       "toast": {
+         "addedToFavorites": "Added to favorites.",
+         "removedFromFavorites": "Removed from favorites.",
          "alreadyInProgress": "A request is already in progress!",
          "requestSuccess": "Designated estimate request sent successfully!"
       },
@@ -283,7 +456,22 @@
       "deleteReview": "Delete Review",
       "confirmed": "Confirmed",
       "year": "Y",
-      "cases": ""
+      "cases": "",
+      "profileAlt": "Profile Image",
+      "errorOccurred": "An error has occurred.",
+      "loadingText": "Loading...",
+      "reviewRegistered": "Your review has been successfully registered.",
+      "yellowStarAlt": "Yellow star",
+      "grayStarAlt": "Gray star",
+      "starAria": "{point} stars",
+      "reviewModifiedSuccess": "Review successfully modified/deleted.",
+      "editDeleteAria": "Edit and delete review",
+      "editDeleteAlt": "Edit and delete icon",
+      "deleteConfirmTitle": "Are you sure you want to delete this review?",
+      "deleteConfirmDescription": "This action cannot be undone.",
+      "editConfirmTitle": "Edit Review",
+      "editConfirmDescription": "Do you want to edit the review?",
+      "noChangesError": "No changes detected."
    },
    "FavoriteMovers": {
       "title": "Favorite Movers",
@@ -293,7 +481,11 @@
       "loginRequired": "Login is required for this service.",
       "loadFailed": "Failed to load favorite drivers.",
       "noFavorites": "No favorite drivers found.",
-      "toggleError": "An error occurred while toggling favorite."
+      "toggleError": "An error occurred while toggling favorite.",
+      "errorOccurred": "An error has occurred.",
+      "favoriteToggleSuccess": "Favorite status has been successfully updated.",
+      "favoriteToggleError": "An error occurred while updating favorite status.",
+      "removeSuccess": "Removed from favorites."
    },
    "MyQuotes": {
       "Client": {
@@ -587,5 +779,31 @@
       "selectRating": "Please select a rating.",
       "maxRating": "Maximum rating is 5.",
       "minContent": "Please enter at least 10 characters in your review."
+   },
+   "NotFound": {
+      "logoAlt": "Logo",
+      "earthAlt": "Earth image",
+      "moverAlt": "Moving man image",
+      "truckMoverAlt": "Truck moving man image",
+      "starAlt": "Star image",
+      "pageNotFoundTitle": "The page you are trying to access\ndoes not exist.",
+      "pageNotFoundMessageLine1": "We apologize for the inconvenience.",
+      "pageNotFoundMessageLine2": "The page you are looking for does not currently exist.",
+      "pageNotFoundMessageLine3": "Please check and try again.",
+      "goToMain": "Go to Main"
+   },
+   "Support": {
+      "supportMessage": "Moving is with you.",
+      "nameLabel": "Name",
+      "emailLabel": "Email",
+      "titleLabel": "Title",
+      "numberLabel": "Contact Number",
+      "contentLabel": "Inquiry Content",
+      "fileUploadLabel": "Upload Attachment",
+      "defaultToastMessage": "Unable to confirm request result.",
+      "sendingInquiry": "Sending inquiry to Moving",
+      "sendInquiry": "Send inquiry to Moving",
+      "supportRegisteredMessage": "Your inquiry has been successfully submitted.",
+      "supportRegisterFailedMessage": "Failed to submit your inquiry. Please try again later."
    }
 }

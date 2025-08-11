@@ -6,18 +6,20 @@ import Image from "next/image";
 import profile from "@/assets/images/profileUploaderIcon.svg";
 import SolidButton from "@/components/common/SolidButton";
 import ReviewModal from "./ReviewModal";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import EmptyState from "@/components/common/EmptyState";
 import { useTranslations } from "next-intl";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { formatIsoToYMD } from "@/lib/utils";
 import { WritableReview } from "@/lib/types";
 import { useWritableReviews } from "@/lib/api/review/query";
-import ToastPopup from "@/components/common/ToastPopup";
+import { useToast } from "@/context/ToastConText";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function WritableReviews() {
    const t = useTranslations("Reviews");
-
+   const { showSuccess } = useToast();
+   const queryClient = useQueryClient();
    // 페이지네이션 상태
    const [pagination, setPagination] = useState({
       page: 1,
@@ -31,12 +33,6 @@ export default function WritableReviews() {
       page: pagination.page,
       limit: pagination.limit,
    });
-   //토스트 상태
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
 
    // 페이지네이션 핸들러
    const handlePageChange = (page: number) => {
@@ -54,21 +50,18 @@ export default function WritableReviews() {
    // 리뷰 작성 성공 시 상태 토글해서 refetch
    const handleReviewSuccess = () => {
       refetch();
-      setToast({
-         id: Date.now(),
-         text: "리뷰가 성공적으로 등록되었습니다.",
-         success: true,
-      });
+      queryClient.refetchQueries({ queryKey: ["myReviews"] }); // myReview 리패칭
+      showSuccess(t("reviewRegistered"));
    };
 
    const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
 
    if (error) {
-      return <div>{t("errorOccurred") || "오류가 발생했습니다."}</div>;
+      return <div>{t("errorOccurred")}</div>;
    }
 
    if (isLoading || isFetching) {
-      return <div>로딩중...</div>;
+      return <div>{t("loadingText")}</div>;
    }
 
    return (
@@ -92,7 +85,7 @@ export default function WritableReviews() {
                         <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                            <Image
                               src={writableReview.moverProfileImage || profile}
-                              alt="프로필"
+                              alt={t("profileAlt")}
                               fill
                               className="object-cover"
                            />
@@ -152,15 +145,6 @@ export default function WritableReviews() {
                onClose={() => setSelectedId(null)}
                selectedEstimate={selectedEstimate}
                onReviewSuccess={handleReviewSuccess}
-            />
-         )}
-
-         {/* 토스트 팝업*/}
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
             />
          )}
       </div>

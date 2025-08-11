@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 
 const addrBoxClass = "flex text-left gap-2 break-keep w-full h-full";
 const addrTypeClass =
-   "flex justify-center items-center w-11 h-6 lg:w-[54px] lg:h-7 px-1.5 py-0.5 bg-primary-blue-50 text-blue-500 text-xs lg:text-sm font-semibold rounded-3xl";
+   "flex justify-center items-center w-11 h-6 lg:w-9 lg:h-7 px-1.5 py-0.5 bg-primary-blue-50 text-blue-500 text-12-semibold lg:text-14-semibold rounded-3xl";
 const addrClass = "max-lg:text-sm";
 
 export default function AddressSearch({
@@ -55,7 +55,7 @@ export default function AddressSearch({
          <div className="relative h-fit w-sm overflow-auto rounded-3xl bg-white px-4 py-6 max-sm:mx-5 lg:w-152 lg:rounded-4xl lg:px-6 lg:py-8">
             {/* 모달 헤더 */}
             <div className="mb-4 flex items-center justify-between lg:mb-6">
-               <h2 className="text-lg font-bold lg:text-2xl">
+               <h2 className="text-18-bold lg:text-24-bold">
                   {type === "from"
                      ? t("selectDeparture")
                      : t("selectDestination")}
@@ -73,7 +73,7 @@ export default function AddressSearch({
                <>
                   {/* 검색 입력창 */}
                   <div className="relative flex items-center">
-                     <div className="bg-bg-200 w-full rounded-2xl px-4 py-3 text-sm text-gray-400 lg:text-base">
+                     <div className="bg-bg-200 text-14-regular lg:text-16-regular w-full rounded-2xl px-4 py-3 text-gray-400">
                         {t("searchInfo")}
                      </div>
                      <button
@@ -94,7 +94,7 @@ export default function AddressSearch({
                            }}
                         >
                            {/* 우편번호 */}
-                           <p className="font-semibold max-lg:text-sm">
+                           <p className="text-16-semibold max-lg:text-14-semibold">
                               {selectedAddr.zonecode}
                            </p>
 
@@ -137,7 +137,7 @@ export default function AddressSearch({
             ) : (
                <div
                   ref={elementRef}
-                  className="h-[400px] w-full overflow-hidden"
+                  className="h-100 w-full overflow-hidden"
                   aria-label={t("postcodeFrameLabel")}
                />
             )}

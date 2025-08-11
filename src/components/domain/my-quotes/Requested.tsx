@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Quotes } from "@/lib/types";
-import QuotaionInfo from "./QuotaionInfo";
+import QuotationInfo from "./QuotationInfo";
 import Dropdown from "./Dropdown";
 import EmptyState from "@/components/common/EmptyState";
 import { isAfter } from "date-fns";
@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 import { cancelRequest } from "@/lib/api/estimate/requests/cancelRequest";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/context/ToastConText";
+import { useFormWizard } from "@/context/FormWizardContext";
 
 // 요청한 견적
 export default function Requested() {
@@ -19,6 +20,7 @@ export default function Requested() {
 
    const [dropdownName, setDropdownName] = useState("recent");
    const { showSuccess, showError } = useToast();
+   const { setCurrentStep } = useFormWizard();
    const router = useRouter();
    const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -27,7 +29,8 @@ export default function Requested() {
 
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
       useRequestsQuery(sort);
-   const requests = data?.pages.flatMap((page) => page.requests) ?? [];
+   const requests =
+      data?.pages?.flatMap((page) => page.requests).filter(Boolean) ?? [];
 
    const chipTypeMap = (moveDate: Date, isPending: boolean) => {
       const now = new Date();
@@ -53,10 +56,10 @@ export default function Requested() {
 
    const handleCancel = async (requestId: string) => {
       try {
-         const { data } = await cancelRequest(requestId);
-         console.log(data);
+         await cancelRequest(requestId);
          queryClient.invalidateQueries({ queryKey: ["requests", sort] });
-         queryClient.invalidateQueries({ queryKey: ["activeRequest"] });
+         queryClient.removeQueries({ queryKey: ["activeRequest"] });
+         setCurrentStep(0);
          showSuccess("견적 요청이 취소되었어요");
       } catch (error) {
          console.error("견적 요청 취소 실패:", error);
@@ -119,13 +122,13 @@ export default function Requested() {
                            onClick={() => handleClick(request)}
                            className="cursor-pointer"
                         >
-                           <QuotaionInfo
+                           <QuotationInfo
                               request={request}
                               chipType={chipType}
                            />
                         </div>
                      ) : (
-                        <QuotaionInfo
+                        <QuotationInfo
                            request={request}
                            chipType={chipType}
                            isPending={true}

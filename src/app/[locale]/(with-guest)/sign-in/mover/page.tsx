@@ -5,7 +5,7 @@ import MoverTitle from "@/components/domain/auth/MoverTitle";
 import SignInForm from "@/components/domain/auth/SignInForm";
 import { useAuthError } from "@/lib/hooks/useAuthError";
 
-//
+// 기사님 로그인 페이지
 export default function MoverSignInPage() {
    useAuthError();
 

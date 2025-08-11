@@ -4,54 +4,25 @@ import React, { useState } from "react";
 import profile from "@/assets/images/profileIcon.svg";
 import { useRouter } from "next/navigation";
 import { ChipType } from "@/components/common/MoveChip";
-import SolidButton from "@/components/common/SolidButton";
 import OutlinedButton from "@/components/common/OutlinedButton";
 import { QuoteItem } from "@/lib/types";
 import MoveDateCard from "./MoveDateCard";
 import MoverProfileclient from "./MoverProfileClient";
 import EmptyState from "@/components/common/EmptyState";
-import { postClientConfirmedQuote } from "@/lib/api/estimate/postClientConfirmedQuote";
-import ToastPopup from "@/components/common/ToastPopup";
 import { usePendingEstimates } from "@/lib/api/estimate/query";
-import Pagination from "@/components/common/pagination";
+import Pagination from "@/components/common/Pagination";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
+import ConfirmedButton from "./ConfirmedButton";
 import { useTranslations } from "next-intl";
 
 export default function Pending() {
    const t = useTranslations("MyQuotes.Client");
 
    const [page, setPage] = useState(1);
-   const [toast, setToast] = useState<{
-      id: number;
-      text: string;
-      success: boolean;
-   } | null>(null);
-
    const router = useRouter();
 
-   const { data, isLoading, isError, refetch } = usePendingEstimates(page);
-
-   const handleClickConfirmed = async (estimateId: string) => {
-      try {
-         await postClientConfirmedQuote(estimateId);
-
-         setToast({
-            id: Date.now(),
-            text: t("toast.confirmed"),
-            success: true,
-         });
-
-         refetch();
-      } catch (e) {
-         setToast({
-            id: Date.now(),
-            text: t("toast.confirmFailed"),
-            success: false,
-         });
-         console.error(e);
-      }
-   };
+   const { data, isLoading, isError } = usePendingEstimates(page);
 
    if (isLoading)
       return (
@@ -115,13 +86,7 @@ export default function Pending() {
                      </p>
                   </div>
                   <div className="flex flex-col gap-2 md:flex-row">
-                     <SolidButton
-                        onClick={() =>
-                           handleClickConfirmed(estimate.estimateId)
-                        }
-                     >
-                        {t("buttons.confirmEstimate")}
-                     </SolidButton>
+                     <ConfirmedButton estimateId={estimate.estimateId} />
                      <OutlinedButton
                         onClick={() =>
                            router.push(`client/${estimate.estimateId}`)
@@ -138,14 +103,6 @@ export default function Pending() {
             totalPages={data.totalPages}
             onPageChange={setPage}
          />
-
-         {toast && (
-            <ToastPopup
-               key={toast.id}
-               text={toast.text}
-               success={toast.success}
-            />
-         )}
       </>
    );
 }

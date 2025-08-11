@@ -13,11 +13,13 @@ import ImageInputField from "./ImageInputField";
 import { useAuth } from "@/context/AuthContext";
 import { ClientProfileUpdateValue } from "@/lib/schemas";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const style1 = "lg:mb-14 lg:flex-row lg:justify-between lg:gap-14";
 const borderStyle = "border-line-100 my-5 lg:my-8";
 
 export default function ClientProfileUpdateForm() {
+   const t = useTranslations("Profile");
    // ✅ 함수 등 모음
    const router = useRouter();
    const { user } = useAuth();
@@ -48,9 +50,9 @@ export default function ClientProfileUpdateForm() {
                <div className={user?.provider === "LOCAL" ? "flex-1" : ""}>
                   <ProfileInput<ClientProfileUpdateValue>
                      type="text"
-                     label="이름"
+                     label={t("nameLabel")}
                      name="name"
-                     placeholder="김코드"
+                     placeholder={t("namePlaceholder")}
                      register={register}
                      error={errors.name?.message}
                   />
@@ -63,8 +65,12 @@ export default function ClientProfileUpdateForm() {
                   />
                   {/* 이메일은 변경할 수 있는 데이터가 아님 */}
                   <section className="flex w-full cursor-not-allowed flex-col gap-2 lg:gap-4">
-                     <label className="text-black-300 text-16-semibold lg:text-20-semibold">
-                        이메일
+                     <label
+                        role="textbox"
+                        aria-readonly="true"
+                        className="text-black-300 text-16-semibold lg:text-20-semibold"
+                     >
+                        {t("emailLabel")}
                      </label>
                      <div className="text-black-400 bg-bg-200 flex h-14 items-center rounded-2xl p-3.5 lg:h-16">
                         {user?.email}
@@ -79,9 +85,9 @@ export default function ClientProfileUpdateForm() {
                   />
                   <ProfileInput<ClientProfileUpdateValue>
                      type="text"
-                     label="전화번호"
+                     label={t("phoneLabel")}
                      name="phone"
-                     placeholder="숫자만 입력해 주세요."
+                     placeholder={t("phonePlaceholder")}
                      register={register}
                      error={errors.phone?.message}
                   />
@@ -97,25 +103,25 @@ export default function ClientProfileUpdateForm() {
                   {user && user.provider !== "LOCAL" ? null : (
                      <>
                         <ProfilePasswordInput<ClientProfileUpdateValue>
-                           label="현재 비밀번호"
+                           label={t("currentPasswordLabel")}
                            name="password"
-                           placeholder="현재 비밀번호를 입력해 주세요."
+                           placeholder={t("currentPasswordPlaceholder")}
                            register={register}
                            error={errors.password?.message}
                         />
                         <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
                         <ProfilePasswordInput<ClientProfileUpdateValue>
-                           label="새 비밀번호"
+                           label={t("newPasswordLabel")}
                            name="newPassword"
-                           placeholder="새로운 비밀번호를 입력해 주세요."
+                           placeholder={t("newPasswordPlaceholder")}
                            register={register}
                            error={errors.newPassword?.message}
                         />
                         <hr className="border-line-100 my-5 lg:my-8 lg:w-160" />
                         <ProfilePasswordInput<ClientProfileUpdateValue>
-                           label="새 비밀번호 확인"
+                           label={t("newPasswordConfirmLabel")}
                            name="newPasswordConfirmation"
-                           placeholder="새로운 비밀번호를 다시 한번 입력해 주세요."
+                           placeholder={t("newPasswordConfirmPlaceholder")}
                            register={register}
                            error={errors.newPasswordConfirmation?.message}
                         />
@@ -128,7 +134,7 @@ export default function ClientProfileUpdateForm() {
                   {/* ✅ 프로필 이미지 */}
                   <ImageInputField
                      name="profileImage"
-                     text="프로필 이미지"
+                     text={t("profileImageLabel")}
                      control={control}
                   />
 
@@ -162,7 +168,7 @@ export default function ClientProfileUpdateForm() {
                               )}
                               onClick={() => handleServiceToggle(value)}
                            >
-                              {service}
+                              {t(`moveTypes.${value}`)}
                            </ProfileFieldButton>
                         );
                      })}
@@ -195,7 +201,7 @@ export default function ClientProfileUpdateForm() {
                               )}
                               onClick={() => handleRegionToggle(region)}
                            >
-                              {region}
+                              {t(`regions.${region}`)}
                            </ProfileFieldButton>
                         ))}
                      </div>
@@ -220,7 +226,7 @@ export default function ClientProfileUpdateForm() {
                         : ""
                   }
                >
-                  {isLoading ? "로딩 중..." : "수정하기"}
+                  {isLoading ? t("loadingText") : t("updateButton")}
                </SolidButton>
                <OutlinedButton
                   onClick={() => router.push("/mover-search")}
@@ -230,7 +236,7 @@ export default function ClientProfileUpdateForm() {
                         : "!border-gray-200 !text-gray-200"
                   }
                >
-                  취소
+                  {t("cancelButton")}
                </OutlinedButton>
             </section>
          </form>

@@ -7,6 +7,7 @@ import kakaoIcon from "@/assets/images/logoKakao.svg";
 import naverIcon from "@/assets/images/logoNaver.svg";
 import { BASE_URL } from "@/lib/utils";
 import { UserType } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface Prop {
    userType: UserType;
@@ -14,6 +15,8 @@ interface Prop {
 
 // 간편 로그인
 export default function EasyLoginForm({ userType }: Prop) {
+   const t = useTranslations("Sign");
+
    const handleGoogleLogin = () => {
       location.href = `${BASE_URL}/auth/google?userType=${userType}`;
    };
@@ -28,36 +31,40 @@ export default function EasyLoginForm({ userType }: Prop) {
 
    return (
       <section
+         aria-labelledby="easy-login-form"
          className="my-12 flex flex-col items-center gap-6 lg:my-18"
-         aria-labelledby="sns-login-heading"
       >
          <p
-            id="sns-login-heading"
+            id="easy-login-form"
             className="text-black-100 text-12-regular lg:text-20-regular"
          >
-            SNS 계정으로 간편 가입하기
+            {t("easyLoginPrompt")}
          </p>
-         <div className="flex gap-6 lg:gap-8">
+         <div
+            role="group"
+            aria-label="SNS 로그인 옵션"
+            className="flex gap-6 lg:gap-8"
+         >
             <figure
                onClick={handleGoogleLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
                aria-label="구글 계정으로 로그인"
             >
-               <Image src={googleIcon} alt="구글 로그인" fill />
+               <Image src={googleIcon} alt={t("googleAlt")} fill />
             </figure>
             <figure
                onClick={handlekakaoLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
                aria-label="카카오 계정으로 로그인"
             >
-               <Image src={kakaoIcon} alt="카카오 로그인" fill />
+               <Image src={kakaoIcon} alt={t("kakaoAlt")} fill />
             </figure>
             <figure
                onClick={handlenaverLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
                aria-label="네이버 계정으로 로그인"
             >
-               <Image src={naverIcon} alt="네이버 로그인" fill />
+               <Image src={naverIcon} alt={t("naverAlt")} fill />
             </figure>
          </div>
       </section>

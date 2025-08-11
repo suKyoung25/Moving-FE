@@ -33,7 +33,7 @@ function TextAreaInputField<T extends Record<string, FieldValue>>({
             aria-describedby={error ? errorId : undefined}
             aria-invalid={!!error}
             {...register?.(name)}
-            className={`mg:h-13 bg-bg-200 h-13 w-full rounded-2xl pt-3.5 pl-3.5 placeholder:text-gray-300 lg:h-40 ${error ? "border border-red-500" : ""}`}
+            className={`bg-bg-200 mt-4 h-13 w-full rounded-2xl pt-3.5 pl-3.5 placeholder:text-gray-300 md:h-40 lg:h-40 ${error ? "border border-red-500" : ""}`}
             placeholder={placeholder}
          />
 

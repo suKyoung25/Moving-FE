@@ -1,4 +1,170 @@
 {
+   "Landing": {
+      "logo1Alt": "기본 색상 로고",
+      "logo2Alt": "다른 색상 로고",
+      "sideNavItemAria": "{index}번째 섹션으로 이동",
+      "scrollIconAlt": "스크롤",
+      "bannerImageAlt": "무빙 배너 이미지 {number}",
+      "banner1": {
+         "title1": "이삿날에도,",
+         "title2": "걱정 없이",
+         "title3": "깔끔하게",
+         "subtitle1": "믿을 수 있는,",
+         "subtitle2": "전문가 매칭 서비스"
+      },
+      "banner2": {
+         "title1": "새집처럼,",
+         "title2": "언제 어디서나",
+         "title3": "깔끔하게",
+         "subtitle1": "당신의 공간,",
+         "subtitle2": "전문가의 손길로 바뀝니다"
+      },
+      "banner3": {
+         "title1": "예약한 모든 짐,",
+         "title2": "책임감을 가지고",
+         "title3": "확실하게",
+         "subtitle1": "처음부터 끝까지,",
+         "subtitle2": "안심할 수 있도록"
+      },
+      "browseService": "서비스 둘러보기",
+      "compareMoving": {
+         "title": "비교이사",
+         "subtitle1": "이사 견적 비교의",
+         "subtitle2": "기준이 됩니다.",
+         "desc1": "내 조건에 맞는 기사님을",
+         "desc2": "빠르게 비교하고 합리적인 견적을",
+         "desc3": "한 눈에 확인하세요."
+      },
+      "locationMatching": {
+         "title": "지역 기반 매칭",
+         "subtitle1": "내 동네 전문가,",
+         "subtitle2": "바로 연결",
+         "desc1": "사는 곳, 이삿날, 집 유형까지 고려한",
+         "desc2": "정확한 매칭으로 실패 없는",
+         "desc3": "이사를 시작하세요."
+      },
+      "reviewBased": {
+         "title": "실제 후기 기반",
+         "subtitle1": "진짜 이사한 사람들의",
+         "subtitle2": "이야기만 보여드립니다.",
+         "desc1": "직접 이사를 경험한 고객의",
+         "desc2": "리뷰를 기반으로 신뢰도 높은",
+         "desc3": "기사님만 추천해드려요."
+      },
+      "yourLoad": {
+         "title": "당신의 짐보다,\n당신의 마음을 옮깁니다.",
+         "nav": {
+            "browseServices": "서비스 둘러보기",
+            "estimateCalculator": "견적계산기",
+            "contactUs": "문의하기"
+         },
+         "footer": {
+            "copyright": "©CODEIT FULLSTACK TEAM 4",
+            "teamName": "팀명: 무빙(Moving) / 풀스택 고급 프로젝트",
+            "organization": "소속: 코드잇 풀스택 과정 6기",
+            "members": "참여 인원: 7명 (풀스택 개발자)",
+            "period": "개발 기간: 2025.07.01 ~ 2025.08.13",
+            "techStack": "기술 스택: Next.js, Tailwind, express, Prisma 외",
+            "contact": "문의:"
+         }
+      }
+   },
+   "Sign": {
+      "logoAlt": "무빙 로고",
+      "moverQuestion": "기사님이신가요?",
+      "moverUserPage": "기사님 전용 페이지",
+      "emailLabel": "이메일",
+      "emailPlaceholder": "이메일을 입력해 주세요",
+      "passwordLabel": "비밀번호",
+      "passwordPlaceholder": "비밀번호를 입력해 주세요",
+      "loadingText": "로딩 중...",
+      "loginButton": "로그인",
+      "signupPrompt": "아직 무빙 회원이 아니신가요?",
+      "signupLinkText": "이메일로 회원가입하기",
+      "easyLoginPrompt": "SNS 계정으로 간편 가입하기",
+      "googleAlt": "구글 로그인",
+      "kakaoAlt": "카카오 로그인",
+      "naverAlt": "네이버 로그인",
+      "generalUserQuestion": "일반 유저라면?",
+      "generalUserPage": "일반 유저 전용 페이지",
+      "nameLabel": "이름",
+      "namePlaceholder": "성함을 입력해 주세요",
+      "phoneLabel": "전화번호",
+      "phonePlaceholder": "숫자만 입력해 주세요",
+      "passwordConfirmationLabel": "비밀번호 확인",
+      "passwordConfirmationPlaceholder": "비밀번호를 다시 한번 입력해 주세요",
+      "signUpButton": "시작하기",
+      "alreadyMemberText": "이미 무빙 회원이신가요?",
+      "loginLinkText": "로그인"
+   },
+   "Profile": {
+      "moverProfileTitle": "기사님 프로필 등록",
+      "moverProfileDescription": "추가 정보를 입력하여 프로필 등록을 완료해주세요",
+      "unknownUserType": "알 수 없는 사용자 유형입니다.",
+      "createProfileTitle": "프로필 등록",
+      "createProfileDescription": "추가 정보를 입력하여 회원가입을 완료해주세요.",
+      "serviceTitle": "이용 서비스",
+      "serviceDescription": "*이용 서비스는 중복 선택 가능하며, 언제든 수정 가능해요!",
+      "regionTitle": "내가 사는 지역",
+      "regionDescription": "*내가 사는 지역은 언제든 수정 가능해요!",
+      "editProfileTitle": "프로필 수정",
+      "profileImageLabel": "프로필 이미지",
+      "loadingText": "로딩 중...",
+      "startButton": "시작하기",
+      "moveTypes": {
+         "SMALL": "소형이사",
+         "HOME": "가정이사",
+         "OFFICE": "사무실이사"
+      },
+      "regions": {
+         "서울": "서울",
+         "부산": "부산",
+         "대구": "대구",
+         "인천": "인천",
+         "광주": "광주",
+         "대전": "대전",
+         "울산": "울산",
+         "세종": "세종",
+         "경기": "경기",
+         "강원": "강원",
+         "충북": "충북",
+         "충남": "충남",
+         "전북": "전북",
+         "전남": "전남",
+         "경북": "경북",
+         "경남": "경남",
+         "제주": "제주"
+      },
+      "nickNameLabel": "별명",
+      "nickNamePlaceholder": "사이트에 노출될 이름을 입력해주세요",
+      "careerLabel": "경력",
+      "careerPlaceholder": "기사님의 경력을 입력해주세요",
+      "introductionLabel": "한 줄 소개",
+      "introductionPlaceholder": "한 줄 소개를 입력해주세요",
+      "descriptionLabel": "상세 설명",
+      "descriptionPlaceholder": "상세 내용을 입력해주세요",
+      "providedServicesLabel": "제공 서비스",
+      "serviceAreasLabel": "서비스 가능 지역",
+      "loadingRegister": "등록 중...",
+      "profileRegistered": "프로필이 등록되었습니다.",
+      "moverProfileEditTitle": "기사님 프로필 수정",
+      "moverProfileEditDescription": "추가 정보를 입력하여 프로필 수정을 완료해주세요",
+      "updatingText": "수정 중...",
+      "updateButton": "수정하기",
+      "cancelButton": "취소",
+      "nameLabel": "이름",
+      "namePlaceholder": "김코드",
+      "emailLabel": "이메일",
+      "phoneLabel": "전화번호",
+      "phonePlaceholder": "숫자만 입력해 주세요.",
+      "currentPasswordLabel": "현재 비밀번호",
+      "currentPasswordPlaceholder": "현재 비밀번호를 입력해 주세요.",
+      "newPasswordLabel": "새 비밀번호",
+      "newPasswordPlaceholder": "새로운 비밀번호를 입력해 주세요.",
+      "newPasswordConfirmLabel": "새 비밀번호 확인",
+      "newPasswordConfirmPlaceholder": "새로운 비밀번호를 다시 한번 입력해 주세요.",
+      "profileUpdated": "프로필이 수정되었습니다."
+   },
    "MoverSearch": {
       "findDriver": "기사님 찾기",
       "areas": {
@@ -54,7 +220,12 @@
          "needLogin": "로그인이 필요합니다.",
          "toggleFailed": "찜 처리 중 오류가 발생했습니다."
       },
-      "defaultIntroduction": "고객님의 물품을 안전하게 운송해 드립니다."
+      "defaultIntroduction": "고객님의 물품을 안전하게 운송해 드립니다.",
+      "toast": {
+         "addedToFavorites": "찜 목록에 추가되었습니다.",
+         "removedFromFavorites": "찜 목록에서 제거되었습니다."
+      },
+      "goToLogin": "로그인하러 가기"
    },
    "MoverDetail": {
       "requestDesignatedEstimate": "기사님에게 지정 견적을 요청해보세요!",
@@ -80,6 +251,8 @@
          "notFound": "기사님 정보를 찾을 수 없습니다."
       },
       "toast": {
+         "addedToFavorites": "찜 목록에 추가되었습니다.",
+         "removedFromFavorites": "찜 목록에서 제거되었습니다.",
          "alreadyInProgress": "이미 진행중인 견적이 있어요!",
          "requestSuccess": "지정 견적 요청이 성공적으로 전송되었습니다!"
       },
@@ -283,7 +456,22 @@
       "deleteReview": "리뷰 삭제",
       "confirmed": "확정",
       "year": "년",
-      "cases": "건"
+      "cases": "건",
+      "profileAlt": "프로필 이미지",
+      "errorOccurred": "오류가 발생했습니다.",
+      "loadingText": "로딩중...",
+      "reviewRegistered": "리뷰가 성공적으로 등록되었습니다.",
+      "yellowStarAlt": "노란별",
+      "grayStarAlt": "회색별",
+      "starAria": "{point}점",
+      "reviewModifiedSuccess": "리뷰가 성공적으로 수정/삭제되었습니다.",
+      "editDeleteAria": "리뷰 수정 및 삭제",
+      "editDeleteAlt": "수정 및 삭제 아이콘",
+      "deleteConfirmTitle": "리뷰를 삭제하시겠습니까?",
+      "deleteConfirmDescription": "이 작업은 되돌릴 수 없습니다.",
+      "editConfirmTitle": "리뷰 수정",
+      "editConfirmDescription": "리뷰를 수정하시겠습니까?",
+      "noChangesError": "변경된 내용이 없습니다."
    },
    "FavoriteMovers": {
       "title": "찜한 기사님",
@@ -293,7 +481,11 @@
       "loginRequired": "로그인이 필요한 서비스입니다.",
       "loadFailed": "찜한 기사님 목록을 불러오는데 실패했습니다.",
       "noFavorites": "찜한 기사님이 없습니다.",
-      "toggleError": "찜 처리 중 오류가 발생했습니다."
+      "toggleError": "찜 처리 중 오류가 발생했습니다.",
+      "errorOccurred": "오류가 발생했습니다.",
+      "favoriteToggleSuccess": "찜이 성공적으로 변경되었습니다.",
+      "favoriteToggleError": "찜 처리 중 오류가 발생했습니다.",
+      "removeSuccess": "찜 목록에서 제거되었습니다."
    },
    "MyQuotes": {
       "Client": {
@@ -586,5 +778,31 @@
       "selectRating": "별점을 선택해 주세요",
       "maxRating": "5점 만점 입니다.",
       "minContent": "리뷰 내용을 최소 10자 이상 입력해 주세요"
+   },
+   "NotFound": {
+      "logoAlt": "로고",
+      "earthAlt": "지구 이미지",
+      "moverAlt": "무빙맨 이미지",
+      "truckMoverAlt": "트럭 무빙맨 이미지",
+      "starAlt": "별 이미지",
+      "pageNotFoundTitle": "현재 접속하신 페이지가\n존재하지 않습니다.",
+      "pageNotFoundMessageLine1": "서비스 이용에 불편을 드려 대단히 죄송합니다.",
+      "pageNotFoundMessageLine2": "현재 해당 사이트의 페이지가 존재하지 않아요.",
+      "pageNotFoundMessageLine3": "확인 후 다시 접속해 주세요.",
+      "goToMain": "메인으로 바로가기"
+   },
+   "Support": {
+      "supportMessage": "무빙이 당신과 함께하겠습니다.",
+      "nameLabel": "작성자 성함",
+      "emailLabel": "이메일",
+      "titleLabel": "글제목",
+      "numberLabel": "연락처",
+      "contentLabel": "문의내용",
+      "fileUploadLabel": "첨부파일업로드",
+      "defaultToastMessage": "요청 처리 결과를 확인할 수 없습니다.",
+      "sendingInquiry": "무빙에 문의하는 중",
+      "sendInquiry": "무빙에 문의하기",
+      "supportRegisteredMessage": "문의가 정상적으로 등록되었습니다.",
+      "supportRegisterFailedMessage": "문의 접수에 실패했습니다. 잠시 후 다시 시도해주세요."
    }
 }

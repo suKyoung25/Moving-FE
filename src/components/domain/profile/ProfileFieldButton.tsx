@@ -37,6 +37,8 @@ export default function ProfileFieldButton({
          {category === "서비스" && (
             <button
                type="button"
+               role="button"
+               aria-pressed={isSelected}
                onClick={onClick}
                className={`${commonStyle} ${selectedStyle} mr-1.5 mb-5 lg:mr-3 lg:mb-8 lg:h-11.5`}
             >
@@ -47,6 +49,8 @@ export default function ProfileFieldButton({
          {category === "지역" && (
             <button
                type="button"
+               role="button"
+               aria-pressed={isSelected}
                onClick={onClick}
                className={`${commonStyle} ${selectedStyle} w-12.5 lg:w-18`}
             >
