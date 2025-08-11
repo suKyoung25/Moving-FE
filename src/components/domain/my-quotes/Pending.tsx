@@ -15,6 +15,7 @@ import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import ConfirmedButton from "./ConfirmedButton";
 import { useLocale, useTranslations } from "next-intl";
+import formatAddress from "@/lib/utils/formatAddress.util";
 
 export default function Pending() {
    const t = useTranslations("MyQuotes.Client");
@@ -68,12 +69,12 @@ export default function Pending() {
                      <article className="flex items-center gap-3.5">
                         <MoveDateCard
                            category={t("category.from")}
-                           text={request.fromAddress}
+                           text={formatAddress(request.fromAddress, locale)}
                         />
                         <div className="bg-line-200 h-3.5 w-px" />
                         <MoveDateCard
                            category={t("category.to")}
-                           text={request.toAddress}
+                           text={formatAddress(request.toAddress, locale)}
                         />
                      </article>
                   </div>
