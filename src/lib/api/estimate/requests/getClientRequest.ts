@@ -21,6 +21,6 @@ export async function getRequests(
    );
 }
 
-export async function getRequest(requestId: string, targetLang?: string) {
-   return await tokenFetch(`/requests/${requestId}?targetLang=${targetLang}`);
+export async function getRequest(requestId: string) {
+   return await tokenFetch(`/requests/${requestId}`);
 }

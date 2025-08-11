@@ -65,7 +65,7 @@ export default function NotificationModal({
                return;
             }
          } else {
-            const { data: request } = await getRequest(item.targetId, locale);
+            const { data: request } = await getRequest(item.targetId);
             if (!request) {
                showError("취소된 견적 요청입니다.");
                return;
