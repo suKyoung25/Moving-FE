@@ -7,6 +7,11 @@ export function useNotificationsQuery(targetLang: string) {
       queryFn: ({ pageParam }) =>
          getNotifications({ cursor: pageParam }, targetLang),
       initialPageParam: undefined,
-      getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
+      getNextPageParam: (lastPage) => {
+         if (!lastPage || !lastPage.nextCursor) {
+            return undefined;
+         }
+         return lastPage.nextCursor;
+      },
    });
 }
