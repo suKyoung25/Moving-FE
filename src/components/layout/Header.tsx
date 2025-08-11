@@ -88,12 +88,20 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
             <nav className="[&_a:hover]:text-black-400 [&_a]:text-18-bold [&_a::after]:bg-black-400 hidden pl-15 lg:flex lg:gap-6 [&_a]:relative [&_a]:text-gray-400 [&_a]:transition-all [&_a]:duration-300 [&_a::after]:absolute [&_a::after]:bottom-0 [&_a::after]:left-0 [&_a::after]:h-0.5 [&_a::after]:w-0 [&_a::after]:transition-all [&_a::after]:duration-300 [&_a::after]:content-[''] [&_a:hover::after]:w-full">
                {!user && (
-                  <Link
-                     href="/mover-search"
-                     className={linkClass("/mover-search")}
-                  >
-                     {t("nav.findMovers")}
-                  </Link>
+                  <>
+                     <Link
+                        href="/mover-search"
+                        className={linkClass("/mover-search")}
+                     >
+                        {t("nav.findMovers")}
+                     </Link>
+                     <Link
+                        href="/estimate-calculator"
+                        className={linkClass("/estimate-calculator")}
+                     >
+                        {t("nav.estimateCalculator")}
+                     </Link>
+                  </>
                )}
 
                {user?.userType === "client" && (
@@ -113,6 +121,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      >
                         {t("nav.myQuotes")}
                      </Link>
+                     <Link
+                        href="/estimate-calculator"
+                        className={linkClass("/estimate-calculator")}
+                     >
+                        {t("nav.estimateCalculator")}
+                     </Link>
                   </>
                )}
 
@@ -129,6 +143,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         className={linkClass("/my-quotes/mover")}
                      >
                         {t("nav.myQuotes")}
+                     </Link>
+                     <Link
+                        href="/estimate-calculator"
+                        className={linkClass("/estimate-calculator")}
+                     >
+                        {t("nav.estimateCalculator")}
                      </Link>
                   </>
                )}

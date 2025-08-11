@@ -712,6 +712,7 @@
          "findMovers": "기사님 찾기",
          "requestQuote": "견적 요청",
          "myQuotes": "내 견적 관리",
+         "estimateCalculator": "견적 계산기",
          "receivedRequests": "받은 요청",
          "myQuotesMover": "내 견적 관리",
          "myQuotesClient": "내 견적 관리",
@@ -851,5 +852,122 @@
       "sendInquiry": "무빙에 문의하기",
       "supportRegisteredMessage": "문의가 정상적으로 등록되었습니다.",
       "supportRegisterFailedMessage": "문의 접수에 실패했습니다. 잠시 후 다시 시도해주세요."
+   },
+   "Calculator": {
+      "title": "이사 견적 계산기",
+      "description": "기본 견적과 AI 분석을 통해 정확한 이사 비용을 확인하세요",
+      "basicEstimate": "기본 견적",
+      "aiEstimate": "AI 견적",
+      "basicEstimateGuide1": "이사 유형과 주소를 입력하면",
+      "basicEstimateGuide2": "견적을 확인할 수 있습니다",
+      "aiEstimateGuide1": "기본 정보를 입력하면",
+      "aiEstimateGuide2": "AI 견적을 받을 수 있습니다",
+      "moveType": {
+         "title": "이사 유형",
+         "SMALL": "소형이사",
+         "SMALL_DESC": "원룸, 투룸, 20평대 미만",
+         "HOME": "가정이사",
+         "HOME_DESC": "쓰리룸, 20평대 이상",
+         "OFFICE": "사무실이사",
+         "OFFICE_DESC": "사무실, 상업공간",
+         "tenThousandUnit": "만",
+         "currency": "원"
+      },
+      "address": {
+         "title": "이사 지역",
+         "from": "출발지",
+         "to": "도착지",
+         "selectFrom": "출발지 선택",
+         "selectTo": "도착지 선택",
+         "searchPlaceholder": "주소를 검색하세요",
+         "fromPlaceholder": "예: 서울특별시 강남구 테헤란로 123",
+         "toPlaceholder": "예: 서울특별시 마포구 월드컵로 456",
+         "roadAddress": "도로명",
+         "jibunAddress": "지번",
+         "confirmSelection": "선택 완료",
+         "searchAgain": "다시 검색",
+         "calculating": "거리를 계산하고 있습니다...",
+         "estimatedDistance": "예상 거리"
+      },
+      "additionalInfo": {
+         "title": "추가 정보",
+         "floor": "층수",
+         "floor1-3": "1-3층",
+         "floor4-7": "4-7층",
+         "floor8+": "8층 이상",
+         "elevator": "엘리베이터",
+         "elevatorYes": "있음",
+         "elevatorNo": "없음",
+         "itemCount": "짐의 양",
+         "itemCountFew": "적음 (최소한의 짐)",
+         "itemCountMedium": "보통 (일반적인 양)",
+         "itemCountMany": "많음 (많은 가구/짐)",
+         "moveDate": "이사 날짜",
+         "weekday": "평일",
+         "weekend": "주말",
+         "priceInfo": {
+            "elevatorYes": "기본 요금 적용",
+            "elevatorNo": "할증료 15% 적용",
+            "itemCountFew": "할인료 20% 적용",
+            "itemCountMedium": "기본 요금 적용",
+            "itemCountMany": "할증료 30% 적용",
+            "floor1-3": "기본 요금 적용",
+            "floor4-7": "할증료 10% 적용",
+            "floor8+": "할증료 20% 적용",
+            "weekday": "기본 요금 적용",
+            "weekend": "할증료 20% 적용"
+         }
+      },
+      "estimate": {
+         "basicPrice": "기본 견적",
+         "estimatedCost": "예상 비용",
+         "estimateHistory": "견적 내역",
+         "basicFee": "기본료",
+         "distanceFee": "거리비용",
+         "weekendSurcharge": "주말 할증",
+         "stairSurcharge": "계단 추가비용",
+         "itemMany": "짐 많은 경우",
+         "itemFew": "짐 적은 경우",
+         "floorSurcharge": "층수 할증",
+         "total": "합계",
+         "aiPrice": "AI 견적",
+         "analyzing": "AI 분석 중...",
+         "getAIEstimate": "AI 견적 받기",
+         "aiGuide1": "AI가 시장 동향과 다양한 요소를 분석하여",
+         "aiGuide2": "더 정확한 견적을 제공합니다.",
+         "aiEstimatedCost": "AI 예상 비용",
+         "aiAnalysisResult": "AI 분석 결과",
+         "confidence": "신뢰도",
+         "totalPrice": "총 견적",
+         "currency": "원",
+         "reAnalyzing": "다시 분석 중",
+         "reAnalyzeButton": "다시 분석하기",
+         "error": "견적 계산 중 오류가 발생했습니다"
+      },
+      "comparison": {
+         "title": "견적 비교",
+         "basic": "기본 견적",
+         "ai": "AI 견적",
+         "difference": "차이",
+         "aiHigher": "AI 견적이 더 높습니다",
+         "aiLower": "AI 견적이 더 낮습니다",
+         "sameEstimate": "두 견적이 동일합니다",
+         "currency": "원"
+      },
+      "info": {
+         "title": "견적 계산기 안내",
+         "basic": {
+            "title": "기본 견적",
+            "description": "거리, 이사유형, 날짜 등 기본 요소로 계산"
+         },
+         "ai": {
+            "title": "AI 견적",
+            "description": "시장 동향과 다양한 변수를 AI가 분석"
+         },
+         "notes": {
+            "title": "참고사항",
+            "description": "실제 견적은 현장 상황에 따라 달라질 수 있습니다"
+         }
+      }
    }
 }

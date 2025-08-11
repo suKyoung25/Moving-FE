@@ -7,3 +7,6 @@ export * from "./moveChip.util";
 export * from "./extractErrorMessage.utill";
 export * from "./middleware.util";
 export * from "./formatAddress.util";
+export * from "./price.utils";
+export * from "./ai.utils";
+export * from "./distance.utils";
