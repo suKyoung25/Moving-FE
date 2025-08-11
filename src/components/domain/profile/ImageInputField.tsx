@@ -12,6 +12,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
    name,
    text,
    control,
+   labelId,
 }: InputFieldProps<T>) {
    const fileInputRef = useRef<HTMLInputElement | null>(null);
    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -102,7 +103,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
 
    return (
       <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-4">
-         <div>{text}</div>
+         <label htmlFor={labelId}>{text}</label>
 
          <Controller
             name={name}
