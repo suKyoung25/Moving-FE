@@ -6,15 +6,18 @@ import SocialShareGroup from "@/components/common/SocialShareGroup";
 import PageTitle from "@/components/layout/PageTitle";
 import { getTranslations } from "next-intl/server";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
+import formatAddress from "@/lib/utils/formatAddress.util";
 
 export default async function ReceivedRequestDetailContent({
    id,
+   locale,
 }: {
    id: string;
+   locale: string;
 }) {
    const t = await getTranslations("ReceivedRequests.Detail");
 
-   const { request } = await getReceivedRequestDetail(id);
+   const { request } = await getReceivedRequestDetail(id, locale);
 
    console.log(request);
    if (!request) return notFound();
@@ -46,13 +49,13 @@ export default async function ReceivedRequestDetailContent({
                   <div>
                      <MoveTextCard text={t("departureLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
-                        {request.fromAddress.slice(0, 6)}
+                        {formatAddress(request.fromAddress, locale)}
                      </span>
                   </div>
                   <div>
                      <MoveTextCard text={t("destinationLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
-                        {request.toAddress.slice(0, 6)}
+                        {formatAddress(request.toAddress, locale)}
                      </span>
                   </div>
                </div>

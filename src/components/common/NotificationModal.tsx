@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
 import { useQueryClient } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
 import { getRequest } from "@/lib/api/estimate/requests/getClientRequest";
 import { getEstimate } from "@/lib/api/estimate/getClientQuoteDetail";
@@ -27,6 +27,7 @@ export default function NotificationModal({
    setIsNotiModalOpen: (val: boolean) => void;
 }) {
    const t = useTranslations("Notification");
+   const locale = useLocale();
    const { realtimeNotifications, refreshUnreadCount } = useNotification();
    const { showError } = useToast();
    const router = useRouter();
@@ -35,7 +36,7 @@ export default function NotificationModal({
    const queryClient = useQueryClient();
 
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-      useNotificationsQuery();
+      useNotificationsQuery(locale);
 
    // 페이지 데이터를 flat하게 만들기
    const fetchedNotifications =
@@ -58,7 +59,7 @@ export default function NotificationModal({
             return;
          }
          if (item.targetUrl?.startsWith("/my-quotes")) {
-            const estimate = await getEstimate(item.targetId);
+            const estimate = await getEstimate(item.targetId, locale);
             if (!estimate) {
                showError("취소된 견적입니다.");
                return;

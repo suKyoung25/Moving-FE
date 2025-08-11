@@ -8,7 +8,7 @@ import { areaMapping } from "@/constants/mover.constants";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import type { Mover } from "@/lib/types";
 import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface DriverListProps {
    filters: {
@@ -31,6 +31,7 @@ export default memo(function DriverList({
    refreshKey,
 }: DriverListProps) {
    const t = useTranslations("MoverSearch");
+   const locale = useLocale();
 
    const [movers, setMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
@@ -65,7 +66,7 @@ export default memo(function DriverList({
             };
 
             const hasToken = Boolean(tokenSettings.get());
-            const response = await getMovers(params, hasToken);
+            const response = await getMovers(params, hasToken, locale);
 
             if (reset) {
                setMovers(response.movers);
@@ -155,7 +156,7 @@ export default memo(function DriverList({
                };
 
                const hasToken = Boolean(tokenSettings.get());
-               const response = await getMovers(params, hasToken);
+               const response = await getMovers(params, hasToken, locale);
 
                setMovers((prev) =>
                   prev.map((existingMover) => {
@@ -220,7 +221,7 @@ export default memo(function DriverList({
             };
 
             const hasToken = Boolean(tokenSettings.get());
-            const response = await getMovers(params, hasToken);
+            const response = await getMovers(params, hasToken, locale);
 
             setMovers(response.movers);
             setCurrentPage(2);

@@ -5,33 +5,34 @@ import { getClientActiveRequest } from "../estimate/requests/getClientRequest";
 import { getRequestDraft } from "./requests/requestDraftApi";
 
 export const receivedRequestsQueryKey = "receivedRequests";
-export let totalCount = 0;
 
-export function useReceivedRequestsQuery({
-   moveType,
-   isDesignated,
-   keyword,
-   sort,
-}: ReceivedRequestsProps) {
+export function useReceivedRequestsQuery(
+   { moveType, isDesignated, keyword, sort }: ReceivedRequestsProps,
+   targetLang: string,
+) {
    const query = useInfiniteQuery<ReceivedRequestsResponse>({
       queryKey: [
          receivedRequestsQueryKey,
          { moveType, isDesignated, keyword, sort },
+         targetLang,
       ],
       queryFn: ({ pageParam }) =>
-         getReceivedRequests({
-            moveType: moveType.join(","),
-            isDesignated: isDesignated.toString(),
-            keyword,
-            sort,
-            cursor: pageParam as string | undefined,
-            limit: 6,
-         }),
+         getReceivedRequests(
+            {
+               moveType: moveType.join(","),
+               isDesignated: isDesignated.toString(),
+               keyword,
+               sort,
+               cursor: pageParam as string | undefined,
+               limit: 6,
+            },
+            targetLang,
+         ),
       initialPageParam: undefined,
       getNextPageParam: (lastPage) => lastPage?.nextCursor ?? null,
    });
 
-   totalCount = query.data?.pages?.[0]?.totalCount ?? 0;
+   const totalCount = query.data?.pages?.[0]?.totalCount ?? 0;
 
    return {
       ...query,
@@ -39,18 +40,17 @@ export function useReceivedRequestsQuery({
    };
 }
 
-export const useActiveRequest = () => {
+export const useActiveRequest = (targetLang: string) => {
    return useQuery({
-      queryKey: ["activeRequest"],
-      queryFn: getClientActiveRequest,
+      queryKey: ["activeRequest", targetLang],
+      queryFn: () => getClientActiveRequest(targetLang),
       staleTime: 1000 * 60 * 1,
    });
 };
 
-export const useRequestDraft = () => {
+export const useRequestDraft = (targetLang: string) => {
    return useQuery({
-      queryKey: ["requestDraft"],
-      queryFn: getRequestDraft,
-      staleTime: 0,
+      queryKey: ["requestDraft", targetLang],
+      queryFn: () => getRequestDraft(targetLang),
    });
 };

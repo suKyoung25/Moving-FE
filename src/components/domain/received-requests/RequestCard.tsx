@@ -7,10 +7,12 @@ import MoveTextCard from "../my-quotes/MoveTextCard";
 import RequestActionModal from "./RequestActionModal";
 import { useRouter } from "next/navigation";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import formatAddress from "@/lib/utils/formatAddress.util";
 
 export default function RequestCard({ req }: { req: ReceivedRequest }) {
    const t = useTranslations("ReceivedRequests");
+   const locale = useLocale();
 
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [modalType, setModalType] = useState<"accept" | "reject" | null>(null);
@@ -61,9 +63,9 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
                         </span>
                      </div>
                      <MoveTextCard text={t("departureLabel")} />
-                     <span>{req.fromAddress.slice(0, 6)}</span>
+                     <span>{formatAddress(req.fromAddress, locale)}</span>
                      <MoveTextCard text={t("destinationLabel")} />
-                     <span>{req.toAddress.slice(0, 6)}</span>
+                     <span>{formatAddress(req.toAddress, locale)}</span>
                   </div>
                </div>
                <div

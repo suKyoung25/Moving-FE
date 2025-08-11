@@ -6,7 +6,7 @@ import { ReceivedRequest, ReceivedRequestsProps } from "@/lib/types";
 import { useReceivedRequestsQuery } from "@/lib/api/request/query";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import RequestCardSkeleton from "./RequestCardSkeleton";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function ReceivedRequestsList({
    moveType,
@@ -17,6 +17,7 @@ export default function ReceivedRequestsList({
    onLoadingChange,
 }: ReceivedRequestsProps) {
    const t = useTranslations("ReceivedRequests");
+   const locale = useLocale();
 
    const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -27,12 +28,15 @@ export default function ReceivedRequestsList({
       isFetchingNextPage,
       isLoading,
       totalCount,
-   } = useReceivedRequestsQuery({
-      moveType,
-      isDesignated,
-      keyword,
-      sort,
-   });
+   } = useReceivedRequestsQuery(
+      {
+         moveType,
+         isDesignated,
+         keyword,
+         sort,
+      },
+      locale,
+   );
 
    useEffect(() => {
       if (onTotalCountChange) onTotalCountChange(totalCount);

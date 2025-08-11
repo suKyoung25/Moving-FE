@@ -5,9 +5,9 @@ import { NoRequestModal } from "./NoRequestModal";
 import { createDesignatedEstimate } from "@/lib/api/estimate/requests/createDesignatedEstimate";
 import { Mover } from "@/lib/types";
 import { useAuth } from "@/context/AuthContext";
-import { useActiveRequest } from "@/lib/api/request/query";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
+import { useActiveRequest } from "@/lib/api/request/query";
 
 interface EstimateRequestButtonProps {
    moverId: string;
@@ -25,6 +25,7 @@ export function EstimateRequestButton({
    setIsResultModalOpen,
 }: EstimateRequestButtonProps) {
    const t = useTranslations("MoverDetail");
+   const locale = useLocale();
 
    const { user } = useAuth();
    const { showSuccess, showError } = useToast();
@@ -34,7 +35,7 @@ export function EstimateRequestButton({
       mover.hasDesignatedRequest ?? false,
    );
 
-   const { data: result, isPending } = useActiveRequest();
+   const { data: result, isPending } = useActiveRequest(locale);
    const activeRequest = result?.data;
 
    // mover 상태가 변경되면 버튼 상태도 업데이트

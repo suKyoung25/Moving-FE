@@ -11,7 +11,7 @@ import { createRequestAction } from "@/lib/actions/request.action";
 import { useFormWizard } from "@/context/FormWizardContext";
 import { useActiveRequest, useRequestDraft } from "@/lib/api/request/query";
 import Step4 from "./Step4";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
@@ -26,6 +26,7 @@ const defaultState: FormWizardState = {
 
 export default function FormWizard({}) {
    const t = useTranslations("Request");
+   const locale = useLocale();
    const { user, isLoading } = useAuth();
    const { currentStep, setCurrentStep, isPending, setIsPending } =
       useFormWizard();
@@ -42,13 +43,13 @@ export default function FormWizard({}) {
       !!formState.toAddress;
 
    const { data: activeRequest, isPending: isActivePending } =
-      useActiveRequest();
+      useActiveRequest(locale);
 
    const {
       data: draft,
       isPending: isDraftPending,
       refetch,
-   } = useRequestDraft();
+   } = useRequestDraft(locale);
 
    const saveDraft = useSaveRequestDraft();
 

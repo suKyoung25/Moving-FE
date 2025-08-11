@@ -8,12 +8,17 @@ interface PageParms {
 }
 
 // 알림 목록 조회
-export async function getNotifications({ cursor, limit = 6 }: PageParms) {
+export async function getNotifications(
+   { cursor, limit = 6 }: PageParms,
+   targetLang?: string,
+) {
    const params = new URLSearchParams();
    if (cursor) params.append("cursor", cursor);
    params.append("limit", String(limit));
 
-   return await tokenFetch(`/notifications?${params.toString()}`);
+   return await tokenFetch(
+      `/notifications?targetLang=${targetLang}&${params.toString()}`,
+   );
 }
 
 // 알림 읽기

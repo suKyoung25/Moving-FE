@@ -16,7 +16,7 @@ export default function ActiveRequest() {
    const t = useTranslations("MyQuotes.Client");
    const locale = useLocale();
 
-   const { data: result, isPending } = useActiveRequest();
+   const { data: result, isPending } = useActiveRequest(locale);
    const activeRequest = result?.data;
 
    // date-fns locale을 next-intl의 locale에 맞게 매핑
