@@ -37,7 +37,7 @@
 
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import xIcon from "@/assets/images/xIcon.svg";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
@@ -62,24 +62,63 @@ export default function ConfirmModal({
 
    const modalRef = useRef<HTMLDivElement>(null);
 
+   const firstFocusableRef = useRef<HTMLButtonElement>(null);
+   const prevActiveElement = useRef<HTMLElement | null>(null);
+
    useOutsideClick(modalRef, () => {
       onClose();
    });
 
+   // 모달 열릴 때 포커스 이동, 닫힐 때 복원
+   useEffect(() => {
+      if (isOpen) {
+         prevActiveElement.current = document.activeElement as HTMLElement;
+         setTimeout(() => {
+            firstFocusableRef.current?.focus();
+         }, 0);
+      } else {
+         prevActiveElement.current?.focus();
+      }
+   }, [isOpen]);
+
+   // ESC 닫기
+   useEffect(() => {
+      if (!isOpen) return;
+      const handleKeyDown = (e: KeyboardEvent) => {
+         if (e.key === "Escape") onClose();
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+   }, [isOpen]);
+
    if (!isOpen) return null;
 
+   const titleId = "confirm-modal-title";
+   const descId = "confirm-modal-desc";
+
    return (
-      <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
+      <div
+         className="fixed inset-0 z-40 flex items-center justify-center bg-black/50"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby={titleId}
+         aria-describedby={descId}
+      >
          <div
             ref={modalRef}
             className="flex w-80 flex-col gap-7.5 rounded-3xl bg-white px-4 py-6 lg:w-152 lg:gap-10 lg:rounded-4xl lg:px-6 lg:py-8"
          >
             <div className="flex items-center justify-between">
                <h2 className="text-18-bold lg:text-24-bold">{title}</h2>
-               <button onClick={onClose} aria-label={t("closeButtonAlt")}>
+               <button
+                  onClick={onClose}
+                  aria-label={t("closeButtonAlt")}
+                  ref={firstFocusableRef}
+               >
                   <Image
                      src={xIcon}
                      alt={t("closeButtonAlt")}
+                     aria-hidden="true"
                      width={24}
                      height={24}
                      className="lg:size-9"

@@ -128,8 +128,10 @@ export default function EditDeleteReviewModal({
 
    const loading = updateMutation.isPending || deleteMutation.isPending;
 
+   const modalTitleId = "edit-delete-modal-title";
+
    return (
-      <form onSubmit={onFormSubmit}>
+      <form onSubmit={onFormSubmit} aria-labelledby={modalTitleId}>
          <InputModal
             isOpen={isOpen && !isDeleteConfirmOpen && !isEditConfirmOpen}
             onClose={() => {
@@ -138,6 +140,8 @@ export default function EditDeleteReviewModal({
                setApiMessage("");
                setHovered(null);
             }}
+            aria-modal="true"
+            aria-labelledby={modalTitleId}
             title={t("editDelete")}
             buttonTitle={
                loading
@@ -165,7 +169,13 @@ export default function EditDeleteReviewModal({
                errorContent={errors.content?.message}
             />
             {apiMessage && (
-               <div className="mb-2 text-red-600">{apiMessage}</div>
+               <div
+                  className="mb-2 text-red-600"
+                  role="alert"
+                  aria-live="assertive"
+               >
+                  {apiMessage}
+               </div>
             )}
             <SolidButton
                type="button"

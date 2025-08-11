@@ -457,7 +457,7 @@
       "confirmed": "已确认",
       "year": "年",
       "cases": "例",
-      "profileAlt": "个人资料图片",
+      "profileAlt": "{name}的个人资料图片",
       "errorOccurred": "发生错误。",
       "loadingText": "加载中...",
       "reviewRegistered": "评价已成功注册。",
@@ -471,7 +471,21 @@
       "deleteConfirmDescription": "此操作不可撤销。",
       "editConfirmTitle": "修改评论",
       "editConfirmDescription": "您确定要修改评论吗？",
-      "noChangesError": "未检测到更改。"
+      "noChangesError": "未检测到更改。",
+      "writableReviewList": "可撰写的评论列表",
+      "moveType": {
+         "SMALL": "小型搬家",
+         "HOME": "家庭搬家",
+         "OFFICE": "办公室搬家"
+      },
+      "designatedEstimate": "指定报价",
+      "defaultProfileAlt": "默认头像",
+      "writeReviewFor": "为师傅写评价",
+      "paginationNav": "分页导航",
+      "editDeleteReviewAria": "编辑或删除{name}的评论",
+      "ratingAria": "评分 {rating} 分",
+      "unlikeMover": "取消收藏{name}师傅",
+      "likeMover": "收藏{name}师傅"
    },
    "FavoriteMovers": {
       "title": "收藏的搬运工",
@@ -485,7 +499,13 @@
       "errorOccurred": "发生错误。",
       "favoriteToggleSuccess": "收藏状态已成功更新。",
       "favoriteToggleError": "更新收藏状态时发生错误。",
-      "removeSuccess": "已从收藏中移除。"
+      "removeSuccess": "已从收藏中移除。",
+      "favoriteMoverList": "收藏的搬家师傅列表",
+      "moverCardClickAria": "前往{name}师傅的个人资料页面",
+      "unlikeMover": "取消收藏{name}师傅",
+      "likeMover": "收藏{name}师傅",
+      "paginationNav": "收藏的搬家师傅分页导航",
+      "goToFavoriteMoversAria": "前往搬家师傅搜索页面"
    },
    "MyQuotes": {
       "Client": {
@@ -853,6 +873,14 @@
       "sendInquiry": "向搬家咨询",
       "supportRegisteredMessage": "您的咨询已成功提交。",
       "supportRegisterFailedMessage": "提交咨询失败，请稍后再试。"
+   },
+   "Pagination": {
+      "paginationNav": "分页导航",
+      "prevPage": "上一页",
+      "nextPage": "下一页",
+      "page": "第 {page} 页",
+      "pageWithCurrent": "第 {page} 页（当前页）",
+      "ellipsis": "省略"
    },
    "Calculator": {
       "title": "估价计算器",

@@ -66,7 +66,11 @@ export default function WritableReviews() {
 
    return (
       <div>
-         <div className="grid grid-cols-1 gap-8 lg:mb-6 lg:grid-cols-2 lg:gap-6">
+         <div
+            className="grid grid-cols-1 gap-8 lg:mb-6 lg:grid-cols-2 lg:gap-6"
+            role="list"
+            aria-label={t("writableReviewList")}
+         >
             {(data?.data.estimates ?? []).map(
                (writableReview: WritableReview) => (
                   <div
@@ -75,35 +79,58 @@ export default function WritableReviews() {
                   >
                      <div className="mb-3.5 flex gap-2 lg:gap-3">
                         {isChipType(writableReview.moveType) ? (
-                           <MoveChip type={writableReview.moveType} />
+                           <MoveChip
+                              type={writableReview.moveType}
+                              aria-label={t(
+                                 `moveType.${writableReview.moveType}`,
+                              )}
+                           />
                         ) : null}
                         {writableReview.isDesignatedEstimate && (
-                           <MoveChip type={"DESIGNATED"} />
+                           <MoveChip
+                              type={"DESIGNATED"}
+                              aria-label={t("designatedEstimate")}
+                           />
                         )}
                      </div>
                      <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
                         <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                            <Image
                               src={writableReview.moverProfileImage || profile}
-                              alt={t("profileAlt")}
+                              alt={
+                                 writableReview.moverProfileImage
+                                    ? t("profileAlt", {
+                                         name: writableReview.moverNickName,
+                                      })
+                                    : t("defaultProfileAlt")
+                              }
                               fill
                               className="object-cover"
                            />
                         </div>
                         <div className="flex-1">
                            <div className="flex items-center justify-between">
-                              <span className="text-14-semibold lg:text-18-semibold text-black-300">
+                              <h3
+                                 id={`estimate-${writableReview.estimateId}-title`}
+                                 className="text-14-semibold lg:text-18-semibold text-black-300"
+                              >
                                  {writableReview.moverNickName} {t("mover")}
-                              </span>
+                              </h3>
                            </div>
                            <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
                               <span className="flex items-center gap-1.5 lg:gap-3">
                                  <span>{t("moveDate")}</span>
-                                 <span className="text-black-300">
+                                 <time
+                                    className="text-black-300"
+                                    dateTime={writableReview.moveDate}
+                                 >
                                     {formatIsoToYMD(writableReview.moveDate)}
-                                 </span>
+                                 </time>
                               </span>
-                              <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
+                              <span
+                                 className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"
+                                 aria-hidden="true"
+                              ></span>
                               <span className="flex items-center gap-1.5 lg:gap-3">
                                  <span>{t("price")}</span>
                                  <span className="text-black-300">
@@ -116,6 +143,7 @@ export default function WritableReviews() {
                      </div>
                      <SolidButton
                         onClick={() => setSelectedId(writableReview.estimateId)}
+                        aria-label={`${writableReview.moverNickName} ${t("writeReviewFor")}`}
                      >
                         {t("writeReview")}
                      </SolidButton>
@@ -129,11 +157,16 @@ export default function WritableReviews() {
             page={pagination.page}
             totalPages={totalPages}
             onPageChange={handlePageChange}
+            aria-label={t("paginationNav")}
          />
 
          {/* 리뷰 목록이 없을 때 */}
          {!isLoading && (data?.data.estimates.length ?? 0) === 0 && (
-            <div className="mt-46 flex flex-col items-center justify-center">
+            <div
+               className="mt-46 flex flex-col items-center justify-center"
+               role="status"
+               aria-live="polite"
+            >
                <EmptyState message={t("noWritableReviews")} />
             </div>
          )}
