@@ -19,7 +19,7 @@ export default function MarketingSection5() {
                         <Link href={"/mover-search"}>
                            {t("yourLoad.nav.browseServices")}
                         </Link>
-                        <Link href={"/support"}>
+                        <Link href={"/estimate-calculator"}>
                            {t("yourLoad.nav.estimateCalculator")}
                         </Link>
                         <Link href={"/support"}>

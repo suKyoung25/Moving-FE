@@ -44,16 +44,24 @@ export default function HamburgerMenu({
               { label: t("nav.requestQuote"), href: "/request" },
               { label: t("nav.findMovers"), href: "/mover-search" },
               { label: t("nav.myQuotesClient"), href: "/my-quotes/client" },
-              { label: "비용 계산기", href: "/cost-calculate" },
+              {
+                 label: t("nav.estimateCalculator"),
+                 href: "/estimate-calculator",
+              },
            ]
          : [
               { label: t("nav.receivedRequests"), href: "/received-requests" },
               { label: t("nav.myQuotesMover"), href: "/my-quotes/mover?tab=1" },
+              {
+                 label: t("nav.estimateCalculator"),
+                 href: "/estimate-calculator",
+              },
            ]
       : [
            { label: t("nav.login"), href: "/sign-in/client" },
            { label: t("nav.signUp"), href: "/sign-up/client" },
            { label: t("nav.findMovers"), href: "/mover-search" },
+           { label: t("nav.estimateCalculator"), href: "/estimate-calculator" },
         ];
 
    useEffect(() => {

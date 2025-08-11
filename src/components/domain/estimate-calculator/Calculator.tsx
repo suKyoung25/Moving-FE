@@ -16,8 +16,10 @@ import gptIcon from "@/assets/images/gptIcon.svg";
 import Image from "next/image";
 import LineDivider from "@/components/common/LineDivider";
 import { useToast } from "@/context/ToastConText";
+import { useTranslations } from "next-intl";
 
 export default function Calculator() {
+   const t = useTranslations("Calculator");
    const [formData, setFormData] = useState<FormData>({
       moveType: "",
       fromAddress: "",
@@ -60,7 +62,7 @@ export default function Calculator() {
          const estimate = await generateAIEstimate(formData, distance);
          setAiEstimate(estimate);
       } catch {
-         showError("AI 견적 생성에 실패했습니다.");
+         showError(t("estimate.error"));
       } finally {
          setIsGeneratingAI(false);
       }
@@ -74,9 +76,17 @@ export default function Calculator() {
       distance > 0;
 
    return (
-      <div className="mx-4 min-h-screen max-w-6xl px-4 py-8 md:mx-auto md:px-10">
-         <form className="grid grid-cols-1 gap-6 lg:mb-8 lg:grid-cols-[2fr_1fr]">
-            <div className="space-y-6">
+      <div
+         className="mx-4 min-h-screen max-w-6xl px-4 py-8 md:mx-auto md:px-10"
+         role="main"
+         aria-labelledby="calculator-title"
+      >
+         <form
+            className="grid grid-cols-1 gap-6 lg:mb-8 lg:grid-cols-[2fr_1fr]"
+            role="form"
+            aria-label="견적 계산기 폼"
+         >
+            <div className="space-y-6" role="group" aria-label="입력 정보">
                <MoveTypeSelector
                   selected={formData.moveType}
                   onTypeSelect={(type) => handleInputChange("moveType", type)}
@@ -98,19 +108,28 @@ export default function Calculator() {
 
             <LineDivider className="my-2 lg:hidden" />
 
-            <div className="space-y-6">
+            <div className="space-y-6" role="group" aria-label="견적 결과">
                <div>
                   {isFormComplete ? (
                      <BasicEstimate breakdown={basicEstimate} />
                   ) : (
                      <>
-                        <h2 className="text-18-semibold mb-4">기본 견적</h2>
-                        <div className="border-line-200 flex flex-col items-center gap-4 rounded-xl border py-8 text-gray-500">
-                           <HiCalculator className="text-black-100 mx-auto mb-3 h-12 w-12" />
+                        <h2 className="text-18-semibold mb-4">
+                           {t("basicEstimate")}
+                        </h2>
+                        <div
+                           className="border-line-200 flex flex-col items-center gap-4 rounded-xl border py-8 text-gray-500"
+                           role="status"
+                           aria-live="polite"
+                        >
+                           <HiCalculator
+                              className="text-black-100 mx-auto mb-3 h-12 w-12"
+                              aria-hidden="true"
+                           />
                            <p className="text-14-regular text-center">
-                              이사 유형과 주소를 입력하면
+                              {t("basicEstimateGuide1")}
                               <br />
-                              견적을 확인할 수 있습니다
+                              {t("basicEstimateGuide2")}
                            </p>
                         </div>
                      </>
@@ -126,8 +145,14 @@ export default function Calculator() {
                      />
                   ) : (
                      <>
-                        <h2 className="text-18-semibold mb-4">AI 견적</h2>
-                        <div className="border-line-200 flex flex-col items-center gap-4 rounded-xl border py-8 text-gray-500">
+                        <h2 className="text-18-semibold mb-4">
+                           {t("aiEstimate")}
+                        </h2>
+                        <div
+                           className="border-line-200 flex flex-col items-center gap-4 rounded-xl border py-8 text-gray-500"
+                           role="status"
+                           aria-live="polite"
+                        >
                            <Image
                               src={gptIcon}
                               alt="gptIcon"
@@ -135,9 +160,9 @@ export default function Calculator() {
                               height={48}
                            />
                            <p className="text-14-regular text-center">
-                              기본 정보를 입력하면
+                              {t("aiEstimateGuide1")}
                               <br />
-                              AI 견적을 받을 수 있습니다
+                              {t("aiEstimateGuide2")}
                            </p>
                         </div>
                      </>

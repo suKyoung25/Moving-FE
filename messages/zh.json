@@ -713,6 +713,7 @@
          "findMovers": "寻找搬运工",
          "requestQuote": "请求报价",
          "myQuotes": "我的报价",
+         "estimateCalculator": "估价计算器",
          "receivedRequests": "收到的请求",
          "myQuotesMover": "我的报价",
          "myQuotesClient": "我的报价",
@@ -805,5 +806,123 @@
       "sendInquiry": "向搬家咨询",
       "supportRegisteredMessage": "您的咨询已成功提交。",
       "supportRegisterFailedMessage": "提交咨询失败，请稍后再试。"
+   },
+   "Calculator": {
+      "title": "估价计算器",
+      "description": "输入简单信息即可获得预估报价",
+      "basicEstimate": "基本估价",
+      "aiEstimate": "AI估价",
+      "basicEstimateGuide1": "输入搬家类型和地址即可获得估价",
+      "basicEstimateGuide2": "查看估价",
+      "aiEstimateGuide1": "输入基本信息即可获得AI估价",
+      "aiEstimateGuide2": "接收AI估价",
+      "moveType": {
+         "title": "搬家类型",
+         "SMALL": "小型搬家",
+         "SMALL_DESC": "单间、一室、20坪以下",
+         "HOME": "家庭搬家",
+         "HOME_DESC": "三室、20坪以上",
+         "OFFICE": "办公室搬家",
+         "OFFICE_DESC": "办公空间、商业空间",
+         "tenThousandUnit": "万",
+         "currency": "元"
+      },
+      "address": {
+         "title": "搬家地点",
+         "from": "出发地",
+         "to": "目的地",
+         "selectFrom": "选择出发地",
+         "selectTo": "选择目的地",
+         "searchPlaceholder": "搜索地址",
+         "fromPlaceholder": "例如：首尔特别市江南区德黑兰路123",
+         "toPlaceholder": "例如：首尔特别市麻浦区世界杯路456",
+         "roadAddress": "道路名",
+         "jibunAddress": "地番地址",
+         "confirmSelection": "选择完成",
+         "searchAgain": "重新搜索",
+         "calculating": "计算距离中...",
+         "estimatedDistance": "预计距离"
+      },
+      "additionalInfo": {
+         "title": "附加信息",
+         "floor": "楼层",
+         "floor1-3": "1-3层",
+         "floor4-7": "4-7层",
+         "floor8+": "8层以上",
+         "elevator": "电梯",
+         "elevatorYes": "有",
+         "elevatorNo": "无",
+         "itemCount": "物品数量",
+         "itemCountFew": "少 (最少物品)",
+         "itemCountMedium": "中 (正常数量)",
+         "itemCountMany": "多 (多物品)",
+         "moveDate": "搬家日期",
+         "weekday": "工作日",
+         "weekend": "周末",
+         "priceInfo": {
+            "elevatorYes": "基本费用",
+            "elevatorNo": "额外费用15%",
+            "itemCountFew": "折扣20%",
+            "itemCountMedium": "基本费用",
+            "itemCountMany": "额外费用30%",
+            "floor1-3": "基本费用",
+            "floor4-7": "额外费用10%",
+            "floor8+": "额外费用20%",
+            "weekday": "基本费用",
+            "weekend": "额外费用20%"
+         }
+      },
+
+      "estimate": {
+         "basicPrice": "基本估价",
+         "estimatedCost": "预计费用",
+         "estimateHistory": "估价历史",
+         "basicFee": "基本费用",
+         "distanceFee": "距离费用",
+         "weekendSurcharge": "周末费用",
+         "stairSurcharge": "楼梯费用",
+         "itemMany": "物品较多",
+         "itemFew": "物品较少",
+         "floorSurcharge": "楼层费用",
+         "total": "总计",
+         "aiPrice": "AI估价",
+         "analyzing": "AI分析中...",
+         "getAIEstimate": "获取AI估价",
+         "aiGuide1": "AI分析市场趋势和各种因素",
+         "aiGuide2": "提供更准确的估价",
+         "aiEstimatedCost": "AI预计费用",
+         "aiAnalysisResult": "AI分析结果",
+         "confidence": "信心",
+         "totalPrice": "总估价",
+         "currency": "元",
+         "reAnalyzing": "重新分析中",
+         "reAnalyzeButton": "重新分析",
+         "error": "计算估价时发生错误"
+      },
+      "comparison": {
+         "title": "估价比较",
+         "basic": "基本估价",
+         "ai": "AI估价",
+         "difference": "差异",
+         "aiHigher": "AI估价更高",
+         "aiLower": "AI估价更低",
+         "sameEstimate": "两个估价相同",
+         "currency": "元"
+      },
+      "info": {
+         "title": "计算器信息",
+         "basic": {
+            "title": "基本估价",
+            "description": "基于距离和搬家类型"
+         },
+         "ai": {
+            "title": "AI估价",
+            "description": "考虑附加因素的准确预测"
+         },
+         "notes": {
+            "title": "备注",
+            "description": "实际报价可能与估价有所不同"
+         }
+      }
    }
 }

@@ -5,6 +5,7 @@ import { AddressSuggestion } from "@/lib/types";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useTranslations } from "next-intl";
 
 interface AddressInputProps {
    fromAddress: string;
@@ -21,6 +22,7 @@ export default function AddressInput({
    onAddressChange,
    onDistanceChange,
 }: AddressInputProps) {
+   const t = useTranslations("Calculator.address");
    const [fromSuggestions, setFromSuggestions] = useState<AddressSuggestion[]>(
       [],
    );
@@ -178,18 +180,24 @@ export default function AddressInput({
       fromAddress !== toAddress;
 
    return (
-      <section>
+      <section aria-labelledby="address-title">
          <div className="mb-4 flex items-center gap-2">
-            <FaMapMarkerAlt className="h-5 w-5" />
-            <h2 className="text-18-semibold">출발지/도착지</h2>
+            <FaMapMarkerAlt className="h-5 w-5" aria-hidden="true" />
+            <h2 id="address-title" className="text-18-semibold">
+               {t("title")}
+            </h2>
          </div>
 
          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="relative">
-               <label className="text-14-medium mb-2 block text-gray-700">
-                  출발지
+               <label
+                  htmlFor="from-address"
+                  className="text-14-medium mb-2 block text-gray-700"
+               >
+                  {t("from")}
                </label>
                <input
+                  id="from-address"
                   type="text"
                   value={fromAddress}
                   onChange={(e) =>
@@ -198,19 +206,33 @@ export default function AddressInput({
                   onFocus={() => setShowFromSuggestions(true)}
                   onKeyDown={(e) => handleKeyDown("fromAddress", e)}
                   ref={fromInputRef}
-                  placeholder="예: 서울특별시 강남구 테헤란로 123"
+                  placeholder={t("fromPlaceholder")}
                   className="text-14-regular focus:border-primary-blue-300 border-line-200 w-full rounded-xl border p-3"
+                  aria-describedby="from-address-help"
+                  aria-expanded={showFromSuggestions}
+                  aria-haspopup="listbox"
+                  role="combobox"
+                  aria-autocomplete="list"
                />
+               <div id="from-address-help" className="sr-only">
+                  {t("selectFrom")}
+               </div>
                {fromAddress && (
                   <button
                      onClick={() => handleAddressInput("fromAddress", "")}
                      className="absolute right-3 self-center text-gray-400"
+                     aria-label={`${t("from")} ${t("searchAgain")}`}
+                     type="button"
                   >
                      <IoCloseOutline />
                   </button>
                )}
                {showFromSuggestions && fromSuggestions.length > 0 && (
-                  <div className="border-line-200 absolute z-10 mt-1 w-full overflow-hidden rounded-lg border bg-white shadow-lg">
+                  <div
+                     className="border-line-200 absolute z-10 mt-1 w-full overflow-hidden rounded-lg border bg-white shadow-lg"
+                     role="listbox"
+                     aria-label={`${t("from")} ${t("searchPlaceholder")}`}
+                  >
                      {fromSuggestions.map((suggestion, index) => (
                         <button
                            key={index}
@@ -222,6 +244,8 @@ export default function AddressInput({
                                  ? "bg-primary-blue-50 text-primary-blue-700"
                                  : ""
                            }`}
+                           role="option"
+                           aria-selected={index === fromSelectedIndex}
                         >
                            <div className="font-medium text-gray-900">
                               {suggestion.description}
@@ -233,10 +257,14 @@ export default function AddressInput({
             </div>
 
             <div className="relative">
-               <label className="text-14-medium mb-2 block text-gray-700">
-                  도착지
+               <label
+                  htmlFor="to-address"
+                  className="text-14-medium mb-2 block text-gray-700"
+               >
+                  {t("to")}
                </label>
                <input
+                  id="to-address"
                   type="text"
                   value={toAddress}
                   onChange={(e) =>
@@ -245,20 +273,34 @@ export default function AddressInput({
                   onFocus={() => setShowToSuggestions(true)}
                   onKeyDown={(e) => handleKeyDown("toAddress", e)}
                   ref={toInputRef}
-                  placeholder="예: 서울특별시 마포구 월드컵로 456"
+                  placeholder={t("toPlaceholder")}
                   className="text-14-regular focus:border-primary-blue-300 border-line-200 w-full rounded-xl border p-3"
+                  aria-describedby="to-address-help"
+                  aria-expanded={showToSuggestions}
+                  aria-haspopup="listbox"
+                  role="combobox"
+                  aria-autocomplete="list"
                />
+               <div id="to-address-help" className="sr-only">
+                  {t("selectTo")}
+               </div>
                {toAddress && (
                   <button
                      onClick={() => handleAddressInput("toAddress", "")}
                      className="absolute right-3 self-center text-gray-400"
+                     aria-label={`${t("to")} ${t("searchAgain")}`}
+                     type="button"
                   >
                      <IoCloseOutline />
                   </button>
                )}
 
                {showToSuggestions && toSuggestions.length > 0 && (
-                  <div className="border-line-200 absolute z-10 mt-1 w-full overflow-hidden rounded-lg border bg-white shadow-lg">
+                  <div
+                     className="border-line-200 absolute z-10 mt-1 w-full overflow-hidden rounded-lg border bg-white shadow-lg"
+                     role="listbox"
+                     aria-label={`${t("to")} ${t("searchPlaceholder")}`}
+                  >
                      {toSuggestions.map((suggestion, index) => (
                         <button
                            key={index}
@@ -270,6 +312,8 @@ export default function AddressInput({
                                  ? "bg-primary-blue-50 text-primary-blue-700"
                                  : ""
                            }`}
+                           role="option"
+                           aria-selected={index === toSelectedIndex}
                         >
                            <div className="font-medium text-gray-900">
                               {suggestion.description}
@@ -282,18 +326,28 @@ export default function AddressInput({
          </div>
 
          {shouldShowCalculating && (
-            <div className="text-primary-blue-300 mt-4 ml-1 flex items-center gap-2">
-               <AiOutlineLoading3Quarters className="h-3 w-3 animate-spin" />
-               <span className="text-14-regular">
-                  거리를 계산하고 있습니다...
-               </span>
+            <div
+               className="text-primary-blue-300 mt-4 ml-1 flex items-center gap-2"
+               role="status"
+               aria-live="polite"
+            >
+               <AiOutlineLoading3Quarters
+                  className="h-3 w-3 animate-spin"
+                  aria-hidden="true"
+               />
+               <span className="text-14-regular">{t("calculating")}...</span>
             </div>
          )}
 
          {distance > 0 && !shouldShowCalculating && (
-            <div className="bg-primary-blue-50 mt-4 flex items-center gap-2 rounded-lg p-3">
+            <div
+               className="bg-primary-blue-50 mt-4 flex items-center gap-2 rounded-lg p-3"
+               role="status"
+               aria-live="polite"
+            >
                <span className="text-14-regular text-primary-blue-300">
-                  <strong>예상 거리:</strong> 약 {distance.toFixed(1)}km
+                  <strong>{t("estimatedDistance")}:</strong>{" "}
+                  {distance.toFixed(1)}km
                </span>
             </div>
          )}

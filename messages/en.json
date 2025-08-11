@@ -713,6 +713,7 @@
          "findMovers": "Find Movers",
          "requestQuote": "Request Quote",
          "myQuotes": "My Quotes",
+         "estimateCalculator": "Estimate Calculator",
          "receivedRequests": "Received Requests",
          "myQuotesMover": "My Quotes",
          "myQuotesClient": "My Quotes",
@@ -805,5 +806,122 @@
       "sendInquiry": "Send inquiry to Moving",
       "supportRegisteredMessage": "Your inquiry has been successfully submitted.",
       "supportRegisterFailedMessage": "Failed to submit your inquiry. Please try again later."
+   },
+   "Calculator": {
+      "title": "Estimate Calculator",
+      "description": "Enter simple information to get an estimated quote",
+      "basicEstimate": "Basic Estimate",
+      "aiEstimate": "AI Estimate",
+      "basicEstimateGuide1": "Enter move type and address to get an estimate",
+      "basicEstimateGuide2": "Check the estimate",
+      "aiEstimateGuide1": "Enter basic information to get an AI estimate",
+      "aiEstimateGuide2": "Receive an AI estimate",
+      "moveType": {
+         "title": "Move Type",
+         "SMALL": "Small Move",
+         "SMALL_DESC": "Studio, 1-2 rooms, under 711ft",
+         "HOME": "Home Move",
+         "HOME_DESC": "3+ rooms, over 711ft",
+         "OFFICE": "Office Move",
+         "OFFICE_DESC": "Office, commercial space",
+         "tenThousandUnit": "0K",
+         "currency": "KRW"
+      },
+      "address": {
+         "title": "Move Location",
+         "from": "From",
+         "to": "To",
+         "selectFrom": "Select departure",
+         "selectTo": "Select destination",
+         "searchPlaceholder": "Search for address",
+         "fromPlaceholder": "e.g. 123, Myeongdong-ro, Jung-gu, Seoul",
+         "toPlaceholder": "e.g. 456, World Cup-ro, Mapo-gu, Seoul",
+         "roadAddress": "Road Name",
+         "jibunAddress": "Land Lot",
+         "confirmSelection": "Confirm Selection",
+         "searchAgain": "Search Again",
+         "calculating": "Calculating distance...",
+         "estimatedDistance": "Estimated Distance"
+      },
+      "additionalInfo": {
+         "title": "Additional Information",
+         "floor": "Floor",
+         "floor1-3": "1-3rd Floor",
+         "floor4-7": "4-7th Floor",
+         "floor8+": "8th Floor or higher",
+         "elevator": "Elevator",
+         "elevatorYes": "Available",
+         "elevatorNo": "Not Available",
+         "itemCount": "Item Count",
+         "itemCountFew": "Few (minimum items)",
+         "itemCountMedium": "Medium (normal amount)",
+         "itemCountMany": "Many (many items)",
+         "moveDate": "Move Date",
+         "weekday": "Weekday",
+         "weekend": "Weekend",
+         "priceInfo": {
+            "elevatorYes": "Basic Fee",
+            "elevatorNo": "Additional Fee 15%",
+            "itemCountFew": "Discount 20%",
+            "itemCountMedium": "Basic Fee",
+            "itemCountMany": "Additional Fee 30%",
+            "floor1-3": "Basic Fee",
+            "floor4-7": "Additional Fee 10%",
+            "floor8+": "Additional Fee 20%",
+            "weekday": "Basic Fee",
+            "weekend": "Additional Fee 20%"
+         }
+      },
+      "estimate": {
+         "basicPrice": "Basic Estimate",
+         "estimatedCost": "Estimated Cost",
+         "estimateHistory": "Estimate History",
+         "basicFee": "Basic Fee",
+         "distanceFee": "Distance Fee",
+         "weekendSurcharge": "Weekend Surcharge",
+         "stairSurcharge": "Stair Surcharge",
+         "itemMany": "Item Many",
+         "itemFew": "Item Few",
+         "floorSurcharge": "Floor Surcharge",
+         "total": "Total",
+         "aiPrice": "AI Estimate",
+         "analyzing": "AI analyzing...",
+         "getAIEstimate": "Get AI Estimate",
+         "aiGuide1": "AI analyzes market trends and various factors",
+         "aiGuide2": "to provide a more accurate estimate",
+         "aiEstimatedCost": "AI Estimated Cost",
+         "aiAnalysisResult": "AI Analysis Result",
+         "confidence": "Confidence",
+         "totalPrice": "Total Estimate",
+         "currency": "KRW",
+         "reAnalyzing": "Re-analyzing",
+         "reAnalyzeButton": "Re-analyze",
+         "error": "An error occurred while calculating the estimate"
+      },
+      "comparison": {
+         "title": "Estimate Comparison",
+         "basic": "Basic Estimate",
+         "ai": "AI Estimate",
+         "difference": "Difference",
+         "aiHigher": "AI Estimate is higher",
+         "aiLower": "AI Estimate is lower",
+         "sameEstimate": "The two estimates are the same",
+         "currency": "KRW"
+      },
+      "info": {
+         "title": "Calculator Information",
+         "basic": {
+            "title": "Basic Estimate",
+            "description": "Based on distance and move type"
+         },
+         "ai": {
+            "title": "AI Estimate",
+            "description": "Analyzes market trends and various variables"
+         },
+         "notes": {
+            "title": "Notes",
+            "description": "Actual quotes may differ from estimates"
+         }
+      }
    }
 }
