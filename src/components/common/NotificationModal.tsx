@@ -19,6 +19,8 @@ import { FiCheckSquare } from "react-icons/fi";
 import { useLocale, useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
 import { getRequest } from "@/lib/api/estimate/requests/getClientRequest";
+import { getEstimate } from "@/lib/api/estimate/getClientQuoteDetail";
+import ReadAllButton from "./ReadAllButton";
 
 export default function NotificationModal({
    setIsNotiModalOpen,
@@ -27,7 +29,7 @@ export default function NotificationModal({
 }) {
    const t = useTranslations("Notification");
    const locale = useLocale();
-   const { realtimeNotifications } = useNotification();
+   const { realtimeNotifications, refreshUnreadCount } = useNotification();
    const { showError } = useToast();
    const router = useRouter();
    const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -53,10 +55,22 @@ export default function NotificationModal({
       try {
          await readNotification(item.id);
          queryClient.invalidateQueries({ queryKey: ["notifications"] });
-         const { data } = await getRequest(item.targetId!, locale);
-         if (!data) {
-            showError("존재하지 않는 견적 요청입니다.");
+         refreshUnreadCount();
+         if (!item.targetId) {
             return;
+         }
+         if (item.targetUrl?.startsWith("/my-quotes")) {
+            const estimate = await getEstimate(item.targetId, locale);
+            if (!estimate) {
+               showError("취소된 견적입니다.");
+               return;
+            }
+         } else {
+            const { data: request } = await getRequest(item.targetId, locale);
+            if (!request) {
+               showError("취소된 견적 요청입니다.");
+               return;
+            }
          }
          router.push(item.targetUrl ?? "");
          setIsNotiModalOpen(false);
@@ -69,6 +83,7 @@ export default function NotificationModal({
       try {
          await readAllNotifications();
          queryClient.invalidateQueries({ queryKey: ["notifications"] });
+         refreshUnreadCount();
       } catch (err) {
          console.error("모든 알림 읽기 실패", err);
       }
@@ -96,15 +111,7 @@ export default function NotificationModal({
          <div className="flex items-center justify-between py-3.5 pr-3 pl-4 md:-left-8 lg:top-12 lg:pl-6">
             <span className="lg:text-18-bold text-16-bold">{t("title")}</span>
             <div className="inline-flex items-center gap-2">
-               <button
-                  type="button"
-                  onClick={handleReadAll}
-                  className="group relative"
-                  aria-label={t("readAllAria")}
-               >
-                  <div className="tooltip">{t("readAllTooltip")}</div>
-                  <FiCheckSquare className="text-gray-500" />
-               </button>
+               <ReadAllButton onClick={handleReadAll} />
                <button
                   type="button"
                   onClick={() => setIsNotiModalOpen(false)}

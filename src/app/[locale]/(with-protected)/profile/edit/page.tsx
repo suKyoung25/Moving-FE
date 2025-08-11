@@ -15,7 +15,18 @@ export default function EditProfilePage() {
    if (user?.userType === "client") {
       return (
          <>
-            <div className="pt-4 pb-10 lg:pt-6">
+            <div
+               id="client-profile-edit-main"
+               role="main"
+               tabIndex={-1}
+               aria-labelledby="edit-profile-page-title"
+               className="pt-4 pb-10 lg:pt-6"
+            >
+               {/* screen reader 전용 페이지 제목 */}
+               <h1 id="edit-profile-page-title" className="sr-only">
+                  프로필 수정 페이지
+               </h1>
+
                <div
                   className={
                      user?.provider === "LOCAL"

@@ -17,6 +17,8 @@ export default function ProfileInput<T extends FieldValues>({
    error,
    social,
 }: ClientProfileUpdateData<T>) {
+   const errorId = error ? `${name}-error` : undefined;
+
    return (
       <section
          className={social ? `${style} lg:max-w-160` : `${style} lg:max-w-full`}
@@ -32,6 +34,8 @@ export default function ProfileInput<T extends FieldValues>({
             type={type}
             {...register(name)}
             placeholder={placeholder}
+            aria-invalid={!!error}
+            aria-describedby={error ? errorId : undefined}
             className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200 border" : ""} text-black-400 bg-bg-200 h-14 rounded-2xl p-3.5 lg:h-16`}
          />
 

@@ -6,10 +6,15 @@ export async function fetchClientQuoteDetail(
 ) {
    try {
       return await tokenFetch(
-         `/estimates/${quoteId}?targetLang=${targetLang}`,
+         `/estimates/client/${quoteId}?targetLang=${targetLang}`,
          { method: "GET" },
       );
    } catch (e) {
       throw e;
    }
+}
+
+export async function getEstimate(estimateId: string) {
+   const res = await tokenFetch(`/estimates/${estimateId}`);
+   return res?.data ?? null;
 }

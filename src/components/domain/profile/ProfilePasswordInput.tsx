@@ -18,6 +18,7 @@ export default function ProfilePasswordInput<T extends FieldValues>({
 }: ClientProfileUpdateData<T>) {
    // ✅ 아이콘으로 비밀번호 <-> 글자 처리
    const [isVisible, setIsVisible] = React.useState(false);
+   const errorId = error ? `${name}-error` : undefined;
 
    const toggleEyeIcon = () => setIsVisible((prev) => !prev);
 
@@ -37,6 +38,8 @@ export default function ProfilePasswordInput<T extends FieldValues>({
                type={isVisible ? "text" : "password"}
                placeholder={placeholder}
                {...register(name)}
+               aria-invalid={!!error}
+               aria-describedby={error ? errorId : undefined}
                className={`${error ? "border-secondary-red-200 focus:border-secondary-red-200 border" : ""} text-black-400 bg-bg-200 h-14 w-full rounded-2xl p-3.5 lg:h-16`}
             />
 

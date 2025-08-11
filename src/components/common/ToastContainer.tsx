@@ -13,6 +13,9 @@ export default function ToastContainer() {
       <>
          {toast && (
             <ToastPopup
+               aria-label="토스트 알림"
+               aria-live="polite"
+               aria-atomic="true"
                key={toast.id}
                text={toast.text}
                success={toast.success}

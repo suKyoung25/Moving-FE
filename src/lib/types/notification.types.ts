@@ -5,5 +5,5 @@ export interface Notification {
    isRead: boolean;
    targetId?: string;
    targetUrl?: string;
-   createdAt: string;
+   createdAt: Date;
 }

@@ -13,13 +13,16 @@ export default function ClientTitle({ type }: Prop) {
    const t = useTranslations("Sign");
 
    return (
-      <div className="mb-10">
+      <div className="mb-10" aria-labelledby="client-page-title">
          <Link href="/mover-search">
             <figure className="relative mx-auto h-11 w-22 lg:h-13 lg:w-26">
                <Image src={logo} alt={t("logoAlt")} fill />
             </figure>
          </Link>
-         <div className="lg:mt- mt-4 flex gap-1 lg:gap-2">
+         <div
+            id="client-page-title"
+            className="lg:mt- mt-4 flex gap-1 lg:gap-2"
+         >
             <p className="text-black-100 text-12-regular lg:text-20-regular">
                {t("moverQuestion")}
             </p>

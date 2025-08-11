@@ -20,8 +20,8 @@ import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
 import { routing } from "@/i18n/routing"; // locales 배열 접근용
 import LanguageSwitcherDesktop from "./LanguageSwitcherDesktop";
-import { useNotificationsQuery } from "@/lib/api/notification/query";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
+import { useNotification } from "@/context/NotificationContext";
 
 function getPathnameWithoutLocale(
    pathname: string,
@@ -37,7 +37,6 @@ function getPathnameWithoutLocale(
 
 export default function Header({ children }: { children?: React.ReactNode }) {
    const t = useTranslations("Header");
-   const locale = useLocale();
    const { user } = useAuth();
    const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
    const [isProfileDropDownOpen, setIsProfileDropDownOpen] = useState(false);
@@ -45,10 +44,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
    const pathname = usePathname();
    const profileRef = useRef<HTMLDivElement>(null);
    const notificationRef = useRef<HTMLDivElement>(null);
-
-   const { data } = useNotificationsQuery(locale);
-   const rawCount = data?.pages?.[0]?.unreadCount;
-   const unreadCount = rawCount === 0 ? null : rawCount;
+   const { unreadCount } = useNotification();
 
    const isActive = (path: string) => pathnameWithoutLocale.startsWith(path);
    const linkClass = (path: string) =>
