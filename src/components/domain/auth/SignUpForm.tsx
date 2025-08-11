@@ -23,7 +23,6 @@ export default function SignUpForm({ userType }: Prop) {
    return (
       <form
          onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
-         aria-labelledby="signup-form"
          className="flex w-full flex-col"
          aria-labelledby="signup-form-heading"
       >
