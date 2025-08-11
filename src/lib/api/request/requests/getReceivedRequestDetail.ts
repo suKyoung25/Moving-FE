@@ -1,13 +1,19 @@
 import { tokenFetch } from "@/lib/utils";
 import { delay } from "../../../../../delay";
 
-export async function getReceivedRequestDetail(id: string) {
+export async function getReceivedRequestDetail(
+   id: string,
+   targetLang?: string,
+) {
    await delay(2000);
    try {
-      const data = await tokenFetch(`/requests/detail/${id}`, {
-         method: "GET",
-         cache: "force-cache",
-      });
+      const data = await tokenFetch(
+         `/requests/detail/${id}?targetLang=${targetLang}`,
+         {
+            method: "GET",
+            cache: "force-cache",
+         },
+      );
 
       return data;
    } catch (error) {

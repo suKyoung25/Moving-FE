@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 export default async function Page({
    params,
 }: {
-   params: Promise<{ id: string }>;
+   params: Promise<{ id: string; locale: string }>;
 }) {
-   const { id } = await params;
+   const { id, locale } = await params;
 
    if (!id) return notFound();
 
-   return <ReceivedRequestDetail id={id} />;
+   return <ReceivedRequestDetail id={id} locale={locale} />;
 }

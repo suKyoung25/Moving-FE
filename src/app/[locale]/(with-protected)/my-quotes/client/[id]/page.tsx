@@ -10,13 +10,13 @@ import { getTranslations } from "next-intl/server";
 export default async function MyQuoetesDetailPage({
    params,
 }: {
-   params: Promise<{ id: string }>;
+   params: Promise<{ id: string; locale: string }>;
 }) {
    const t = await getTranslations("MyQuotes.Client.Detail");
 
-   const { id } = await params;
+   const { id, locale } = await params;
 
-   const { data } = await fetchClientQuoteDetail(id);
+   const { data } = await fetchClientQuoteDetail(id, locale);
 
    return (
       <div>

@@ -7,6 +7,7 @@ import { MyEstimateDetail } from "@/lib/types";
 import { useLocale, useTranslations } from "next-intl";
 import { enUS, ko, Locale, zhCN } from "date-fns/locale";
 import { format } from "date-fns";
+import formatAddress from "@/lib/utils/formatAddress.util";
 
 export default function QuoteCard({
    estimate,
@@ -107,13 +108,13 @@ export default function QuoteCard({
                   <div className="gap-2">
                      <MoveTextCard text={t("departureLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
-                        {fromAddress.slice(0, 6)}
+                        {formatAddress(fromAddress, locale)}
                      </span>
                   </div>
                   <div className="gap-2">
                      <MoveTextCard text={t("destinationLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
-                        {toAddress.slice(0, 6)}
+                        {formatAddress(toAddress, locale)}
                      </span>
                   </div>
                </div>

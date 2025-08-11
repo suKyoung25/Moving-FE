@@ -2,8 +2,8 @@ import { FormWizardState } from "@/lib/types";
 import { tokenFetch } from "@/lib/utils";
 
 // 견적 요청 중간 상태 조회
-export async function getRequestDraft() {
-   return await tokenFetch("/requests/draft");
+export async function getRequestDraft(targetLang?: string) {
+   return await tokenFetch(`/requests/draft?targetLang=${targetLang}`);
 }
 
 // 견적 요청 중간 상태 저장/업데이트

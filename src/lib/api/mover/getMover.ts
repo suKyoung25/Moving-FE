@@ -6,6 +6,7 @@ import { GetMoversParams, GetMoversResponse } from "@/lib/types/mover.types";
 export const getMovers = async (
    params: GetMoversParams = {},
    withAuth: boolean = false,
+   targetLang?: string,
 ): Promise<GetMoversResponse> => {
    const queryParams = new URLSearchParams();
    queryParams.append("page", String(params.page ?? 1));
@@ -17,7 +18,7 @@ export const getMovers = async (
       queryParams.append("serviceType", params.serviceType);
    if (params.sortBy) queryParams.append("sortBy", params.sortBy);
 
-   const endpoint = `/movers?${queryParams.toString()}`;
+   const endpoint = `/movers?targetLang=${targetLang}&${queryParams.toString()}`;
 
    // 인증이 필요한 경우 tokenFetch, 아닌 경우 defaultFetch 사용
    const data = withAuth
@@ -42,13 +43,19 @@ export const getMovers = async (
 };
 
 // 명시적으로 인증된 상태로만 조회 (찜 상태 필수)
-export const getMoverByIdWithAuth = async (id: string): Promise<Mover> => {
-   const endpoint = `/movers/${id}`;
+export const getMoverByIdWithAuth = async (
+   id: string,
+   targetLang?: string,
+): Promise<Mover> => {
+   const endpoint = `/movers/${id}?targetLang=${targetLang}`;
    return await tokenFetch(endpoint, { method: "GET" });
 };
 
 // 명시적으로 비인증 상태로만 조회 (찜 상태 제외)
-export const getMoverByIdWithoutAuth = async (id: string): Promise<Mover> => {
-   const endpoint = `/movers/${id}`;
+export const getMoverByIdWithoutAuth = async (
+   id: string,
+   targetLang?: string,
+): Promise<Mover> => {
+   const endpoint = `/movers/${id}?targetLang=${targetLang}`;
    return await defaultFetch(endpoint, { method: "GET" });
 };

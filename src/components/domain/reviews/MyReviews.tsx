@@ -38,13 +38,11 @@ export default function MyReviews() {
    const [editModalOpen, setEditModalOpen] = useState(false);
    const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
 
-   const targetLang = locale === "en" ? "en-US" : locale;
-
    // 리뷰 리스트 조회
    const { data, isLoading, isFetching, error, refetch } = useMyReviews({
       page: pagination.page,
       limit: pagination.limit,
-      targetLang,
+      targetLang: locale,
    });
 
    // 페이지네이션 핸들러

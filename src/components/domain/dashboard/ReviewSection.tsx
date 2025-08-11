@@ -8,7 +8,7 @@ import ReviewBreakdown from "./ReviewBreakdown";
 import ReviewStar from "./ReviewStar";
 import ReviewList from "./ReviewList";
 import { Review } from "@/lib/types";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface DashboardReviewSectionProps {
    moverId?: string;
@@ -18,6 +18,7 @@ export default function DashboardReviewSection({
    moverId,
 }: DashboardReviewSectionProps) {
    const t = useTranslations("Dashboard");
+   const locale = useLocale();
    const [reviews, setReviews] = useState<Review[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
@@ -60,11 +61,11 @@ export default function DashboardReviewSection({
 
          let response;
          if (moverId) {
-            response = await getMoverReviews(1, 20, moverId);
+            response = await getMoverReviews(1, 20, moverId, locale);
          } else if (user?.userType === "mover") {
-            response = await getMoverReviews(1, 20);
+            response = await getMoverReviews(1, 20, locale);
          } else if (user?.userType === "client") {
-            response = await getMyReviews(1, 20);
+            response = await getMyReviews(1, 20, locale);
          }
 
          const reviewsData = response?.data?.reviews || response?.reviews || [];

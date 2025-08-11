@@ -6,17 +6,22 @@ import { tokenFetch, defaultFetch } from "@/lib/utils/fetch-client";
  * @param limit 페이지당 개수
  * @param moverId 특정 기사의 리뷰를 조회할 때 사용 (선택적)
  */
-export async function getMoverReviews(page = 1, limit = 6, moverId?: string) {
+export async function getMoverReviews(
+   page = 1,
+   limit = 6,
+   moverId?: string,
+   targetLang?: string,
+) {
    let endpoint: string;
    let fetchFunction: typeof tokenFetch | typeof defaultFetch;
 
    if (moverId) {
       // 특정 기사의 리뷰 조회 (공개 API - 인증 불필요)
-      endpoint = `/reviews/mover/${moverId}?page=${page}&limit=${limit}`;
+      endpoint = `/reviews/mover/${moverId}?targetLang=${targetLang}&page=${page}&limit=${limit}`;
       fetchFunction = defaultFetch;
    } else {
       // 본인의 리뷰 조회 (인증 API - 인증 필요)
-      endpoint = `/reviews/mover?page=${page}&limit=${limit}`;
+      endpoint = `/reviews/mover?targetLang=${targetLang}&page=${page}&limit=${limit}`;
       fetchFunction = tokenFetch;
    }
 

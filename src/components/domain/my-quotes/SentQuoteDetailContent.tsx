@@ -7,11 +7,18 @@ import DesignatedBadge from "./DesignatedBadge";
 import PageTitle from "@/components/layout/PageTitle";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
 import { getTranslations } from "next-intl/server";
+import formatAddress from "@/lib/utils/formatAddress.util";
 
-export default async function SentQuoteDetailContent({ id }: { id: string }) {
+export default async function SentQuoteDetailContent({
+   params,
+}: {
+   params: Promise<{ locale: string; id: string }>;
+}) {
+   const { locale, id } = await params;
+
    const t = await getTranslations("MyQuotes.Mover.Detail");
 
-   const estimate = await getSentEstimateDetail(id);
+   const estimate = await getSentEstimateDetail(id, locale);
    if (!estimate || !estimate.request) return notFound();
 
    const { request, price, isClientConfirmed, createdAt } = estimate;
@@ -53,13 +60,13 @@ export default async function SentQuoteDetailContent({ id }: { id: string }) {
                   <div>
                      <MoveTextCard text={t("departureLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
-                        {request.fromAddress.slice(0, 6)}
+                        {formatAddress(request.fromAddress, locale)}
                      </span>
                   </div>
                   <div>
                      <MoveTextCard text={t("destinationLabel")} />
                      <span className="text-14-medium lg:text-18-medium">
-                        {request.toAddress.slice(0, 6)}
+                        {formatAddress(request.toAddress, locale)}
                      </span>
                   </div>
                </div>

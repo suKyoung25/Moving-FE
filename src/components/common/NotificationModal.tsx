@@ -16,7 +16,7 @@ import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
 import { useQueryClient } from "@tanstack/react-query";
 import { FiCheckSquare } from "react-icons/fi";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
 import { getRequest } from "@/lib/api/estimate/requests/getClientRequest";
 
@@ -26,6 +26,7 @@ export default function NotificationModal({
    setIsNotiModalOpen: (val: boolean) => void;
 }) {
    const t = useTranslations("Notification");
+   const locale = useLocale();
    const { realtimeNotifications } = useNotification();
    const { showError } = useToast();
    const router = useRouter();
@@ -34,7 +35,7 @@ export default function NotificationModal({
    const queryClient = useQueryClient();
 
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-      useNotificationsQuery();
+      useNotificationsQuery(locale);
 
    // 페이지 데이터를 flat하게 만들기
    const fetchedNotifications =
@@ -52,7 +53,7 @@ export default function NotificationModal({
       try {
          await readNotification(item.id);
          queryClient.invalidateQueries({ queryKey: ["notifications"] });
-         const { data } = await getRequest(item.targetId!);
+         const { data } = await getRequest(item.targetId!, locale);
          if (!data) {
             showError("존재하지 않는 견적 요청입니다.");
             return;

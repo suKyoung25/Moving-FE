@@ -8,7 +8,7 @@ import EmptyState from "@/components/common/EmptyState";
 import { isAfter } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useRequestsQuery } from "@/lib/api/estimate/query";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { cancelRequest } from "@/lib/api/estimate/requests/cancelRequest";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/context/ToastConText";
@@ -16,6 +16,7 @@ import { useToast } from "@/context/ToastConText";
 // 요청한 견적
 export default function Requested() {
    const t = useTranslations("MyQuotes.Client");
+   const locale = useLocale();
 
    const [dropdownName, setDropdownName] = useState("recent");
    const { showSuccess, showError } = useToast();
@@ -26,7 +27,7 @@ export default function Requested() {
    const queryClient = useQueryClient();
 
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-      useRequestsQuery(sort);
+      useRequestsQuery(sort, locale);
    const requests =
       data?.pages?.flatMap((page) => page.requests).filter(Boolean) ?? [];
 
