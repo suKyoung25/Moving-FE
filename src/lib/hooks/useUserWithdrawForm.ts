@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { WithdrawFormSchema, WithdrawFormValues } from "../schemas";
+import { useAuthSchemas, WithdrawFormValues } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import deleteUserInfo from "../api/auth/requests/deleteUserInfo";
@@ -11,6 +11,7 @@ export function useUserWithdrawForm(onSuccess: () => void) {
    const [isLoading, setIsLoading] = useState(false);
    const { user, logout } = useAuth();
    const { showSuccess } = useToast();
+   const { withdrawFormSchema } = useAuthSchemas();
 
    const {
       register,
@@ -18,7 +19,7 @@ export function useUserWithdrawForm(onSuccess: () => void) {
       formState: { errors, isValid },
       setError,
    } = useForm<WithdrawFormValues>({
-      resolver: zodResolver(WithdrawFormSchema),
+      resolver: zodResolver(withdrawFormSchema),
       mode: "onChange",
    });
 

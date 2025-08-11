@@ -1,103 +1,116 @@
 import z from "zod";
-import { nameSchema, phoneSchema } from "./auth.schema";
+import { useAuthSchemas } from "./auth.schema";
+import { useTranslations } from "next-intl";
 
-// ✅ 개별 스키마
-export const profileImageSchema = z
-   .union([z.string(), z.instanceof(File)])
-   .optional();
+export function useClientProfileSchemas() {
+   const t = useTranslations("Validations");
+   const { nameSchema, phoneSchema } = useAuthSchemas();
 
-export const serviceTypeSchema = z
-   .array(z.enum(["SMALL", "HOME", "OFFICE"]))
-   .min(1, "* 서비스 유형을 1개 이상 선택해야 합니다.");
+   // ✅ 개별 스키마
+   const profileImageSchema = z
+      .union([z.string(), z.instanceof(File)])
+      .optional();
 
-export const livingAreaSchema = z
-   .array(z.string())
-   .min(1, "* 지역을 1개 이상 선택해야 합니다.")
-   .max(5, "* 지역은 최대 5개까지 선택할 수 있습니다.");
+   const serviceTypeSchema = z
+      .array(z.enum(["SMALL", "HOME", "OFFICE"]))
+      .min(1, t("selectServiceType"));
 
-const passwordSchema = z
-   .string()
-   .min(8, "최소 8자리 이상이어야합니다.")
-   .max(16, "최대 16자리 이하여야합니다.")
-   .regex(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,16}$/,
-      "문자와 숫자, 특수문자를 섞어 비밀번호를 작성해 주세요.",
-   )
-   .optional();
+   const livingAreaSchema = z
+      .array(z.string())
+      .min(1, t("selectLivingArea"))
+      .max(5, t("maxLivingArea"));
 
-// ✅ 일반 프로필 등록 스키마
-export const ClientProfilePostSchema = z.object({
-   profileImage: profileImageSchema,
-   serviceType: serviceTypeSchema,
-   livingArea: livingAreaSchema,
-});
+   const passwordSchema = z
+      .string()
+      .min(8, t("passwordMin"))
+      .max(16, t("passwordMax"))
+      .regex(
+         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,16}$/,
+         t("passwordPattern"),
+      )
+      .optional();
 
-/**
- * ✅ 일반 프로필 수정 스키마: 함수로 제작
- */
-export function updateClientProfileSchema(provider?: string) {
-   return z
-      .object({
-         name: nameSchema.optional(),
-         phone: phoneSchema.optional(),
-         password: passwordSchema,
-         newPassword: passwordSchema.or(z.literal("")),
-         newPasswordConfirmation: passwordSchema.or(z.literal("")),
-         profileImage: profileImageSchema,
-         serviceType: serviceTypeSchema.optional(),
-         livingArea: livingAreaSchema.optional(),
-      })
-      .superRefine((data, ctx) => {
-         const { newPassword, newPasswordConfirmation, password } = data;
-         const isPasswordChangeAttempted =
-            !!newPassword || !!newPasswordConfirmation;
+   // ✅ 일반 프로필 등록 스키마
+   const clientProfilePostSchema = z.object({
+      profileImage: profileImageSchema,
+      serviceType: serviceTypeSchema,
+      livingArea: livingAreaSchema,
+   });
 
-         // 0. [일반 로그인] 현재 비밀번호 필수
-         if (provider === "LOCAL") {
-            if (!password || password.length === 0) {
-               ctx.addIssue({
-                  path: ["password"],
-                  message: "프로필을 수정하려면 현재 비밀번호를 입력해주세요.",
-                  code: z.ZodIssueCode.custom,
-               });
-            }
+   /**
+    * ✅ 일반 프로필 수정 스키마: 함수로 제작
+    */
+   const updateClientProfileSchema = (provider?: string) =>
+      z
+         .object({
+            name: nameSchema.optional(),
+            phone: phoneSchema.optional(),
+            password: passwordSchema,
+            newPassword: passwordSchema.or(z.literal("")),
+            newPasswordConfirmation: passwordSchema.or(z.literal("")),
+            profileImage: profileImageSchema,
+            serviceType: serviceTypeSchema.optional(),
+            livingArea: livingAreaSchema.optional(),
+         })
+         .superRefine((data, ctx) => {
+            const { newPassword, newPasswordConfirmation, password } = data;
+            const isPasswordChangeAttempted =
+               !!newPassword || !!newPasswordConfirmation;
 
-            // 1. [일반 로그인] 새 비밀번호 자릿수 검사
-            if (isPasswordChangeAttempted) {
-               if (!newPassword || newPassword.length < 8) {
+            // 0. [일반 로그인] 현재 비밀번호 필수
+            if (provider === "LOCAL") {
+               if (!password || password.length === 0) {
+                  ctx.addIssue({
+                     path: ["password"],
+                     message: t("profilePasswordRequired"),
+                     code: z.ZodIssueCode.custom,
+                  });
+               }
+
+               // 1. [일반 로그인] 새 비밀번호 자릿수 검사
+               if (isPasswordChangeAttempted) {
+                  if (!newPassword || newPassword.length < 8) {
+                     ctx.addIssue({
+                        path: ["newPassword"],
+                        message: t("passwordMin"),
+                        code: z.ZodIssueCode.custom,
+                     });
+                  }
+
+                  // 2. [일반 로그인] 새 비밀번호를 설정하면 확인도 해야 함
+                  if (newPassword !== newPasswordConfirmation) {
+                     ctx.addIssue({
+                        path: ["newPasswordConfirmation"],
+                        message: t("newPasswordMismatch"),
+                        code: z.ZodIssueCode.custom,
+                     });
+                  }
+               }
+            } else {
+               // [소셜 로그인] 비밀번호 변경 시도 자체를 막음
+               if (isPasswordChangeAttempted) {
                   ctx.addIssue({
                      path: ["newPassword"],
-                     message: "새 비밀번호는 최소 8자리 이상이어야 합니다.",
+                     message: t("socialPasswordChangeNotAllowed"),
                      code: z.ZodIssueCode.custom,
                   });
                }
+            }
+         });
 
-               // 2. [일반 로그인] 새 비밀번호를 설정하면 확인도 해야 함
-               if (newPassword !== newPasswordConfirmation) {
-                  ctx.addIssue({
-                     path: ["newPasswordConfirmation"],
-                     message: "새 비밀번호가 일치하지 않습니다.",
-                     code: z.ZodIssueCode.custom,
-                  });
-               }
-            }
-         } else {
-            // [소셜 로그인] 비밀번호 변경 시도 자체를 막음
-            if (isPasswordChangeAttempted) {
-               ctx.addIssue({
-                  path: ["newPassword"],
-                  message:
-                     "소셜 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
-                  code: z.ZodIssueCode.custom,
-               });
-            }
-         }
-      });
+   return {
+      clientProfilePostSchema,
+      updateClientProfileSchema,
+   };
 }
 
 // ✅ 타입 반출
-export type ClientProfilePostValue = z.infer<typeof ClientProfilePostSchema>;
+export type ClientProfilePostValue = z.infer<
+   ReturnType<typeof useClientProfileSchemas>["clientProfilePostSchema"]
+>;
 
 export type ClientProfileUpdateValue = z.infer<
-   ReturnType<typeof updateClientProfileSchema>
+   ReturnType<
+      ReturnType<typeof useClientProfileSchemas>["updateClientProfileSchema"]
+   >
 >;

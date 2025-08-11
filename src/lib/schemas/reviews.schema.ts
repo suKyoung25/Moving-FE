@@ -1,37 +1,32 @@
 import { z } from "zod";
+import { useTranslations } from "next-intl";
 
-export interface ReviewValidationMessages {
-   invalidRequest: string;
-   selectRating: string;
-   maxRating: string;
-   minContent: string;
-}
+export function useReviewSchemas() {
+   const t = useTranslations("Validations");
 
-// 리뷰 생성 스키마 생성 함수
-export function createReviewSchema(messages: ReviewValidationMessages) {
-   return z.object({
-      estimateId: z.string().uuid(messages.invalidRequest),
-      rating: z
-         .number()
-         .int()
-         .min(1, messages.selectRating)
-         .max(5, messages.maxRating),
-      content: z.string().min(10, messages.minContent),
+   // 리뷰 생성 스키마
+   const createReviewSchema = z.object({
+      estimateId: z.string().uuid(t("invalidRequest")),
+      rating: z.number().int().min(1, t("selectRating")).max(5, t("maxRating")),
+      content: z.string().min(10, t("minContent")),
    });
-}
 
-// 리뷰 수정 스키마 생성 함수
-export function updateReviewSchema(messages: ReviewValidationMessages) {
-   return z.object({
-      rating: z
-         .number()
-         .int()
-         .min(1, messages.selectRating)
-         .max(5, messages.maxRating),
-      content: z.string().min(10, messages.minContent),
+   // 리뷰 수정 스키마
+   const updateReviewSchema = z.object({
+      rating: z.number().int().min(1, t("selectRating")).max(5, t("maxRating")),
+      content: z.string().min(10, t("minContent")),
    });
+
+   return {
+      createReviewSchema,
+      updateReviewSchema,
+   };
 }
 
-// 타입 편의 정의
-export type CreateReviewDto = z.infer<ReturnType<typeof createReviewSchema>>;
-export type UpdateReviewDto = z.infer<ReturnType<typeof updateReviewSchema>>;
+// 타입 정의
+export type CreateReviewDto = z.infer<
+   ReturnType<typeof useReviewSchemas>["createReviewSchema"]
+>;
+export type UpdateReviewDto = z.infer<
+   ReturnType<typeof useReviewSchemas>["updateReviewSchema"]
+>;

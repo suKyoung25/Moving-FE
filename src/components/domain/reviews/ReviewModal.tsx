@@ -5,11 +5,13 @@ import { ReviewFormBody } from "./ReviewFormBody";
 import { WritableReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
 import { useForm } from "react-hook-form";
-import { CreateReviewDto } from "@/lib/schemas/reviews.schema";
+import {
+   CreateReviewDto,
+   useReviewSchemas,
+} from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { extractErrorMessage } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
 import { useCreateReview } from "@/lib/api/review/mutation";
 
 interface ReviewModalProps {
@@ -26,7 +28,7 @@ export default function ReviewModal({
    onReviewSuccess,
 }: ReviewModalProps) {
    const t = useTranslations("Reviews");
-   const { createSchema } = useValidationSchema();
+   const { createReviewSchema } = useReviewSchemas();
 
    const {
       handleSubmit,
@@ -36,7 +38,7 @@ export default function ReviewModal({
       watch,
       formState: { errors },
    } = useForm<CreateReviewDto>({
-      resolver: zodResolver(createSchema),
+      resolver: zodResolver(createReviewSchema),
       defaultValues: {
          rating: 0,
          content: "",
