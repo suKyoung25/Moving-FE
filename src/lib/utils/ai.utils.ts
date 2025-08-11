@@ -1,17 +1,36 @@
 import { FormData, AIEstimateType } from "@/lib/types";
 
 // OpenAI API 에러 처리 및 메시지 반환
-export function handleOpenAIError(errorData: any, response: Response): never {
-   const message = errorData.error?.message || "AI 견적 생성에 실패했습니다.";
+export function handleOpenAIError(errorData: unknown) {
+   const message =
+      errorData &&
+      typeof errorData === "object" &&
+      "error" in errorData &&
+      errorData.error &&
+      typeof errorData.error === "object" &&
+      "message" in errorData.error
+         ? String(errorData.error.message)
+         : "AI 견적 생성에 실패했습니다.";
    throw new Error(message);
 }
 
 // OpenAI API 응답 데이터 검증 및 content 추출
-export function validateOpenAIResponse(data: any): string {
-   if (!data?.choices?.[0]?.message?.content) {
+export function validateOpenAIResponse(data: unknown): string {
+   if (
+      !data ||
+      typeof data !== "object" ||
+      !("choices" in data) ||
+      !Array.isArray(data.choices) ||
+      !data.choices[0] ||
+      typeof data.choices[0] !== "object" ||
+      !("message" in data.choices[0]) ||
+      !data.choices[0].message ||
+      typeof data.choices[0].message !== "object" ||
+      !("content" in data.choices[0].message)
+   ) {
       throw new Error("AI 응답 내용이 올바르지 않습니다.");
    }
-   return data.choices[0].message.content;
+   return String(data.choices[0].message.content);
 }
 
 // OpenAI API 요청 객체 생성

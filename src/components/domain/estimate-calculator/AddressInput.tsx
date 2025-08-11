@@ -213,6 +213,7 @@ export default function AddressInput({
                   aria-haspopup="listbox"
                   role="combobox"
                   aria-autocomplete="list"
+                  aria-controls="from-suggestions-list"
                />
                <div id="from-address-help" className="sr-only">
                   {t("selectFrom")}
@@ -229,6 +230,7 @@ export default function AddressInput({
                )}
                {showFromSuggestions && fromSuggestions.length > 0 && (
                   <div
+                     id="from-suggestions-list"
                      className="border-line-200 absolute z-10 mt-1 w-full overflow-hidden rounded-lg border bg-white shadow-lg"
                      role="listbox"
                      aria-label={`${t("from")} ${t("searchPlaceholder")}`}
@@ -280,6 +282,7 @@ export default function AddressInput({
                   aria-haspopup="listbox"
                   role="combobox"
                   aria-autocomplete="list"
+                  aria-controls="to-suggestions-list"
                />
                <div id="to-address-help" className="sr-only">
                   {t("selectTo")}
@@ -297,6 +300,7 @@ export default function AddressInput({
 
                {showToSuggestions && toSuggestions.length > 0 && (
                   <div
+                     id="to-suggestions-list"
                      className="border-line-200 absolute z-10 mt-1 w-full overflow-hidden rounded-lg border bg-white shadow-lg"
                      role="listbox"
                      aria-label={`${t("to")} ${t("searchPlaceholder")}`}

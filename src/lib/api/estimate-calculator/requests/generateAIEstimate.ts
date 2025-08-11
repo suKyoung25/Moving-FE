@@ -36,7 +36,7 @@ export async function generateAIEstimate(
 
       // AI 응답이 유효하지 않거나 오차범위를 초과하면 fallback 사용
       return generateFallbackEstimate(formData, distance);
-   } catch (error) {
+   } catch {
       return generateFallbackEstimate(formData, distance);
    }
 }

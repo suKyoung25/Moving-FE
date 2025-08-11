@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
          }
 
          // 기타 OpenAI 에러 처리
-         handleOpenAIError(errorData, response);
+         handleOpenAIError(errorData);
       }
 
       const data = await response.json();
