@@ -5,11 +5,13 @@ import { ReviewFormBody } from "./ReviewFormBody";
 import { WritableReview, MyReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
 import { useForm } from "react-hook-form";
-import { UpdateReviewDto } from "@/lib/schemas/reviews.schema";
+import {
+   UpdateReviewDto,
+   useReviewSchemas,
+} from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { extractErrorMessage } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-import { useValidationSchema } from "@/lib/hooks/useValidationSchema";
 import { useUpdateReview, useDeleteReview } from "@/lib/api/review/mutation";
 import SolidButton from "@/components/common/SolidButton";
 import ConfirmModal from "@/components/common/ConfirmModal";
@@ -28,7 +30,7 @@ export default function EditDeleteReviewModal({
    onSuccess,
 }: EditDeleteReviewModalProps) {
    const t = useTranslations("Reviews");
-   const { updateSchema } = useValidationSchema();
+   const { updateReviewSchema } = useReviewSchemas();
 
    const {
       handleSubmit,
@@ -37,7 +39,7 @@ export default function EditDeleteReviewModal({
       formState: { errors },
       watch,
    } = useForm<UpdateReviewDto>({
-      resolver: zodResolver(updateSchema),
+      resolver: zodResolver(updateReviewSchema),
       defaultValues: {
          rating: review.rating,
          content: review.content,

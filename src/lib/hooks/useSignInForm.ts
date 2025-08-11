@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignInFormSchema, SignInFormValues } from "../schemas/auth.schema";
+import { SignInFormValues, useAuthSchemas } from "../schemas/auth.schema";
 import { AuthFetchError, UserType } from "../types";
 import createSignIn from "../api/auth/requests/createSignIn";
 import { useToast } from "@/context/ToastConText";
@@ -17,6 +17,7 @@ export default function useSignInForm() {
    const { showError } = useToast();
    const [isLoading, setIsLoading] = useState(false);
    const [isLoginBlock, setIsLoginBlock] = useState(false);
+   const { signInFormSchema } = useAuthSchemas();
 
    // ✅ react-hook-form
    const {
@@ -26,7 +27,7 @@ export default function useSignInForm() {
       formState: { errors, isValid },
    } = useForm<SignInFormValues>({
       mode: "onChange",
-      resolver: zodResolver(SignInFormSchema),
+      resolver: zodResolver(signInFormSchema),
    });
 
    // ✅ 제출

@@ -1,5 +1,6 @@
 // 도메인 단위
 
+import { useTranslations } from "next-intl";
 import z from "zod";
 import { RefinementCtx } from "zod";
 
@@ -12,97 +13,105 @@ type ExtendedRefinementCtx = RefinementCtx & {
 
 const allowedDomains = ["gmail.com", "naver.com", "daum.net"];
 
-//기사님 기본정보 수정 시 사용
-const rawMoverBasicInfoSchema = {
-   name: z
-      .string()
-      .min(2, "본명은 2자 이상 입력해주세요")
-      .max(4, "본명은 4자 이하로 입력해주세요"),
-   email: z
-      .string()
-      .email("올바른 이메일 형식이 아닙니다.")
-      .refine(
-         (email) => {
-            const domain = email.split("@")[1];
-            return allowedDomains.includes(domain);
-         },
-         {
-            message: "test, gmail, naver, daum 도메인만 허용합니다.",
-         },
-      ),
-   phone: z
-      .string()
-      .min(10, "최소 10자리 이상이어야 합니다.")
-      .max(11, "최대 11자리 이하여야 합니다.")
-      .regex(/^\d+$/, "숫자만 입력해주세요."),
-   newPassword: z
-      .string()
-      .min(8, "최소 8자리 이상이어야합니다.")
-      .max(16, "최대 16자리 이하여야합니다.")
-      .regex(
-         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,16}$/,
-         "문자와 숫자, 특수문자를 섞어 비밀번호를 작성해 주세요.",
-      )
-      .optional()
-      .or(z.literal("")),
-   newPasswordConfirmation: z.string().optional(),
-};
+export function useMoverBasicInfoSchema() {
+   const t = useTranslations("Validations");
 
-//refine 로직 때문에 분리 (cheackNewPassword)
-export const MoverBasicInfoSchema = z
-   .object({
-      ...rawMoverBasicInfoSchema,
-      existedPassword: z.string().optional(),
-   })
-   .superRefine((data, ctx) => {
-      const { context } = ctx as ExtendedRefinementCtx;
-      const isLocal = context?.isLocal;
+   //기사님 기본정보 수정 시 사용
+   const rawMoverBasicInfoSchema = {
+      name: z.string().min(2, t("nameMin")).max(4, t("nameMax")),
+      email: z
+         .string()
+         .email(t("invalidEmail"))
+         .refine(
+            (email) => {
+               const domain = email.split("@")[1];
+               return allowedDomains.includes(domain);
+            },
+            {
+               message: t("allowedEmailDomains"),
+            },
+         ),
+      phone: z
+         .string()
+         .min(9, t("phoneMin"))
+         .max(11, t("phoneMax"))
+         .regex(/^\d+$/, t("onlyNumbers")),
+      newPassword: z
+         .string()
+         .min(8, t("passwordMin"))
+         .max(16, t("passwordMax"))
+         .regex(
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,16}$/,
+            t("passwordPattern"),
+         )
+         .optional()
+         .or(z.literal("")),
+      newPasswordConfirmation: z.string().optional(),
+   };
 
-      if (
-         isLocal &&
-         (!data.existedPassword || data.existedPassword.length < 8)
-      ) {
-         ctx.addIssue({
-            path: ["existedPassword"],
-            message: "기존 비밀번호를 입력해주세요.",
-            code: z.ZodIssueCode.custom,
-         });
-      }
-
-      const { newPassword, newPasswordConfirmation } = data;
-
-      const eitherPasswordExists = !!newPassword || !!newPasswordConfirmation;
-
-      if (eitherPasswordExists) {
-         if (!newPassword || newPassword.length < 8) {
-            ctx.addIssue({
-               // 에러를 특정 필드에 추가
-               path: ["newPassword"],
-               message: "새 비밀번호는 최소 8자리 이상이어야 합니다.",
-               code: z.ZodIssueCode.custom,
-            });
-         }
-
-         if (!newPasswordConfirmation || newPasswordConfirmation.length < 8) {
-            ctx.addIssue({
-               path: ["newPasswordConfirmation"],
-               message: "새 비밀번호 확인은 최소 8자리 이상이어야 합니다.",
-               code: z.ZodIssueCode.custom,
-            });
-         }
+   //refine 로직 때문에 분리 (cheackNewPassword)
+   const moverBasicInfoSchema = z
+      .object({
+         ...rawMoverBasicInfoSchema,
+         existedPassword: z.string().optional(),
+      })
+      .superRefine((data, ctx) => {
+         const { context } = ctx as ExtendedRefinementCtx;
+         const isLocal = context?.isLocal;
 
          if (
-            newPassword &&
-            newPasswordConfirmation &&
-            newPassword !== newPasswordConfirmation
+            isLocal &&
+            (!data.existedPassword || data.existedPassword.length < 8)
          ) {
             ctx.addIssue({
-               path: ["newPasswordConfirmation"],
-               message: "비밀번호가 일치하지 않습니다.",
+               path: ["existedPassword"],
+               message: t("profilePasswordRequired"),
                code: z.ZodIssueCode.custom,
             });
          }
-      }
-   });
 
-export type MoverBasicInfoInput = z.infer<typeof MoverBasicInfoSchema>;
+         const { newPassword, newPasswordConfirmation } = data;
+
+         const eitherPasswordExists =
+            !!newPassword || !!newPasswordConfirmation;
+
+         if (eitherPasswordExists) {
+            if (!newPassword || newPassword.length < 8) {
+               ctx.addIssue({
+                  // 에러를 특정 필드에 추가
+                  path: ["newPassword"],
+                  message: t("passwordMin"),
+                  code: z.ZodIssueCode.custom,
+               });
+            }
+
+            if (
+               !newPasswordConfirmation ||
+               newPasswordConfirmation.length < 8
+            ) {
+               ctx.addIssue({
+                  path: ["newPasswordConfirmation"],
+                  message: t("passwordMin"),
+                  code: z.ZodIssueCode.custom,
+               });
+            }
+
+            if (
+               newPassword &&
+               newPasswordConfirmation &&
+               newPassword !== newPasswordConfirmation
+            ) {
+               ctx.addIssue({
+                  path: ["newPasswordConfirmation"],
+                  message: t("newPasswordMismatch"),
+                  code: z.ZodIssueCode.custom,
+               });
+            }
+         }
+      });
+   return { moverBasicInfoSchema };
+}
+
+export type MoverBasicInfoInput = z.infer<
+   ReturnType<typeof useMoverBasicInfoSchema>["moverBasicInfoSchema"]
+>;

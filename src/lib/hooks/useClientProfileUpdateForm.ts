@@ -6,10 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthFetchError, Client, User } from "../types";
-import {
-   ClientProfileUpdateValue,
-   updateClientProfileSchema,
-} from "../schemas";
+import { ClientProfileUpdateValue, useClientProfileSchemas } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
@@ -23,6 +20,7 @@ export default function useClientProfileUpdateForm() {
    const { user, refreshUser } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
    const { showSuccess, showError } = useToast();
+   const { updateClientProfileSchema } = useClientProfileSchemas();
 
    // ✅ 초깃값 보존 용도 기본값
    function getInitialValues(user: User | null): ClientProfileUpdateValue {

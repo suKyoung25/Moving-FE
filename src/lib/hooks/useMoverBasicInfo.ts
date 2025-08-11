@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { AuthFetchError } from "../types";
 import {
    MoverBasicInfoInput,
-   MoverBasicInfoSchema,
+   useMoverBasicInfoSchema,
 } from "../schemas/dashboard.schema";
 import updateMoverBasicInfo from "../api/auth/requests/updateMoverInfo";
 import { useToast } from "@/context/ToastConText";
@@ -18,6 +18,7 @@ function useMoverBasicInfo() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { showSuccess, showError } = useToast();
+   const { moverBasicInfoSchema } = useMoverBasicInfoSchema();
 
    const {
       register,
@@ -28,7 +29,7 @@ function useMoverBasicInfo() {
       setError,
       reset,
    } = useForm<MoverBasicInfoInput>({
-      resolver: zodResolver(MoverBasicInfoSchema),
+      resolver: zodResolver(moverBasicInfoSchema),
       context: {
          isLocal: user?.provider === "LOCAL", // 소셜인증 / 로컬인증에 따라 스키마가 달라짐
       },

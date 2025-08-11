@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
-import { ClientProfilePostSchema, ClientProfilePostValue } from "../schemas";
+import { ClientProfilePostValue, useClientProfileSchemas } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { AuthFetchError } from "../types";
@@ -22,6 +22,7 @@ export default function useClientProfilePostForm() {
    const [isLoading, setIsLoading] = useState(false);
    const { refreshUser } = useAuth();
    const { showSuccess } = useToast();
+   const { clientProfilePostSchema } = useClientProfileSchemas();
 
    // react-hook-form
    const {
@@ -32,7 +33,7 @@ export default function useClientProfilePostForm() {
       control,
       formState: { errors, isValid },
    } = useForm<ClientProfilePostValue>({
-      resolver: zodResolver(ClientProfilePostSchema),
+      resolver: zodResolver(clientProfilePostSchema),
       mode: "onChange",
    });
 

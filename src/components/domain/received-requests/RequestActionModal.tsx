@@ -9,8 +9,8 @@ import { ReceivedRequest } from "@/lib/types";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoveTextCard from "../my-quotes/MoveTextCard";
 import {
-   requestActionFormSchema,
    RequestActionFormSchema,
+   useRequestActionFormSchema,
 } from "@/lib/schemas";
 import { useQueryClient } from "@tanstack/react-query";
 import { receivedRequestsQueryKey } from "@/lib/api/request/query";
@@ -39,6 +39,7 @@ export default function RequestActionModal({
 
    const queryClient = useQueryClient();
    const { showSuccess } = useToast();
+   const { requestActionFormSchema } = useRequestActionFormSchema();
 
    const {
       register,
