@@ -1,6 +1,6 @@
 "use client";
 
-import { useActiveRequest } from "@/lib/api/request/requests/query";
+import { useActiveRequest } from "@/lib/api/request/query";
 import { format, Locale } from "date-fns";
 import { enUS, ko, zhCN } from "date-fns/locale";
 import { useLocale, useTranslations } from "next-intl";
@@ -16,7 +16,7 @@ export default function ActiveRequest() {
    const t = useTranslations("MyQuotes.Client");
    const locale = useLocale();
 
-   const { data: result, isPending } = useActiveRequest();
+   const { data: result, isPending } = useActiveRequest(locale);
    const activeRequest = result?.data;
 
    // date-fns locale을 next-intl의 locale에 맞게 매핑

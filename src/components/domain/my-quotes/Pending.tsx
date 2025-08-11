@@ -14,15 +14,16 @@ import Pagination from "@/components/common/Pagination";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import ConfirmedButton from "./ConfirmedButton";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function Pending() {
    const t = useTranslations("MyQuotes.Client");
+   const locale = useLocale();
 
    const [page, setPage] = useState(1);
    const router = useRouter();
 
-   const { data, isLoading, isError } = usePendingEstimates(page);
+   const { data, isLoading, isError } = usePendingEstimates(page, locale);
 
    if (isLoading)
       return (

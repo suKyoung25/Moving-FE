@@ -6,4 +6,5 @@ export * from "./fetch-error.util";
 export * from "./moveChip.util";
 export * from "./extractErrorMessage.utill";
 export * from "./middleware.util";
+export * from "./formatAddress.util";
 export * from "./estimate-calculator";

@@ -7,7 +7,7 @@ import { useReceivedEstimates } from "@/lib/api/estimate/query";
 import { useInView } from "react-intersection-observer";
 import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import ReceivedSection from "./ReceivedSection";
 
 function groupByRequest(data: DataItem[]): GroupedByRequest[] {
@@ -31,6 +31,7 @@ function groupByRequest(data: DataItem[]): GroupedByRequest[] {
 // 받았던 견적
 export default function Received() {
    const t = useTranslations("MyQuotes.Client");
+   const locale = useLocale();
 
    const { ref, inView } = useInView();
 
@@ -41,7 +42,7 @@ export default function Received() {
       fetchNextPage,
       hasNextPage,
       isFetchingNextPage,
-   } = useReceivedEstimates("all");
+   } = useReceivedEstimates("all", locale);
 
    useEffect(() => {
       if (inView && hasNextPage && !isFetchingNextPage) {

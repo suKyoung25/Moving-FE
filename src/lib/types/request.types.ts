@@ -21,10 +21,10 @@ export interface CreateRequestDto {
 
 // 각 단계에서 입력받는 데이터 구조
 export interface FormWizardState {
-   moveType: Request["moveType"] | undefined;
-   moveDate: Request["moveDate"] | undefined;
-   fromAddress: Request["fromAddress"] | undefined;
-   toAddress: Request["toAddress"] | undefined;
+   moveType?: Request["moveType"];
+   moveDate?: Request["moveDate"];
+   fromAddress?: Request["fromAddress"];
+   toAddress?: Request["toAddress"];
 }
 
 export interface ReceivedRequestsResponse {

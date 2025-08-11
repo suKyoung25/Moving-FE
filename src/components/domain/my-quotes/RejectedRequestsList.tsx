@@ -12,13 +12,14 @@ import ConfirmModal from "@/components/common/ConfirmModal";
 import { deleteEstimate } from "@/lib/api/estimate/requests/deleteEstimate";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/context/ToastConText";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function RejectedRequestsList() {
    const t = useTranslations("MyQuotes.Mover");
+   const locale = useLocale();
 
    const [page, setPage] = useState(1);
-   const { data, isLoading } = useRejectedEstimates(page);
+   const { data, isLoading } = useRejectedEstimates(page, locale);
    const { showSuccess, showError } = useToast();
 
    const [selectedEstimateId, setSelectedEstimateId] = useState<string | null>(

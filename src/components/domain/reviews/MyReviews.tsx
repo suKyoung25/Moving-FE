@@ -11,7 +11,7 @@ import Pagination from "@/components/common/Pagination";
 import EmptyState from "@/components/common/EmptyState";
 import EditDeleteReviewModal from "./EditDeleteReviewModal";
 import more from "@/assets/images/moreGrayIcon.svg";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { formatIsoToYMD } from "@/lib/utils";
 import { MyReview } from "@/lib/types";
@@ -22,6 +22,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function MyReviews() {
    const t = useTranslations("Reviews");
+   const locale = useLocale();
    const router = useRouter();
    const { showSuccess } = useToast();
    const queryClient = useQueryClient();
@@ -41,6 +42,7 @@ export default function MyReviews() {
    const { data, isLoading, isFetching, error, refetch } = useMyReviews({
       page: pagination.page,
       limit: pagination.limit,
+      targetLang: locale,
    });
 
    // 페이지네이션 핸들러

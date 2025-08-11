@@ -22,7 +22,7 @@ import DetailSections from "./DetailSections";
 import LineDivider from "../../common/LineDivider";
 import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const DashboardReviewSection = lazy(
    () => import("@/components/domain/dashboard/ReviewSection"),
@@ -68,6 +68,7 @@ const ErrorDisplay = memo(function ErrorDisplay({ error }: { error: string }) {
 // 🔧 Main component - t is used properly here
 export default memo(function MoverDetail() {
    const t = useTranslations("MoverDetail");
+   const locale = useLocale();
    const params = useParams();
    const { user } = useAuth();
 
@@ -95,8 +96,8 @@ export default memo(function MoverDetail() {
 
          const fetchPromise =
             authState.hasToken && authState.isLoggedIn
-               ? getMoverByIdWithAuth(moverId)
-               : getMoverByIdWithoutAuth(moverId);
+               ? getMoverByIdWithAuth(moverId, locale)
+               : getMoverByIdWithoutAuth(moverId, locale);
 
          const moverData = await fetchPromise;
 

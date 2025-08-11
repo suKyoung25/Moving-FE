@@ -8,12 +8,17 @@ import React, {
    useState,
 } from "react";
 import { Notification } from "@/lib/types/notification.types";
-import { connectSSE } from "@/lib/api/notification/notification";
+import {
+   connectSSE,
+   getNotifications,
+} from "@/lib/api/notification/notification";
 import { useAuth } from "./AuthContext";
-import { useQueryClient } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
 
 interface NotificationContextValue {
    realtimeNotifications: Notification[];
+   unreadCount: number | null;
+   refreshUnreadCount: () => void;
 }
 
 const NotificationContext = createContext<NotificationContextValue | null>(
@@ -24,20 +29,38 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
    const [realtimeNotifications, setRealtimeNotifications] = useState<
       Notification[]
    >([]);
+   const [unreadCount, setUnreadCount] = useState<number | null>(null);
    const { user } = useAuth();
-   const queryClient = useQueryClient();
+   const locale = useLocale();
+
+   // unreadCount 새로고침 함수
+   const refreshUnreadCount = () => {
+      if (!user) return;
+      getNotifications({ limit: 1 }, locale).then((res) => {
+         const rawCount = res.unreadCount ?? 0;
+         setUnreadCount(rawCount > 0 ? rawCount : null);
+      });
+   };
 
    useEffect(() => {
       if (!user) return; // 인증된 유저만 SSE 연결
+
+      // 초기 unreadCount 로드
+      refreshUnreadCount();
+
       const es = connectSSE((newNoti) => {
          setRealtimeNotifications((prev) => [newNoti, ...prev]);
-         queryClient.invalidateQueries({ queryKey: ["notifications"] });
+         // 실시간 알림 수신 시 unreadCount 새로고침
+         refreshUnreadCount();
       });
+
       return () => es?.close();
-   }, [user]);
+   }, [user, refreshUnreadCount]);
 
    return (
-      <NotificationContext.Provider value={{ realtimeNotifications }}>
+      <NotificationContext.Provider
+         value={{ realtimeNotifications, unreadCount, refreshUnreadCount }}
+      >
          {children}
       </NotificationContext.Provider>
    );
