@@ -7,7 +7,7 @@ import EditButtons from "./EditButtons";
 import MoverInfo from "./MoverInfo";
 import { getMoverProfile } from "@/lib/api/mover/getMoverProfile";
 import { Mover } from "@/lib/types/auth.types";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // 🔧 Fixed: Replace any with specific type
 interface MoverCardErrorBoundaryProps {
@@ -54,6 +54,7 @@ const ErrorFallback = () => {
 
 export default function MoverCard() {
    const t = useTranslations("Dashboard");
+   const locale = useLocale();
    const [mover, setMover] = useState<Mover | null>(null);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
@@ -65,7 +66,7 @@ export default function MoverCard() {
          setLoading(true);
 
          console.log("기사님 프로필 조회 시작...");
-         const moverData = await getMoverProfile();
+         const moverData = await getMoverProfile(locale);
          console.log("조회된 기사님 데이터:", moverData);
 
          setMover(moverData);
