@@ -83,6 +83,7 @@ export function useAuthSchemas() {
    return {
       nameSchema,
       phoneSchema,
+      checkPasswordSchema,
       signUpFormSchema,
       signInFormSchema,
       withdrawFormSchema,
