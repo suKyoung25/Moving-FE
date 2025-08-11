@@ -13,8 +13,12 @@ export default function MoverTitle({ type }: Prop) {
    const t = useTranslations("Sign");
 
    return (
-      <div className="mb-10" aria-labelledby="mover-page-title">
-         <Link href="/mover-search">
+      <header
+         className="mb-10"
+         role="banner"
+         aria-labelledby="mover-page-title"
+      >
+         <Link href="/mover-search" aria-label="홈으로 이동">
             <figure className="relative mx-auto h-11 w-22 lg:h-13 lg:w-26">
                <Image src={logo} alt={t("logoAlt")} fill />
             </figure>
@@ -30,6 +34,6 @@ export default function MoverTitle({ type }: Prop) {
                {t("generalUserPage")}
             </Link>
          </div>
-      </div>
+      </header>
    );
 }

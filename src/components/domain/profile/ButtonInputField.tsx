@@ -15,6 +15,7 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
    isServiceType,
    isArea,
    error,
+   labelId,
 }: InputFieldProps<T>) {
    const t = useTranslations("Profile");
    //각 버튼들 상수화
@@ -26,8 +27,8 @@ function ButtonInputField<T extends Record<string, FieldValue>>({
    if (!control) return null;
 
    return (
-      <div className="text-16-semibold lg:text-20-semibold flex flex-col leading-8">
-         <div className="mt-8 md:mt-4 lg:mt-8">
+      <div className="text-16-semibold lg:text-20-semibold flex flex-col gap-6 leading-8">
+         <div id={labelId}>
             {text}
             <span className="text-blue-300"> *</span>
             <ErrorText error={error?.message} position="left" />

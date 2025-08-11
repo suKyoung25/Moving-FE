@@ -27,10 +27,27 @@ export default function MoverProfilePostForm() {
       <form
          onSubmit={handleSubmit(onSubmit)}
          className="mt-6 flex w-full flex-col lg:mt-12"
+         aria-labelledby="profile-form-title"
       >
+         <h2 id="profile-form-title" className="sr-only">
+            기사 프로필 등록 폼
+         </h2>
+
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex flex-1 flex-col">
+               <GeneralInputField<MoverProfileInput>
+                  labelId="nickname-label"
+                  name="nickName"
+                  text="별명"
+                  placeholder="사이트에 노출될 이름을 입력해주세요"
+                  register={register}
+                  error={errors.nickName}
+               />
+
+               <hr className="border-line-100 m-0 border-t p-0" />
+
                <ImageInputField
+                  labelId="image-label"
                   name="image"
                   text={t("profileImageLabel")}
                   control={control}
@@ -40,6 +57,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField<MoverProfileInput>
+                  labelId="career-label"
                   name="nickName"
                   text={t("nickNameLabel")}
                   placeholder={t("nickNamePlaceholder")}
@@ -60,6 +78,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <GeneralInputField<MoverProfileInput>
+                  labelId="introduction-label"
                   name="introduction"
                   text={t("introductionLabel")}
                   placeholder={t("introductionPlaceholder")}
@@ -72,6 +91,7 @@ export default function MoverProfilePostForm() {
 
             <div className="flex-1">
                <TextAreaInputField
+                  labelId="description-label"
                   name="description"
                   text={t("descriptionLabel")}
                   placeholder={t("descriptionPlaceholder")}
@@ -82,6 +102,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 m-0 border-t p-0" />
 
                <ButtonInputField
+                  labelId="service-type-label"
                   name="serviceType"
                   text={t("providedServicesLabel")}
                   isServiceType={true}
@@ -96,6 +117,7 @@ export default function MoverProfilePostForm() {
                <hr className="border-line-100 mt-8 border-t p-0" />
 
                <ButtonInputField
+                  labelId="service-area-label"
                   name="serviceArea"
                   text={t("serviceAreasLabel")}
                   isArea={true}
@@ -109,8 +131,12 @@ export default function MoverProfilePostForm() {
             </div>
          </div>
 
-         <div className="mt-8 lg:pl-185">
-            <SolidButton disabled={!isValid || isLoading} type="submit">
+         <div className="mt-17 lg:pl-185">
+            <SolidButton
+               disabled={!isValid || isLoading}
+               type="submit"
+               aria-disabled={!isValid || isLoading}
+            >
                {isLoading ? t("loadingRegister") : t("startButton")}
             </SolidButton>
          </div>
