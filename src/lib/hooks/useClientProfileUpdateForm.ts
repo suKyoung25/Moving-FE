@@ -12,6 +12,7 @@ import { ServiceType } from "../types/client.types";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { useToast } from "@/context/ToastConText";
 import { useTranslations } from "next-intl";
+import { updateUserProfileInChats } from "../firebase/firebaseChat";
 
 export default function useClientProfileUpdateForm() {
    const t = useTranslations("Profile");
@@ -118,6 +119,44 @@ export default function useClientProfileUpdateForm() {
 
          await clientProfile.update(payload);
          showSuccess(t("profileUpdated")); // 알림창
+
+         const currentUser = user as Client;
+
+         // 이미지 변경 감지 개선
+         const hasImageChanged = (() => {
+            // 새로운 이미지가 업로드된 경우
+            if (data.profileImage instanceof File && imageUrl) {
+               return imageUrl !== currentUser.profileImage;
+            }
+            // 기존 이미지와 다른 문자열 이미지로 변경된 경우
+            if (
+               typeof data.profileImage === "string" &&
+               data.profileImage !== currentUser.profileImage
+            ) {
+               return true;
+            }
+            return false;
+         })();
+
+         const hasNameChanged = data.name && data.name !== currentUser.name;
+
+         if (hasImageChanged || hasNameChanged) {
+            const finalImageUrl = (() => {
+               if (data.profileImage instanceof File && imageUrl) {
+                  return imageUrl; // 새로 업로드된 이미지
+               }
+               if (typeof data.profileImage === "string") {
+                  return data.profileImage; // 기존 문자열 이미지
+               }
+               return undefined; // 변경사항 없음
+            })();
+
+            await updateUserProfileInChats(
+               user!.id,
+               data.name as string,
+               hasImageChanged ? finalImageUrl : undefined,
+            );
+         }
 
          // Toast 알림과 상태 안 겹치게 User 상태 즉각 반영
          setTimeout(async () => {

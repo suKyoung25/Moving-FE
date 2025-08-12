@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import {
    createCroppedImage,
    getConstrainedPosition,
+   getImageDisplayInfo,
 } from "@/lib/utils/profile.util";
 
 interface ImageEditModalProps {
@@ -39,10 +40,7 @@ export default function ImageEditModal({
    const t = useTranslations("Profile");
 
    const containerRef = useRef<HTMLDivElement>(null);
-   const container = containerRef.current;
-
    const imageRef = useRef<HTMLImageElement>(null);
-   const img = imageRef.current;
 
    const dragStartPos = useRef<DragState>({
       mouseX: 0,
@@ -62,18 +60,56 @@ export default function ImageEditModal({
       radius: 100,
    });
 
+   // 최소, 최대 반지름 정의
+   const MIN_RADIUS = 30;
+   const MAX_RADIUS = 120;
+
+   // 반응형 크롭 원 크기 계산 함수
+   const calculateResponsiveRadius = (width: number, height: number) => {
+      const baseRadius = Math.min(width, height) / 6;
+      return Math.min(MAX_RADIUS, Math.max(MIN_RADIUS, baseRadius));
+   };
+
    // 화면이 첫 렌더링 될 때 크롭의 위치
-   const handleImageLoad = useCallback(() => {
+   const updateCropCircle = useCallback(() => {
+      const container = containerRef.current;
+      const img = imageRef.current;
       if (!container || !img) return;
 
       const rect = container.getBoundingClientRect(); // 내장 메서드, 화면 기준으로 요소의 위치가 크기를 알려줌
+      const displayInfo = getImageDisplayInfo(img, rect);
+
+      const radius = calculateResponsiveRadius(
+         displayInfo.displayWidth,
+         displayInfo.displayHeight,
+      );
 
       setCropCircle({
-         x: rect.width / 2,
-         y: rect.height / 2,
-         radius: Math.min(rect.width, rect.height) / 6,
+         x: displayInfo.offsetX + displayInfo.displayWidth / 2,
+         y: displayInfo.offsetY + displayInfo.displayHeight / 2,
+         radius,
       });
    }, []);
+
+   // 이미지가 로드될 때 초기화
+   const handleImageLoad = useCallback(() => {
+      updateCropCircle();
+   }, [updateCropCircle]);
+
+   // 창 크기 변경 시 크롭 원 크기 조절
+   useEffect(() => {
+      if (!isOpen) return;
+
+      function handleResize() {
+         updateCropCircle();
+      }
+
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+         window.removeEventListener("resize", handleResize);
+      };
+   }, [isOpen, updateCropCircle]);
 
    // 이미지 크롭 원 크기, 위치 기억
    const startDrag = useCallback(
@@ -98,10 +134,13 @@ export default function ImageEditModal({
    // 크롭 원을 움직일 때
    const handleMouseMove = useCallback(
       (e: MouseEvent) => {
-         if (!dragging || !container) return;
+         const container = containerRef.current;
+         const img = imageRef.current;
+         if (!dragging || !container || !img) return;
 
          const rect = container.getBoundingClientRect();
          const dragStart = dragStartPos.current;
+         const displayInfo = getImageDisplayInfo(img, rect);
 
          if (dragging === "move") {
             const dx = e.clientX - dragStart.mouseX;
@@ -114,6 +153,7 @@ export default function ImageEditModal({
                newY,
                dragStart.radius,
                rect,
+               img,
             );
 
             setCropCircle((prev) => ({
@@ -130,20 +170,11 @@ export default function ImageEditModal({
                (mouseX - centerX) ** 2 + (mouseY - centerY) ** 2,
             );
 
-            const MIN_RADIUS = 30;
-
-            if (!img) return;
-
-            const scaleX = img.naturalWidth / rect.width;
-            const scaleY = img.naturalHeight / rect.height;
-
-            const maxRadiusX = img.naturalWidth / 2 / scaleX;
-            const maxRadiusY = img.naturalHeight / 2 / scaleY;
-
+            // 최대 반지름도 반응형으로 제한
             const maxRadius = Math.min(
-               maxRadiusX,
-               maxRadiusY,
-               Math.min(rect.width, rect.height) / 2,
+               displayInfo.displayWidth / 2,
+               displayInfo.displayHeight / 2,
+               MAX_RADIUS,
             );
 
             const newRadius = Math.min(
@@ -156,6 +187,7 @@ export default function ImageEditModal({
                centerY,
                newRadius,
                rect,
+               img,
             );
 
             setCropCircle({
@@ -165,7 +197,7 @@ export default function ImageEditModal({
             });
          }
       },
-      [dragging, getConstrainedPosition],
+      [dragging],
    );
 
    // 이미지 크롭 원 focus out 시
@@ -175,6 +207,8 @@ export default function ImageEditModal({
 
    // 이미지 수정 후 "확인" 버튼 누렀을 때
    const handleConfirm = useCallback(() => {
+      const container = containerRef.current;
+      const img = imageRef.current;
       if (!img || !container) return;
 
       const rect = container.getBoundingClientRect();
@@ -227,8 +261,9 @@ export default function ImageEditModal({
                   draggable={false}
                />
 
+               {/* 크롭 범위 */}
                <div
-                  className="absolute cursor-move rounded-full border-4 border-blue-500"
+                  className="absolute cursor-move rounded-full border-2 border-blue-500 md:border-4"
                   style={{
                      width: cropCircle.radius * 2,
                      height: cropCircle.radius * 2,
@@ -240,7 +275,7 @@ export default function ImageEditModal({
                >
                   {/* 이미지 크롭 원 사이즈 조절 */}
                   <div
-                     className="absolute right-0 bottom-0 h-6 w-6 cursor-nwse-resize rounded-full border border-blue-500 bg-white"
+                     className="absolute right-0 bottom-0 h-3 w-3 cursor-nwse-resize rounded-full border border-blue-500 bg-white md:h-6 md:w-6"
                      onMouseDown={(e) => startDrag(e, "resize")}
                   />
                </div>

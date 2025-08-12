@@ -4,7 +4,6 @@ import type { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { User } from "@/lib/types";
-import LanguageSwitcherMobile from "./LanguageSwitcherMobile";
 import { useTranslations } from "next-intl";
 
 const listVariants = {
@@ -117,7 +116,6 @@ export default function HamburgerMenu({
                ))}
             </motion.ul>
          </div>
-         <LanguageSwitcherMobile setIsHamburgerOpen={setIsHamburgerOpen} />
       </motion.div>
    );
 }

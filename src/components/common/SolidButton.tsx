@@ -17,7 +17,7 @@ export default function SolidButton({
       <button
          type={type}
          disabled={disabled}
-         className={`text-16-semibold bg-primary-blue-300 hover:bg-primary-blue-200 lg:text-20-semibold h-13.5 rounded-2xl px-4 text-white transition duration-200 disabled:!cursor-not-allowed disabled:bg-gray-100 lg:h-16 ${className} `}
+         className={`text-16-semibold bg-primary-blue-300 hover:bg-primary-blue-200 h-13.5 rounded-2xl px-4 py-3 text-white transition duration-200 disabled:!cursor-not-allowed disabled:bg-gray-100 lg:h-16 ${className} `}
          {...props}
       >
          {children}

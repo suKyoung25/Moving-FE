@@ -28,7 +28,7 @@ export default function NotificationModal({
 }) {
    const t = useTranslations("Notification");
    const locale = useLocale();
-   const { realtimeNotifications, refreshUnreadCount } = useNotification();
+   const { refreshUnreadCount } = useNotification();
    const { showError } = useToast();
    const router = useRouter();
    const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -38,17 +38,22 @@ export default function NotificationModal({
    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
       useNotificationsQuery(locale);
 
-   // 페이지 데이터를 flat하게 만들기
-   const fetchedNotifications =
-      data?.pages.flatMap((page) => page.notifications) ?? [];
+   const notifications = React.useMemo(() => {
+      if (!data || !data.pages || !Array.isArray(data.pages)) {
+         return [];
+      }
 
-   // 중복 제거 후 병합
-   const notifications = [
-      ...realtimeNotifications.filter(
-         (r) => !fetchedNotifications.some((f) => f.id === r.id),
-      ),
-      ...fetchedNotifications,
-   ];
+      return data.pages.flatMap((page) => {
+         if (
+            !page ||
+            !page.notifications ||
+            !Array.isArray(page.notifications)
+         ) {
+            return [];
+         }
+         return page.notifications;
+      });
+   }, [data]);
 
    const handleClick = async (item: Notification) => {
       try {

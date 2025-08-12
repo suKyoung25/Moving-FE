@@ -15,7 +15,7 @@ export default function ErrorText({ error, position = "right", name }: Prop) {
          role="alert"
          aria-hidden={!error}
          aria-label="발생한 오류"
-         className={`text-secondary-red-200 text-13-medium lg:text-16-medium ${textAlignClass} h-5 lg:h-6 ${error ? "opacity-100" : "opacity-0"}`}
+         className={`text-secondary-red-200 text-14-medium ${textAlignClass} h-5 lg:h-6 ${error ? "opacity-100" : "opacity-0"}`}
       >
          {error ?? ""}
       </p>
