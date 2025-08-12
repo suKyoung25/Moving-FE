@@ -52,7 +52,7 @@ export default function ChatRoomList() {
    const { user } = useAuth();
    const [rooms, setRooms] = useState<ChatRoomSummary[]>([]);
 
-   // ✅ 채팅 목록 페이지에서는 현재 채팅방을 null로 설정
+   // 채팅 목록 페이지에서는 현재 채팅방을 null로 설정
    useEffect(() => {
       setCurrentChatId(null);
    }, []);
@@ -183,7 +183,7 @@ export default function ChatRoomList() {
                      isActive,
                      hasUnreadMessages,
                      unreadCount,
-                     isOtherWithdrawn, // 추가
+                     isOtherWithdrawn,
                   });
                }
             }
@@ -214,7 +214,7 @@ export default function ChatRoomList() {
                      }}
                      className="border-line-100 hover:bg-hover-100 w-full cursor-pointer border-b px-2 py-3"
                   >
-                     {/* 🔥 개선된 레이아웃 구조 */}
+                     {/* 개선된 레이아웃 구조 */}
                      <div className="flex items-center gap-3">
                         {/* 프로필 이미지 - 고정 크기 */}
                         <div className="flex-shrink-0">
@@ -247,7 +247,6 @@ export default function ChatRoomList() {
                         {/* 메인 콘텐츠 영역 - flex-1로 남은 공간 사용 */}
                         <div className="min-w-0 flex-1">
                            {" "}
-                           {/* min-w-0이 핵심! */}
                            {/* 상단: 이름과 시간 */}
                            <div className="mb-1 flex items-center justify-between">
                               <div className="flex min-w-0 flex-1 items-center">

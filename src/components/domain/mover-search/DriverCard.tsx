@@ -20,8 +20,8 @@ import { useTranslations } from "next-intl";
 import LoginRequiredModal from "./LoginRequiredModal";
 import { useChat } from "@/context/ChatContext";
 import { initializeChatRoom } from "@/lib/firebase/firebaseChat";
-import { SiImessage } from "react-icons/si";
 import { useSupportHub } from "@/context/SupportHubContext";
+import ChatButton from "@/components/common/Chatbutton";
 
 interface DriverCardProps {
    mover: Mover;
@@ -204,17 +204,17 @@ export default memo(function DriverCard({
 
             <div className="flex flex-col">
                {/* 서비스 타입 칩들 */}
-               <div className="mb-2 flex items-center gap-2">
-                  {validServiceTypes.map((type) => (
-                     <MoveChip key={type} type={type} mini={false} />
-                  ))}
-                  {shouldShowDesignated && (
-                     <MoveChip type="DESIGNATED" mini={false} />
-                  )}
+               <div className="mb-2 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                     {validServiceTypes.map((type) => (
+                        <MoveChip key={type} type={type} mini={false} />
+                     ))}
+                     {shouldShowDesignated && (
+                        <MoveChip type="DESIGNATED" mini={false} />
+                     )}
+                  </div>
                   {user?.userType === "client" && (
-                     <button onClick={handleChatClick} className="hidden">
-                        <SiImessage size={20} />
-                     </button>
+                     <ChatButton onClick={handleChatClick} />
                   )}
                </div>
 
