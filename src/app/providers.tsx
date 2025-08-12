@@ -8,6 +8,8 @@ import RouterGuardLayout from "@/components/layout/RouterGuardLayout";
 import { FormWizardProvider } from "@/context/FormWizardContext";
 import ToastContainer from "@/components/common/ToastContainer";
 import { ToastProvider } from "@/context/ToastConText";
+import { ChatProvider } from "@/context/ChatContext";
+import { SupportHubProvider } from "@/context/SupportHubContext";
 
 export function Providers({ children }: { children: ReactNode }) {
    const [queryClient] = useState(() => new QueryClient());
@@ -16,12 +18,16 @@ export function Providers({ children }: { children: ReactNode }) {
       <AuthProvider>
          <RouterGuardLayout>
             <QueryClientProvider client={queryClient}>
-               <NotificationProvider>
-                  <ToastProvider>
-                     <FormWizardProvider>{children}</FormWizardProvider>
-                     <ToastContainer />
-                  </ToastProvider>
-               </NotificationProvider>
+               <ChatProvider>
+                  <SupportHubProvider>
+                     <NotificationProvider>
+                        <ToastProvider>
+                           <FormWizardProvider>{children}</FormWizardProvider>
+                           <ToastContainer />
+                        </ToastProvider>
+                     </NotificationProvider>
+                  </SupportHubProvider>
+               </ChatProvider>
             </QueryClientProvider>
          </RouterGuardLayout>
       </AuthProvider>

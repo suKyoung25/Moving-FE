@@ -19,7 +19,6 @@ import ProfileDropDownMenu from "@/components/common/ProfileDropdownMenu";
 import { useAuth } from "@/context/AuthContext";
 import NotificationModal from "../common/NotificationModal";
 import { routing } from "@/i18n/routing"; // locales 배열 접근용
-import LanguageSwitcherDesktop from "./LanguageSwitcherDesktop";
 import { useTranslations } from "next-intl";
 import { useNotification } from "@/context/NotificationContext";
 
@@ -169,7 +168,6 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                </button>
                {!user && (
                   <div className="flex items-center gap-6">
-                     <LanguageSwitcherDesktop />
                      <div className="bg-primary-blue-300 [&_*]:text-18-medium relative hidden min-h-11 min-w-32 rounded-2xl p-4 lg:block [&_*]:text-nowrap [&_*]:text-white [&_*]:transition-all [&_*]:duration-500 hover:[&>div]:opacity-100 hover:[&>span]:opacity-0">
                         <span className="absolute top-1/2 left-1/2 -translate-1/2 opacity-100">
                            {t("login")}
@@ -228,6 +226,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                            onClick={() =>
                               setIsProfileDropDownOpen((prev) => !prev)
                            }
+                           className="size-6 lg:size-8"
                         >
                            {user?.profileImage ? (
                               <Image
@@ -235,13 +234,15 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                                  alt={t("profileAlt")}
                                  width={32}
                                  height={32}
-                                 className="h-full w-full rounded-full"
+                                 className="size-6 rounded-full object-cover lg:size-8"
                               />
                            ) : (
                               <Image
                                  src={profileIcon}
+                                 width={32}
+                                 height={32}
                                  alt={t("profileDefaultAlt")}
-                                 className="lg:w-full"
+                                 className="size-6 rounded-full object-cover lg:size-8"
                               />
                            )}
                         </button>
@@ -251,7 +252,6 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         {user.name}
                         {t("honorific")}
                      </span>
-                     <LanguageSwitcherDesktop />
                   </div>
                )}
             </div>

@@ -18,6 +18,10 @@ import { useToast } from "@/context/ToastConText";
 import { EstimateStatus, Mover } from "@/lib/types";
 import { useTranslations } from "next-intl";
 import LoginRequiredModal from "./LoginRequiredModal";
+import { useChat } from "@/context/ChatContext";
+import { initializeChatRoom } from "@/lib/firebase/firebaseChat";
+import { SiImessage } from "react-icons/si";
+import { useSupportHub } from "@/context/SupportHubContext";
 
 interface DriverCardProps {
    mover: Mover;
@@ -34,9 +38,11 @@ export default memo(function DriverCard({
 }: DriverCardProps) {
    const t = useTranslations("MoverSearch");
 
+   const { openHub } = useSupportHub();
    const router = useRouter();
    const pathname = usePathname();
    const { user } = useAuth();
+   const { setChatId } = useChat();
    const { showSuccess, showError } = useToast();
 
    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -151,6 +157,34 @@ export default memo(function DriverCard({
       ],
    );
 
+   const handleChatClick = async (e: React.MouseEvent) => {
+      e.stopPropagation();
+
+      const clientId = user!.id;
+      const moverId = mover!.id;
+      const moverName = mover.nickName!;
+      const clientName = user!.name!;
+      const chatId = `${mover.id}_${user!.id}`;
+
+      // 프로필 이미지 추가 (빈 값이면 기본 이미지 처리됨)
+      const moverProfileImage = mover.profileImage || "";
+      const clientProfileImage = user!.profileImage || "";
+
+      await initializeChatRoom({
+         chatId,
+         moverId,
+         moverName,
+         moverProfileImage,
+         clientId,
+         clientName,
+         clientProfileImage,
+         initiatorId: user!.id, // 현재 사용자가 채팅을 시작함
+      });
+
+      setChatId(chatId);
+      openHub();
+   };
+
    // 카드 스타일을 메모이제이션
    const cardClassName = useMemo(() => {
       const baseClass =
@@ -176,6 +210,11 @@ export default memo(function DriverCard({
                   ))}
                   {shouldShowDesignated && (
                      <MoveChip type="DESIGNATED" mini={false} />
+                  )}
+                  {user?.userType === "client" && (
+                     <button onClick={handleChatClick} className="hidden">
+                        <SiImessage size={20} />
+                     </button>
                   )}
                </div>
 
