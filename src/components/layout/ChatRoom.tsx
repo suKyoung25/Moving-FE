@@ -39,6 +39,18 @@ export default function ChatRoom() {
    const textareaRef = useRef<HTMLTextAreaElement>(null);
    const wasTypingRef = useRef(false);
 
+   //맥으로 보낸 경우 딜레이 해결
+   const [isComposing, setIsComposing] = useState(false);
+
+   const handleCompositionStart = () => {
+      setIsComposing(true);
+   };
+
+   const handleCompositionEnd = () => {
+      setIsComposing(false);
+   };
+   // 맥으로 보낸 경우 딜레이 해결 종료
+
    const { data: messages = [] } = useChatMessages(chatId, user?.id ?? "");
    const { mutate: leaveChatRoomMutate } = useLeaveChatRoom();
 
@@ -179,7 +191,7 @@ export default function ChatRoom() {
    };
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === "Enter" && !e.shiftKey) {
+      if (e.key === "Enter" && !e.shiftKey && !isComposing) {
          e.preventDefault();
          handleSend();
       }
@@ -399,6 +411,8 @@ export default function ChatRoom() {
                ref={textareaRef}
                value={input}
                onChange={(e) => setInput(e.target.value)}
+               onCompositionStart={handleCompositionStart}
+               onCompositionEnd={handleCompositionEnd}
                onKeyDown={handleKeyDown}
                rows={1}
                placeholder={
