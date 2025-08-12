@@ -4,8 +4,17 @@ import { useAuth } from "@/context/AuthContext";
 import { usePostReply } from "@/lib/api/community/query";
 import { useState } from "react";
 import LoginRequiredModal from "../mover-search/LoginRequiredModal";
+import Image from "next/image";
+import commentIcon from "@/assets/images/commentIcon.svg";
 
-export default function CommentInput({ id }: { id: string }) {
+export default function CommentInput({
+   id,
+   count,
+}: {
+   id: string;
+   count: number;
+}) {
+   const [isCount, setIsCount] = useState<number>(count);
    const [content, setContent] = useState("");
    const [isLogin, setIsLogin] = useState<boolean>(false);
    const { mutate: postReply, isPending, isError } = usePostReply();
@@ -28,6 +37,7 @@ export default function CommentInput({ id }: { id: string }) {
          {
             onSuccess: () => {
                setContent("");
+               setIsCount((prev) => prev + 1);
             },
          },
       );
@@ -35,6 +45,10 @@ export default function CommentInput({ id }: { id: string }) {
 
    return (
       <>
+         <div className="mt-10 flex items-center gap-1">
+            <Image alt="댓글아이콘" src={commentIcon} />
+            <p>{isCount}</p>
+         </div>
          <form onSubmit={handleSubmit} className="mt-5">
             <input
                value={content}

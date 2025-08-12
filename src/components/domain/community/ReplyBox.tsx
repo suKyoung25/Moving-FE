@@ -1,17 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import profile from "@/assets/images/profileIcon.svg";
-import { ReplyWithDetails } from "@/lib/types/community.types";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useGetReplies } from "@/lib/api/community/query";
+import { ReplyWithDetails } from "@/lib/types/community.types";
 
-interface ReplyBoxProps {
-   replies: ReplyWithDetails[];
-}
+export default function ReplyBox({ community }: { community: string }) {
+   const { data, isPending } = useGetReplies(community);
 
-export default function ReplyBox({ replies }: ReplyBoxProps) {
+   if (isPending) return <div>로딩중...</div>;
+
+   console.log(data);
+
    return (
       <>
-         {replies.map((reply) => (
+         {data.map((reply: ReplyWithDetails) => (
             <div key={reply.id} className="mt-10">
                <div className="flex items-center gap-2">
                   <div className="h-9 w-9 overflow-hidden rounded-full">

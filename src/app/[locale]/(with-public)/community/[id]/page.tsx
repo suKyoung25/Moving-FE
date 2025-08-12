@@ -1,6 +1,4 @@
 import PageTitle from "@/components/layout/PageTitle";
-import Image from "next/image";
-import commentIcon from "@/assets/images/commentIcon.svg";
 import CommentInput from "@/components/domain/community/CommentInput";
 import ProfileBox from "@/components/domain/community/ProfileBox";
 import ReplyBox from "@/components/domain/community/ReplyBox";
@@ -31,12 +29,8 @@ export default async function page({
             <p className="text-14-medium md:text-16-medium mt-5 whitespace-pre-wrap">
                {data.content}
             </p>
-            <div className="mt-10 flex items-center gap-1">
-               <Image alt="댓글아이콘" src={commentIcon} />
-               <p>{data.replies.length}</p>
-            </div>
-            <CommentInput id={id} />
-            <ReplyBox replies={data.replies} />
+            <CommentInput id={id} count={data.replyCount} />
+            <ReplyBox community={id} />
          </section>
       </div>
    );
