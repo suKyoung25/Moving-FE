@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ReviewFormBody } from "./ReviewFormBody";
 import { WritableReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
@@ -29,6 +29,9 @@ export default function ReviewModal({
 }: ReviewModalProps) {
    const t = useTranslations("Reviews");
    const { createReviewSchema } = useReviewSchemas();
+
+   const firstInputRef = useRef<HTMLInputElement>(null); // 포커스 관리용
+   const prevActiveElement = useRef<HTMLElement | null>(null); // 포커스 복원용
 
    const {
       handleSubmit,
@@ -65,6 +68,8 @@ export default function ReviewModal({
 
    useEffect(() => {
       if (isOpen && selectedEstimate) {
+         // 모달 오픈 시 한 번만 실행
+         prevActiveElement.current = document.activeElement as HTMLElement;
          reset({
             rating: 0,
             content: "",
@@ -72,8 +77,30 @@ export default function ReviewModal({
          });
          setHovered(null);
          setApiMessage("");
+         //  포커스 첫 입력으로 이동
+         setTimeout(() => {
+            firstInputRef.current?.focus();
+         }, 0);
+      }
+      if (!isOpen && prevActiveElement.current) {
+         prevActiveElement.current.focus(); // 모달 닫으면 포커스 복원
       }
    }, [isOpen, selectedEstimate, reset]);
+
+   // ESC로 닫기
+   useEffect(() => {
+      if (!isOpen) return;
+      const onKeyDown = (e: KeyboardEvent) => {
+         if (e.key === "Escape") {
+            onClose();
+            reset();
+            setHovered(null);
+            setApiMessage("");
+         }
+      };
+      window.addEventListener("keydown", onKeyDown);
+      return () => window.removeEventListener("keydown", onKeyDown);
+   }, [isOpen, onClose, reset]);
 
    const rating = watch("rating") ?? 0;
    const content = watch("content") ?? "";
@@ -89,7 +116,10 @@ export default function ReviewModal({
    };
 
    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+         onSubmit={handleSubmit(onSubmit)}
+         aria-labelledby="review-modal-title"
+      >
          <input
             type="hidden"
             {...register("estimateId")}
@@ -128,7 +158,9 @@ export default function ReviewModal({
                errorContent={errors.content?.message}
             />
             {apiMessage && (
-               <p className="mt-2 text-sm text-red-500">{apiMessage}</p>
+               <p className="mt-2 text-sm text-red-500" role="alert">
+                  {apiMessage}
+               </p>
             )}
          </InputModal>
       </form>

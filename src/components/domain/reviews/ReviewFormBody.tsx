@@ -33,6 +33,10 @@ export function ReviewFormBody({
    errorContent,
 }: ReviewFormBodyProps) {
    const t = useTranslations("Reviews");
+
+   const ratingErrorId = errorRating ? "rating-error" : undefined; //  에러 메시지와 연결할 id
+   const contentErrorId = errorContent ? "content-error" : undefined;
+
    return (
       <>
          {/* 카드 정보 */}
@@ -47,7 +51,11 @@ export function ReviewFormBody({
             <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                <Image
                   src={estimate.moverProfileImage || profile}
-                  alt={t("profileAlt")}
+                  alt={
+                     estimate.moverProfileImage
+                        ? t("profileAlt", { name: estimate.moverNickName })
+                        : t("defaultProfileAlt")
+                  }
                   fill
                   className="object-cover"
                />
@@ -64,16 +72,25 @@ export function ReviewFormBody({
                      <span className="bg-bg-400 rounded-sm px-1 py-0.5 lg:px-1.5 lg:py-1">
                         {t("moveDate")}
                      </span>
-                     <span className="text-black-300">
+                     <time
+                        className="text-black-300"
+                        dateTime={estimate.moveDate}
+                     >
                         {formatIsoToYMD(estimate.moveDate)}
-                     </span>
+                     </time>
                   </span>
-                  <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
+                  <span
+                     className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"
+                     aria-hidden="true"
+                  ></span>
                   <span className="flex items-center gap-1.5 lg:gap-3">
                      <span className="bg-bg-400 rounded-sm px-1 py-0.5 lg:px-1.5 lg:py-1">
                         {t("price")}
                      </span>
-                     <span className="text-black-300">
+                     <span
+                        className="text-black-300"
+                        aria-label={`${estimate.price.toLocaleString()} ${t("money")}`} // ✅ 접근성 개선: 가격과 통화를 함께 읽음
+                     >
                         {estimate.price.toLocaleString()}
                         {t("money")}
                      </span>
@@ -84,54 +101,86 @@ export function ReviewFormBody({
          <hr className="bg-line-100 my-5 h-px w-full border-0 lg:hidden" />
          {/* 별점 */}
          <div>
-            <span className="text-16-semibold lg:text-20-semibold">
+            <span
+               className="text-16-semibold lg:text-20-semibold"
+               id="rating-label"
+            >
                {t("selectRating")}
             </span>
-            <div className="mt-4 mb-6 flex gap-1">
-               {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                     key={star}
-                     type="button"
-                     onClick={() => setRating(star)}
-                     onMouseEnter={() => setHovered(star)}
-                     onMouseLeave={() => setHovered(null)}
-                     className="focus:outline-none"
-                     aria-label={t("starAria", { point: star })}
-                  >
-                     <Image
-                        src={
-                           star <= (hovered ?? rating) ? yellowStar : grayStar
-                        }
-                        alt={
-                           star <= (hovered ?? rating)
-                              ? t("yellowStarAlt")
-                              : t("grayStarAlt")
-                        }
-                        width={48}
-                        height={48}
-                        className="h-6 w-6 lg:h-12 lg:w-12"
-                     />
-                  </button>
-               ))}
+            <div
+               className="mt-4 mb-6 flex gap-1"
+               role="radiogroup"
+               aria-labelledby="rating-label"
+               aria-describedby={ratingErrorId}
+            >
+               {[1, 2, 3, 4, 5].map((star) => {
+                  const checked = star === rating;
+                  return (
+                     <button
+                        key={star}
+                        type="button"
+                        role="radio"
+                        aria-checked={checked}
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHovered(star)}
+                        onMouseLeave={() => setHovered(null)}
+                        className="focus:ring-0 focus:outline-none"
+                        aria-label={t("starAria", { point: star })}
+                     >
+                        <Image
+                           src={
+                              star <= (hovered ?? rating)
+                                 ? yellowStar
+                                 : grayStar
+                           }
+                           alt=""
+                           aria-hidden="true"
+                           width={48}
+                           height={48}
+                           className="h-6 w-6 lg:h-12 lg:w-12"
+                        />
+                     </button>
+                  );
+               })}
                {errorRating && (
-                  <p className="mt-2 text-sm text-red-500">{errorRating}</p>
+                  <p
+                     id={ratingErrorId}
+                     role="alert"
+                     aria-live="assertive"
+                     className="mt-2 text-sm text-red-500"
+                  >
+                     {errorRating}
+                  </p>
                )}
             </div>
             <hr className="bg-line-100 my-5 h-px w-full border-0 lg:my-8" />
          </div>
          {/* 후기 입력 */}
          <div>
-            <div className="text-16-semibold lg:text-20-semibold mb-4">
+            <label
+               htmlFor="review-content"
+               className="text-16-semibold lg:text-20-semibold mb-4 block"
+            >
                {t("detailReview")}
-            </div>
+            </label>
             <textarea
                className="bg-bg-200 h-40 w-full resize-none rounded-2xl px-4 py-3.5"
                placeholder={t("placeholder")}
                value={content}
                onChange={(e) => setContent(e.target.value)}
+               aria-required="true"
+               aria-invalid={!!errorContent}
+               aria-describedby={contentErrorId}
             />
             {errorContent && (
-               <p className="mt-2 text-sm text-red-500">{errorContent}</p>
+               <p
+                  id={contentErrorId}
+                  role="alert"
+                  aria-live="assertive"
+                  className="mt-2 text-sm text-red-500"
+               >
+                  {errorContent}
+               </p>
             )}
          </div>
       </>

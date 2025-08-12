@@ -59,13 +59,21 @@ export default function MoverProfile({
            : "lg:w-14 lg:h-14 w-11.5 h-11.5 mr-3",
    ].join(" ");
 
+   const likeButtonLabel = isLiked
+      ? t("unlikeMover", { name: nickName })
+      : t("likeMover", { name: nickName });
+
    return (
       <div className={containerClass}>
          {/* 프로필 이미지 */}
          <div className={profileImageClass}>
             <Image
                src={profileImage || profile}
-               alt="프로필"
+               alt={
+                  profileImage
+                     ? t("profileAlt", { name: nickName })
+                     : t("defaultProfileAlt")
+               }
                fill
                className="object-cover"
             />
@@ -86,12 +94,22 @@ export default function MoverProfile({
                {/*  showHeart가 true일 때만 하트와 찜 개수 표시 */}
                {showHeart && (
                   <div className="flex items-center">
-                     <button onClick={handleLikedClick}>
+                     <button
+                        onClick={handleLikedClick}
+                        aria-pressed={isLiked}
+                        aria-label={
+                           likeButtonLabel ??
+                           t(isLiked ? "unlikeMover" : "likeMover", {
+                              name: nickName,
+                           })
+                        }
+                     >
                         <Image
                            src={isLiked ? heart : inActiveHeart}
                            width={24}
                            height={24}
-                           alt="좋아요"
+                           alt=""
+                           aria-hidden="true"
                            className={
                               forceMobileStyle ? "mr-0.5" : "mr-0.5 lg:mr-1"
                            }
@@ -116,8 +134,20 @@ export default function MoverProfile({
                      : "text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4"
                }
             >
-               <span className="flex items-center gap-0.5">
-                  <Image src={star} width={16} height={16} alt="별점" />
+               <span
+                  className="flex items-center gap-0.5"
+                  role="img"
+                  aria-label={t("ratingAria", {
+                     rating: averageReviewRating.toFixed(1),
+                  })}
+               >
+                  <Image
+                     src={star}
+                     width={16}
+                     height={16}
+                     alt=""
+                     aria-hidden="true"
+                  />
                   <span className="text-black-300">
                      {averageReviewRating.toFixed(1)}
                   </span>
@@ -129,6 +159,7 @@ export default function MoverProfile({
                         ? "bg-line-200 mx-2.5 h-3 w-px"
                         : "bg-line-200 mx-2.5 h-3 w-px lg:mx-4"
                   }
+                  aria-hidden="true"
                ></span>
                <span className="flex items-center gap-0.5">
                   <span>{t("career")}</span>

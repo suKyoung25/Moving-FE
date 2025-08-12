@@ -62,7 +62,7 @@ export default function MyReviews() {
    const totalPages = data?.data.pagination.totalPages ?? pagination.totalPages;
 
    if (error) {
-      return <div>{t("errorOccurred")}</div>;
+      return <div role="alert">{t("errorOccurred")}</div>;
    }
 
    if (isLoading || isFetching) {
@@ -72,10 +72,15 @@ export default function MyReviews() {
    return (
       <div>
          {/* 리뷰 리스트 */}
-         <div className="grid grid-cols-1 gap-8 lg:mb-6 lg:grid-cols-2 lg:gap-6">
+         <div
+            className="grid grid-cols-1 gap-8 lg:mb-6 lg:grid-cols-2 lg:gap-6"
+            role="list"
+            aria-label={t("myReviewList")}
+         >
             {reviews.map((review) => (
                <div
                   key={review.id}
+                  role="listitem"
                   className="border-line-100 relative h-54.5 w-full rounded-2xl border bg-white px-3.5 pt-5 pb-3.5 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 md:px-4 lg:mb-6 lg:h-86.5 lg:px-6 lg:py-8"
                >
                   <div className="mb-3.5 flex gap-2 lg:gap-3">
@@ -88,14 +93,22 @@ export default function MyReviews() {
                   </div>
                   <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 h-fit gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
                      <span>{t("createdAt")} </span>
-                     <span>{formatIsoToYMD(review.createdAt)}</span>
+                     <time dateTime={formatIsoToYMD(review.createdAt)}>
+                        {formatIsoToYMD(review.createdAt)}
+                     </time>
                   </div>
                   <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md border-b-1 bg-white pb-2.5 shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
                      {/* 프로필 이미지 */}
                      <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                         <Image
                            src={review.moverProfileImage || profile}
-                           alt={t("profileAlt")}
+                           alt={
+                              review.moverProfileImage
+                                 ? t("profileAlt", {
+                                      name: review.moverNickName,
+                                   })
+                                 : t("defaultProfileAlt")
+                           }
                            className="object-cover"
                         />
                      </div>
@@ -110,6 +123,9 @@ export default function MyReviews() {
                                  setEditModalOpen(true);
                                  setSelectedReview(review);
                               }}
+                              aria-label={t("editDeleteReviewAria", {
+                                 name: review.moverNickName,
+                              })}
                               className="h-6 w-6"
                            >
                               <Image
@@ -117,6 +133,7 @@ export default function MyReviews() {
                                  width={24}
                                  height={24}
                                  alt={t("editDeleteAlt")}
+                                 aria-hidden="true"
                                  style={{ transform: "rotate(90deg)" }}
                               />
                            </button>
@@ -124,20 +141,36 @@ export default function MyReviews() {
                         <div className="text-13-medium lg:text-16-medium mt-1.5 flex items-center text-gray-300 lg:mt-2">
                            <span className="flex items-center gap-1.5 lg:gap-3">
                               <span>{t("moveDate")}</span>
-                              <span className="text-black-300">
+                              <time
+                                 className="text-black-300"
+                                 dateTime={review.moveDate}
+                              >
                                  {formatIsoToYMD(review.moveDate)}
-                              </span>
+                              </time>
                            </span>
                            <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
-                           <span className="flex items-center gap-0.5 lg:gap-1">
+                           <span
+                              className="flex items-center gap-0.5 lg:gap-1"
+                              aria-hidden="true"
+                           >
                               <span>{t("price")} </span>
-                              <span className="text-black-300">
+                              <span
+                                 className="text-black-300"
+                                 aria-label={`${review.price.toLocaleString()} ${t("money")}`}
+                              >
                                  {review.price.toLocaleString()}
                                  {t("money")}
                               </span>
                            </span>
                         </div>
-                        <div className="hidden items-center lg:mt-4 lg:flex">
+                        {/* 별점 */}
+                        <div
+                           className="hidden items-center lg:mt-4 lg:flex"
+                           role="img"
+                           aria-label={t("ratingAria", {
+                              rating: review.rating,
+                           })}
+                        >
                            {Array(review.rating)
                               .fill(0)
                               .map((_, i) => (
@@ -147,6 +180,7 @@ export default function MyReviews() {
                                     width={24}
                                     height={24}
                                     alt={t("yellowStarAlt")}
+                                    aria-hidden="true"
                                  />
                               ))}
                            {Array(5 - Number(review.rating))
@@ -158,6 +192,7 @@ export default function MyReviews() {
                                     width={24}
                                     height={24}
                                     alt={t("grayStarAlt")}
+                                    aria-hidden="true"
                                  />
                               ))}
                         </div>
@@ -175,15 +210,21 @@ export default function MyReviews() {
             page={pagination.page}
             totalPages={totalPages}
             onPageChange={handlePageChange}
+            aria-label={t("paginationNav")}
          />
 
          {/* 리뷰 목록이 없을 때 */}
          {!isLoading && reviews.length === 0 && (
-            <div className="mt-46 flex flex-col items-center justify-center">
+            <div
+               className="mt-46 flex flex-col items-center justify-center"
+               role="status"
+               aria-live="polite"
+            >
                <EmptyState message={t("noReview")} />
                <SolidButton
                   className="my-6 max-w-45 lg:my-8"
                   onClick={() => router.replace("?tab=writable")}
+                  aria-label={t("goToWriteReview")}
                >
                   {t("goToWrite")}
                </SolidButton>

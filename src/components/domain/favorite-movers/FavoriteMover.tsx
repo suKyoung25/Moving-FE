@@ -54,15 +54,20 @@ export default function FavoriteMover() {
 
    if (isPending) return <div>{t("loading")}</div>;
    if (error) {
-      return <div>{t("errorOccurred")}</div>;
+      return <div role="alert">{t("errorOccurred")}</div>;
    }
 
    return (
       <>
-         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+         <div
+            className="grid grid-cols-1 gap-6 lg:grid-cols-2"
+            role="list"
+            aria-label={t("favoriteMoverList")}
+         >
             {movers.map((mover) => (
                <div
                   key={mover.id}
+                  role="listitem"
                   className="border-line-100 h-37.5 w-full rounded-2xl border bg-white px-3.5 py-4 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 lg:mb-6 lg:h-50.5 lg:px-6 lg:py-5"
                >
                   <div className="mb-3.5 flex gap-2 lg:gap-3">
@@ -75,6 +80,9 @@ export default function FavoriteMover() {
                   <div
                      role="button"
                      tabIndex={0}
+                     aria-label={t("moverCardClickAria", {
+                        name: mover.nickName,
+                     })}
                      onClick={() => handleProfileClick(mover.id)}
                      onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
@@ -88,6 +96,7 @@ export default function FavoriteMover() {
                         big={true}
                         profileImage={mover.profileImage}
                         isLiked={mover.isLiked}
+                        aria-pressed={mover.isLiked}
                         handleLikedClick={(e) => handleLikedClick(e, mover.id)}
                         nickName={mover.nickName}
                         favoriteCount={mover.favoriteCount}
@@ -104,13 +113,19 @@ export default function FavoriteMover() {
             page={pageInfo.page}
             totalPages={pageInfo.totalPages}
             onPageChange={handlePageChange}
+            aria-label={t("paginationNav")}
          />
          {!isPending && movers.length === 0 && (
-            <div className="mt-46 flex flex-col items-center justify-center">
+            <div
+               className="mt-46 flex flex-col items-center justify-center"
+               role="status"
+               aria-live="polite"
+            >
                <EmptyState message={t("noFavoriteMover")} />
                <SolidButton
                   className="my-6 max-w-45 lg:my-8"
                   onClick={() => router.replace("/mover-search")}
+                  aria-label={t("goToFavoriteMoversAria")}
                >
                   {t("goToFavorite")}
                </SolidButton>
