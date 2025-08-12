@@ -20,7 +20,6 @@ import { useTranslations } from "next-intl";
 import LoginRequiredModal from "./LoginRequiredModal";
 import { useChat } from "@/context/ChatContext";
 import { initializeChatRoom } from "@/lib/firebase/firebaseChat";
-import { SiImessage } from "react-icons/si";
 import { useSupportHub } from "@/context/SupportHubContext";
 import ChatButton from "@/components/common/Chatbutton";
 

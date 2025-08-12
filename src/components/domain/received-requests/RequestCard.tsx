@@ -8,7 +8,6 @@ import RequestActionModal from "./RequestActionModal";
 import { useRouter } from "next/navigation";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
 import { useTranslations } from "next-intl";
-import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { createChatRoomIfNotExists } from "@/lib/firebase/createChatRoomIfNotExists";
 import { useChat } from "@/context/ChatContext";
 import { useAuth } from "@/context/AuthContext";
