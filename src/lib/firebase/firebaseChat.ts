@@ -167,7 +167,7 @@ const checkAndDeleteChatRoom = async (chatId: string): Promise<void> => {
    }
 };
 
-// 채팅방을 나간 참가자들을 다시 활성화 (새 메시지가 올 때) : 이거 꼭 살리기
+// 채팅방을 나간 참가자들을 다시 활성화 (새 메시지가 올 때) : Todo : 확인 필요
 // const reactivateLeftParticipants = async (
 //    chatId: string,
 //    senderId: string,
@@ -220,7 +220,7 @@ export const markMessagesAsRead = async (chatId: string, userId: string) => {
       const participant = participantSnapshot.val() as ChatParticipant;
 
       const updates: Record<string, boolean> = {};
-      let updateCount = 0;
+      // let updateCount = 0;
 
       snapshot.forEach((child) => {
          const msg = child.val() as ChatMessage;
@@ -234,7 +234,7 @@ export const markMessagesAsRead = async (chatId: string, userId: string) => {
 
          if (shouldMarkAsRead && child.key) {
             updates[`${child.key}/isRead`] = true;
-            updateCount++;
+            // updateCount++;
          }
       });
 
@@ -347,7 +347,7 @@ export const initializeChatRoom = async ({
    }
 };
 
-// ✅ 2. 수정된 메시지 전송 (상대방 자동 활성화)
+// 2. 수정된 메시지 전송 (상대방 자동 활성화)
 export const sendMessage = async (
    chatId: string,
    senderId: string,
@@ -376,11 +376,11 @@ export const sendMessage = async (
    const hasMessagesRef = ref(database, `chats/${chatId}/hasMessages`);
    await set(hasMessagesRef, true);
 
-   // ✅ 메시지를 보낼 때 상대방을 자동으로 활성화
+   // 메시지를 보낼 때 상대방을 자동으로 활성화
    await activateOtherParticipant(chatId, senderId);
 };
 
-// ✅ 3. 상대방 활성화 함수
+// 3. 상대방 활성화 함수
 const activateOtherParticipant = async (
    chatId: string,
    senderId: string,
@@ -502,11 +502,11 @@ export const updateUserProfileInChats = async (
 
          if (chat.participants && chat.participants[userId]) {
             if (typeof chat.participants[userId] === "object") {
-               // ✅ 이름은 항상 업데이트
+               // 이름은 항상 업데이트
                updates[`${chatId}/participants/${userId}/userName`] =
                   newUserName;
 
-               // ✅ 이미지 업데이트 로직 개선
+               // 이미지 업데이트 로직 개선
                if (newProfileImage !== undefined) {
                   const validImageUrl = getValidProfileImage(newProfileImage);
                   updates[`${chatId}/participants/${userId}/profileImage`] =
@@ -519,18 +519,18 @@ export const updateUserProfileInChats = async (
       if (Object.keys(updates).length > 0) {
          await update(chatsRef, updates);
 
-         const chatCount = new Set(
-            Object.keys(updates).map((key) => key.split("/")[0]),
-         ).size;
+         // const chatCount = new Set(
+         //    Object.keys(updates).map((key) => key.split("/")[0]),
+         // ).size;
       } else {
       }
    } catch (error) {
       console.error("채팅방 프로필 정보 업데이트 오류:", error);
-      throw error; // ✅ 에러를 다시 throw해서 상위에서 처리할 수 있도록
+      throw error; // 에러를 다시 throw해서 상위에서 처리할 수 있도록
    }
 };
 
-// ✅ 수정된 getValidProfileImage 함수
+// 수정된 getValidProfileImage 함수
 const getValidProfileImage = (
    profileImage: string | null | undefined,
 ): string => {
@@ -724,7 +724,6 @@ export const markAllChatsAsRead = async (userId: string): Promise<void> => {
 
       const chats = snapshot.val();
       const updates: Record<string, boolean> = {};
-      let totalUpdatedMessages = 0;
 
       for (const chatId in chats) {
          const chat = chats[chatId];
@@ -746,7 +745,6 @@ export const markAllChatsAsRead = async (userId: string): Promise<void> => {
 
                   if (shouldMarkAsRead) {
                      updates[`${chatId}/messages/${messageId}/isRead`] = true;
-                     totalUpdatedMessages++;
                   }
                });
             }
