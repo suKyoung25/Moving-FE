@@ -8,3 +8,4 @@ export * from "./client.types";
 export * from "./notification.types";
 export * from "./favorite.types";
 export * from "./estimate-calculator.types";
+export * from "./firebase.types";

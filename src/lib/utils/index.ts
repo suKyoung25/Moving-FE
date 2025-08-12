@@ -10,3 +10,4 @@ export * from "./formatAddress.util";
 export * from "./price.utils";
 export * from "./ai.utils";
 export * from "./distance.utils";
+export * from "./chatNotification.util";

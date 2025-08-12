@@ -1,19 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { ReceivedRequest } from "@/lib/types";
+import { Mover, ReceivedRequest } from "@/lib/types";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
 import MoveTextCard from "../my-quotes/MoveTextCard";
 import RequestActionModal from "./RequestActionModal";
 import { useRouter } from "next/navigation";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
-import { useLocale, useTranslations } from "next-intl";
-import formatAddress from "@/lib/utils/formatAddress.util";
+import { useTranslations } from "next-intl";
+import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
+import { createChatRoomIfNotExists } from "@/lib/firebase/createChatRoomIfNotExists";
+import { useChat } from "@/context/ChatContext";
+import { useAuth } from "@/context/AuthContext";
+import { useSupportHub } from "@/context/SupportHubContext";
 
 export default function RequestCard({ req }: { req: ReceivedRequest }) {
    const t = useTranslations("ReceivedRequests");
-   const locale = useLocale();
+   const { openHub } = useSupportHub();
 
+   const { user } = useAuth();
+   const { setChatId } = useChat();
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [modalType, setModalType] = useState<"accept" | "reject" | null>(null);
    const router = useRouter();
@@ -32,6 +38,32 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
       router.push(`/received-requests/${req.id}`);
    };
 
+   const handleChatClick = async (e: React.MouseEvent) => {
+      e.stopPropagation();
+
+      const clientId = req.clientId;
+      const moverId = user!.id;
+      const moverName = (user as Mover).nickName as string;
+      const clientName = req.clientName;
+      const chatId = `${user!.id}_${clientId}`;
+
+      const moverProfileImage = user!.profileImage || "";
+      const clientProfileImage = req.clientProfileImage || "";
+
+      await createChatRoomIfNotExists({
+         chatId,
+         moverId,
+         moverName,
+         moverProfileImage,
+         clientId,
+         clientName,
+         clientProfileImage,
+      });
+
+      setChatId(chatId);
+      openHub();
+   };
+
    return (
       <>
          {/* 요청 카드 UI */}
@@ -43,6 +75,9 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
                <div className="flex gap-2">
                   <MoveChip type={(req.moveType as ChipType) ?? "PENDING"} />
                   {req.isDesignated && <MoveChip type="DESIGNATED" />}
+                  <button onClick={handleChatClick} className="hidden">
+                     <IoChatbubbleEllipsesSharp />
+                  </button>
                </div>
                <span className="text-16-semibold lg:text-20-semibold">
                   {req.clientName} {t("clientHonorific")}
@@ -63,9 +98,9 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
                         </span>
                      </div>
                      <MoveTextCard text={t("departureLabel")} />
-                     <span>{formatAddress(req.fromAddress, locale)}</span>
+                     <span>{req.fromAddress.slice(0, 6)}</span>
                      <MoveTextCard text={t("destinationLabel")} />
-                     <span>{formatAddress(req.toAddress, locale)}</span>
+                     <span>{req.toAddress.slice(0, 6)}</span>
                   </div>
                </div>
                <div
