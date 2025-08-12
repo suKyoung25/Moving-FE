@@ -47,13 +47,10 @@ export default function ChatTabPanel() {
             <div className="flex h-full flex-col p-4">
                <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-18-semibold lg:text-22-semibold">대화</h2>
-                  <ReadAllButton onClick={handleReadAll} />
-
-                  {/* {!isMarkingRead ? (
-                     <ReadAllButton onClick={handleReadAll} />
-                  ) : (
-                     <div className="text-sm text-gray-500">처리 중...</div>
-                  )} */}
+                  <ReadAllButton
+                     onClick={handleReadAll}
+                     tooltipClass="!-left-5 "
+                  />
                </div>
                <div className="scroll scrollbar-hide flex-1 overflow-y-auto">
                   <ChatRoomList />

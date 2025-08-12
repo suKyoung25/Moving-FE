@@ -13,6 +13,7 @@ import { createChatRoomIfNotExists } from "@/lib/firebase/createChatRoomIfNotExi
 import { useChat } from "@/context/ChatContext";
 import { useAuth } from "@/context/AuthContext";
 import { useSupportHub } from "@/context/SupportHubContext";
+import ChatButton from "@/components/common/Chatbutton";
 
 export default function RequestCard({ req }: { req: ReceivedRequest }) {
    const t = useTranslations("ReceivedRequests");
@@ -72,12 +73,12 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
             className="[&_div]:md:gap-4c block cursor-pointer [&_div]:gap-3"
          >
             <div className="border-line-100 flex flex-col rounded-2xl border px-3.5 py-4 lg:px-6 lg:py-5">
-               <div className="flex gap-2">
-                  <MoveChip type={(req.moveType as ChipType) ?? "PENDING"} />
-                  {req.isDesignated && <MoveChip type="DESIGNATED" />}
-                  <button onClick={handleChatClick} className="hidden">
-                     <IoChatbubbleEllipsesSharp />
-                  </button>
+               <div className="flex items-center justify-between">
+                  <div>
+                     <MoveChip type={(req.moveType as ChipType) ?? "PENDING"} />
+                     {req.isDesignated && <MoveChip type="DESIGNATED" />}
+                  </div>
+                  <ChatButton onClick={handleChatClick} />
                </div>
                <span className="text-16-semibold lg:text-20-semibold">
                   {req.clientName} {t("clientHonorific")}
