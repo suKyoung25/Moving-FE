@@ -6,6 +6,7 @@ import deleteUserInfo from "../api/auth/requests/deleteUserInfo";
 import { AuthFetchError, UserType } from "../types";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastConText";
+import { updateUserStatusOnWithdraw } from "../firebase/firebaseChat";
 
 export function useUserWithdrawForm(onSuccess: () => void) {
    const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,18 @@ export function useUserWithdrawForm(onSuccess: () => void) {
          const res = await deleteUserInfo(type, payload);
 
          if (res.message.includes("탈퇴")) {
+            // 회원탈퇴 성공 후 Firebase 채팅방 처리
+            try {
+               console.log("회원탈퇴 후 채팅방 처리 시작:", user.id);
+               await updateUserStatusOnWithdraw(user.id);
+               console.log("회원탈퇴 후 채팅방 처리 완료");
+            } catch (firebaseError) {
+               // Firebase 에러는 로그만 남기고 탈퇴 프로세스는 계속 진행
+               console.error(
+                  "채팅방 처리 중 오류 (탈퇴는 완료됨):",
+                  firebaseError,
+               );
+            }
             onSuccess();
 
             showSuccess("정상적으로 회원탈퇴가 진행되었습니다");

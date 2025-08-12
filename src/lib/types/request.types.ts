@@ -48,6 +48,7 @@ export interface Params {
 export interface ReceivedRequest {
    id: string;
    clientId: string;
+   clientProfileImage: string | null;
    clientName: string;
    fromAddress: string;
    toAddress: string;

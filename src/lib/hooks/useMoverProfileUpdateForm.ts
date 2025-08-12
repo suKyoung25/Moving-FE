@@ -15,6 +15,7 @@ import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
 import updateProfileImage from "../api/auth/requests/updateProfileImage";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
+import { updateUserProfileInChats } from "../firebase/firebaseChat";
 
 function useMoverProfileUpdateForm() {
    const t = useTranslations("Profile");
@@ -91,6 +92,51 @@ function useMoverProfileUpdateForm() {
          const res = await updateMoverProfile(processedData);
 
          if (res) {
+            // 프로필 이미지가 변경된 경우, Firebase 채팅방들도 업데이트
+            const currentUser = user as Mover;
+
+            // 이미지 변경 감지 개선
+            const hasImageChanged = (() => {
+               // 새로운 이미지가 업로드된 경우
+               if (data.image instanceof File && imageUrl) {
+                  return imageUrl !== currentUser.profileImage;
+               }
+               // 기존 이미지와 다른 문자열 이미지로 변경된 경우
+               if (
+                  typeof data.image === "string" &&
+                  data.image !== currentUser.profileImage
+               ) {
+                  return true;
+               }
+               return false;
+            })();
+
+            const hasNickNameChanged =
+               data.nickName && data.nickName !== currentUser.nickName;
+
+            console.log("이미지 변경됨:", hasImageChanged);
+            console.log("닉네임 변경됨:", hasNickNameChanged);
+
+            if (hasImageChanged || hasNickNameChanged) {
+               // ✅ 수정된 부분: 실제 업데이트할 이미지 URL 결정
+               const finalImageUrl = (() => {
+                  if (data.image instanceof File && imageUrl) {
+                     return imageUrl; // 새로 업로드된 이미지
+                  }
+                  if (typeof data.image === "string") {
+                     return data.image; // 기존 문자열 이미지
+                  }
+                  return undefined; // 변경사항 없음
+               })();
+
+               console.log("Firebase에 업데이트할 이미지 URL:", finalImageUrl);
+
+               await updateUserProfileInChats(
+                  user!.id,
+                  data.nickName,
+                  hasImageChanged ? finalImageUrl : undefined,
+               );
+            }
             await refreshUser();
             showSuccess(t("profileUpdated"));
             refreshUser(); // TODO: 이거 왜 한번 더 호출하는 건가요?

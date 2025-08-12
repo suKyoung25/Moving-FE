@@ -11,7 +11,6 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
    placeholder,
    register,
    error,
-   labelId,
 }: InputFieldProps<T>) {
    //아래 로직은 career의 경우에만 해당됨
    const inputRef = useRef<HTMLInputElement | null>(null);
@@ -42,20 +41,12 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
    };
 
    return (
-      <div className="flex flex-col gap-4 leading-8">
-         <label
-            htmlFor={labelId}
-            className="text-16-semibold lg:text-20-semibold"
-         >
+      <div className="flex flex-col gap-2 leading-8">
+         <div className="text-16-semibold">
             {text}
-            <span className="text-blue-300" aria-hidden="true">
-               {" "}
-               *
-            </span>
-         </label>
-
+            <span className="text-blue-300"> *</span>
+         </div>
          <input
-            id={labelId}
             type="text"
             {...register?.(name)}
             ref={(el) => {
@@ -64,10 +55,8 @@ function GeneralInputField<T extends Record<string, FieldValue>>({
             }}
             onBlur={handleBlur}
             onFocus={handleFocus}
-            className={`mg:h-13 bg-bg-200 mt-4 h-13 w-full rounded-2xl pl-3.5 placeholder:text-gray-300 lg:mb-4 lg:h-16 ${error ? "border border-red-500" : ""}`}
+            className={`bg-bg-200 w-full rounded-2xl px-4 py-3 placeholder:text-gray-300 ${error ? "border border-red-500" : ""}`}
             placeholder={placeholder}
-            aria-describedby={error ? `${labelId}-error` : undefined}
-            aria-invalid={!!error}
          />
 
          <ErrorText error={error?.message} />

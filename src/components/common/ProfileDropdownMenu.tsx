@@ -4,15 +4,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import WithdrawModal from "./WithdrawModal";
-import ReactDOM from "react-dom";
 
 export default function ProfileDropDownMenu() {
    const t = useTranslations("Header");
    const { user, logout } = useAuth();
    const router = useRouter();
-   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
    const handleLogout = () => {
       logout();
@@ -56,21 +52,7 @@ export default function ProfileDropDownMenu() {
             <button onClick={handleLogout} className="block w-full">
                {t("logout")}
             </button>
-            <hr className="border-line-200" />
-            <button
-               onClick={() => {
-                  setIsWithdrawModalOpen(true);
-               }}
-               className="text-secondary-red-200 block w-full underline"
-            >
-               {t("withdraw")}
-            </button>
          </div>
-         {isWithdrawModalOpen &&
-            ReactDOM.createPortal(
-               <WithdrawModal onClose={() => setIsWithdrawModalOpen(false)} />,
-               document.body,
-            )}
       </div>
    );
 }
