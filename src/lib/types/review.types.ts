@@ -12,6 +12,7 @@ export interface MyReview extends WritableReview {
    id: string;
    rating: number;
    content: string;
+   images: string[];
    createdAt: Date;
 }
 
@@ -41,6 +42,7 @@ export interface Review {
    id: string;
    rating: number;
    content: string;
+   images: string[];
    createdAt: Date;
    clientId: string;
    clientName: string;

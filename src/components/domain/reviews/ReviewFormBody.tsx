@@ -8,8 +8,10 @@ import { WritableReview } from "@/lib/types";
 import { formatIsoToYMD } from "@/lib/utils";
 import { isChipType } from "@/lib/utils/moveChip.util";
 import { useTranslations } from "next-intl";
+import ReviewImageUpload from "./ReviewImageUpload";
+import { Control, FieldValues, Path } from "react-hook-form";
 
-type ReviewFormBodyProps = {
+type ReviewFormBodyProps<T extends FieldValues = FieldValues> = {
    estimate: WritableReview;
    rating: number;
    setRating: (n: number) => void;
@@ -19,9 +21,10 @@ type ReviewFormBodyProps = {
    setContent: (v: string) => void;
    errorRating: string | undefined;
    errorContent: string | undefined;
+   control?: Control<T>;
 };
 
-export function ReviewFormBody({
+export function ReviewFormBody<T extends FieldValues = FieldValues>({
    estimate,
    rating,
    setRating,
@@ -31,7 +34,8 @@ export function ReviewFormBody({
    setContent,
    errorRating,
    errorContent,
-}: ReviewFormBodyProps) {
+   control,
+}: ReviewFormBodyProps<T>) {
    const t = useTranslations("Reviews");
 
    const ratingErrorId = errorRating ? "rating-error" : undefined; //  에러 메시지와 연결할 id
@@ -46,7 +50,7 @@ export function ReviewFormBody({
             )}
             {estimate.isDesignatedEstimate && <MoveChip type="DESIGNATED" />}
          </div>
-         <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
+         <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-6 lg:border lg:px-4.5 lg:py-6">
             {/* 프로필 이미지 */}
             <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
                <Image
@@ -108,7 +112,7 @@ export function ReviewFormBody({
                {t("selectRating")}
             </span>
             <div
-               className="mt-4 mb-6 flex gap-1"
+               className="my-3 flex gap-1"
                role="radiogroup"
                aria-labelledby="rating-label"
                aria-describedby={ratingErrorId}
@@ -153,7 +157,7 @@ export function ReviewFormBody({
                   </p>
                )}
             </div>
-            <hr className="bg-line-100 my-5 h-px w-full border-0 lg:my-8" />
+            <hr className="bg-line-100 my-3 h-px w-full border-0" />
          </div>
          {/* 후기 입력 */}
          <div>
@@ -164,7 +168,7 @@ export function ReviewFormBody({
                {t("detailReview")}
             </label>
             <textarea
-               className="bg-bg-200 h-40 w-full resize-none rounded-2xl px-4 py-3.5"
+               className="bg-bg-200 h-20 w-full resize-none rounded-2xl px-4 py-3.5 lg:h-30"
                placeholder={t("placeholder")}
                value={content}
                onChange={(e) => setContent(e.target.value)}
@@ -183,6 +187,19 @@ export function ReviewFormBody({
                </p>
             )}
          </div>
+
+         {/* 이미지 업로드 */}
+         {control && (
+            <div className="mt-3">
+               <ReviewImageUpload
+                  name={"images" as Path<T>}
+                  control={control}
+                  labelId="review-images"
+                  text={t("uploadImages")}
+                  maxImages={3}
+               />
+            </div>
+         )}
       </>
    );
 }
