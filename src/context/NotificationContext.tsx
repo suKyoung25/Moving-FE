@@ -98,10 +98,10 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
                      };
                   }
 
-                  // pages 배열이 비어있으면 새로 생성
+                  // pages 배열이 비어있거나 첫 번째 요소가 없으면 새로 생성
                   const oldDataObj = oldData as Record<string, unknown>;
                   const pages = oldDataObj.pages as unknown[];
-                  if (pages.length === 0) {
+                  if (pages.length === 0 || !pages[0]) {
                      return {
                         pages: [
                            {
@@ -151,6 +151,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
             // unreadCount 즉시 증가
             setUnreadCount((prev) => (prev || 0) + 1);
+
+            // 캐시 무효화로 서버와 동기화
+            queryClient.invalidateQueries({
+               queryKey: ["notifications", locale],
+            });
          },
          () => {
             // SSE 연결 성공 시

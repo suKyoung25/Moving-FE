@@ -79,7 +79,7 @@ export default function Step3({
                {t("from")}
             </label>
             <OutlinedButton
-               className="text-left lg:w-140"
+               className="w-full text-left lg:min-w-140"
                onClick={() => {
                   setTargetField("from");
                   setShowModal(true);
@@ -91,7 +91,7 @@ export default function Step3({
                {t("to")}
             </label>
             <OutlinedButton
-               className="text-left lg:w-140"
+               className="w-full text-left lg:min-w-140"
                onClick={() => {
                   setTargetField("to");
                   setShowModal(true);
