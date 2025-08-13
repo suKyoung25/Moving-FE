@@ -9,7 +9,7 @@ export default function ChatWrapper({
    className?: string;
 }) {
    const base =
-      "flex flex-col gap-4 self-end w-full max-w-80 lg:max-w-156 lg:gap-6 bg-white rounded-l-3xl rounded-br-3xl";
+      "flex flex-col gap-4 self-end w-fit min-w-80 lg:max-w-156 lg:gap-6 bg-white rounded-l-3xl rounded-br-3xl";
 
    return <div className={`${base} ${className}`}>{children}</div>;
 }

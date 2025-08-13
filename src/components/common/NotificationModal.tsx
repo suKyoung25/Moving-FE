@@ -39,6 +39,8 @@ export default function NotificationModal({
       useNotificationsQuery(locale);
 
    const notifications = React.useMemo(() => {
+      if (isLoading) return [];
+
       if (!data || !data.pages || !Array.isArray(data.pages)) {
          return [];
       }
@@ -58,7 +60,7 @@ export default function NotificationModal({
    const handleClick = async (item: Notification) => {
       try {
          await readNotification(item.id);
-         queryClient.invalidateQueries({ queryKey: ["notifications"] });
+         queryClient.invalidateQueries({ queryKey: ["notifications", locale] });
          refreshUnreadCount();
          if (!item.targetId) {
             return;
@@ -86,7 +88,7 @@ export default function NotificationModal({
    const handleReadAll = async () => {
       try {
          await readAllNotifications();
-         queryClient.invalidateQueries({ queryKey: ["notifications"] });
+         queryClient.invalidateQueries({ queryKey: ["notifications", locale] });
          refreshUnreadCount();
       } catch (err) {
          console.error("모든 알림 읽기 실패", err);
