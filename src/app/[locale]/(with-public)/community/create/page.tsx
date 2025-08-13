@@ -24,7 +24,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function page() {
+export default function CreateCommunity() {
    const router = useRouter();
    const { user } = useAuth();
    const [toast, setToast] = useState<{

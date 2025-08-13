@@ -45,13 +45,11 @@ export function useDeleteReply() {
 
    return useMutation({
       mutationFn: deleteReply,
-      onSuccess: (data, replyId) => {
-         // 댓글 목록 쿼리 무효화하여 다시 가져오기
+      onSuccess: () => {
          queryClient.invalidateQueries({
             queryKey: ["communityReplies"],
          });
 
-         // 커뮤니티 상세 데이터도 무효화 (댓글 수 업데이트)
          queryClient.invalidateQueries({
             queryKey: ["community"],
          });
