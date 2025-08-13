@@ -52,11 +52,11 @@ export default function SortDropdown({
    return (
       <div
          ref={dropdownRef}
-         className="relative inline-block text-left lg:pb-2"
+         className="relative inline-block text-left lg:pt-6 lg:pb-2"
       >
          <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-12-semibold lg:text-14-semibold flex h-8 w-24 items-center justify-center gap-1 rounded-lg lg:h-10 lg:w-28"
+            className="text-14-medium lg:text-16-medium flex h-8 w-24 items-center justify-center gap-1 rounded-lg lg:h-10 lg:w-28"
          >
             {selected.label}
             <Image
@@ -72,7 +72,7 @@ export default function SortDropdown({
                   <div
                      key={option.value}
                      onClick={() => handleSelect(option)}
-                     className="text-12-medium lg:text-14-medium flex h-8 w-full cursor-pointer items-center px-3 hover:bg-gray-100 lg:h-10"
+                     className="text-14-medium lg:text-16-medium hover:bg-hover-100 flex h-8 w-full cursor-pointer items-center px-3 lg:h-10"
                   >
                      {option.label}
                   </div>
