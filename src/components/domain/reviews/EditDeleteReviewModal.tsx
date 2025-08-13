@@ -146,19 +146,37 @@ export default function EditDeleteReviewModal({
       }
    };
 
-   const onFormSubmit = handleSubmit(onSubmit);
+   // 폼 제출 이벤트 핸들러: 실제 제출 지연시키고 확인 모달 띄움
+   const onFormSubmit = (event: React.FormEvent) => {
+      event.preventDefault(); // 폼 제출 기본동작 차단
+      const rating = watch("rating") ?? 0;
+      const content = watch("content") ?? "";
+      const images = watch("images") ?? [];
 
-   const openDeleteConfirmModal = () => {
-      setIsDeleteConfirmOpen(true);
+      // 변경사항 없는 경우
+      if (
+         rating === review.rating &&
+         content === review.content &&
+         JSON.stringify(images) === JSON.stringify(review.images)
+      ) {
+         setApiMessage(t("noChangesError"));
+         // 수정 확인 모달은 열지 않음
+         return;
+      }
+
+      setApiMessage("");
+      setIsEditConfirmOpen(true); // 확인 모달 열기
    };
 
-   const closeDeleteConfirmModal = () => {
-      setIsDeleteConfirmOpen(false);
+   const handleDelete = () => {
+      setApiMessage("");
+      deleteMutation.mutate(review.id);
+      closeDeleteConfirmModal();
    };
 
-   const closeEditConfirmModal = () => {
-      setIsEditConfirmOpen(false);
-   };
+   const openDeleteConfirmModal = () => setIsDeleteConfirmOpen(true);
+   const closeDeleteConfirmModal = () => setIsDeleteConfirmOpen(false);
+   const closeEditConfirmModal = () => setIsEditConfirmOpen(false);
 
    const loading = updateMutation.isPending || deleteMutation.isPending;
 
@@ -231,10 +249,7 @@ export default function EditDeleteReviewModal({
             onClose={closeDeleteConfirmModal}
             title={t("deleteConfirmTitle")}
             description={t("deleteConfirmDescription")}
-            onConfirm={() => {
-               deleteMutation.mutate(review.id);
-               closeDeleteConfirmModal();
-            }}
+            onConfirm={handleDelete}
          />
 
          {/* 수정 확인 모달 */}
@@ -243,10 +258,7 @@ export default function EditDeleteReviewModal({
             onClose={closeEditConfirmModal}
             title={t("editConfirmTitle")}
             description={t("editConfirmDescription")}
-            onConfirm={() => {
-               onFormSubmit();
-               closeEditConfirmModal();
-            }}
+            onConfirm={handleSubmit(onSubmit)}
          />
       </form>
    );
