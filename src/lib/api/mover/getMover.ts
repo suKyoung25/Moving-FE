@@ -49,6 +49,8 @@ export const getMoverByIdWithAuth = async (
    id: string,
    targetLang?: string,
 ): Promise<Mover> => {
+   await delay(2000);
+
    const endpoint = `/movers/${id}?targetLang=${targetLang}`;
    return await tokenFetch(endpoint, { method: "GET" });
 };
@@ -58,6 +60,8 @@ export const getMoverByIdWithoutAuth = async (
    id: string,
    targetLang?: string,
 ): Promise<Mover> => {
+   await delay(2000);
+
    const endpoint = `/movers/${id}?targetLang=${targetLang}`;
    return await defaultFetch(endpoint, { method: "GET" });
 };

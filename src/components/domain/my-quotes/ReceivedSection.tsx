@@ -25,7 +25,7 @@ export default function ReceivedSection({
          : estimates;
 
    return (
-      <section className="md:border-line-100 md:mx-auto md:w-150 md:rounded-3xl md:border md:px-8 md:py-4 md:shadow-[-2px_-2px_10px_0px_rgba(220,220,220,0.14),2px_2px_10px_0px_rgba(220,220,220,0.14)] lg:w-350 lg:px-10 lg:py-12">
+      <section className="md:border-line-100 rounded-2xl p-4 shadow md:mx-auto md:w-150 md:rounded-3xl md:border md:p-0 md:px-8 md:py-4 lg:w-350 lg:px-10 lg:py-12">
          <p className="text-16-semibold lg:text-24-semibold mb-6 lg:mb-10">
             {t("estimateInfoTitle")}
          </p>

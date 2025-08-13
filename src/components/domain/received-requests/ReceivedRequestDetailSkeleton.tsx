@@ -2,7 +2,7 @@ export default function ReceivedRequestDetailSkeleton() {
    return (
       <div className="animate-pulse">
          {/* 카드 상단 */}
-         <div className="border-line-100 rounded-2xl border bg-white px-4 py-5 lg:px-6 lg:py-6">
+         <div className="border-line-100 rounded-2xl border bg-white px-4 py-5 shadow lg:px-6 lg:py-6">
             <div className="flex flex-col gap-6">
                {/* 뱃지 영역 */}
                <div className="flex items-center gap-3 lg:gap-4">

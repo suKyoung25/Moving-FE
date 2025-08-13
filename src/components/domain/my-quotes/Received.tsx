@@ -5,10 +5,10 @@ import { DataItem, GroupedByRequest } from "@/lib/types";
 import EmptyState from "@/components/common/EmptyState";
 import { useReceivedEstimates } from "@/lib/api/estimate/query";
 import { useInView } from "react-intersection-observer";
-import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import { useLocale, useTranslations } from "next-intl";
 import ReceivedSection from "./ReceivedSection";
+import ReceivedSectionSkeleton from "./ReceivedSectionSkeleton";
 
 function groupByRequest(data: DataItem[]): GroupedByRequest[] {
    const map = new Map<string, GroupedByRequest>();
@@ -54,7 +54,12 @@ export default function Received() {
 
    if (isLoading)
       return (
-         <SkeletonLayout count={6} SkeletonComponent={SentQuotesSkeleton} />
+         <div className="flex flex-col gap-6 lg:gap-8">
+            <SkeletonLayout
+               count={2}
+               SkeletonComponent={ReceivedSectionSkeleton}
+            />
+         </div>
       );
 
    if (allData.length === 0 || isError)

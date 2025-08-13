@@ -1,7 +1,7 @@
 "use client";
 export default function RejectedRequestsSkeleton() {
    return (
-      <div className="animate-pulse rounded-2xl bg-white px-3.5 py-4 lg:px-6 lg:py-5">
+      <div className="animate-pulse rounded-2xl bg-white px-3.5 py-4 shadow lg:px-6 lg:py-5">
          {/* 상단 칩 영역 */}
          <div className="flex gap-1 md:gap-2 lg:gap-3">
             <div className="bg-primary-blue-100 h-6 w-14 rounded-sm" />

@@ -13,6 +13,8 @@ import { cancelRequest } from "@/lib/api/estimate/requests/cancelRequest";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/context/ToastConText";
 import { useFormWizard } from "@/context/FormWizardContext";
+import QuotationInfoSkeleton from "./QuotationInfoSkeleton";
+import SkeletonLayout from "@/components/common/SkeletonLayout";
 
 // 요청한 견적
 export default function Requested() {
@@ -88,7 +90,15 @@ export default function Requested() {
       return () => observer.unobserve(current);
    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-   if (isLoading) return <div>{t("loading")}</div>;
+   if (isLoading)
+      return (
+         <div className="flex flex-col gap-6 lg:gap-8">
+            <SkeletonLayout
+               count={6}
+               SkeletonComponent={QuotationInfoSkeleton}
+            />
+         </div>
+      );
 
    if (requests.length === 0)
       return <EmptyState message={t("emptyRequestMessage")} />;
