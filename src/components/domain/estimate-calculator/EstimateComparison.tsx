@@ -39,7 +39,8 @@ export default function EstimateComparison({
             >
                <p className="text-black-400 mb-1 text-xs">{t("basic")}</p>
                <p className="text-primary-blue-300 text-lg font-bold">
-                  {formatPrice(basicEstimate.total)}원
+                  {formatPrice(basicEstimate.total)}
+                  {t("currency")}
                </p>
             </div>
             <div
@@ -49,7 +50,8 @@ export default function EstimateComparison({
             >
                <p className="text-black-400 mb-1 text-xs">{t("ai")}</p>
                <p className="text-primary-blue-500 text-lg font-bold">
-                  {formatPrice(aiEstimate.price)}원
+                  {formatPrice(aiEstimate.price)}
+                  {t("currency")}
                </p>
             </div>
          </div>

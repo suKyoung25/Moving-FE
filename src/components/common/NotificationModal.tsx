@@ -41,21 +41,17 @@ export default function NotificationModal({
    const notifications = React.useMemo(() => {
       if (isLoading) return [];
 
-      if (!data || !data.pages || !Array.isArray(data.pages)) {
+      if (!data || !Array.isArray(data?.pages)) {
          return [];
       }
 
-      return data.pages.flatMap((page) => {
-         if (
-            !page ||
-            !page.notifications ||
-            !Array.isArray(page.notifications)
-         ) {
+      return data?.pages.flatMap((page) => {
+         if (!page || !Array.isArray(page.notifications)) {
             return [];
          }
          return page.notifications;
       });
-   }, [data]);
+   }, [data, isLoading]);
 
    const handleClick = async (item: Notification) => {
       try {
@@ -137,7 +133,7 @@ export default function NotificationModal({
                <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
                   {t("loading")}
                </div>
-            ) : notifications.length > 0 ? (
+            ) : !isLoading && notifications.length > 0 ? (
                notifications.map((item, idx) => (
                   <button
                      key={idx}
