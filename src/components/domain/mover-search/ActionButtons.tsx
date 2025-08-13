@@ -40,7 +40,7 @@ export default function ActionButtons({
    return (
       <>
          {/* Desktop Layout - 사이드바에 고정 */}
-         <div className="hidden lg:block lg:p-5">
+         {/* <div className="hidden lg:block lg:p-5">
             <div className="mb-4">
                <p className="text-14-semibold lg:text-20-bold mb-1">
                   {mover.nickName} {t("requestDesignatedEstimate")}
@@ -60,12 +60,12 @@ export default function ActionButtons({
                   setIsResultModalOpen={setIsResultModalOpen}
                />
             </div>
-         </div>
+         </div> */}
 
          {/* Mobile Layout - 하단 floating */}
-         <div className="lg:hidden">
-            <div className="fixed right-0 bottom-0 left-0 z-50">
-               <div className="mx-auto flex w-80 flex-row space-x-3 p-4 md:w-[36rem]">
+         <div>
+            <div>
+               <div className="flex flex-row space-x-3 p-4">
                   <FavoriteButton
                      mover={mover}
                      onFavoriteChange={onFavoriteChange}
@@ -79,8 +79,6 @@ export default function ActionButtons({
                   />
                </div>
             </div>
-            {/* 하단 floating 버튼을 위한 여백 */}
-            <div className="h-20"></div>
          </div>
 
          {isResultModalOpen && (
