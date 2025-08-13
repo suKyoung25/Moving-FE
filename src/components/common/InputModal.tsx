@@ -87,7 +87,7 @@ export default function InputModal({
                   />
                </button>
             </div>
-            <div className="py-6.5 lg:py-10">{children}</div>
+            <div className="py-6.5">{children}</div>
             <SolidButton disabled={!isActive} type="submit">
                {buttonTitle}
             </SolidButton>

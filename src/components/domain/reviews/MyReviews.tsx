@@ -10,6 +10,7 @@ import SolidButton from "@/components/common/SolidButton";
 import Pagination from "@/components/common/Pagination";
 import EmptyState from "@/components/common/EmptyState";
 import EditDeleteReviewModal from "./EditDeleteReviewModal";
+import ReviewImages from "./ReviewImages";
 import more from "@/assets/images/moreGrayIcon.svg";
 import { useLocale, useTranslations } from "next-intl";
 import { isChipType } from "@/lib/utils/moveChip.util";
@@ -81,14 +82,14 @@ export default function MyReviews() {
                <div
                   key={review.id}
                   role="listitem"
-                  className="border-line-100 relative h-54.5 w-full rounded-2xl border bg-white px-3.5 pt-5 pb-3.5 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 md:px-4 lg:mb-6 lg:h-86.5 lg:px-6 lg:py-8"
+                  className="border-line-100 rounded-2xl border bg-white p-4 shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] lg:p-6"
                >
                   <div className="mb-3.5 flex gap-2 lg:gap-3">
-                     {isChipType(review.moveType) ? (
+                     {isChipType(review.moveType) && (
                         <MoveChip type={review.moveType} />
-                     ) : null}
+                     )}
                      {review.isDesignatedEstimate && (
-                        <MoveChip type={"DESIGNATED"} />
+                        <MoveChip type="DESIGNATED" />
                      )}
                   </div>
                   <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 h-fit gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
@@ -109,6 +110,7 @@ export default function MyReviews() {
                                    })
                                  : t("defaultProfileAlt")
                            }
+                           fill
                            className="object-cover"
                         />
                      </div>
@@ -120,27 +122,26 @@ export default function MyReviews() {
                            </span>
                            <button
                               onClick={() => {
-                                 setEditModalOpen(true);
                                  setSelectedReview(review);
+                                 setEditModalOpen(true);
                               }}
-                              aria-label={t("editDeleteReviewAria", {
-                                 name: review.moverNickName,
-                              })}
-                              className="h-6 w-6"
+                              className="text-gray-400 hover:text-gray-600"
+                              aria-label={t("editDeleteAria")}
                            >
                               <Image
                                  src={more}
+                                 alt={t("editDeleteAlt")}
                                  width={24}
                                  height={24}
-                                 alt={t("editDeleteAlt")}
-                                 aria-hidden="true"
                                  style={{ transform: "rotate(90deg)" }}
                               />
                            </button>
                         </div>
                         <div className="text-13-medium lg:text-16-medium mt-1.5 flex items-center text-gray-300 lg:mt-2">
                            <span className="flex items-center gap-1.5 lg:gap-3">
-                              <span>{t("moveDate")}</span>
+                              <span className="bg-bg-400 rounded-sm px-1 py-0.5 lg:px-1.5 lg:py-1">
+                                 {t("moveDate")}
+                              </span>
                               <time
                                  className="text-black-300"
                                  dateTime={review.moveDate}
@@ -148,12 +149,14 @@ export default function MyReviews() {
                                  {formatIsoToYMD(review.moveDate)}
                               </time>
                            </span>
-                           <span className="bg-line-200 mx-2.5 h-3 w-px lg:mx-4"></span>
                            <span
-                              className="flex items-center gap-0.5 lg:gap-1"
+                              className="bg-line-200 mx-2.5 hidden h-3 w-px sm:block lg:mx-4"
                               aria-hidden="true"
-                           >
-                              <span>{t("price")} </span>
+                           ></span>
+                           <span className="flex items-center gap-1.5 lg:gap-3">
+                              <span className="bg-bg-400 rounded-sm px-1 py-0.5 lg:px-1.5 lg:py-1">
+                                 {t("price")}
+                              </span>
                               <span
                                  className="text-black-300"
                                  aria-label={`${review.price.toLocaleString()} ${t("money")}`}
@@ -201,6 +204,9 @@ export default function MyReviews() {
                   <div className="text-14-regular lg:text-20-regular line-clamp-2 h-12 text-gray-500 lg:h-16">
                      {review.content}
                   </div>
+
+                  {/* 리뷰 이미지 */}
+                  <ReviewImages images={review.images} className="mt-4" />
                </div>
             ))}
          </div>
@@ -222,17 +228,17 @@ export default function MyReviews() {
             >
                <EmptyState message={t("noReview")} />
                <SolidButton
-                  className="my-6 max-w-45 lg:my-8"
-                  onClick={() => router.replace("?tab=writable")}
-                  aria-label={t("goToWriteReview")}
+                  onClick={() => router.push("/reviews")}
+                  className="mt-4"
+                  aria-label={t("goToWrite")}
                >
                   {t("goToWrite")}
                </SolidButton>
             </div>
          )}
 
-         {/* 수정/삭제 모달 */}
-         {selectedReview && (
+         {/* 리뷰 수정/삭제 모달 */}
+         {editModalOpen && selectedReview && (
             <EditDeleteReviewModal
                isOpen={editModalOpen}
                onClose={() => {
@@ -240,11 +246,7 @@ export default function MyReviews() {
                   setSelectedReview(null);
                }}
                review={selectedReview}
-               onSuccess={() => {
-                  setEditModalOpen(false);
-                  setSelectedReview(null);
-                  handleRefresh();
-               }}
+               onSuccess={handleRefresh}
             />
          )}
       </div>

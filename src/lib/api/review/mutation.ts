@@ -26,8 +26,11 @@ export function useCreateReview({ onSuccess, onError }: UseReviewParams) {
 
 export function useUpdateReview({ onSuccess, onError }: UseReviewParams) {
    return useMutation({
-      mutationFn: ({ id, data }: { id: string; data: UpdateReviewDto }) =>
-         updateReview(id, data),
+      mutationFn: ({
+         reviewId,
+         ...data
+      }: { reviewId: string } & UpdateReviewDto) =>
+         updateReview({ reviewId, ...data }),
       onSuccess: () => {
          onSuccess?.();
       },

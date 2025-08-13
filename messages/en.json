@@ -473,6 +473,7 @@
       "editConfirmDescription": "Do you want to edit the review?",
       "noChangesError": "No changes detected.",
       "writableReviewList": "Writable review list",
+      "uploadImages": "Upload Images (Max 3)",
       "moveType": {
          "SMALL": "Small Move",
          "HOME": "Home Move",

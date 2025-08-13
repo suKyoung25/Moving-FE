@@ -473,6 +473,7 @@
       "editConfirmDescription": "您确定要修改评论吗？",
       "noChangesError": "未检测到更改。",
       "writableReviewList": "可撰写的评论列表",
+      "uploadImages": "上传图片（最多3张）",
       "moveType": {
          "SMALL": "小型搬家",
          "HOME": "家庭搬家",
