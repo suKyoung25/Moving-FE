@@ -32,40 +32,23 @@ export default function SearchBar({
       onSearchChange(searchTerm);
    };
 
-   const handleClear = () => {
-      setSearchTerm("");
-      onSearchChange("");
-   };
-
    return (
       <form onSubmit={handleSubmit} className="w-full">
-         <div className="bg-bg-200 relative flex h-14 w-full items-center rounded-xl px-4 py-3 text-gray-400">
-            <Image src={Search} alt={t("searchAlt")} className="mr-2 h-7 w-7" />
+         <div className="bg-bg-200 flex h-13 w-full items-center gap-2 rounded-2xl px-4 py-3.5 lg:h-16 lg:gap-3 lg:px-6">
+            <Image
+               src={Search}
+               alt={t("searchAlt")}
+               className="h-6 w-6 lg:h-8 lg:w-8"
+            />
             <input
                type="text"
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
                placeholder={t("searchPlaceholder")}
-               className="text-14-regular lg:text-20-regular w-full bg-transparent pr-8 text-gray-700 placeholder-gray-400 focus:outline-none"
+               className="text-14-regular lg:text-20-regular w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
                aria-label={t("searchInputAria")}
             />
-            {searchTerm && (
-               <button
-                  type="button"
-                  onClick={handleClear}
-                  className="absolute right-4 text-xl leading-none text-gray-400 hover:text-gray-600"
-                  aria-label={t("clearSearchAria")}
-               >
-                  ×
-               </button>
-            )}
          </div>
-         {searchTerm && (
-            <div className="mt-2 text-sm text-gray-500">
-               {t("searching")}:{" "}
-               <span className="font-medium">&quot;{searchTerm}&quot;</span>
-            </div>
-         )}
       </form>
    );
 }

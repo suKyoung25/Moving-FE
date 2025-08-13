@@ -188,12 +188,12 @@ export default memo(function DriverCard({
    // 카드 스타일을 메모이제이션
    const cardClassName = useMemo(() => {
       const baseClass =
-         "flex h-48 w-full cursor-pointer items-center justify-center rounded-xl border border-gray-50 bg-white shadow-sm transition hover:shadow-md lg:h-56 lg:px-5";
-      return isPending ? `${baseClass} opacity-75` : baseClass;
+         "px-3.5 lg:px-6 py-4 lg:py-5 overflow-hidden  cursor-pointer  rounded-2xl  items-center justify-center  border border-line-100 bg-white  ";
+      return isPending ? `${baseClass}` : baseClass;
    }, [isPending]);
 
    return (
-      <>
+      <div className="overflow-hidden rounded-2xl">
          <div onClick={handleCardClick} className={cardClassName}>
             {/* 로딩 인디케이터 */}
             {isPending && (
@@ -202,9 +202,9 @@ export default memo(function DriverCard({
                </div>
             )}
 
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-3 md:gap-4 lg:gap-5">
                {/* 서비스 타입 칩들 */}
-               <div className="mb-2 flex items-center justify-between">
+               <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                      {validServiceTypes.map((type) => (
                         <MoveChip key={type} type={type} mini={false} />
@@ -219,14 +219,14 @@ export default memo(function DriverCard({
                </div>
 
                {/* 소개 텍스트 */}
-               <div className="mb-4">
-                  <p className="text-14-medium md:text-16-medium lg:text-18-medium line-clamp-2 leading-relaxed break-words text-gray-700">
+               <div className="">
+                  <p className="text-16-semibold lg:text-22-semibold line-clamp-2 leading-relaxed break-words">
                      {mover.introduction || t("defaultIntroduction")}
                   </p>
                </div>
 
                {/* 기사님 프로필 */}
-               <div className="box-border h-20 w-72 md:w-[34rem] lg:h-24 lg:w-[56rem]">
+               <div>
                   <MoverProfile
                      big={false}
                      isLiked={currentFavoriteState}
@@ -249,6 +249,6 @@ export default memo(function DriverCard({
             isOpen={isLoginModalOpen}
             onClose={() => setIsLoginModalOpen(false)}
          />
-      </>
+      </div>
    );
 });
