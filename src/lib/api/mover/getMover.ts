@@ -2,12 +2,14 @@
 import { tokenFetch, defaultFetch } from "@/lib/utils/fetch-client";
 import { Mover } from "@/lib/types/auth.types";
 import { GetMoversParams, GetMoversResponse } from "@/lib/types/mover.types";
+import { delay } from "../../../../delay";
 
 export const getMovers = async (
    params: GetMoversParams = {},
    withAuth: boolean = false,
    targetLang?: string,
 ): Promise<GetMoversResponse> => {
+   await delay(1000);
    const queryParams = new URLSearchParams();
    queryParams.append("page", String(params.page ?? 1));
    queryParams.append("limit", String(params.limit ?? 10));

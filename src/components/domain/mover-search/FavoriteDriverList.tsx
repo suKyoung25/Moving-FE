@@ -249,7 +249,7 @@ export default memo(function FavoriteDriverList({
             <div
                key={mover.id}
                onClick={() => handleCardClick(mover.id)}
-               className={`flex cursor-pointer flex-col gap-2 rounded-lg border border-gray-50 bg-white p-3 shadow-sm transition hover:shadow-md ${
+               className={`border-line-100 flex cursor-pointer flex-col gap-2 rounded-lg border bg-white p-3 ${
                   isPending ? "opacity-75" : ""
                }`}
             >

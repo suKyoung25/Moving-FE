@@ -33,11 +33,11 @@ export default function FilterAreaServiceBox({
    };
 
    return (
-      <div className="mb-1 flex w-full flex-row lg:w-80 lg:flex-col">
+      <div className="mb-4 flex lg:w-80 lg:flex-col">
          <div className="mb-6 hidden flex-row items-center justify-between border-b border-b-gray-100 px-3 pb-4 lg:flex">
             <h2 className="text-20-medium font-semibold">{t("filter")}</h2>
             <p
-               className="cursor-pointer text-gray-300 transition-colors hover:text-gray-500"
+               className="hover:text-hover-100 cursor-pointer text-gray-300 transition-colors"
                onClick={onReset}
             >
                {t("reset")}

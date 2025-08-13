@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
-import profile from "@/assets/images/profileUploaderIcon.svg";
+import profileIcon from "@/assets/images/profileIcon.svg";
 import star from "@/assets/images/starFilledIcon.svg";
 import { useTranslations } from "next-intl";
 
@@ -42,7 +42,7 @@ export default function MoverProfile({
    const isBig = big && !forceMobileStyle;
 
    const containerClass = [
-      "flex items-center bg-white rounded-md border border-line-100 w-full h-19.5 shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)]",
+      "flex items-center bg-white rounded-md border border-line-100 w-full h-19.5 ",
       forceMobileStyle
          ? "lg:h-19.5 px-2.5 py-4"
          : isBig
@@ -51,7 +51,7 @@ export default function MoverProfile({
    ].join(" ");
 
    const profileImageClass = [
-      "relative rounded-full overflow-hidden mr-3 border-2 border-primary-blue-400",
+      "relative rounded-full overflow-hidden mr-3 border-primary-blue-400",
       forceMobileStyle
          ? "w-11.5 h-11.5"
          : isBig
@@ -68,7 +68,7 @@ export default function MoverProfile({
          {/* 프로필 이미지 */}
          <div className={profileImageClass}>
             <Image
-               src={profileImage || profile}
+               src={profileImage || profileIcon}
                alt={
                   profileImage
                      ? t("profileAlt", { name: nickName })
@@ -84,8 +84,8 @@ export default function MoverProfile({
                <span
                   className={
                      forceMobileStyle
-                        ? "text-14-semibold text-black-300"
-                        : "text-14-semibold lg:text-18-semibold text-black-300"
+                        ? "text-16-semibold"
+                        : "text-16-semibold lg:text-18-semibold"
                   }
                >
                   {nickName} {t("mover")}
@@ -131,7 +131,7 @@ export default function MoverProfile({
                className={
                   forceMobileStyle
                      ? "text-13-medium mt-3 flex items-center text-gray-300"
-                     : "text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4"
+                     : "text-13-medium lg:text-16-medium flex items-center text-gray-300"
                }
             >
                <span
