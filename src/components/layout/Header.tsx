@@ -103,6 +103,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      >
                         {t("nav.estimateCalculator")}
                      </Link>
+                     <Link
+                        href="/community"
+                        className={linkClass("/community")}
+                     >
+                        {t("nav.community")}
+                     </Link>
                   </>
                )}
 
@@ -129,6 +135,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                      >
                         {t("nav.estimateCalculator")}
                      </Link>
+                     <Link
+                        href="/community"
+                        className={linkClass("/community")}
+                     >
+                        {t("nav.community")}
+                     </Link>
                   </>
                )}
 
@@ -151,6 +163,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         className={linkClass("/estimate-calculator")}
                      >
                         {t("nav.estimateCalculator")}
+                     </Link>
+                     <Link
+                        href="/community"
+                        className={linkClass("/community")}
+                     >
+                        {t("nav.community")}
                      </Link>
                   </>
                )}
