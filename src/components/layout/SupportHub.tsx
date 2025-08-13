@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import HubPanel from "./HubPanel";
 import { AnimatePresence } from "framer-motion";
@@ -11,11 +11,18 @@ import { database } from "@/lib/firebase/firebase";
 import { handleUserInteraction, handleNewMessage } from "@/lib/utils";
 import { useSupportHub } from "@/context/SupportHubContext";
 import { ChatMessage } from "@/lib/types";
+import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 
 export default function SupportHub() {
    const { user } = useAuth();
    const { isOpen, toggleHub } = useSupportHub();
    const [totalUnreadCount, setTotalUnreadCount] = useState(0);
+   const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+   // 외부 클릭 시 HubPanel 닫기
+   useOutsideClick(wrapperRef, () => {
+      if (isOpen) toggleHub();
+   });
 
    // 모든 채팅방 감시 + 알림 처리
    useEffect(() => {
@@ -97,7 +104,7 @@ export default function SupportHub() {
 
    return (
       <>
-         <div className="fixed right-6 bottom-6 z-10">
+         <div ref={wrapperRef} className="fixed right-6 bottom-6 z-10">
             {/* Floating 버튼 */}
             <button
                className="bg-primary-blue-300 shadow-global rounded-3xl p-2"
@@ -117,7 +124,13 @@ export default function SupportHub() {
             )}
 
             {/* HubPanel */}
-            <AnimatePresence>{isOpen && <HubPanel />}</AnimatePresence>
+            <AnimatePresence>
+               {isOpen && (
+                  <div>
+                     <HubPanel />
+                  </div>
+               )}
+            </AnimatePresence>
          </div>
       </>
    );

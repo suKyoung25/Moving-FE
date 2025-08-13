@@ -87,15 +87,19 @@ interface MoveChipProps {
 export default function MoveChip({ type, mini = false }: MoveChipProps) {
    const config = CHIP_CONFIG[type];
    const t = useTranslations("Chips");
+   // 번역된 레이블 (보조기기용)
+   const labelText = t(config.label);
 
    return (
       <div
          className={`inline-flex items-center !gap-0 rounded-sm px-1.5 py-0.5 ${config.bg}`}
+         role="status"
+         aria-label={mini ? labelText : undefined}
       >
          {config.icon && (
             <Image
                src={config.icon}
-               alt={`${config.label} 아이콘`}
+               alt={labelText}
                className="h-4 w-4 lg:h-5 lg:w-5"
             />
          )}

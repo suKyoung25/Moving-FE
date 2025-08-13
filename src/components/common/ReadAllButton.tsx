@@ -4,9 +4,13 @@ import { FiCheckSquare } from "react-icons/fi";
 
 interface ReadAllButtonProps {
    onClick: () => void;
+   tooltipClass?: string;
 }
 
-export default function ReadAllButton({ onClick }: ReadAllButtonProps) {
+export default function ReadAllButton({
+   onClick,
+   tooltipClass,
+}: ReadAllButtonProps) {
    const t = useTranslations("Notification");
 
    return (
@@ -16,7 +20,10 @@ export default function ReadAllButton({ onClick }: ReadAllButtonProps) {
          className="group relative"
          aria-label={t("readAllAria")}
       >
-         <div className="tooltip">{t("readAllTooltip")}</div>
+         <div className={`tooltip ${tooltipClass ?? ""}`}>
+            {t("readAllTooltip")}
+         </div>
+
          <FiCheckSquare className="text-gray-500" />
       </button>
    );

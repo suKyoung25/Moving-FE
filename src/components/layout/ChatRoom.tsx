@@ -22,7 +22,7 @@ import { setCurrentChatId } from "@/lib/utils";
 import { IoIosSend } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
-import { ChatMessage, ParticipantsMap } from "@/lib/types";
+import { ChatMessage, ChatParticipant, ParticipantsMap } from "@/lib/types";
 
 dayjs.locale("ko");
 
@@ -39,12 +39,28 @@ export default function ChatRoom() {
    const textareaRef = useRef<HTMLTextAreaElement>(null);
    const wasTypingRef = useRef(false);
 
+   //맥으로 보낸 경우 딜레이 해결
+   const [isComposing, setIsComposing] = useState(false);
+
+   const handleCompositionStart = () => {
+      setIsComposing(true);
+   };
+
+   const handleCompositionEnd = () => {
+      setIsComposing(false);
+   };
+   // 맥으로 보낸 경우 딜레이 해결 종료
+
    const { data: messages = [] } = useChatMessages(chatId, user?.id ?? "");
    const { mutate: leaveChatRoomMutate } = useLeaveChatRoom();
 
    const otherUserId =
       Object.keys(participants).find((id) => id !== user?.id) ?? "";
    const isOtherTyping = useTypingStatus(chatId, otherUserId);
+
+   const otherUserName =
+      (participants as Record<string, ChatParticipant>)[otherUserId]
+         ?.userName ?? "상대방";
 
    // 참가자 정보 가져오기
    useEffect(() => {
@@ -175,7 +191,7 @@ export default function ChatRoom() {
    };
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === "Enter" && !e.shiftKey) {
+      if (e.key === "Enter" && !e.shiftKey && !isComposing) {
          e.preventDefault();
          handleSend();
       }
@@ -267,7 +283,7 @@ export default function ChatRoom() {
       );
    };
 
-   // ✅ 커스텀 훅으로 외부 클릭 감지
+   // 커스텀 훅으로 외부 클릭 감지
    useOutsideClick(dropdownRef, () => {
       if (isDropdownOpen) {
          setIsDropdownOpen(false);
@@ -279,7 +295,6 @@ export default function ChatRoom() {
    return (
       <div className="flex h-full max-w-full flex-col overflow-hidden px-4 pt-4">
          {/* 상단 헤더 */}
-         {/* 상단 헤더 */}
          <div className="relative mb-4 flex items-center justify-between">
             <button
                onClick={() => {
@@ -289,12 +304,16 @@ export default function ChatRoom() {
             >
                BACK
             </button>
+            <div className="text-16-medium text-gray-400">
+               <span className="!text-primary-blue-200">{otherUserName}</span>
+               님과의 대화방
+            </div>
 
             {/* 채팅방 나가기 드롭다운 */}
             <div className="relative" ref={dropdownRef}>
                <button
                   onClick={() => setIsDropdownOpen((prev) => !prev)}
-                  className="text-gray-500"
+                  className="flex text-gray-500"
                >
                   <FiLogOut size={24} />
                </button>
@@ -392,6 +411,8 @@ export default function ChatRoom() {
                ref={textareaRef}
                value={input}
                onChange={(e) => setInput(e.target.value)}
+               onCompositionStart={handleCompositionStart}
+               onCompositionEnd={handleCompositionEnd}
                onKeyDown={handleKeyDown}
                rows={1}
                placeholder={
@@ -400,10 +421,7 @@ export default function ChatRoom() {
                      : "메시지를 입력하세요"
                }
                disabled={isOtherWithdrawn}
-               className={`scrollbar-hide bg-gray-1000 max-h-[4.5rem] flex-1 resize-none overflow-hidden rounded-md px-3 py-2 text-sm leading-5 ${isOtherWithdrawn ? "cursor-not-allowed bg-gray-100 text-gray-400" : ""}`}
-               style={{
-                  lineHeight: "1.25rem",
-               }}
+               className={`scrollbar-hide bg-gray-1000 flex-1 resize-none overflow-hidden rounded-md px-3 py-2 text-sm leading-5 ${isOtherWithdrawn ? "cursor-not-allowed bg-gray-100 text-gray-400" : ""}`}
             />
             <button
                onClick={handleSend}

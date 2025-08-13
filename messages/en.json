@@ -457,7 +457,7 @@
       "confirmed": "Confirmed",
       "year": "Y",
       "cases": "",
-      "profileAlt": "Profile Image",
+      "profileAlt": "{name}'s profile image",
       "errorOccurred": "An error has occurred.",
       "loadingText": "Loading...",
       "reviewRegistered": "Your review has been successfully registered.",
@@ -471,7 +471,22 @@
       "deleteConfirmDescription": "This action cannot be undone.",
       "editConfirmTitle": "Edit Review",
       "editConfirmDescription": "Do you want to edit the review?",
-      "noChangesError": "No changes detected."
+      "noChangesError": "No changes detected.",
+      "writableReviewList": "Writable review list",
+      "moveType": {
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move"
+      },
+      "designatedEstimate": "Designated estimate",
+      "defaultProfileAlt": "Default profile image",
+      "writeReviewFor": "Write a review for the mover",
+      "paginationNav": "Pagination navigation",
+      "myReviewList": "My review list",
+      "editDeleteReviewAria": "Edit or delete review by {name}",
+      "ratingAria": "Rating {rating} out of 5",
+      "unlikeMover": "Remove {name} from favorites",
+      "likeMover": "Add {name} to favorites"
    },
    "FavoriteMovers": {
       "title": "Favorite Movers",
@@ -485,7 +500,13 @@
       "errorOccurred": "An error has occurred.",
       "favoriteToggleSuccess": "Favorite status has been successfully updated.",
       "favoriteToggleError": "An error occurred while updating favorite status.",
-      "removeSuccess": "Removed from favorites."
+      "removeSuccess": "Removed from favorites.",
+      "favoriteMoverList": "Favorite Movers List",
+      "moverCardClickAria": "Go to profile page of {name}",
+      "unlikeMover": "Remove {name} from favorites",
+      "likeMover": "Add {name} to favorites",
+      "paginationNav": "Favorite movers page navigation",
+      "goToFavoriteMoversAria": "Navigate to mover search page"
    },
    "MyQuotes": {
       "Client": {
@@ -853,6 +874,14 @@
       "sendInquiry": "Send inquiry to Moving",
       "supportRegisteredMessage": "Your inquiry has been successfully submitted.",
       "supportRegisterFailedMessage": "Failed to submit your inquiry. Please try again later."
+   },
+   "Pagination": {
+      "paginationNav": "Pagination navigation",
+      "prevPage": "Previous page",
+      "nextPage": "Next page",
+      "page": "Page {page}",
+      "pageWithCurrent": "Page {page} (current page)",
+      "ellipsis": "Ellipsis"
    },
    "Calculator": {
       "title": "Estimate Calculator",

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import blackArrow from "@/assets/images/chevronDownBlackIcon.svg";
 import more from "@/assets/images/moreGrayIcon.svg";
+import { useTranslations } from "next-intl";
 
 interface PaginationProps {
    page: number;
@@ -30,6 +31,7 @@ export default function Pagination({
    totalPages,
    onPageChange,
 }: PaginationProps) {
+   const t = useTranslations("Pagination");
    const [maxPages, setMaxPages] = useState(3);
 
    // 반응형 maxPages
@@ -51,19 +53,23 @@ export default function Pagination({
    const hasRightDots = pagesToShow[pagesToShow.length - 1] < totalPages - 1;
 
    return (
-      <nav className="my-6 flex items-center justify-center gap-2 select-none">
+      <nav
+         className="my-6 flex items-center justify-center gap-2 select-none"
+         aria-label={t("paginationNav")}
+      >
          {/* 이전 */}
          <button
             className="rounded p-1.5 disabled:opacity-50 lg:p-3"
             disabled={page === 1}
             onClick={() => onPageChange(page - 1)}
-            aria-label="이전"
+            aria-label={t("prevPage")}
          >
             <Image
                src={blackArrow}
                width={24}
                height={24}
-               alt="이전"
+               alt=""
+               aria-hidden="true"
                style={{ transform: "rotate(90deg)" }}
             />
          </button>
@@ -74,12 +80,23 @@ export default function Pagination({
                <button
                   className={`text-16-semibold lg:text-18-semibold p-2.5 lg:p-3 ${page === 1 ? "text-black-400" : "text-gray-200"}`}
                   onClick={() => onPageChange(1)}
+                  aria-current={page === 1 ? "page" : undefined}
+                  aria-label={
+                     page === 1
+                        ? t("pageWithCurrent", { page: 1 })
+                        : t("page", { page: 1 })
+                  }
                >
                   1
                </button>
                {hasLeftDots && (
-                  <span>
-                     <Image src={more} width={13} height={3} alt="생략" />
+                  <span aria-hidden="true">
+                     <Image
+                        src={more}
+                        width={13}
+                        height={3}
+                        alt={t("ellipsis")}
+                     />
                   </span>
                )}
             </>
@@ -91,6 +108,12 @@ export default function Pagination({
                key={p}
                className={`text-16-semibold lg:text-18-semibold p-2.5 lg:p-3 ${p === page ? "text-black-400" : "text-gray-200"}`}
                onClick={() => onPageChange(p)}
+               aria-current={p === page ? "page" : undefined}
+               aria-label={
+                  p === page
+                     ? t("pageWithCurrent", { page: p })
+                     : t("page", { page: p })
+               }
             >
                {p}
             </button>
@@ -100,13 +123,24 @@ export default function Pagination({
          {pagesToShow[pagesToShow.length - 1] < totalPages && (
             <>
                {hasRightDots && (
-                  <span>
-                     <Image src={more} width={13} height={3} alt="생략" />
+                  <span aria-hidden="true">
+                     <Image
+                        src={more}
+                        width={13}
+                        height={3}
+                        alt={t("ellipsis")}
+                     />
                   </span>
                )}
                <button
                   className={`text-16-semibold lg:text-18-semibold p-2.5 lg:p-3 ${page === totalPages ? "text-black-400" : "text-gray-200"}`}
                   onClick={() => onPageChange(totalPages)}
+                  aria-current={page === totalPages ? "page" : undefined}
+                  aria-label={
+                     page === totalPages
+                        ? t("pageWithCurrent", { page: totalPages })
+                        : t("page", { page: totalPages })
+                  }
                >
                   {totalPages}
                </button>
@@ -118,13 +152,14 @@ export default function Pagination({
             className="rounded p-1.5 disabled:opacity-50 lg:p-3"
             disabled={page === totalPages}
             onClick={() => onPageChange(page + 1)}
-            aria-label="다음"
+            aria-label={t("nextPage")}
          >
             <Image
                src={blackArrow}
                width={24}
                height={24}
-               alt="다음"
+               alt=""
+               aria-hidden="true"
                style={{ transform: "rotate(-90deg)" }}
             />
          </button>
