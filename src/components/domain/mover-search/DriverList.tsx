@@ -213,7 +213,7 @@ export default memo(function DriverList({
 
             const params: GetMoversParams = {
                page: 1,
-               limit: 6,
+               limit: 10,
                search: filters.search || undefined,
                area,
                serviceType:
