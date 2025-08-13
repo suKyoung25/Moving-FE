@@ -9,12 +9,14 @@ export function useReviewSchemas() {
       estimateId: z.string().uuid(t("invalidRequest")),
       rating: z.number().int().min(1, t("selectRating")).max(5, t("maxRating")),
       content: z.string().min(10, t("minContent")),
+      images: z.array(z.string()).default([]),
    });
 
    // 리뷰 수정 스키마
    const updateReviewSchema = z.object({
       rating: z.number().int().min(1, t("selectRating")).max(5, t("maxRating")),
       content: z.string().min(10, t("minContent")),
+      images: z.array(z.string()),
    });
 
    return {

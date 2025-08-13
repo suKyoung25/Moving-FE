@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
 import SentQuoteDetailContent from "./SentQuoteDetailContent";
 import { Suspense } from "react";
-import SentQuoteDetailSkeleton from "./SentQuoteDetailSkeleton";
 import { getTranslations } from "next-intl/server";
+import Spinner from "@/components/common/Spinner";
 
 export default async function SentQuoteDetail({
    params,
@@ -25,7 +25,7 @@ export default async function SentQuoteDetail({
          <PageTitle title={t("pageTitle")} />
          <div className="mt-4 lg:flex lg:gap-40">
             <article className="flex flex-col gap-6 lg:flex-1 lg:gap-10">
-               <Suspense fallback={<SentQuoteDetailSkeleton />}>
+               <Suspense fallback={<Spinner />}>
                   <SentQuoteDetailContent params={params} />
                </Suspense>
             </article>

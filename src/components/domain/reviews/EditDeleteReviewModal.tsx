@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import { useUpdateReview, useDeleteReview } from "@/lib/api/review/mutation";
 import SolidButton from "@/components/common/SolidButton";
 import ConfirmModal from "@/components/common/ConfirmModal";
+import updateProfileImage from "@/lib/api/auth/requests/updateProfileImage";
 
 interface EditDeleteReviewModalProps {
    isOpen: boolean;
@@ -36,6 +37,7 @@ export default function EditDeleteReviewModal({
       handleSubmit,
       setValue,
       reset,
+      control,
       formState: { errors },
       watch,
    } = useForm<UpdateReviewDto>({
@@ -43,6 +45,7 @@ export default function EditDeleteReviewModal({
       defaultValues: {
          rating: review.rating,
          content: review.content,
+         images: review.images || [],
       },
    });
 
@@ -50,6 +53,7 @@ export default function EditDeleteReviewModal({
    const [hovered, setHovered] = useState<number | null>(null);
    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
    const [isEditConfirmOpen, setIsEditConfirmOpen] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
 
    // 수정
    const updateMutation = useUpdateReview({
@@ -78,7 +82,11 @@ export default function EditDeleteReviewModal({
 
    useEffect(() => {
       if (isOpen && review) {
-         reset({ rating: review.rating, content: review.content });
+         reset({
+            rating: review.rating,
+            content: review.content,
+            images: review.images || [],
+         });
          setApiMessage("");
          setHovered(null);
          setIsDeleteConfirmOpen(false); // 모달 처음 열릴 때는 확인 모달 닫힘
@@ -93,10 +101,49 @@ export default function EditDeleteReviewModal({
    if (!isOpen) return null;
 
    // 폼 유효성 검사 및 제출 함수
-   const onSubmit = (data: UpdateReviewDto) => {
+   const onSubmit = async (data: UpdateReviewDto) => {
       setApiMessage("");
-      updateMutation.mutate({ id: review.id, data });
-      setIsEditConfirmOpen(false);
+      setIsLoading(true);
+
+      try {
+         // 이미지가 있으면 먼저 업로드
+         const uploadedImageUrls: string[] = [];
+
+         if (data.images && data.images.length > 0) {
+            for (const imageData of data.images) {
+               if (imageData.startsWith("data:image")) {
+                  // Base64 이미지를 File로 변환
+                  const response = await fetch(imageData);
+                  const blob = await response.blob();
+                  const file = new File([blob], "review-image.png", {
+                     type: "image/png",
+                  });
+
+                  const formData = new FormData();
+                  formData.append("image", file);
+
+                  const res = await updateProfileImage(formData);
+                  uploadedImageUrls.push(res.url);
+               } else {
+                  // 이미 URL인 경우
+                  uploadedImageUrls.push(imageData);
+               }
+            }
+         }
+
+         // 이미지 처리 후 나머지 데이터 처리
+         const processedData = {
+            ...data,
+            images: uploadedImageUrls,
+         };
+
+         updateMutation.mutate({ reviewId: review.id, ...processedData });
+      } catch (error) {
+         console.error("이미지 업로드 실패: ", error);
+         setApiMessage("이미지 업로드 중 오류가 발생했습니다.");
+      } finally {
+         setIsLoading(false);
+      }
    };
 
    // 폼 제출 이벤트 핸들러: 실제 제출 지연시키고 확인 모달 띄움
@@ -104,9 +151,14 @@ export default function EditDeleteReviewModal({
       event.preventDefault(); // 폼 제출 기본동작 차단
       const rating = watch("rating") ?? 0;
       const content = watch("content") ?? "";
+      const images = watch("images") ?? [];
 
       // 변경사항 없는 경우
-      if (rating === review.rating && content === review.content) {
+      if (
+         rating === review.rating &&
+         content === review.content &&
+         JSON.stringify(images) === JSON.stringify(review.images)
+      ) {
          setApiMessage(t("noChangesError"));
          // 수정 확인 모달은 열지 않음
          return;
@@ -150,7 +202,7 @@ export default function EditDeleteReviewModal({
                      : t("deleting")
                   : t("editReview")
             }
-            isActive={isActive && !loading}
+            isActive={isActive && !loading && !isLoading}
             isConfirmOpen={isDeleteConfirmOpen && isEditConfirmOpen}
          >
             <ReviewFormBody
@@ -167,6 +219,7 @@ export default function EditDeleteReviewModal({
                }
                errorRating={errors.rating?.message}
                errorContent={errors.content?.message}
+               control={control}
             />
             {apiMessage && (
                <div
@@ -184,26 +237,28 @@ export default function EditDeleteReviewModal({
                onClick={openDeleteConfirmModal}
                aria-label={t("deleteReview")}
             >
-               {deleteMutation.isPending ? t("deleting") : t("deleteReview")}
+               {deleteMutation.isPending && isLoading
+                  ? t("deleting")
+                  : t("deleteReview")}
             </SolidButton>
          </InputModal>
-
-         {/* 수정 확인 모달 */}
-         <ConfirmModal
-            isOpen={isEditConfirmOpen}
-            onClose={closeEditConfirmModal}
-            onConfirm={handleSubmit(onSubmit)}
-            title={t("editConfirmTitle")}
-            description={t("editConfirmDescription")}
-         />
 
          {/* 삭제 확인 모달 */}
          <ConfirmModal
             isOpen={isDeleteConfirmOpen}
             onClose={closeDeleteConfirmModal}
-            onConfirm={handleDelete}
             title={t("deleteConfirmTitle")}
             description={t("deleteConfirmDescription")}
+            onConfirm={handleDelete}
+         />
+
+         {/* 수정 확인 모달 */}
+         <ConfirmModal
+            isOpen={isEditConfirmOpen}
+            onClose={closeEditConfirmModal}
+            title={t("editConfirmTitle")}
+            description={t("editConfirmDescription")}
+            onConfirm={handleSubmit(onSubmit)}
          />
       </form>
    );

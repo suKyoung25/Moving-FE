@@ -7,15 +7,17 @@ import MoveTextCard from "../my-quotes/MoveTextCard";
 import RequestActionModal from "./RequestActionModal";
 import { useRouter } from "next/navigation";
 import FormattedDateWithDay from "@/components/common/FormattedDateWithDay";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { createChatRoomIfNotExists } from "@/lib/firebase/createChatRoomIfNotExists";
 import { useChat } from "@/context/ChatContext";
 import { useAuth } from "@/context/AuthContext";
 import { useSupportHub } from "@/context/SupportHubContext";
 import ChatButton from "@/components/common/Chatbutton";
+import formatAddress from "@/lib/utils/formatAddress.util";
 
 export default function RequestCard({ req }: { req: ReceivedRequest }) {
    const t = useTranslations("ReceivedRequests");
+   const locale = useLocale();
    const { openHub } = useSupportHub();
 
    const { user } = useAuth();
@@ -69,7 +71,7 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
          {/* 요청 카드 UI */}
          <div
             onClick={handleCardClick}
-            className="[&_div]:md:gap-4c block cursor-pointer [&_div]:gap-3"
+            className="block cursor-pointer rounded-2xl shadow [&_div]:gap-3 [&_div]:md:gap-4"
          >
             <div className="border-line-100 flex flex-col rounded-2xl border px-3.5 py-4 lg:px-6 lg:py-5">
                <div className="flex items-center justify-between">
@@ -98,9 +100,9 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
                         </span>
                      </div>
                      <MoveTextCard text={t("departureLabel")} />
-                     <span>{req.fromAddress.slice(0, 6)}</span>
+                     <span>{formatAddress(req.fromAddress, locale)}</span>
                      <MoveTextCard text={t("destinationLabel")} />
-                     <span>{req.toAddress.slice(0, 6)}</span>
+                     <span>{formatAddress(req.toAddress, locale)}</span>
                   </div>
                </div>
                <div

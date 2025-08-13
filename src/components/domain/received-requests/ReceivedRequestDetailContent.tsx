@@ -19,7 +19,6 @@ export default async function ReceivedRequestDetailContent({
 
    const { request } = await getReceivedRequestDetail(id, locale);
 
-   console.log(request);
    if (!request) return notFound();
    return (
       <>

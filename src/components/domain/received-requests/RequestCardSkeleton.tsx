@@ -1,6 +1,6 @@
 export default function RequestCardSkeleton() {
    return (
-      <div className="block animate-pulse [&_div]:gap-3 [&_div]:md:gap-4">
+      <div className="block animate-pulse rounded-2xl shadow [&_div]:gap-3 [&_div]:md:gap-4">
          <div className="border-line-100 flex flex-col rounded-2xl border px-3.5 py-4 lg:px-6 lg:py-5">
             {/* Chips */}
             <div className="flex gap-2">

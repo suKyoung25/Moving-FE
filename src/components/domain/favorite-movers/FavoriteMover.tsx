@@ -12,6 +12,8 @@ import { isChipType } from "@/lib/utils/moveChip.util";
 import { FavoriteMoverState } from "@/lib/types";
 import { useFavoriteMovers } from "@/lib/api/favorite/query";
 import { useToggleFavoriteMover } from "@/lib/api/favorite/mutation";
+import FavoriteMoverSkeleton from "./FavoriteMoverSkeleton";
+import SkeletonLayout from "@/components/common/SkeletonLayout";
 
 export default function FavoriteMover() {
    const t = useTranslations("FavoriteMovers");
@@ -52,7 +54,15 @@ export default function FavoriteMover() {
    const movers: FavoriteMoverState[] = data?.data?.movers ?? [];
    const pageInfo = data?.data?.pagination ?? pagination;
 
-   if (isPending) return <div>{t("loading")}</div>;
+   if (isPending)
+      return (
+         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+            <SkeletonLayout
+               count={6}
+               SkeletonComponent={FavoriteMoverSkeleton}
+            />
+         </div>
+      );
    if (error) {
       return <div role="alert">{t("errorOccurred")}</div>;
    }
@@ -60,7 +70,7 @@ export default function FavoriteMover() {
    return (
       <>
          <div
-            className="grid grid-cols-1 gap-6 lg:grid-cols-2"
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8"
             role="list"
             aria-label={t("favoriteMoverList")}
          >
@@ -68,7 +78,7 @@ export default function FavoriteMover() {
                <div
                   key={mover.id}
                   role="listitem"
-                  className="border-line-100 h-37.5 w-full rounded-2xl border bg-white px-3.5 py-4 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 lg:mb-6 lg:h-50.5 lg:px-6 lg:py-5"
+                  className="border-line-100 h-37.5 w-full rounded-2xl border bg-white px-3.5 py-4 shadow lg:h-50.5 lg:px-6 lg:py-5"
                >
                   <div className="mb-3.5 flex gap-2 lg:gap-3">
                      {mover.serviceType.map((type) =>
@@ -117,7 +127,7 @@ export default function FavoriteMover() {
          />
          {!isPending && movers.length === 0 && (
             <div
-               className="mt-46 flex flex-col items-center justify-center"
+               className="flex flex-col items-center justify-center"
                role="status"
                aria-live="polite"
             >

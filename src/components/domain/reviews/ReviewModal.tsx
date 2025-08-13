@@ -5,14 +5,12 @@ import { ReviewFormBody } from "./ReviewFormBody";
 import { WritableReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
 import { useForm } from "react-hook-form";
-import {
-   CreateReviewDto,
-   useReviewSchemas,
-} from "@/lib/schemas/reviews.schema";
+import { useReviewSchemas } from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { extractErrorMessage } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useCreateReview } from "@/lib/api/review/mutation";
+import updateProfileImage from "@/lib/api/auth/requests/updateProfileImage";
 
 interface ReviewModalProps {
    isOpen: boolean;
@@ -39,18 +37,21 @@ export default function ReviewModal({
       register,
       reset,
       watch,
+      control,
       formState: { errors },
-   } = useForm<CreateReviewDto>({
+   } = useForm({
       resolver: zodResolver(createReviewSchema),
       defaultValues: {
          rating: 0,
          content: "",
          estimateId: selectedEstimate?.estimateId ?? "",
+         images: [],
       },
    });
 
    const [apiMessage, setApiMessage] = useState("");
    const [hovered, setHovered] = useState<number | null>(null);
+   const [isLoading, setIsLoading] = useState(false);
 
    // mutation 사용
    const mutation = useCreateReview({
@@ -74,6 +75,7 @@ export default function ReviewModal({
             rating: 0,
             content: "",
             estimateId: selectedEstimate.estimateId,
+            images: [],
          });
          setHovered(null);
          setApiMessage("");
@@ -110,9 +112,54 @@ export default function ReviewModal({
    // 버튼 활성화 여부
    const isActive = rating > 0 && content.trim().length >= 10;
 
-   const onSubmit = (data: CreateReviewDto) => {
+   const onSubmit = async (data: {
+      rating: number;
+      content: string;
+      estimateId: string;
+      images: string[];
+   }) => {
       setApiMessage("");
-      mutation.mutate(data);
+      setIsLoading(true);
+
+      try {
+         // 이미지가 있으면 먼저 업로드
+         const uploadedImageUrls: string[] = [];
+
+         if (data.images && data.images.length > 0) {
+            for (const imageData of data.images) {
+               if (imageData.startsWith("data:image")) {
+                  // Base64 이미지를 File로 변환
+                  const response = await fetch(imageData);
+                  const blob = await response.blob();
+                  const file = new File([blob], "review-image.png", {
+                     type: "image/png",
+                  });
+
+                  const formData = new FormData();
+                  formData.append("image", file);
+
+                  const res = await updateProfileImage(formData);
+                  uploadedImageUrls.push(res.url);
+               } else {
+                  // 이미 URL인 경우
+                  uploadedImageUrls.push(imageData);
+               }
+            }
+         }
+
+         // 이미지 처리 후 나머지 데이터 처리
+         const processedData = {
+            ...data,
+            images: uploadedImageUrls,
+         };
+
+         mutation.mutate(processedData);
+      } catch (error) {
+         console.error("이미지 업로드 실패: ", error);
+         setApiMessage("이미지 업로드 중 오류가 발생했습니다.");
+      } finally {
+         setIsLoading(false);
+      }
    };
 
    return (
@@ -136,11 +183,15 @@ export default function ReviewModal({
                setHovered(null);
                setApiMessage("");
             }}
+            aria-modal="true"
+            aria-labelledby="review-modal-title"
             title={t("modalTitle")}
             buttonTitle={
-               mutation.isPending ? t("registering") : t("registerReview")
+               isLoading || mutation.isPending
+                  ? t("registering")
+                  : t("registerReview")
             }
-            isActive={isActive && !mutation.isPending}
+            isActive={isActive && !isLoading && !mutation.isPending}
          >
             <ReviewFormBody
                estimate={selectedEstimate}
@@ -156,11 +207,16 @@ export default function ReviewModal({
                }
                errorRating={errors.rating?.message}
                errorContent={errors.content?.message}
+               control={control}
             />
             {apiMessage && (
-               <p className="mt-2 text-sm text-red-500" role="alert">
+               <div
+                  className="mb-2 text-red-600"
+                  role="alert"
+                  aria-live="assertive"
+               >
                   {apiMessage}
-               </p>
+               </div>
             )}
          </InputModal>
       </form>
