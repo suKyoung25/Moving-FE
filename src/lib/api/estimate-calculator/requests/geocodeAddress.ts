@@ -90,13 +90,3 @@ export async function getAddressSuggestions(
       return [];
    }
 }
-
-// 주소 유효성 검증
-export async function validateAddress(address: string): Promise<boolean> {
-   try {
-      await geocodeAddress(address);
-      return true;
-   } catch {
-      return false;
-   }
-}
