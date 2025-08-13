@@ -71,7 +71,7 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
          {/* 요청 카드 UI */}
          <div
             onClick={handleCardClick}
-            className="[&_div]:md:gap-4c block cursor-pointer [&_div]:gap-3"
+            className="block cursor-pointer rounded-2xl shadow [&_div]:gap-3 [&_div]:md:gap-4"
          >
             <div className="border-line-100 flex flex-col rounded-2xl border px-3.5 py-4 lg:px-6 lg:py-5">
                <div className="flex items-center justify-between">

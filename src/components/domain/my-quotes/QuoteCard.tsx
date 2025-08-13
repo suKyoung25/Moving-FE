@@ -56,7 +56,7 @@ export default function QuoteCard({
    return (
       <div
          onClick={!isPastMoveDate ? handleCardClick : undefined}
-         className={`relative rounded-2xl bg-white px-3.5 py-4 ${
+         className={`relative rounded-2xl bg-white px-3.5 py-4 shadow ${
             !isPastMoveDate && "cursor-pointer"
          } ${
             isPastMoveDate

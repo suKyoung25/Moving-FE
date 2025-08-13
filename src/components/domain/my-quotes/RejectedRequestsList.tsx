@@ -49,14 +49,14 @@ export default function RejectedRequestsList() {
    return (
       <div>
          {isLoading ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
                <SkeletonLayout
                   count={6}
                   SkeletonComponent={RejectedRequestsSkeleton}
                />
             </div>
          ) : hasEstimates ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
                {estimates.map((est: MyEstimateDetail) => (
                   <QuoteCard
                      key={est.id}
