@@ -37,10 +37,15 @@ export default function Pending() {
 
    return (
       <>
-         <div className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5">
+         <div
+            role="list"
+            aria-label={t("pendingEstimatesListLabel")}
+            className="text-black-300 flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:gap-y-10.5"
+         >
             {data.data.map(({ estimate, request }: QuoteItem) => (
                <section
                   key={estimate.estimateId}
+                  role="listitem"
                   style={{
                      boxShadow:
                         "-2px -2px 10px rgba(220, 220, 220, 0.2), 2px 2px 10px rgba(220, 220, 220, 0.2)",
@@ -81,15 +86,22 @@ export default function Pending() {
                   <div>
                      <p className="text-14-medium text-black-400 text-right">
                         {t("priceLabel")}{" "}
-                        <span className="text-18-bold">
+                        <span
+                           aria-label={`${estimate.price.toLocaleString()}${t("money")}`}
+                           className="text-18-bold"
+                        >
                            {estimate.price.toLocaleString()}
                            {t("money")}
                         </span>
                      </p>
                   </div>
                   <div className="flex flex-col gap-2 md:flex-row">
-                     <ConfirmedButton estimateId={estimate.estimateId} />
+                     <ConfirmedButton
+                        aria-label={`${t("buttons.confirmEstimate")} ${estimate.moverName}`}
+                        estimateId={estimate.estimateId}
+                     />
                      <OutlinedButton
+                        aria-label={`${t("buttons.viewDetails")} ${estimate.moverName} 견적 상세보기`}
                         onClick={() =>
                            router.push(`client/${estimate.estimateId}`)
                         }
