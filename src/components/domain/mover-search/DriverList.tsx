@@ -9,6 +9,8 @@ import { tokenSettings } from "@/lib/utils/auth.util";
 import type { Mover } from "@/lib/types";
 import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
 import { useLocale, useTranslations } from "next-intl";
+import DriverCardSkeleton from "./DriverCardSkeleton";
+import SkeletonLayout from "@/components/common/SkeletonLayout";
 
 interface DriverListProps {
    filters: {
@@ -35,16 +37,21 @@ export default memo(function DriverList({
 
    const [movers, setMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
+   const [isAppending, setIsAppending] = useState(false); // 추가 로딩 상태
    const [error, setError] = useState<string | null>(null);
    const [hasMore, setHasMore] = useState(true);
    const [currentPage, setCurrentPage] = useState(1);
 
-   // 기사님 데이터 로드 함수 + useCallback으로 최적화 + t 의존성 추가
    const loadMovers = useCallback(
       async (reset = false) => {
          try {
-            setLoading(true);
             setError(null);
+            if (reset) {
+               setLoading(true);
+               setIsAppending(false);
+            } else {
+               setIsAppending(true);
+            }
 
             const targetPage = reset ? 1 : currentPage;
 
@@ -88,6 +95,7 @@ export default memo(function DriverList({
             setError(t("loadFailed"));
          } finally {
             setLoading(false);
+            setIsAppending(false);
          }
       },
       [
@@ -96,25 +104,23 @@ export default memo(function DriverList({
          filters.serviceType,
          filters.sortBy,
          currentPage,
-         t, // t 의존성 추가
+         t,
       ],
    );
 
    const loadMore = useCallback(() => {
-      if (!hasMore || loading) return;
+      if (!hasMore || loading || isAppending) return;
       loadMovers(false);
-   }, [hasMore, loading, loadMovers]);
+   }, [hasMore, loading, isAppending, loadMovers]);
 
-   // useInfiniteScroll 훅 사용
    const { setLoadingRef } = useInfiniteScroll({
       hasMore,
-      isLoading: loading,
+      isLoading: loading || isAppending,
       onLoadMore: loadMore,
       rootMargin: "100px",
       threshold: 0.1,
    });
 
-   //  찜 상태 변경 핸들러 + useCallback으로 최적화
    const handleFavoriteChange = useCallback(
       (moverId: string, isFavorite: boolean, favoriteCount: number) => {
          setMovers((prev) =>
@@ -124,13 +130,11 @@ export default memo(function DriverList({
                   : mover,
             ),
          );
-
          onFavoriteChange?.(moverId, isFavorite, favoriteCount);
       },
       [onFavoriteChange],
    );
 
-   //  외부 refreshKey 처리 로직
    useEffect(() => {
       if (refreshKey && refreshKey > 0) {
          const refreshFavoriteStates = async () => {
@@ -193,7 +197,6 @@ export default memo(function DriverList({
       movers,
    ]);
 
-   //  필터 변경 시 데이터 리셋 + t 의존성 추가
    useEffect(() => {
       setCurrentPage(1);
       setHasMore(true);
@@ -210,7 +213,7 @@ export default memo(function DriverList({
 
             const params: GetMoversParams = {
                page: 1,
-               limit: 10,
+               limit: 6,
                search: filters.search || undefined,
                area,
                serviceType:
@@ -258,7 +261,7 @@ export default memo(function DriverList({
    }
 
    return (
-      <div className="space-y-4">
+      <div className="flex flex-col gap-6 lg:gap-12">
          {movers.map((mover) => (
             <DriverCard
                key={mover.id}
@@ -269,26 +272,26 @@ export default memo(function DriverList({
 
          {hasMore && (
             <div ref={setLoadingRef} className="flex justify-center p-4">
-               {loading ? (
-                  <div className="flex items-center space-x-2">
-                     <div className="border-primary-blue-300 h-6 w-6 animate-spin rounded-full border-b-2"></div>
-                     <span>{t("loading")}</span>
+               {loading && !isAppending ? (
+                  // 초기 로딩 → 스켈레톤
+                  <div className="flex w-full flex-col gap-6 lg:gap-12">
+                     <SkeletonLayout
+                        count={6}
+                        SkeletonComponent={DriverCardSkeleton}
+                     />
                   </div>
-               ) : (
-                  <span>{t("scrollToLoadMore")}</span>
-               )}
+               ) : isAppending ? (
+                  // 추가 로딩 → 텍스트
+                  <span>기사님 정보를 가져오는 중...</span>
+               ) : null}
             </div>
          )}
 
          {!hasMore && movers.length > 0 && (
-            <div className="py-8 text-center">
-               <p className="text-gray-500">{t("allLoaded")}</p>
-            </div>
-         )}
-
-         {!loading && movers.length === 0 && (
-            <div className="py-8 text-center">
-               <p className="text-gray-500">{t("noResults")}</p>
+            <div className="py-4 text-center">
+               <p className="text-gray-500">
+                  모든 기사님 정보 조회가 완료되었습니다.
+               </p>
             </div>
          )}
       </div>
