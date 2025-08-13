@@ -1,5 +1,4 @@
 import { tokenFetch } from "@/lib/utils";
-import { delay } from "../../../../delay";
 
 export { connectSSE } from "@/lib/utils/sse.util";
 
@@ -13,7 +12,6 @@ export async function getNotifications(
    { cursor, limit = 6 }: PageParms,
    targetLang?: string,
 ) {
-   await delay(2000);
    const params = new URLSearchParams();
    if (cursor) params.append("cursor", cursor);
    params.append("limit", String(limit));
