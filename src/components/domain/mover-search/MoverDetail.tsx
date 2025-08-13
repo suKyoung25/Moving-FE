@@ -23,6 +23,7 @@ import LineDivider from "../../common/LineDivider";
 import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
 import { useLocale, useTranslations } from "next-intl";
+import Spinner from "@/components/common/Spinner";
 
 const DashboardReviewSection = lazy(
    () => import("@/components/domain/dashboard/ReviewSection"),
@@ -38,19 +39,6 @@ const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
                <div className="h-3 w-1/2 rounded bg-gray-200"></div>
             </div>
          ))}
-      </div>
-   );
-});
-
-// 🔧 Fixed: Each component uses its own useTranslations hook
-const LoadingSpinner = memo(function LoadingSpinner() {
-   const t = useTranslations("MoverDetail");
-   return (
-      <div className="flex min-h-screen items-center justify-center">
-         <div className="text-center">
-            <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-b-2 border-blue-600"></div>
-            <p className="text-gray-600">{t("loading")}</p>
-         </div>
       </div>
    );
 });
@@ -147,7 +135,7 @@ export default memo(function MoverDetail() {
       });
    }, []);
 
-   if (state.loading) return <LoadingSpinner />;
+   if (state.loading) return <Spinner />;
    if (state.error || !state.mover) {
       return <ErrorDisplay error={state.error || t("error.notFound")} />;
    }
@@ -157,9 +145,8 @@ export default memo(function MoverDetail() {
    return (
       <div className="flex w-full flex-col gap-4 lg:gap-6">
          {/* Mobile Layout */}
-         <div className="mx-auto flex w-80 flex-col gap-4 md:w-[36rem] lg:hidden lg:w-[60rem]">
+         <div className="flex flex-col gap-4">
             <DriverCard mover={mover} onFavoriteChange={handleFavoriteChange} />
-            <LineDivider />
             <div className="p-4">
                <SocialShareGroup text={t("shareText")} />
                <div className="pt-5 lg:hidden">
@@ -181,10 +168,9 @@ export default memo(function MoverDetail() {
                onFavoriteChange={handleFavoriteChange}
             />
          </div>
-
-         {/* Desktop Layout */}
-         <div className="hidden lg:flex lg:flex-row lg:justify-between lg:gap-6">
-            <div className="flex w-full flex-col gap-6 lg:w-2/3">
+         {/* Desktop Layout
+         <div className="hidden lg:block">
+            <div className="flex w-full flex-col gap-6">
                <DriverCard
                   mover={mover}
                   onFavoriteChange={handleFavoriteChange}
@@ -198,7 +184,7 @@ export default memo(function MoverDetail() {
                </Suspense>
             </div>
 
-            <div className="flex w-full flex-col gap-6 lg:w-1/3">
+            <div className="flex w-full flex-col gap-6">
                <ActionButtons
                   mover={mover}
                   onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
@@ -214,7 +200,7 @@ export default memo(function MoverDetail() {
                   </div>
                </div>
             </div>
-         </div>
+         </div> */}
       </div>
    );
 });

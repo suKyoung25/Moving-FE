@@ -195,13 +195,6 @@ export default memo(function DriverCard({
    return (
       <div className="overflow-hidden rounded-2xl">
          <div onClick={handleCardClick} className={cardClassName}>
-            {/* 로딩 인디케이터 */}
-            {isPending && (
-               <div className="absolute top-2 right-2 z-10">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
-               </div>
-            )}
-
             <div className="flex flex-col gap-3 md:gap-4 lg:gap-5">
                {/* 서비스 타입 칩들 */}
                <div className="flex items-center justify-between">
