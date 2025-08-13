@@ -3,11 +3,7 @@
 // import AuthSpinner from "@/components/spinner/AuthSpinner";
 import authApi from "@/lib/api/auth/requests/getMe";
 import { User } from "@/lib/types/auth.types";
-import {
-   hasToken,
-   isTokenExpiringSoon,
-   tokenSettings,
-} from "@/lib/utils/auth.util";
+import { hasToken, tokenSettings } from "@/lib/utils/auth.util";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import {
    createContext,
@@ -58,24 +54,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    const refreshUser = useCallback(async () => {
       setIsLoading(true);
 
-      let accessToken = await tokenSettings.get();
-
-      if (!accessToken) {
+      if (!tokenSettings.get()) {
          setUser(null);
          setIsLoading(false);
          return;
-      }
-
-      // 토큰 만료 임박 시 새 토큰 갱신
-      if (isTokenExpiringSoon(accessToken)) {
-         const newAccessToken = await tokenSettings.refresh();
-         if (!newAccessToken) {
-            setUser(null);
-            setIsLoading(false);
-            return;
-         }
-         tokenSettings.set(newAccessToken);
-         accessToken = newAccessToken;
       }
 
       try {
@@ -102,6 +84,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!user && hasToken()) {
          refreshUser();
       } // 회원탈퇴하면서 사용자가 없어지면 토큰도 날려야 함
+
+      refreshUser();
    }, [user, refreshUser]);
 
    const value = useMemo<AuthContextType>(

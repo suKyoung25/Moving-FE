@@ -15,6 +15,7 @@ import { useAuth } from "@/context/AuthContext";
 import { tokenSettings } from "../utils";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
+import { base64ToFile } from "../utils/profile.util";
 
 function useMoverProfilePostForm() {
    const t = useTranslations("Profile");
@@ -22,7 +23,7 @@ function useMoverProfilePostForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { setUser } = useAuth();
-   const { showSuccess } = useToast();
+   const { showSuccess, showError } = useToast();
    const { moverProfileSchema } = useMoverProfileSchemas();
 
    const {
@@ -39,23 +40,36 @@ function useMoverProfilePostForm() {
    const onSubmit = async (data: MoverProfileInput) => {
       setIsLoading(true);
 
+      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 이미지 사이즈 제한 10MB
+
       try {
          // 이미지가 있으면 먼저 업로드
          let imageUrl: string | undefined;
 
-         if (data.image instanceof File) {
+         if (
+            typeof data.image === "string" &&
+            data.image.startsWith("data:image")
+         ) {
+            // Base64 문자열이면 File 객체로 변환 후 업로드
+            const file = base64ToFile(data.image, "cropped.png");
+            if (file.size > MAX_FILE_SIZE) {
+               showError(
+                  "이미지 크기가 10MB를 초과했습니다. 다른 이미지를 사용해 주세요",
+               );
+               setIsLoading(false);
+               return;
+            }
             const formData = new FormData();
-            formData.append("image", data.image);
-
+            formData.append("image", file);
             const res = await updateProfileImage(formData);
-
             imageUrl = res.url; // 백엔드에서 반환한 s3 URL
          }
 
          // 이미지 처리 후 나머지 데이터 처리
          const processedData = {
             ...data,
-            image: imageUrl, // 업로드된 이미지 URL 또는 undefined
+
+            image: data.image instanceof File ? imageUrl : data.image, // 업로드된 이미지 URL 또는 undefined
             career: Number(data.career), // string > number로 변환
             serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
          };
