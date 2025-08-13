@@ -151,11 +151,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
             // unreadCount 즉시 증가
             setUnreadCount((prev) => (prev || 0) + 1);
-
-            // 캐시 무효화로 서버와 동기화
-            queryClient.invalidateQueries({
-               queryKey: ["notifications", locale],
-            });
          },
          () => {
             // SSE 연결 성공 시
@@ -196,11 +191,14 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
          return;
       }
 
-      // 초기 unreadCount 로드
-      refreshUnreadCount();
+      // 초기 unreadCount 로드 완료 후 SSE 연결
+      const initializeNotifications = async () => {
+         await refreshUnreadCount();
+         // 초기 로드 완료 후 SSE 연결
+         connectSSEConnection();
+      };
 
-      // SSE 연결 시도
-      connectSSEConnection();
+      initializeNotifications();
 
       // 컴포넌트 언마운트 시 정리
       return () => {

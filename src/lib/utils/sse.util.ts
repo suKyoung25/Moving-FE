@@ -66,11 +66,3 @@ export function connectSSE(
 
    return es;
 }
-
-// SSE 연결 상태 확인
-export function isSSESupported(): boolean {
-   return (
-      typeof EventSource !== "undefined" ||
-      typeof EventSourcePolyfill !== "undefined"
-   );
-}
