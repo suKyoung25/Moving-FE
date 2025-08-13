@@ -95,6 +95,21 @@ export const tokenSettings = {
    },
 };
 
+// 토큰 만료 시간을 체크
+export function isTokenExpiringSoon(
+   token: string,
+   thresholdSeconds = 300,
+): boolean {
+   try {
+      const payload = JSON.parse(atob(token.split(".")[1])); // 페이로드 추출
+      const now = Math.floor(Date.now() / 1000); // 현재 시간
+      // 현재 시간과 만료 시간 차이가 threshold 이하면 true 반환
+      return payload.exp - now <= thresholdSeconds; // 만료 임박 시 true
+   } catch {
+      return false; // 만료 임박 아니면 false
+   }
+}
+
 export function hasToken(): boolean {
    // 서버 환경에선 토큰이 없다고 간주 - 회원 탈퇴 시만 쓸 거니까 다른 곳에서는 쓰지 마세요
    if (typeof window === "undefined") {
