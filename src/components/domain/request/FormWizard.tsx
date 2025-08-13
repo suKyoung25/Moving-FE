@@ -16,6 +16,7 @@ import { useToast } from "@/context/ToastConText";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useSaveRequestDraft } from "@/lib/api/request/mutation";
+import Spinner from "@/components/common/Spinner";
 
 const defaultState: FormWizardState = {
    moveType: undefined,
@@ -139,7 +140,7 @@ export default function FormWizard({}) {
    };
 
    if (isPending) {
-      return <div className="text-center text-gray-400">{t("loading")}</div>;
+      return <Spinner />;
    }
 
    if (currentStep === 4) {

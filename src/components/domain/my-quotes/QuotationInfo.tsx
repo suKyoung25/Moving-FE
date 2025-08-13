@@ -45,7 +45,7 @@ export default function QuotationInfo({
 
    return (
       <article ref={dropdownRef} className="relative">
-         <ul className="border-line-100 bg-bg-100 text-14-regular lg:text-18-regular flex flex-col gap-2.5 rounded-2xl border px-5 py-4">
+         <ul className="border-line-100 bg-bg-100 text-14-regular lg:text-18-regular flex flex-col gap-2.5 rounded-2xl border px-5 py-4 shadow">
             <li>
                {chipType && isChipType(chipType) && (
                   <MoveChip type={chipType} />

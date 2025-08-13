@@ -12,10 +12,10 @@ import EmptyState from "@/components/common/EmptyState";
 import { usePendingEstimates } from "@/lib/api/estimate/query";
 import Pagination from "@/components/common/Pagination";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
-import SentQuotesSkeleton from "./SentQuotesSkeleton";
 import ConfirmedButton from "./ConfirmedButton";
 import { useLocale, useTranslations } from "next-intl";
 import formatAddress from "@/lib/utils/formatAddress.util";
+import PendingSkeleton from "./PendingSkeleton";
 
 export default function Pending() {
    const t = useTranslations("MyQuotes.Client");
@@ -28,7 +28,9 @@ export default function Pending() {
 
    if (isLoading)
       return (
-         <SkeletonLayout count={6} SkeletonComponent={SentQuotesSkeleton} />
+         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+            <SkeletonLayout count={6} SkeletonComponent={PendingSkeleton} />
+         </div>
       );
 
    if (isError || !data || data.data.length === 0) {
@@ -41,11 +43,7 @@ export default function Pending() {
             {data.data.map(({ estimate, request }: QuoteItem) => (
                <section
                   key={estimate.estimateId}
-                  style={{
-                     boxShadow:
-                        "-2px -2px 10px rgba(220, 220, 220, 0.2), 2px 2px 10px rgba(220, 220, 220, 0.2)",
-                  }}
-                  className="mx-auto flex w-full flex-col gap-2 rounded-2xl bg-white px-3 pt-5 pb-3.5 lg:mx-0 lg:w-172 lg:px-6 lg:pt-7 lg:pb-5.5"
+                  className="mx-auto flex w-full flex-col gap-2 rounded-2xl bg-white px-3 pt-5 pb-3.5 shadow lg:mx-0 lg:w-172 lg:px-6 lg:pt-7 lg:pb-5.5"
                >
                   <div className="flex flex-col gap-3.5">
                      <MoverProfileclient
