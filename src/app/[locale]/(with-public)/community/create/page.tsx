@@ -1,6 +1,6 @@
 "use client";
 
-import CommunityButton from "@/components/domain/community/CommunityButton";
+import ToastPopup from "@/components/common/ToastPopup";
 import PageTitle from "@/components/layout/PageTitle";
 import { useAuth } from "@/context/AuthContext";
 import { postCommunity } from "@/lib/api/community/postCommunity";
@@ -27,6 +27,11 @@ type FormData = z.infer<typeof schema>;
 export default function page() {
    const router = useRouter();
    const { user } = useAuth();
+   const [toast, setToast] = useState<{
+      id: number;
+      text: string;
+      success: boolean;
+   } | null>(null);
 
    useEffect(() => {
       if (!user) {
@@ -46,7 +51,16 @@ export default function page() {
    const onSubmit = async (data: FormData) => {
       try {
          await postCommunity(data.title, data.content);
-         router.push("/community");
+
+         setToast({
+            id: Date.now(),
+            text: "글이 성공적으로 작성되었습니다!",
+            success: true,
+         });
+
+         setTimeout(() => {
+            router.push("/community");
+         }, 3000);
       } catch (e) {
          console.log(e);
       }
@@ -93,6 +107,13 @@ export default function page() {
                )}
             </div>
          </form>
+         {toast && (
+            <ToastPopup
+               key={toast.id}
+               text={toast.text}
+               success={toast.success}
+            />
+         )}
       </div>
    );
 }
