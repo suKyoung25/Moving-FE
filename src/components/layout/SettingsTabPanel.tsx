@@ -29,8 +29,6 @@ export default function SettingTabPanel() {
    const locale = useLocale();
    const wrapperRef = useRef(null);
 
-   console.log(currentLang);
-
    const handleChangeLanguage = (newLocale: string) => {
       setCurrentLang(newLocale);
 

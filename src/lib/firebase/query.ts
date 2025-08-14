@@ -78,9 +78,6 @@ export const useTypingStatus = (chatId: string, otherUserId: string) => {
 export function useSendMessage(chatId: string, userId: string) {
    return useMutation({
       mutationFn: (text: string) => sendMessage(chatId, userId, text),
-      onSuccess: () => {
-         console.log("메시지 전송 완료");
-      },
    });
 }
 

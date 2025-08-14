@@ -53,7 +53,6 @@ export default function Step3({
 
    const handleReset = async () => {
       onReset();
-      console.log(currentStep);
       await saveDraft.mutateAsync({
          state: {
             moveType: undefined,

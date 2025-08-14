@@ -62,7 +62,7 @@ export default function CreateCommunity() {
             router.push("/community");
          }, 3000);
       } catch (e) {
-         console.log(e);
+         console.error(e);
       }
    };
 
