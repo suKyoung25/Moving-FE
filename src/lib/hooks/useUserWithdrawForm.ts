@@ -40,9 +40,7 @@ export function useUserWithdrawForm(onSuccess: () => void) {
          if (res.message.includes("탈퇴")) {
             // 회원탈퇴 성공 후 Firebase 채팅방 처리
             try {
-               console.log("회원탈퇴 후 채팅방 처리 시작:", user.id);
                await updateUserStatusOnWithdraw(user.id);
-               console.log("회원탈퇴 후 채팅방 처리 완료");
             } catch (firebaseError) {
                // Firebase 에러는 로그만 남기고 탈퇴 프로세스는 계속 진행
                console.error(

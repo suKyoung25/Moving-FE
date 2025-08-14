@@ -9,7 +9,6 @@ import OutlinedButton from "@/components/common/OutlinedButton";
 import SolidButton from "@/components/common/SolidButton";
 import { useTranslations } from "next-intl";
 import { useSaveRequestDraft } from "@/lib/api/request/mutation";
-import { useFormWizard } from "@/context/FormWizardContext";
 
 interface Step3Props {
    isFormValid: boolean;
@@ -35,7 +34,6 @@ export default function Step3({
 }: Step3Props) {
    const t = useTranslations("Request");
    const saveDraft = useSaveRequestDraft();
-   const { currentStep } = useFormWizard();
    const [targetField, setTargetField] = useState<"from" | "to" | undefined>(
       undefined,
    ); // 현재 열려있는 주소 필드
@@ -53,7 +51,6 @@ export default function Step3({
 
    const handleReset = async () => {
       onReset();
-      console.log(currentStep);
       await saveDraft.mutateAsync({
          state: {
             moveType: undefined,

@@ -91,7 +91,6 @@ export async function tokenFetch(
    let accessToken = await tokenSettings.get();
 
    if (!accessToken) {
-      console.warn("accessToken 없음: 로그인 필요");
       onAuthFail?.();
       throw new Error("로그인 정보가 없습니다. 다시 로그인해 주세요.");
    }

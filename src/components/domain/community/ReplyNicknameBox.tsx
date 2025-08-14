@@ -32,7 +32,7 @@ export default function ReplyNicknameBox({
          await deleteReplyMutation.mutateAsync(replyId);
          setIsModal(false);
       } catch (e) {
-         console.log(e);
+         console.error(e);
       }
    };
 

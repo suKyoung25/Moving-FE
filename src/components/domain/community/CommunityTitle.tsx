@@ -30,7 +30,7 @@ export default function CommunityTitle({
          await deleteCommunity(communityId);
          router.push("/community");
       } catch (e) {
-         console.log(e);
+         console.error(e);
       }
    };
 

@@ -167,40 +167,6 @@ const checkAndDeleteChatRoom = async (chatId: string): Promise<void> => {
    }
 };
 
-// 채팅방을 나간 참가자들을 다시 활성화 (새 메시지가 올 때) : Todo : 확인 필요
-// const reactivateLeftParticipants = async (
-//    chatId: string,
-//    senderId: string,
-// ): Promise<void> => {
-//    try {
-//       const participantsRef = ref(database, `chats/${chatId}/participants`);
-//       const snapshot = await get(participantsRef);
-
-//       if (snapshot.exists()) {
-//          const participants = snapshot.val() as Record<string, ChatParticipant>;
-//          const updates: Record<string, boolean> = {};
-
-//          Object.entries(participants).forEach(([userId, participant]) => {
-//             // 메시지를 보낸 사람이 아니고, 채팅방을 나간 상태인 경우
-//             if (
-//                userId !== senderId &&
-//                participant.leftAt &&
-//                !participant.isActive
-//             ) {
-//                updates[`${userId}/isActive`] = true;
-//                console.log("사용자 재활성화:", userId);
-//             }
-//          });
-
-//          if (Object.keys(updates).length > 0) {
-//             await update(participantsRef, updates);
-//          }
-//       }
-//    } catch (error) {
-//       console.error("참가자 재활성화 중 오류:", error);
-//    }
-// };
-
 // 메시지 읽음 처리 (수정된 버전)
 export const markMessagesAsRead = async (chatId: string, userId: string) => {
    try {

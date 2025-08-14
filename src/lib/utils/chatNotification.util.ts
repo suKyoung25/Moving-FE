@@ -113,9 +113,9 @@ export const initializeAudioContext = async (): Promise<boolean> => {
       const otherLanguages = SUPPORTED_LANGUAGES.filter(
          (lang) => lang !== currentLang,
       );
-      Promise.all(otherLanguages.map((lang) => loadAudioForLanguage(lang)))
-         .then(() => console.log(""))
-         .catch((error) => console.warn("일부 언어 알림음 로드 실패:", error));
+      Promise.all(
+         otherLanguages.map((lang) => loadAudioForLanguage(lang)),
+      ).catch((error) => console.warn("일부 언어 알림음 로드 실패:", error));
 
       isAudioInitialized = true;
 

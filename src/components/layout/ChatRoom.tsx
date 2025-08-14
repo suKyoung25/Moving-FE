@@ -122,11 +122,6 @@ export default function ChatRoom() {
          );
 
          if (unreadMessages.length > 0) {
-            console.log(
-               t("chatRoom.readProcessingLog"),
-               unreadMessages.length,
-               t("chatRoom.messagesCount"),
-            );
             markMessagesAsRead(chatId, user.id);
          }
       }
@@ -147,7 +142,6 @@ export default function ChatRoom() {
    }, [isOtherTyping]);
 
    useEffect(() => {
-      console.log(t("chatRoom.enterChatRoom"));
       setIsInRoom(true);
 
       // ✅ 현재 채팅방 ID 설정 (알림음 방지용)
@@ -156,7 +150,6 @@ export default function ChatRoom() {
       }
 
       return () => {
-         console.log(t("chatRoom.leaveChatRoom"));
          setIsInRoom(false);
          updateTypingStatus(false);
 
@@ -183,7 +176,6 @@ export default function ChatRoom() {
          );
 
          if (result.success) {
-            console.log(t("chatRoom.messageSendSuccess"));
          } else {
             setSendError(result.error || t("chatRoom.sendMessageFailed"));
 
