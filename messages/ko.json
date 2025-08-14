@@ -217,7 +217,7 @@
    "MoverSearch": {
       "findDriver": "기사님 찾기",
       "areas": {
-         "all": "전체",
+         "all": "지역",
          "seoul": "서울",
          "incheon": "인천",
          "daejeon": "대전",
@@ -237,7 +237,7 @@
          "jeju": "제주"
       },
       "services": {
-         "all": "전체",
+         "all": "서비스",
          "SMALL": "소형이사",
          "HOME": "가정이사",
          "OFFICE": "사무실이사"
@@ -274,7 +274,21 @@
          "addedToFavorites": "찜 목록에 추가되었습니다.",
          "removedFromFavorites": "찜 목록에서 제거되었습니다."
       },
-      "goToLogin": "로그인하러 가기"
+      "goToLogin": "로그인하러 가기",
+      "accessibility": {
+         "driverCard": "{name} 기사님 카드",
+         "loading": "로딩 중...",
+         "moverDetails": "{name} 기사님, 평점 {rating}점, 경력 {career}년, 리뷰 {reviewCount}개",
+         "searchSection": "기사님 검색",
+         "noServicesAvailable": "제공하는 서비스가 없습니다",
+         "noRegionsAvailable": "서비스 가능 지역이 없습니다",
+         "servicesList": "제공 서비스 목록",
+         "regionsList": "서비스 가능 지역 목록",
+         "service": "서비스",
+         "region": "지역",
+         "servicesCount": "{count}개의 서비스를 제공합니다",
+         "regionsCount": "{count}개 지역에서 서비스 가능합니다"
+      }
    },
    "MoverDetail": {
       "requestDesignatedEstimate": "기사님에게 지정 견적을 요청해보세요!",
@@ -350,6 +364,12 @@
          "경북": "경북",
          "경남": "경남",
          "제주": "제주"
+      },
+      "accessibility": {
+         "favorite": "{name} 기사님 찜하기",
+         "unfavorite": "{name} 기사님 찜 해제하기",
+         "addedToFavorites": "{name} 기사님이 찜 목록에 추가되었습니다",
+         "moverDetailsHeading": "{name} 기사님 상세 정보"
       }
    },
    "Dashboard": {
@@ -804,6 +824,7 @@
          "requestQuote": "견적 요청",
          "myQuotes": "내 견적 관리",
          "estimateCalculator": "견적 계산기",
+         "community": "커뮤니티",
          "receivedRequests": "받은 요청",
          "myQuotesMover": "내 견적 관리",
          "myQuotesClient": "내 견적 관리",

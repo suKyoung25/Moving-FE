@@ -10,9 +10,5 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
    const { tab } = await searchParams;
    const activeTab = tab === "2" ? "2" : "1";
 
-   return (
-      <div className="pt-10">
-         {activeTab === "1" ? <WritableReviews /> : <MyReviews />}
-      </div>
-   );
+   return <div>{activeTab === "1" ? <WritableReviews /> : <MyReviews />}</div>;
 }

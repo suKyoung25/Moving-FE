@@ -47,6 +47,10 @@ export default function HamburgerMenu({
                  label: t("nav.estimateCalculator"),
                  href: "/estimate-calculator",
               },
+              {
+                 label: t("nav.community"),
+                 href: "/community",
+              },
            ]
          : [
               { label: t("nav.receivedRequests"), href: "/received-requests" },
@@ -55,12 +59,17 @@ export default function HamburgerMenu({
                  label: t("nav.estimateCalculator"),
                  href: "/estimate-calculator",
               },
+              {
+                 label: t("nav.community"),
+                 href: "/community",
+              },
            ]
       : [
            { label: t("nav.login"), href: "/sign-in/client" },
            { label: t("nav.signUp"), href: "/sign-up/client" },
            { label: t("nav.findMovers"), href: "/mover-search" },
            { label: t("nav.estimateCalculator"), href: "/estimate-calculator" },
+           { label: t("nav.community"), href: "/community" },
         ];
 
    useEffect(() => {

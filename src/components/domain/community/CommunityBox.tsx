@@ -9,6 +9,8 @@ import Pagination from "@/components/common/Pagination";
 import { useEffect, useState } from "react";
 import { CommunityWithDetails } from "@/lib/types/community.types";
 import { useLocale, useTranslations } from "next-intl";
+import CommunitySkeleton from "./CommunitySkeleton";
+import SkeletonLayout from "@/components/common/SkeletonLayout";
 
 export default function CommunityBox() {
    const t = useTranslations("Community");
@@ -40,16 +42,10 @@ export default function CommunityBox() {
 
    if (isPending)
       return (
-         <div
-            className="flex items-center justify-center"
-            role="status"
-            aria-live="polite"
-         >
-            {t("loading")}
+         <div className="flex flex-col gap-6 lg:gap-8">
+            <SkeletonLayout count={6} SkeletonComponent={CommunitySkeleton} />
          </div>
       );
-
-   console.log(communityData);
 
    return (
       <section
@@ -64,28 +60,31 @@ export default function CommunityBox() {
 
          <CommunityButton address={"create"} text={t("writePost")} />
          <SearchBox search={search} setSearch={setSearch} />
-
          {communityData?.data?.communities.length === 0 && (
             <div className="mt-10 text-center" role="status" aria-live="polite">
                {t("noSearchResults")}
             </div>
          )}
-         {communityData?.data?.communities.map((data: CommunityWithDetails) => (
-            <span
-               key={data.id}
-               onClick={() => router.push(`/community/${data.id}`)}
-               className={`block ${isSearching || isLoading ? "pointer-events-none opacity-50" : ""}`}
-            >
-               <Community
-                  title={data.title}
-                  userNickname={data.userNickname}
-                  date={data.createdAt}
-                  content={data.content}
-                  replyCount={data.replies.length}
-                  profileImg={data.profileImg}
-               />
-            </span>
-         ))}
+         <div className="mt-6 flex flex-col gap-6 lg:mt-8 lg:gap-8">
+            {communityData?.data?.communities.map(
+               (data: CommunityWithDetails) => (
+                  <div
+                     key={data.id}
+                     onClick={() => router.push(`/community/${data.id}`)}
+                     className={`block ${isSearching || isLoading ? "pointer-events-none opacity-50" : ""}`}
+                  >
+                     <Community
+                        title={data.title}
+                        userNickname={data.userNickname}
+                        date={data.createdAt}
+                        content={data.content}
+                        replyCount={data.replies.length}
+                        profileImg={data.profileImg}
+                     />
+                  </div>
+               ),
+            )}
+         </div>
 
          <Pagination
             page={page}

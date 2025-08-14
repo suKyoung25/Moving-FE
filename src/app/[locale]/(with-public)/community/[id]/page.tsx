@@ -32,7 +32,7 @@ export default async function page({
 
          <PageTitle title={t("communityDetail")} />
          <section
-            className="mt-5 rounded-2xl px-3.5 py-4 shadow-[0_-2px_10px_rgba(220,220,220,0.2),_0_2px_10px_rgba(220,220,220,0.14)]"
+            className="mt-5 rounded-2xl px-3.5 py-4 shadow lg:px-6 lg:py-5"
             aria-labelledby="community-content-title"
          >
             <h2 id="community-content-title" className="sr-only">

@@ -16,8 +16,6 @@ import {
 import { delay } from "../../delay";
 import Spinner from "@/components/common/Spinner";
 
-// ✅ type 등
-
 interface AuthContextType {
    user: User | null;
    isLoading: boolean;
@@ -27,10 +25,8 @@ interface AuthContextType {
    setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-// ✅ context 생성
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// ✅ context 값 설정
 export function AuthProvider({ children }: { children: React.ReactNode }) {
    const [user, setUser] = useState<User | null>(null);
    const [isLoading, setIsLoading] = useState(true); // 기본값 true로 시작
