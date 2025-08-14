@@ -102,14 +102,6 @@ const MoverSearchLayoutContent = memo(function MoverSearchLayoutContent() {
       [],
    );
 
-   // ✅ 검색 핸들러를 별도로 메모이제이션
-   const handleSearchChange = useCallback(
-      (search: string) => {
-         handleFilterChange({ search });
-      },
-      [handleFilterChange],
-   );
-
    const handleDriverListFavoriteChange = useCallback(() => {
       setFavoriteRefreshKey((prev) => prev + 1);
    }, []);
@@ -213,12 +205,10 @@ const MoverSearchLayoutContent = memo(function MoverSearchLayoutContent() {
 
                <div className="">
                   <div>
-                     <SearchBar
-                        onSearchChange={(search) =>
-                           handleFilterChange({ search })
-                        }
-                        initialValue={filters.search}
-                     />
+                  <SearchBar
+                     onSearchChange={(search) => handleFilterChange({ search })}
+                     initialValue={filters.search}
+                  />
                   </div>
                   <div className="my-4 flex justify-end">
                      <SortDropdown

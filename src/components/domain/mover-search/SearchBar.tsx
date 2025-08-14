@@ -62,7 +62,7 @@ export default function SearchBar({
    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
       if (e.key === 'Enter') {
          e.preventDefault(); // ✅ Enter 키 기본 동작 방지
-         handleSubmit(e as any);
+         handleSubmit(e as React.FormEvent);
       }
    }, [handleSubmit]);
 
