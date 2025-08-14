@@ -11,7 +11,7 @@ import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
 import { useLocale, useTranslations } from "next-intl";
 import DriverCardSkeleton from "./DriverCardSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
-import MoverSearchSpinner from "./MoverSearchSpinner";
+import SearchSpinner from "./MoverSearchSpinner";
 
 interface DriverListProps {
    filters: {
@@ -305,7 +305,7 @@ export default memo(function DriverList({
                      />
                   </div>
                ) : isAppending ? (
-                  <div></div>
+                  <SearchSpinner />
                ) : null}
             </div>
          )}

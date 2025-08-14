@@ -75,7 +75,7 @@ export default function RequestCard({ req }: { req: ReceivedRequest }) {
          >
             <div className="border-line-100 flex flex-col rounded-2xl border px-3.5 py-4 lg:px-6 lg:py-5">
                <div className="flex items-center justify-between">
-                  <div>
+                  <div className="item-center flex gap-2">
                      <MoveChip type={(req.moveType as ChipType) ?? "PENDING"} />
                      {req.isDesignated && <MoveChip type="DESIGNATED" />}
                   </div>
