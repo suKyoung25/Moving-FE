@@ -77,7 +77,11 @@ export default function ReceivedRequestsList({
          </div>
          <div className="py-4">
             <p ref={observerRef} />
-            {isFetchingNextPage && <SearchSpinner />}
+            {isFetchingNextPage && (
+               <div className="flex w-full justify-center">
+                  <SearchSpinner />
+               </div>
+            )}
             {!hasNextPage && (
                <p className="text-center text-gray-400">
                   {t("noMoreRequests")}
