@@ -43,51 +43,67 @@ const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
    );
 });
 
-const ErrorDisplay = memo(function ErrorDisplay({ error }: { error: string }) {
+const ErrorDisplay = memo(function ErrorDisplay({ 
+   error, 
+   onRetry 
+}: { 
+   error: string;
+   onRetry: () => void;
+}) {
    return (
       <div className="flex min-h-screen items-center justify-center">
          <div className="text-center">
-            <p className="text-lg text-red-600">{error}</p>
+            <p className="mb-4 text-lg text-red-600">{error}</p>
+            <button
+               onClick={onRetry}
+               className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            >
+               다시 시도
+            </button>
          </div>
       </div>
    );
 });
 
-// 🔧 Main component - t is used properly here
+// ✅ 상태 타입 정의
+interface MoverDetailState {
+   loading: boolean;
+   error: string | null;
+   mover: Mover | null;
+}
+
 export default memo(function MoverDetail() {
    const t = useTranslations("MoverDetail");
    const locale = useLocale();
    const params = useParams();
    const { user } = useAuth();
 
-   const [state, setState] = useState({
+   // ✅ 상태를 하나의 객체로 통합
+   const [state, setState] = useState<MoverDetailState>({
       loading: true,
-      error: null as string | null,
-      mover: null as Mover | null,
+      error: null,
+      mover: null,
    });
 
+   // ✅ moverId를 메모이제이션
    const moverId = useMemo(() => params.id as string, [params.id]);
 
-   const authState = useMemo(
-      () => ({
-         hasToken: Boolean(tokenSettings.get()),
-         isLoggedIn: Boolean(user),
-      }),
-      [user],
-   );
+   // ✅ 인증 상태를 메모이제이션
+   const authState = useMemo(() => ({
+      hasToken: Boolean(tokenSettings.get()),
+      isLoggedIn: Boolean(user),
+   }), [user]);
 
+   // ✅ API 호출 함수를 메모이제이션
    const fetchMover = useCallback(async () => {
       if (!moverId) return;
 
       try {
          setState((prev) => ({ ...prev, loading: true, error: null }));
 
-         const fetchPromise =
-            authState.hasToken && authState.isLoggedIn
-               ? getMoverByIdWithAuth(moverId, locale)
-               : getMoverByIdWithoutAuth(moverId, locale);
-
-         const moverData = await fetchPromise;
+         const moverData = authState.hasToken && authState.isLoggedIn
+            ? await getMoverByIdWithAuth(moverId, locale)
+            : await getMoverByIdWithoutAuth(moverId, locale);
 
          setState({
             loading: false,
@@ -102,12 +118,14 @@ export default memo(function MoverDetail() {
             mover: null,
          });
       }
-   }, [moverId, authState.hasToken, authState.isLoggedIn, t]);
+   }, [moverId, authState.hasToken, authState.isLoggedIn, locale, t]);
 
+   // ✅ 초기 데이터 로드
    useEffect(() => {
       fetchMover();
    }, [fetchMover]);
 
+   // ✅ 찜하기 변경 핸들러
    const handleFavoriteChange = useCallback(
       (moverId: string, isFavorite: boolean, favoriteCount: number) => {
          setState((prev) => {
@@ -121,6 +139,7 @@ export default memo(function MoverDetail() {
       [],
    );
 
+   // ✅ 지정 견적 성공 핸들러
    const handleDesignatedEstimateSuccess = useCallback((moverId: string) => {
       setState((prev) => {
          if (!prev.mover || prev.mover.id !== moverId) return prev;
@@ -135,24 +154,47 @@ export default memo(function MoverDetail() {
       });
    }, []);
 
-   if (state.loading) return <Spinner />;
+   // ✅ 재시도 핸들러
+   const handleRetry = useCallback(() => {
+      fetchMover();
+   }, [fetchMover]);
+
+   // ✅ 공유 텍스트를 메모이제이션
+   const shareText = useMemo(() => t("shareText"), [t]);
+
+   // 로딩 상태
+   if (state.loading) {
+      return <Spinner />;
+   }
+
+   // 에러 상태
    if (state.error || !state.mover) {
-      return <ErrorDisplay error={state.error || t("error.notFound")} />;
+      return (
+         <ErrorDisplay 
+            error={state.error || t("error.notFound")}
+            onRetry={handleRetry}
+         />
+      );
    }
 
    const { mover } = state;
 
    return (
       <div className="flex w-full flex-col gap-4 lg:gap-6">
-         {/* Mobile Layout */}
+         {/* ✅ 모바일 레이아웃만 사용 (데스크탑 레이아웃 주석 처리됨) */}
          <div className="flex flex-col gap-4">
-            <DriverCard mover={mover} onFavoriteChange={handleFavoriteChange} />
+            <DriverCard 
+               mover={mover} 
+               onFavoriteChange={handleFavoriteChange} 
+            />
+            
             <div className="p-4">
-               <SocialShareGroup text={t("shareText")} />
+               <SocialShareGroup text={shareText} />
                <div className="pt-5 lg:hidden">
                   <LineDivider />
                </div>
             </div>
+            
             <DetailSections mover={mover} />
             <LineDivider />
 
@@ -168,39 +210,6 @@ export default memo(function MoverDetail() {
                onFavoriteChange={handleFavoriteChange}
             />
          </div>
-         {/* Desktop Layout
-         <div className="hidden lg:block">
-            <div className="flex w-full flex-col gap-6">
-               <DriverCard
-                  mover={mover}
-                  onFavoriteChange={handleFavoriteChange}
-               />
-               <LineDivider />
-               <DetailSections mover={mover} />
-               <LineDivider />
-
-               <Suspense fallback={<ReviewSectionSkeleton />}>
-                  <DashboardReviewSection moverId={mover.id} />
-               </Suspense>
-            </div>
-
-            <div className="flex w-full flex-col gap-6">
-               <ActionButtons
-                  mover={mover}
-                  onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
-                  onFavoriteChange={handleFavoriteChange}
-               />
-               <div className="hidden lg:block">
-                  <LineDivider />
-               </div>
-               <div className="lg:p-5">
-                  <SocialShareGroup text={t("shareText")} />
-                  <div className="lg:hidden">
-                     <LineDivider />
-                  </div>
-               </div>
-            </div>
-         </div> */}
       </div>
    );
 });
