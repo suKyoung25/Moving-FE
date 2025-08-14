@@ -42,7 +42,7 @@ export default function MyReviews() {
    const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
 
    // 리뷰 리스트 조회
-   const { data, isLoading, isFetching, error, refetch } = useMyReviews({
+   const { data, isLoading, error, refetch } = useMyReviews({
       page: pagination.page,
       limit: pagination.limit,
       targetLang: locale,
@@ -68,7 +68,7 @@ export default function MyReviews() {
       return <div role="alert">{t("errorOccurred")}</div>;
    }
 
-   if (isLoading || isFetching) {
+   if (isLoading) {
       return (
          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
             <SkeletonLayout count={6} SkeletonComponent={MyReviewsSkeleton} />
