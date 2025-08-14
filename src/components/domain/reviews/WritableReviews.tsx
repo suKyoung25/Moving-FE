@@ -15,6 +15,8 @@ import { WritableReview } from "@/lib/types";
 import { useWritableReviews } from "@/lib/api/review/query";
 import { useToast } from "@/context/ToastConText";
 import { useQueryClient } from "@tanstack/react-query";
+import SkeletonLayout from "@/components/common/SkeletonLayout";
+import WritableReviewSkeleton from "./WritableReviewSkeleton";
 
 export default function WritableReviews() {
    const t = useTranslations("Reviews");
@@ -61,13 +63,20 @@ export default function WritableReviews() {
    }
 
    if (isLoading || isFetching) {
-      return <div>{t("loadingText")}</div>;
+      return (
+         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+            <SkeletonLayout
+               count={6}
+               SkeletonComponent={WritableReviewSkeleton}
+            />
+         </div>
+      );
    }
 
    return (
       <div>
          <div
-            className="grid grid-cols-1 gap-8 lg:mb-6 lg:grid-cols-2 lg:gap-6"
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8"
             role="list"
             aria-label={t("writableReviewList")}
          >
@@ -75,7 +84,7 @@ export default function WritableReviews() {
                (writableReview: WritableReview) => (
                   <div
                      key={writableReview.estimateId}
-                     className="border-line-100 h-52 w-full rounded-2xl border bg-white px-3.5 pt-5 pb-3.5 shadow-[2px_2px_10px_0px_rgba(220,220,220,0.10),_-2px_-2px_10px_0px_rgba(220,220,220,0.10)] md:mb-2 md:px-4 lg:mb-6 lg:h-86.5 lg:px-6 lg:py-8"
+                     className="border-line-100 w-full rounded-2xl border bg-white px-3.5 pt-5 pb-3.5 shadow md:mb-2 md:px-4 lg:mb-6 lg:h-86.5 lg:px-6 lg:py-8"
                   >
                      <div className="mb-3.5 flex gap-2 lg:gap-3">
                         {isChipType(writableReview.moveType) ? (
@@ -93,8 +102,8 @@ export default function WritableReviews() {
                            />
                         )}
                      </div>
-                     <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
-                        <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
+                     <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
+                        <div className="relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full lg:mr-6 lg:h-24 lg:w-24">
                            <Image
                               src={writableReview.moverProfileImage || profile}
                               alt={
@@ -117,7 +126,7 @@ export default function WritableReviews() {
                                  {writableReview.moverNickName} {t("mover")}
                               </h3>
                            </div>
-                           <div className="text-13-medium lg:text-16-medium mt-3 flex items-center text-gray-300 lg:mt-4">
+                           <div className="text-13-medium lg:text-16-medium mt-3 flex flex-wrap items-center text-gray-300 lg:mt-4">
                               <span className="flex items-center gap-1.5 lg:gap-3">
                                  <span>{t("moveDate")}</span>
                                  <time
@@ -163,7 +172,7 @@ export default function WritableReviews() {
          {/* 리뷰 목록이 없을 때 */}
          {!isLoading && (data?.data.estimates.length ?? 0) === 0 && (
             <div
-               className="mt-46 flex flex-col items-center justify-center"
+               className="flex flex-col items-center justify-center"
                role="status"
                aria-live="polite"
             >
