@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 /** 내부/외부 링크를 자동으로 감지해 Link 또는 <a>로 렌더링 */
 export default function MessageText({

@@ -4,7 +4,7 @@ import React from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "@/components/common/SolidButton";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import useSignUpForm from "@/lib/hooks/useSignUpForm";
 import { UserType } from "@/lib/types";
 import { SignUpFormValues } from "@/lib/schemas";
