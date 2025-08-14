@@ -46,9 +46,11 @@ const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
 const ErrorDisplay = memo(function ErrorDisplay({
    error,
    onRetry,
+   retryText,
 }: {
    error: string;
    onRetry: () => void;
+   retryText: string;
 }) {
    return (
       <div className="flex min-h-screen items-center justify-center">
@@ -58,7 +60,7 @@ const ErrorDisplay = memo(function ErrorDisplay({
                onClick={onRetry}
                className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
-               다시 시도
+               {retryText}
             </button>
          </div>
       </div>
@@ -177,6 +179,7 @@ export default memo(function MoverDetail() {
          <ErrorDisplay
             error={state.error || t("error.notFound")}
             onRetry={handleRetry}
+            retryText={t("retry")}
          />
       );
    }

@@ -262,7 +262,7 @@
       "retry": "Retry",
       "loading": "Loading...",
       "scrollToLoadMore": "Scroll to load more",
-      "allLoaded": "You have seen all drivers.",
+      "allLoaded": "All driver information has been loaded.",
       "noResults": "No results found.",
       "error": {
          "loggedInAsMover": "Movers cannot favorite other movers.",
@@ -288,6 +288,9 @@
          "region": "region",
          "servicesCount": "{count} services available",
          "regionsCount": "Available in {count} regions"
+      },
+      "chatButton": {
+         "tooltip": "Start Chat"
       }
    },
    "MoverDetail": {
@@ -313,6 +316,7 @@
          "loadFailed": "Failed to load driver information.",
          "notFound": "Driver information not found."
       },
+      "retry": "Retry",
       "toast": {
          "addedToFavorites": "Added to favorites.",
          "removedFromFavorites": "Removed from favorites.",
@@ -864,7 +868,11 @@
       "empty": "No notifications available.",
       "loadingMore": "Loading...",
       "readFail": "Failed to mark notification as read",
-      "readAllFail": "Failed to mark all notifications as read"
+      "readAllFail": "Failed to mark all notifications as read",
+      "cancelledEstimate": "The estimate has been cancelled.",
+      "cancelledRequest": "The estimate request has been cancelled.",
+      "readNotificationFail": "Failed to read notification",
+      "readAllNotificationsFail": "Failed to read all notifications"
    },
    "Chips": {
       "small": "Small",

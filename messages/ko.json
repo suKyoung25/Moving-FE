@@ -262,7 +262,7 @@
       "retry": "다시 시도",
       "loading": "로딩 중...",
       "scrollToLoadMore": "스크롤하여 더 보기",
-      "allLoaded": "모든 기사님을 확인했습니다.",
+      "allLoaded": "모든 기사님 정보 조회가 완료되었습니다.",
       "noResults": "검색 결과가 없습니다.",
       "error": {
          "loggedInAsMover": "기사님은 다른 기사님을 찜할 수 없습니다.",
@@ -288,6 +288,9 @@
          "region": "지역",
          "servicesCount": "{count}개의 서비스를 제공합니다",
          "regionsCount": "{count}개 지역에서 서비스 가능합니다"
+      },
+      "chatButton": {
+         "tooltip": "대화 시작 하기"
       }
    },
    "MoverDetail": {
@@ -313,6 +316,7 @@
          "loadFailed": "기사님 정보를 불러오는데 실패했습니다.",
          "notFound": "기사님 정보를 찾을 수 없습니다."
       },
+      "retry": "다시 시도",
       "toast": {
          "addedToFavorites": "찜 목록에 추가되었습니다.",
          "removedFromFavorites": "찜 목록에서 제거되었습니다.",
@@ -866,7 +870,11 @@
       "empty": "알림이 존재하지 않습니다.",
       "loadingMore": "불러오는 중...",
       "readFail": "알림 읽기 실패",
-      "readAllFail": "모든 알림 읽기 실패"
+      "readAllFail": "모든 알림 읽기 실패",
+      "cancelledEstimate": "취소된 견적입니다.",
+      "cancelledRequest": "취소된 견적 요청입니다.",
+      "readNotificationFail": "알림 읽기 실패",
+      "readAllNotificationsFail": "모든 알림 읽기 실패"
    },
    "Chips": {
       "small": "소형이사",

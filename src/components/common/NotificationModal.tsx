@@ -64,13 +64,13 @@ export default function NotificationModal({
          if (item.targetUrl?.startsWith("/my-quotes")) {
             const estimate = await getEstimate(item.targetId, locale);
             if (!estimate) {
-               showError("취소된 견적입니다.");
+               showError(t("cancelledEstimate"));
                return;
             }
          } else {
             const { data: request } = await getRequest(item.targetId);
             if (!request) {
-               showError("취소된 견적 요청입니다.");
+               showError(t("cancelledRequest"));
                return;
             }
          }

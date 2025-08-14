@@ -262,7 +262,7 @@
       "retry": "重试",
       "loading": "加载中...",
       "scrollToLoadMore": "滚动以加载更多",
-      "allLoaded": "您已查看所有司机。",
+      "allLoaded": "所有司机信息已加载完成。",
       "noResults": "未找到结果。",
       "error": {
          "loggedInAsMover": "搬运工无法收藏其他搬运工。",
@@ -288,6 +288,9 @@
          "region": "地区",
          "servicesCount": "{count}项服务可用",
          "regionsCount": "在{count}个地区提供服务"
+      },
+      "chatButton": {
+         "tooltip": "开始聊天"
       }
    },
    "MoverDetail": {
@@ -313,6 +316,7 @@
          "loadFailed": "无法加载司机信息。",
          "notFound": "找不到司机信息。"
       },
+      "retry": "重试",
       "toast": {
          "addedToFavorites": "已添加到收藏。",
          "removedFromFavorites": "已从收藏中移除。",
@@ -863,7 +867,11 @@
       "empty": "暂无通知。",
       "loadingMore": "加载中...",
       "readFail": "通知标记为已读失败",
-      "readAllFail": "全部通知标记为已读失败"
+      "readAllFail": "全部通知标记为已读失败",
+      "cancelledEstimate": "报价已取消。",
+      "cancelledRequest": "报价请求已取消。",
+      "readNotificationFail": "读取通知失败",
+      "readAllNotificationsFail": "读取所有通知失败"
    },
    "Chips": {
       "small": "小件搬家",
