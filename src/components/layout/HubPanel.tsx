@@ -12,8 +12,10 @@ import {
 import HomeTabPanel from "./HomeTabPanel";
 import ChatTabPanel from "./ChatTabPanel";
 import SettingTabPanel from "./SettingsTabPanel";
+import { useTranslations } from "next-intl";
 
 export default function HubPanel() {
+   const t = useTranslations("SupportHub");
    const [activeTab, setActiveTab] = useState<"home" | "chat" | "settings">(
       "chat",
    );
@@ -40,9 +42,11 @@ export default function HubPanel() {
                      ? "text-black-400"
                      : "hover:text-black-400 text-gray-900"
                }`}
+               aria-label={t("homeTab")}
+               aria-pressed={activeTab === "home"}
             >
                {activeTab === "home" ? <GoHomeFill /> : <GoHome />}
-               <span className="text-12-medium">홈</span>
+               <span className="text-12-medium">{t("home")}</span>
             </button>
 
             <button
@@ -52,13 +56,15 @@ export default function HubPanel() {
                      ? "text-black-400"
                      : "hover:text-black-400 text-gray-900"
                }`}
+               aria-label={t("chatTab")}
+               aria-pressed={activeTab === "chat"}
             >
                {activeTab === "chat" ? (
                   <IoChatbubbleEllipsesSharp />
                ) : (
                   <IoChatbubbleEllipsesOutline />
                )}
-               <span className="text-12-medium">대화</span>
+               <span className="text-12-medium">{t("chat")}</span>
             </button>
 
             <button
@@ -68,13 +74,15 @@ export default function HubPanel() {
                      ? "text-black-400"
                      : "hover:text-black-400 text-gray-900"
                }`}
+               aria-label={t("settingsTab")}
+               aria-pressed={activeTab === "settings"}
             >
                {activeTab === "settings" ? (
                   <IoSettings />
                ) : (
                   <IoSettingsOutline />
                )}
-               <span className="text-12-medium">설정</span>
+               <span className="text-12-medium">{t("settings.title")}</span>
             </button>
          </nav>
       </motion.div>

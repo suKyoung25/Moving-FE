@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { Providers } from "@/app/providers";
 import SupportHub from "@/components/layout/SupportHub";
 
-export const metadata: Metadata = {
-   title: "무빙 - 스마트한 이사 비교 플랫폼",
-   description:
-      "이사업체 견적을 한눈에 비교하고, 합리적인 선택을 돕는 스마트한 이사 플랫폼 '무빙'",
-};
+export async function generateMetadata(): Promise<Metadata> {
+   const t = await getTranslations("Layout");
+
+   return {
+      title: t("title"),
+      description: t("description"),
+   };
+}
 
 export default async function RootLayout({
    children,
@@ -27,7 +31,7 @@ export default async function RootLayout({
    return (
       <html lang={locale}>
          <body className="h-full min-h-screen">
-            <NextIntlClientProvider>
+            <NextIntlClientProvider locale={locale}>
                <Providers>
                   <main>
                      {children}

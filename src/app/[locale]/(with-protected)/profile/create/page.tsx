@@ -25,7 +25,7 @@ export default function CreateProfilePage() {
             >
                {/* screen reader 전용 페이지 제목 */}
                <h1 id="create-profile-page-title" className="sr-only">
-                  프로필 등록 페이지
+                  {t("createProfilePageTitle")}
                </h1>
 
                <div className="mx-auto max-w-82 lg:max-w-160">

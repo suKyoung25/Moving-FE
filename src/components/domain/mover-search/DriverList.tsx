@@ -105,6 +105,7 @@ export default memo(function DriverList({
          filters.sortBy,
          currentPage,
          t,
+         locale,
       ],
    );
 
@@ -242,7 +243,14 @@ export default memo(function DriverList({
       }, 300);
 
       return () => clearTimeout(timeoutId);
-   }, [filters.search, filters.area, filters.serviceType, filters.sortBy, t]);
+   }, [
+      filters.search,
+      filters.area,
+      filters.serviceType,
+      filters.sortBy,
+      t,
+      locale,
+   ]);
 
    if (error) {
       return (

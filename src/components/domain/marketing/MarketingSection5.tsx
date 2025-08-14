@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { FaInstagram, FaFacebookF, FaYoutube, FaTwitter } from "react-icons/fa";
 
-// components/MarketingSection4.tsx
+// components/MarketingSection5.tsx
 export default function MarketingSection5() {
    const t = useTranslations("Landing");
 
@@ -28,16 +28,32 @@ export default function MarketingSection5() {
                      </nav>
                   </div>
                   <div className="flex items-center gap-4 lg:gap-6 [&_*]:size-7.5">
-                     <Link href={"#"}>
+                     <Link
+                        href={"#"}
+                        aria-label={t("yourLoad.socialMedia.instagram")}
+                        title={t("yourLoad.socialMedia.instagram")}
+                     >
                         <FaInstagram />
                      </Link>
-                     <Link href={"#"}>
+                     <Link
+                        href={"#"}
+                        aria-label={t("yourLoad.socialMedia.facebook")}
+                        title={t("yourLoad.socialMedia.facebook")}
+                     >
                         <FaFacebookF />
                      </Link>
-                     <Link href={"#"}>
+                     <Link
+                        href={"#"}
+                        aria-label={t("yourLoad.socialMedia.youtube")}
+                        title={t("yourLoad.socialMedia.youtube")}
+                     >
                         <FaYoutube />
                      </Link>
-                     <Link href={"#"}>
+                     <Link
+                        href={"#"}
+                        aria-label={t("yourLoad.socialMedia.twitter")}
+                        title={t("yourLoad.socialMedia.twitter")}
+                     >
                         <FaTwitter />
                      </Link>
                   </div>
@@ -55,6 +71,8 @@ export default function MarketingSection5() {
                         <a
                            href="mailto:codeit4movingteam@gmail.com"
                            className="underline"
+                           aria-label={t("yourLoad.emailContact")}
+                           title={t("yourLoad.emailContact")}
                         >
                            codeit4movingteam@gmail.com
                         </a>

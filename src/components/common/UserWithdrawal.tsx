@@ -28,7 +28,9 @@ export function UserWithdrawal({ onClose }: { onClose: () => void }) {
 
    return (
       <div className="flex h-full flex-col p-4">
-         <h2 className="text-18-semibold lg:text-22-semibold">회원탈퇴</h2>
+         <h2 className="text-18-semibold lg:text-22-semibold">
+            {t("userWithdrawal.title")}
+         </h2>
 
          <form
             onSubmit={handleSubmit((data) => onSubmit(userType)(data))}
@@ -43,7 +45,7 @@ export function UserWithdrawal({ onClose }: { onClose: () => void }) {
                         htmlFor="password"
                         className="text-14-regular text-gray-900"
                      >
-                        계정의 비밀번호를 입력해 주세요
+                        {t("userWithdrawal.passwordLabel")}
                      </label>
 
                      <div className="relative w-full">
@@ -68,14 +70,18 @@ export function UserWithdrawal({ onClose }: { onClose: () => void }) {
                            onClick={() => setIsPwVisible((v) => !v)}
                            aria-label={
                               isPwVisible
-                                 ? "비밀번호 숨김 모드"
-                                 : "비밀번호 보기 모드"
+                                 ? t("userWithdrawal.hidePassword")
+                                 : t("userWithdrawal.showPassword")
                            }
                            className="absolute top-1/2 right-3 -translate-y-1/2"
                         >
                            <Image
                               src={isPwVisible ? openedEye : closedEye}
-                              alt=""
+                              alt={
+                                 isPwVisible
+                                    ? t("userWithdrawal.hidePassword")
+                                    : t("userWithdrawal.showPassword")
+                              }
                               priority
                               width={24}
                               height={24}

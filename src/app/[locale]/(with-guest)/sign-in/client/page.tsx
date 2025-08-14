@@ -4,8 +4,10 @@ import ClientTitle from "@/components/domain/auth/ClientTitle";
 import EasyLoginForm from "@/components/domain/auth/EasyLoginForm";
 import SignInForm from "@/components/domain/auth/SignInForm";
 import { useAuthError } from "@/lib/hooks/useAuthError";
+import { useTranslations } from "next-intl";
 
 export default function ClientSignInPage() {
+   const t = useTranslations("Sign");
    useAuthError();
 
    return (
@@ -18,7 +20,7 @@ export default function ClientSignInPage() {
       >
          {/* 본문에는 안 나타나고 읽기 모드일 때 글씨를 읽어줌 */}
          <h1 id="signin-page-title" className="sr-only">
-            로그인 페이지
+            {t("pageTitle")}
          </h1>
 
          {/* 제목 + 기사 페이지로 링크 이동 */}

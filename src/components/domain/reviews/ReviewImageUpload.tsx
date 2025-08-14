@@ -11,6 +11,8 @@ import {
 import { base64ToFile } from "@/lib/utils/profile.util";
 import ImageEditModal from "@/components/domain/profile/ImageEditModal";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { useToast } from "@/context/ToastConText";
 
 interface ReviewImageUploadProps<T extends FieldValues = FieldValues> {
    name: Path<T>;
@@ -27,6 +29,7 @@ function ReviewImageUpload<T extends FieldValues = FieldValues>({
    text,
    maxImages = 5,
 }: ReviewImageUploadProps<T>) {
+   const t = useTranslations("Reviews");
    const fileInputRef = useRef<HTMLInputElement | null>(null);
    const [previewUrls, setPreviewUrls] = useState<string[]>([]);
    const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(
@@ -36,6 +39,7 @@ function ReviewImageUpload<T extends FieldValues = FieldValues>({
    const [isDragOver, setIsDragOver] = useState(false);
    const [editingIndex, setEditingIndex] = useState<number>(-1);
    const watchedValue = useWatch({ name, control });
+   const { showError } = useToast();
 
    // DB 이미지를 불러오기 위해 사용
    useEffect(() => {
@@ -47,7 +51,7 @@ function ReviewImageUpload<T extends FieldValues = FieldValues>({
    // 선택한 파일은 RHF에 저장하고 수정 모달을 띄움
    const handleFileSelection = (file: File) => {
       if (previewUrls.length >= maxImages) {
-         alert(`이미지는 최대 ${maxImages}개까지 업로드 가능합니다.`);
+         showError(t("maxImagesAlert", { maxImages }));
          return;
       }
 
@@ -156,7 +160,7 @@ function ReviewImageUpload<T extends FieldValues = FieldValues>({
                         <div key={index} className="relative">
                            <Image
                               src={url}
-                              alt={`리뷰 이미지 ${index + 1}`}
+                              alt={t("reviewImageAlt", { index: index + 1 })}
                               width={96}
                               height={96}
                               className="h-15 w-15 rounded-lg object-cover lg:h-20 lg:w-20"
@@ -166,6 +170,8 @@ function ReviewImageUpload<T extends FieldValues = FieldValues>({
                                  type="button"
                                  onClick={() => handleEdit(index)}
                                  className="bg-primary-blue-500 hover:bg-primary-blue-600 flex h-6 w-6 items-center justify-center rounded-full text-xs text-white"
+                                 aria-label={t("editImageButton")}
+                                 title={t("editImageButton")}
                               >
                                  ✏️
                               </button>
@@ -173,6 +179,8 @@ function ReviewImageUpload<T extends FieldValues = FieldValues>({
                                  type="button"
                                  onClick={() => handleDelete(index, field)}
                                  className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs text-white hover:bg-red-600"
+                                 aria-label={t("deleteImageButton")}
+                                 title={t("deleteImageButton")}
                               >
                                  ✕
                               </button>
@@ -192,6 +200,16 @@ function ReviewImageUpload<T extends FieldValues = FieldValues>({
                            onDragOver={handleDragOver}
                            onDragLeave={handleDragLeave}
                            onClick={() => fileInputRef.current?.click()}
+                           role="button"
+                           tabIndex={0}
+                           aria-label={t("addImageButton")}
+                           title={t("addImageButton")}
+                           onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                 e.preventDefault();
+                                 fileInputRef.current?.click();
+                              }
+                           }}
                         >
                            <span className="text-2xl text-gray-500">+</span>
                         </div>

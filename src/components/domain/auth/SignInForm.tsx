@@ -33,7 +33,7 @@ export default function SignInForm({ userType }: Prop) {
          aria-labelledby="login-form-heading"
       >
          <h2 id="login-form-heading" className="sr-only">
-            로그인 입력 폼
+            {t("loginFormHeading")}
          </h2>
 
          {/* ✅ Input */}
@@ -69,7 +69,7 @@ export default function SignInForm({ userType }: Prop) {
                <Link
                   href={`/sign-up/${userType}`}
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
-                  aria-label="회원가입 페이지로 이동"
+                  aria-label={t("signupPageAria")}
                >
                   {t("signupLinkText")}
                </Link>

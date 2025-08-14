@@ -66,7 +66,14 @@
             "period": "Development Period: 2025.07.01 ~ 2025.08.13",
             "techStack": "Tech Stack: Next.js, Tailwind, Express, Prisma, etc.",
             "contact": "Contact:"
-         }
+         },
+         "socialMedia": {
+            "instagram": "Instagram",
+            "facebook": "Facebook",
+            "youtube": "YouTube",
+            "twitter": "Twitter"
+         },
+         "emailContact": "Contact via email"
       }
    },
    "Sign": {
@@ -95,9 +102,39 @@
       "passwordConfirmationPlaceholder": "Please enter your password again",
       "signUpButton": "Get Started",
       "alreadyMemberText": "Already a Moving member?",
-      "loginLinkText": "Login"
+      "loginLinkText": "Login",
+      "pageTitle": "Login Page",
+      "clientLoginTitle": "Client Login",
+      "clientLoginDescription": "Please log in to use Moving services",
+      "loginFormHeading": "Login Form",
+      "signupPageAria": "Go to signup page",
+      "snsLoginOptions": "SNS Login Options",
+      "googleLoginAria": "Login with Google account",
+      "kakaoLoginAria": "Login with Kakao account",
+      "naverLoginAria": "Login with Naver account",
+      "moverPageTitle": "Mover Page Title",
+      "homeLinkAria": "Go to home",
+      "signupPageTitle": "Sign Up Page",
+      "clientSignupTitle": "Client Sign Up",
+      "clientSignupDescription": "Please sign up to use Moving services",
+      "signupFormHeading": "Sign Up Form",
+      "alreadyMemberGroupAria": "Already registered user information",
+      "loginPageAria": "Go to login page",
+      "moverSignupPageTitle": "Mover Sign Up Page",
+      "moverSignupTitle": "Mover Sign Up",
+      "moverSignupDescription": "Please sign up to work as a Moving service driver"
    },
    "Profile": {
+      "title": "Profile",
+      "pageTitle": "Profile Page",
+      "pageDescription": "View and edit your profile information",
+      "createProfilePageTitle": "Create Profile Page",
+      "create": "Create",
+      "editProfilePageTitle": "Edit Profile Page",
+      "editProfilePageDescription": "You can edit your profile information",
+      "edit": "Edit",
+      "moverProfileEditPageTitle": "Mover Profile Edit Page",
+      "moverProfileEditPageDescription": "You can edit your mover profile information",
       "moverProfileTitle": "Mover Profile Registration",
       "moverProfileDescription": "Please fill out additional information to complete your profile.",
       "unknownUserType": "Unknown user type.",
@@ -163,7 +200,19 @@
       "newPasswordPlaceholder": "Please enter a new password.",
       "newPasswordConfirmLabel": "Confirm New Password",
       "newPasswordConfirmPlaceholder": "Please re-enter your new password.",
-      "profileUpdated": "Profile has been updated."
+      "profileUpdated": "Profile has been updated.",
+      "editImageAlt": "Image to edit",
+      "imageEditModalTitle": "Edit Image",
+      "imageEditDescription": "You can crop and edit the image",
+      "cropAreaLabel": "Image crop area",
+      "resizeHandleLabel": "Image resize handle",
+      "previewImageAlt": "Profile image preview",
+      "deleteImageButton": "Delete image",
+      "uploadImageButton": "Upload image",
+      "uploadImageIconAlt": "Image upload icon",
+      "dragDropArea": "Drag and drop an image here or click to select",
+      "yearSuffix": " years",
+      "requiredField": "Required field"
    },
    "MoverSearch": {
       "findDriver": "Find Driver",
@@ -487,10 +536,24 @@
       "editDeleteReviewAria": "Edit or delete review by {name}",
       "ratingAria": "Rating {rating} out of 5",
       "unlikeMover": "Remove {name} from favorites",
-      "likeMover": "Add {name} to favorites"
+      "likeMover": "Add {name} to favorites",
+      "imageUploadError": "An error occurred while uploading images.",
+      "maxImagesAlert": "You can upload up to {maxImages} images.",
+      "reviewImageAlt": "Review image {index}",
+      "editImageButton": "Edit image",
+      "deleteImageButton": "Delete image",
+      "addImageButton": "Add image",
+      "reviewImagesAria": "Review images by {name}",
+      "additionalImagesCount": "Additional {count} images",
+      "imageModalTitle": "Review image enlarged view",
+      "imageModalDescription": "You can view the review image in enlarged size",
+      "enlargedReviewImage": "Review image enlarged view",
+      "closeImageModal": "Close image modal"
    },
    "FavoriteMovers": {
       "title": "Favorite Movers",
+      "pageTitle": "My Favorite Movers List",
+      "pageDescription": "View and manage information about your favorite movers",
       "noFavoriteMover": "No favorite movers yet",
       "goToFavorite": "Go to favorites",
       "loading": "Loading...",
@@ -507,7 +570,12 @@
       "unlikeMover": "Remove {name} from favorites",
       "likeMover": "Add {name} to favorites",
       "paginationNav": "Favorite movers page navigation",
-      "goToFavoriteMoversAria": "Navigate to mover search page"
+      "goToFavoriteMoversAria": "Navigate to mover search page",
+      "moveType": {
+         "SMALL": "Small Move",
+         "HOME": "Home Move",
+         "OFFICE": "Office Move"
+      }
    },
    "MyQuotes": {
       "Client": {
@@ -528,7 +596,8 @@
             "confirmed": "Estimate has been confirmed.",
             "confirmFailed": "Failed to confirm estimate.",
             "noReceivedEstimates": "No received estimates!",
-            "noConfirmedEstimate": "No confirmed estimates!"
+            "noConfirmedEstimate": "No confirmed estimates!",
+            "requestCancelled": "Estimate request has been cancelled"
          },
          "emptyMessage": "Drivers are diligently checking!",
          "category": {
@@ -757,9 +826,12 @@
       "close": "Close",
       "withdrawButton": "Withdraw",
       "withdrawing": "Withdrawing...",
-      "withdrawConfirmMessage": "To withdraw, please type 'Withdraw'",
-      "confirmMessageLabel": "Confirmation Message",
-      "confirmMessagePlaceholder": "Please type 'Withdraw' exactly"
+      "userWithdrawal": {
+         "title": "Account Withdrawal",
+         "passwordLabel": "Please enter your account password",
+         "hidePassword": "Hide password mode",
+         "showPassword": "Show password mode"
+      }
    },
    "Notification": {
       "title": "Notifications",
@@ -998,6 +1070,123 @@
          "notes": {
             "title": "Notes",
             "description": "Actual quotes may differ from estimates"
+         }
+      }
+   },
+   "Community": {
+      "title": "Community",
+      "pageTitle": "Community Page",
+      "pageDescription": "A space where users can freely communicate",
+      "communitySectionTitle": "Community Post List",
+      "communitySectionDescription": "View all posts in the community",
+      "writePost": "Write Post",
+      "noSearchResults": "No search results found",
+      "loading": "Loading...",
+      "paginationNav": "Community page navigation",
+      "searchIconAlt": "Search icon",
+      "searchPlaceholder": "Please enter text to search",
+      "searchInputAria": "Community post search input",
+      "profileImageAlt": "Profile image of {name}",
+      "commentIconAlt": "Comment icon",
+      "replyCountAria": "{count} replies",
+      "communityDetail": "Community Detail",
+      "communityDetailTitle": "Community Post Detail Page",
+      "communityDetailDescription": "You can view the detailed content of the community post",
+      "communityContentTitle": "Post Content",
+      "communityContentAria": "Content of the post: {title}",
+      "deleteCommunity": "Delete",
+      "deleteCommunityAria": "Delete the post: {title}",
+      "confirmDeleteTitle": "Are you sure you want to delete this post?",
+      "confirmDeleteDescription": "This action cannot be undone",
+      "commentPlaceholder": "Write a comment...",
+      "commentInputAria": "Comment input field",
+      "commentPostFailed": "Failed to post comment",
+      "noRepliesYet": "No replies yet.",
+      "replyContentAria": "Reply content by {name}",
+      "replyTimeAria": "Time when {name} posted the reply",
+      "author": "Author",
+      "authorLabel": "Post author",
+      "deleteReply": "Delete",
+      "deleteReplyAria": "Delete reply by {name}",
+      "confirmDeleteReplyTitle": "Are you sure you want to delete this reply?",
+      "confirmDeleteReplyDescription": "This action cannot be undone"
+   },
+   "Layout": {
+      "title": "Moving - Smart Moving Comparison Platform",
+      "description": "Moving - A smart moving platform that helps you compare moving company estimates at a glance and make reasonable choices"
+   },
+   "SupportHub": {
+      "supportHubButton": "Customer Support Hub",
+      "mobileLogoAlt": "Mobile logo",
+      "unreadMessageCount": "{count} unread messages",
+      "home": "Home",
+      "homeTab": "Home tab",
+      "chat": "Chat",
+      "chatTab": "Chat tab",
+      "settingsTab": "Settings tab",
+      "adminAlt": "Moving Administrator",
+      "adminTitle": "Moving Administrator",
+      "adminMessage": "We sincerely thank all of you who love Moving. We hope you have a pleasant and rewarding day with Moving today.",
+      "contactUs": "Contact Us",
+      "contactUsButton": "Contact customer support",
+      "responseTime": "You can receive a response within 24 hours.",
+      "responseTimeInfo": "You can receive a response within 24 hours.",
+      "chatTitle": "Chat",
+      "chatRoomList": {
+         "noChats": "No conversations started yet!",
+         "profile": "profile",
+         "withdrawn": "Withdrawn",
+         "withdrawnUser": "(Withdrawn user)",
+         "driver": " Driver",
+         "customer": " Customer",
+         "noMessagesYet": "No messages yet",
+         "justNow": "Just now",
+         "minutesAgo": "{minutes} minutes ago",
+         "yesterday": "Yesterday"
+      },
+      "chatRoom": {
+         "otherUser": "Other user",
+         "readProcessingLog": "Read processing execution:",
+         "messagesCount": " messages",
+         "sendMessageFailed": "Failed to send message.",
+         "enterChatRoom": "Entered chat room",
+         "leaveChatRoom": "Left chat room",
+         "messageSendSuccess": "Message sent successfully",
+         "withdrawnUser": "Withdrawn user",
+         "profileImage": "Profile",
+         "read": "Read",
+         "back": "Back",
+         "backButton": "Go back",
+         "conversationWith": "'s chat room",
+         "leaveChatRoomButton": "Leave chat room",
+         "leaveWarning": "Leaving the chat room will delete all conversation content",
+         "leave": "Leave",
+         "cancel": "Cancel",
+         "withdrawnUserWarning": "The other user has withdrawn from the service and you can no longer send messages.",
+         "cannotSendMessage": "Cannot send message",
+         "enterMessage": "Enter your message"
+      },
+      "settings": {
+         "title": "Settings",
+         "profileImage": "Profile image",
+         "name": "Name",
+         "contactInfo": "Contact information",
+         "withdrawAccount": "Withdraw account",
+         "chatNotification": "Chat notification sound",
+         "enableNotification": "Enable notification sound",
+         "disableNotification": "Disable notification sound",
+         "language": "Language",
+         "selectLanguage": "Select language",
+         "languages": {
+            "korean": "한국어",
+            "koreanSubtitle": "Korean",
+            "koreanCode": "KOREAN",
+            "english": "English",
+            "englishSubtitle": "English",
+            "englishCode": "ENGLISH",
+            "chinese": "中文",
+            "chineseSubtitle": "Chinese",
+            "chineseCode": "CHINESE"
          }
       }
    }
