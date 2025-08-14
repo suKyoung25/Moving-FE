@@ -6,7 +6,7 @@ import React from "react";
 /** 게시글 카드 + 프로필 박스까지 한 번에 보여주는 스켈레톤 */
 export default function CommunitySkeleton() {
    return (
-      <div className="manimate-pulse cursor-pointer rounded-2xl bg-white px-3.5 py-4 shadow lg:px-6 lg:py-5">
+      <div className="animate-pulse cursor-pointer rounded-2xl bg-white px-3.5 py-4 shadow lg:px-6 lg:py-5">
          {/* 제목 */}
          <div className="mb-2">
             <div className="h-5 w-44 rounded bg-gray-200 md:h-6 lg:h-6" />
