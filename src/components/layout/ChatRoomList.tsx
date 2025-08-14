@@ -23,7 +23,7 @@ dayjs.extend(isYesterday);
 
 function formatLastMessageTime(
    timestamp: number,
-   t: any,
+   t: ReturnType<typeof useTranslations>,
    locale: string,
 ): string {
    const now = dayjs();
