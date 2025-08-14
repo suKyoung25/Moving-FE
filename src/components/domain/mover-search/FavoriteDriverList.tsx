@@ -1,11 +1,6 @@
 "use client";
 
-import {
-   useCallback,
-   memo,
-   useMemo,
-   useTransition,
-} from "react";
+import { useCallback, memo, useMemo, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MoverProfile from "@/components/common/MoverProfile";
@@ -38,15 +33,20 @@ function shouldShowDesignatedChip(mover: Mover): boolean {
 }
 
 const VALID_CHIP_TYPES: ChipType[] = [
-   "SMALL", "HOME", "OFFICE", "DESIGNATED", "PENDING", "CONFIRMED",
+   "SMALL",
+   "HOME",
+   "OFFICE",
+   "DESIGNATED",
+   "PENDING",
+   "CONFIRMED",
 ];
 
 // ✅ 스켈레톤 컴포넌트 추가
 const FavoriteItemSkeleton = memo(function FavoriteItemSkeleton() {
    return (
-      <div className="animate-pulse rounded-lg border border-gray-100 bg-white p-3">
+      <div className="animate-pulse rounded-lg border border-gray-100 bg-white p-3 shadow">
          <div className="mb-3 space-y-2">
-            <div className="h-4 w-full rounded bg-gray-200"></div>
+            <div className="bg-primary-blue-200 h-4 w-full rounded"></div>
          </div>
          <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-full bg-gray-200"></div>
@@ -102,13 +102,15 @@ export default memo(function FavoriteDriverList({
       isError,
       error,
    } = useQuery({
-      queryKey: ['favorite-movers', refreshKey],
+      queryKey: ["favorite-movers", refreshKey],
       queryFn: async () => {
          const response = await getFavoriteMovers(1, 10);
-         return response?.data?.movers?.map((mover: Mover) => ({
-            ...mover,
-            isFavorite: true,
-         })) || [];
+         return (
+            response?.data?.movers?.map((mover: Mover) => ({
+               ...mover,
+               isFavorite: true,
+            })) || []
+         );
       },
       enabled: shouldFetch,
       staleTime: 10 * 60 * 1000, // 10분 - 길게 설정
@@ -122,10 +124,11 @@ export default memo(function FavoriteDriverList({
       mutationFn: (moverId: string) => toggleFavoriteMover(moverId),
       onSuccess: (result, moverId) => {
          // ✅ 쿼리 데이터 직접 업데이트 (invalidate 사용 안함)
-         queryClient.setQueryData(['favorite-movers', refreshKey], (old: Mover[] = []) => 
-            old.filter(mover => mover.id !== moverId)
+         queryClient.setQueryData(
+            ["favorite-movers", refreshKey],
+            (old: Mover[] = []) => old.filter((mover) => mover.id !== moverId),
          );
-         
+
          onFavoriteChange?.(moverId, false, result.favoriteCount || 0);
          showSuccess(t("removeSuccess"));
       },
@@ -135,16 +138,22 @@ export default memo(function FavoriteDriverList({
       },
    });
 
-   const handleFavoriteToggle = useCallback((e: React.MouseEvent, moverId: string) => {
-      e.stopPropagation();
-      toggleFavoriteMutation.mutate(moverId);
-   }, [toggleFavoriteMutation]);
+   const handleFavoriteToggle = useCallback(
+      (e: React.MouseEvent, moverId: string) => {
+         e.stopPropagation();
+         toggleFavoriteMutation.mutate(moverId);
+      },
+      [toggleFavoriteMutation],
+   );
 
-   const handleCardClick = useCallback((moverId: string) => {
-      startTransition(() => {
-         router.push(`/mover-search/${moverId}`);
-      });
-   }, [router]);
+   const handleCardClick = useCallback(
+      (moverId: string) => {
+         startTransition(() => {
+            router.push(`/mover-search/${moverId}`);
+         });
+      },
+      [router],
+   );
 
    // ✅ 조건부 렌더링
    if (!shouldFetch) return null;
@@ -162,8 +171,8 @@ export default memo(function FavoriteDriverList({
             </h2>
             <div className="flex flex-col items-center justify-center gap-3 py-8">
                <div className="text-14-medium text-red-500">
-                  {error instanceof Error && error.message.includes("로그인") 
-                     ? t("loginRequired") 
+                  {error instanceof Error && error.message.includes("로그인")
+                     ? t("loginRequired")
                      : t("loadFailed")}
                </div>
             </div>
@@ -178,7 +187,9 @@ export default memo(function FavoriteDriverList({
                {t("title")}
             </h2>
             <div className="flex items-center justify-center py-8">
-               <div className="text-14-medium text-gray-500">{t("noFavorites")}</div>
+               <div className="text-14-medium text-gray-500">
+                  {t("noFavorites")}
+               </div>
             </div>
          </div>
       );
@@ -197,7 +208,7 @@ export default memo(function FavoriteDriverList({
                <div
                   key={mover.id}
                   onClick={() => handleCardClick(mover.id)}
-                  className={`relative flex cursor-pointer flex-col gap-2 rounded-lg border border-gray-100 bg-white p-3 transition-opacity hover:shadow-sm ${
+                  className={`relative flex cursor-pointer flex-col gap-2 rounded-lg border border-gray-100 bg-white p-3 shadow transition-opacity hover:shadow-sm ${
                      isPending ? "opacity-75" : ""
                   }`}
                >
@@ -211,7 +222,13 @@ export default memo(function FavoriteDriverList({
                      {mover.serviceType?.map((type: string, index: number) => {
                         const chipType = type.toUpperCase() as ChipType;
                         if (VALID_CHIP_TYPES.includes(chipType)) {
-                           return <MoveChip key={index} type={chipType} mini={false} />;
+                           return (
+                              <MoveChip
+                                 key={index}
+                                 type={chipType}
+                                 mini={false}
+                              />
+                           );
                         }
                         return null;
                      })}
