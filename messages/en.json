@@ -168,7 +168,7 @@
    "MoverSearch": {
       "findDriver": "Find Driver",
       "areas": {
-         "all": "All",
+         "all": "area",
          "seoul": "Seoul",
          "incheon": "Incheon",
          "daejeon": "Daejeon",
@@ -188,7 +188,7 @@
          "jeju": "Jeju"
       },
       "services": {
-         "all": "All",
+         "all": "services",
          "SMALL": "Small Move",
          "HOME": "Home Move",
          "OFFICE": "Office Move"
@@ -225,7 +225,21 @@
          "addedToFavorites": "Added to favorites.",
          "removedFromFavorites": "Removed from favorites."
       },
-      "goToLogin": "Go to Login"
+      "goToLogin": "Go to Login",
+      "accessibility": {
+         "driverCard": "{name} driver card",
+         "loading": "Loading...",
+         "moverDetails": "{name}, {rating} stars, {career} years experience, {reviewCount} reviews",
+         "searchSection": "Driver search",
+         "noServicesAvailable": "No services available",
+         "noRegionsAvailable": "No service regions available",
+         "servicesList": "Services list",
+         "regionsList": "Service regions list",
+         "service": "service",
+         "region": "region",
+         "servicesCount": "{count} services available",
+         "regionsCount": "Available in {count} regions"
+      }
    },
    "MoverDetail": {
       "requestDesignatedEstimate": "Request a designated estimate from the driver!",
@@ -301,6 +315,12 @@
          "경북": "Gyeongbuk",
          "경남": "Gyeongnam",
          "제주": "Jeju"
+      },
+      "accessibility": {
+         "favorite": "Favorite {name}",
+         "unfavorite": "Unfavorite {name}",
+         "addedToFavorites": "{name} added to favorites",
+         "moverDetailsHeading": "{name} Details"
       }
    },
    "Dashboard": {

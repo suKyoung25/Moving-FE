@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo, useRef } from "react";
 import DriverCard from "./DriverCard";
 import { getMovers } from "@/lib/api/mover/getMover";
 import { GetMoversParams } from "@/lib/types/mover.types";
@@ -37,15 +37,39 @@ export default memo(function DriverList({
 
    const [movers, setMovers] = useState<Mover[]>([]);
    const [loading, setLoading] = useState(false);
-   const [isAppending, setIsAppending] = useState(false); // 추가 로딩 상태
+   const [isAppending, setIsAppending] = useState(false);
    const [error, setError] = useState<string | null>(null);
    const [hasMore, setHasMore] = useState(true);
    const [currentPage, setCurrentPage] = useState(1);
 
+   // ✅ 무한 루프 방지를 위한 ref 사용
+   const isLoadingRef = useRef(false);
+   const refreshTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+   const buildParams = useCallback((page: number) => {
+      let area = filters.area !== "all" ? filters.area : undefined;
+      if (area && areaMapping[area]) {
+         area = areaMapping[area][0];
+      }
+
+      return {
+         page,
+         limit: 10,
+         search: filters.search || undefined,
+         area,
+         serviceType: filters.serviceType !== "all" ? filters.serviceType : undefined,
+         sortBy: filters.sortBy,
+      } as GetMoversParams;
+   }, [filters]);
+
    const loadMovers = useCallback(
       async (reset = false) => {
+         if (isLoadingRef.current) return;
+         
          try {
+            isLoadingRef.current = true;
             setError(null);
+            
             if (reset) {
                setLoading(true);
                setIsAppending(false);
@@ -54,23 +78,7 @@ export default memo(function DriverList({
             }
 
             const targetPage = reset ? 1 : currentPage;
-
-            let area = filters.area !== "all" ? filters.area : undefined;
-            if (area && areaMapping[area]) {
-               area = areaMapping[area][0];
-            }
-
-            const params: GetMoversParams = {
-               page: targetPage,
-               limit: 10,
-               search: filters.search || undefined,
-               area,
-               serviceType:
-                  filters.serviceType !== "all"
-                     ? filters.serviceType
-                     : undefined,
-               sortBy: filters.sortBy,
-            };
+            const params = buildParams(targetPage);
 
             const hasToken = Boolean(tokenSettings.get());
             const response = await getMovers(params, hasToken, locale);
@@ -96,20 +104,14 @@ export default memo(function DriverList({
          } finally {
             setLoading(false);
             setIsAppending(false);
+            isLoadingRef.current = false;
          }
       },
-      [
-         filters.area,
-         filters.search,
-         filters.serviceType,
-         filters.sortBy,
-         currentPage,
-         t,
-      ],
+      [currentPage, buildParams, t, locale],
    );
 
    const loadMore = useCallback(() => {
-      if (!hasMore || loading || isAppending) return;
+      if (!hasMore || loading || isAppending || isLoadingRef.current) return;
       loadMovers(false);
    }, [hasMore, loading, isAppending, loadMovers]);
 
@@ -135,114 +137,122 @@ export default memo(function DriverList({
       [onFavoriteChange],
    );
 
+   // ✅ refreshKey 변경 시에만 즐겨찾기 상태 새로고침
    useEffect(() => {
-      if (refreshKey && refreshKey > 0) {
-         const refreshFavoriteStates = async () => {
-            try {
-               const currentMovers = movers;
-               const currentMoverIds = currentMovers.map((m) => m.id);
+      if (!refreshKey || refreshKey <= 0) return;
 
-               let area = filters.area !== "all" ? filters.area : undefined;
-               if (area && areaMapping[area]) {
-                  area = areaMapping[area][0];
-               }
-
-               const params: GetMoversParams = {
-                  page: 1,
-                  limit: Math.max(currentMoverIds.length, 10),
-                  search: filters.search || undefined,
-                  area,
-                  serviceType:
-                     filters.serviceType !== "all"
-                        ? filters.serviceType
-                        : undefined,
-                  sortBy: filters.sortBy,
-               };
-
-               const hasToken = Boolean(tokenSettings.get());
-               const response = await getMovers(params, hasToken, locale);
-
-               setMovers((prev) =>
-                  prev.map((existingMover) => {
-                     const updatedMover = response.movers.find(
-                        (m) => m.id === existingMover.id,
-                     );
-                     if (updatedMover) {
-                        return {
-                           ...existingMover,
-                           isFavorite: updatedMover.isFavorite,
-                           favoriteCount: updatedMover.favoriteCount,
-                           hasDesignatedRequest:
-                              updatedMover.hasDesignatedRequest,
-                           designatedEstimateStatus:
-                              updatedMover.designatedEstimateStatus,
-                        };
-                     }
-                     return existingMover;
-                  }),
-               );
-            } catch (err) {
-               console.error("찜 상태 새로고침 실패:", err);
-            }
-         };
-
-         refreshFavoriteStates();
-      }
-   }, [
-      refreshKey,
-      filters.area,
-      filters.search,
-      filters.serviceType,
-      filters.sortBy,
-      movers,
-   ]);
-
-   useEffect(() => {
-      setCurrentPage(1);
-      setHasMore(true);
-
-      const loadData = async () => {
+      const refreshFavoriteStates = async () => {
          try {
-            setLoading(true);
-            setError(null);
+            // ✅ 현재 movers 상태를 함수 내부에서 참조
+            setMovers((currentMovers) => {
+               if (currentMovers.length === 0) return currentMovers;
 
-            let area = filters.area !== "all" ? filters.area : undefined;
-            if (area && areaMapping[area]) {
-               area = areaMapping[area][0];
-            }
+               // 비동기 작업을 별도로 실행
+               (async () => {
+                  try {
+                     const params = buildParams(1);
+                     params.limit = Math.max(currentMovers.length, 10);
 
-            const params: GetMoversParams = {
-               page: 1,
-               limit: 10,
-               search: filters.search || undefined,
-               area,
-               serviceType:
-                  filters.serviceType !== "all"
-                     ? filters.serviceType
-                     : undefined,
-               sortBy: filters.sortBy,
-            };
+                     const hasToken = Boolean(tokenSettings.get());
+                     const response = await getMovers(params, hasToken, locale);
 
-            const hasToken = Boolean(tokenSettings.get());
-            const response = await getMovers(params, hasToken, locale);
+                     setMovers((prev) =>
+                        prev.map((existingMover) => {
+                           const updatedMover = response.movers.find(
+                              (m) => m.id === existingMover.id,
+                           );
+                           if (updatedMover) {
+                              return {
+                                 ...existingMover,
+                                 isFavorite: updatedMover.isFavorite,
+                                 favoriteCount: updatedMover.favoriteCount,
+                                 hasDesignatedRequest: updatedMover.hasDesignatedRequest,
+                                 designatedEstimateStatus: updatedMover.designatedEstimateStatus,
+                              };
+                           }
+                           return existingMover;
+                        }),
+                     );
+                  } catch (err) {
+                     console.error("찜 상태 새로고침 실패:", err);
+                  }
+               })();
 
-            setMovers(response.movers);
-            setCurrentPage(2);
-            setHasMore(response.hasMore);
+               return currentMovers;
+            });
          } catch (err) {
-            console.error("Load movers error:", err);
-            setError(t("loadFailed"));
-         } finally {
-            setLoading(false);
+            console.error("찜 상태 새로고침 실패:", err);
          }
       };
 
-      const timeoutId = setTimeout(() => {
-         loadData();
+      // ✅ 디바운스 적용
+      if (refreshTimeoutRef.current) {
+         clearTimeout(refreshTimeoutRef.current);
+      }
+      
+      refreshTimeoutRef.current = setTimeout(() => {
+         refreshFavoriteStates();
       }, 300);
 
-      return () => clearTimeout(timeoutId);
-   }, [filters.search, filters.area, filters.serviceType, filters.sortBy, t]);
+      return () => {
+         if (refreshTimeoutRef.current) {
+            clearTimeout(refreshTimeoutRef.current);
+         }
+      };
+   }, [refreshKey, buildParams, locale]); // ✅ 필요한 의존성만 포함
+
+   // ✅ 필터 변경 시 초기 데이터 로드
+   useEffect(() => {
+      setCurrentPage(1);
+      setHasMore(true);
+      
+      // ✅ 디바운스 적용
+      const timeoutId = setTimeout(() => {
+         // loadMovers를 직접 호출하지 않고 내부 로직 실행
+         if (isLoadingRef.current) return;
+         
+         isLoadingRef.current = true;
+         setError(null);
+         setLoading(true);
+         setIsAppending(false);
+
+         const params = buildParams(1);
+         const hasToken = Boolean(tokenSettings.get());
+         
+         getMovers(params, hasToken, locale)
+            .then((response) => {
+               setMovers(response.movers);
+               setCurrentPage(2);
+               setHasMore(response.hasMore);
+            })
+            .catch((err) => {
+               console.error("Load movers error:", err);
+               setError(t("loadFailed"));
+            })
+            .finally(() => {
+               setLoading(false);
+               setIsAppending(false);
+               isLoadingRef.current = false;
+            });
+      }, 300);
+
+      return () => {
+         clearTimeout(timeoutId);
+         if (refreshTimeoutRef.current) {
+            clearTimeout(refreshTimeoutRef.current);
+         }
+      };
+   }, [filters.search, filters.area, filters.serviceType, filters.sortBy, buildParams, locale, t]);
+
+   // ✅ 컴포넌트 언마운트 시 정리
+   useEffect(() => {
+      return () => {
+         if (refreshTimeoutRef.current) {
+            clearTimeout(refreshTimeoutRef.current);
+         }
+         isLoadingRef.current = false;
+      };
+   }, []);
 
    if (error) {
       return (
@@ -273,7 +283,6 @@ export default memo(function DriverList({
          {hasMore && (
             <div ref={setLoadingRef} className="flex justify-center p-4">
                {loading && !isAppending ? (
-                  // 초기 로딩 → 스켈레톤
                   <div className="flex w-full flex-col gap-6 lg:gap-12">
                      <SkeletonLayout
                         count={6}
@@ -281,7 +290,6 @@ export default memo(function DriverList({
                      />
                   </div>
                ) : isAppending ? (
-                  // 추가 로딩 → 텍스트
                   <span>기사님 정보를 가져오는 중...</span>
                ) : null}
             </div>
