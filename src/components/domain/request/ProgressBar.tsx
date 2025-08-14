@@ -1,0 +1,41 @@
+"use client";
+
+import { useFormWizard } from "@/context/FormWizardContext";
+import { useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
+
+// 견적 요청 진행 상태 표시 바
+export default function ProgressBar() {
+   const t = useTranslations("Request");
+   const { currentStep } = useFormWizard();
+   const [progress, setProgress] = useState(0);
+
+   useEffect(() => {
+      setProgress((currentStep + 1) * 25);
+   }, [currentStep]);
+
+   return (
+      <>
+         {currentStep !== 4 && (
+            <div className="w-full space-y-4 py-4 lg:space-y-6 lg:py-8">
+               <h1 className="text-18-semibold lg:text-24-semibold">
+                  {t("requestQuote")}
+               </h1>
+               <div
+                  className="bg-line-200 h-1.5 w-full rounded-full lg:h-2"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={progress}
+                  aria-label={t("progressbarAriaLabel")}
+               >
+                  <div
+                     className="bg-primary-blue-300 h-1.5 rounded-full transition-all duration-300 lg:h-2"
+                     style={{ width: `${progress}%` }}
+                  />
+               </div>
+            </div>
+         )}
+      </>
+   );
+}

@@ -1,26 +1,381 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap");
+@font-face {
+   font-family: "Paperlogy-8ExtraBold";
+   src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2")
+      format("woff2");
+   font-weight: 800;
+   font-style: normal;
+}
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+   /* === Break Point */
+   --breakpoint-md: 744px;
+   --breakpoint-lg: 1400px;
+
+   /* === Base Colors === */
+   --color-white: #ffffff;
+   --color-black: #000000;
+
+   /* === Black === */
+   --color-black-100: #6b6b6b; /* hsl(0, 0, 42) */
+   --color-black-200: #525252; /* hsl(0, 0, 32) */
+   --color-black-300: #373737; /* hsl(0, 0, 22) */
+   --color-black-400: #1f1f1f; /* hsl(0, 0, 12) */
+   --color-black-500: #040404; /* hsl(0, 0, 2) */
+   --color-bg-black: #141414; /* hsl(0, 0, 8) */
+
+   /* === Grayscale === */
+   --color-gray-100: #dedede; /* hsl(0, 0, 87) */
+   --color-gray-200: #c4c4c4; /* hsl(0, 0, 77) */
+   --color-gray-300: #ababab; /* hsl(0, 0, 67) */
+   --color-gray-400: #999999; /* hsl(0, 0, 60) */
+   --color-gray-500: #808080; /* hsl(0, 0, 50) */
+   --color-gray-600: #f5f5f5;
+   --color-gray-700: #444444;
+   --color-gray-800: #f2f3f8;
+   --color-gray-900: #00000066;
+   --color-gray-1000: #0000000d;
+
+   /* === Primary - Blue === */
+   --color-primary-blue-50: #f5faff; /* hsl(210, 100, 98) */
+   --color-primary-blue-100: #e9f4ff; /* hsl(210, 100, 96) */
+   --color-primary-blue-200: #4da9ff; /* hsl(209, 100, 65) */
+   --color-primary-blue-300: #1b92ff; /* hsl(209, 100, 55) */
+   --color-primary-blue-400: #242945; /* hsl(231, 31, 21) */
+   --color-primary-blue-500: #3d51ff;
+   --color-primary-blue-600: #004aa5;
+
+   /* === Secondary - Yellow === */
+   --color-secondary-yellow-100: #ffc149; /* hsl(40, 100, 64) */
+
+   /* === Secondary - Red === */
+   --color-secondary-red-100: #ffeff0; /* hsl(353, 100, 97) */
+   --color-secondary-red-200: #ff4f64; /* hsl(353, 100, 65) */
+
+   /* === Background === */
+   --color-bg-100: #fcfcfc; /* hsl(0, 0, 99) */
+   --color-bg-200: #f7f7f7; /* hsl(0, 0, 97) */
+   --color-bg-300: #efefef; /* hsl(0, 0, 94) */
+   --color-bg-400: #f4f7fb; /* hsl(214, 47, 97) */
+   --color-bg-500: #1b2227;
+   --color-bg-600: #f7f7f8cc;
+
+   /* === Line === */
+   --color-line-100: #f2f2f2; /* hsl(0, 0, 95) */
+   --color-line-200: #e6e6e6; /* hsl(0, 0, 90) */
+
+   /* === Hover === */
+   --color-hover-100: #f3f4f6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility text-32-bold {
+   font-size: 2rem; /* 32px */
+   line-height: 2.625rem; /* 42px */
+   font-weight: 700;
+}
+
+@utility text-32-semibold {
+   font-size: 2rem; /* 32px */
+   line-height: 2.625rem; /* 42px */
+   font-weight: 600;
+}
+
+@utility text-32-medium {
+   font-size: 2rem; /* 32px */
+   line-height: 2.625rem; /* 42px */
+   font-weight: 500;
+}
+
+@utility text-32-regular {
+   font-size: 2rem; /* 32px */
+   line-height: 2.625rem; /* 42px */
+   font-weight: 400;
+}
+
+@utility text-28-bold {
+   font-size: 1.75rem; /* 28px */
+   line-height: 2.25rem; /* 36px */
+   font-weight: 700;
+}
+
+@utility text-28-semibold {
+   font-size: 1.75rem; /* 28px */
+   line-height: 2.25rem; /* 36px */
+   font-weight: 600;
+}
+
+@utility text-28-medium {
+   font-size: 1.75rem; /* 28px */
+   line-height: 2.25rem; /* 36px */
+   font-weight: 500;
+}
+
+@utility text-28-regular {
+   font-size: 1.75rem; /* 28px */
+   line-height: 2.25rem; /* 36px */
+   font-weight: 400;
+}
+
+@utility text-24-bold {
+   font-size: 1.5rem; /* 24px */
+   line-height: 2rem; /* 32px */
+   font-weight: 700;
+}
+
+@utility text-24-semibold {
+   font-size: 1.5rem; /* 24px */
+   line-height: 2rem; /* 32px */
+   font-weight: 600;
+}
+
+@utility text-24-medium {
+   font-size: 1.5rem; /* 24px */
+   line-height: 2rem; /* 32px */
+   font-weight: 500;
+}
+
+@utility text-24-regular {
+   font-size: 1.5rem; /* 24px */
+   line-height: 2rem; /* 32px */
+   font-weight: 400;
+}
+
+@utility text-22-bold {
+   font-size: 1.375rem; /* 22px */
+   line-height: 2rem; /* 32px */
+   font-weight: 700;
+}
+
+@utility text-22-semibold {
+   font-size: 1.375rem; /* 22px */
+   line-height: 2rem; /* 32px */
+   font-weight: 600;
+}
+
+@utility text-22-medium {
+   font-size: 1.375rem; /* 22px */
+   line-height: 2rem; /* 32px */
+   font-weight: 500;
+}
+
+@utility text-20-bold {
+   font-size: 1.25rem; /* 20px */
+   line-height: 2rem; /* 32px */
+   font-weight: 700;
+}
+
+@utility text-20-semibold {
+   font-size: 1.25rem; /* 20px */
+   line-height: 2rem; /* 32px */
+   font-weight: 600;
+}
+
+@utility text-20-medium {
+   font-size: 1.25rem; /* 20px */
+   line-height: 2rem; /* 32px */
+   font-weight: 500;
+}
+
+@utility text-20-regular {
+   font-size: 1.25rem; /* 20px */
+   line-height: 2rem; /* 32px */
+   font-weight: 400;
+}
+
+@utility text-18-bold {
+   font-size: 1.125rem; /* 18px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 700;
+}
+
+@utility text-18-semibold {
+   font-size: 1.125rem; /* 18px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 600;
+}
+
+@utility text-18-medium {
+   font-size: 1.125rem; /* 18px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 500;
+}
+
+@utility text-18-regular {
+   font-size: 1.125rem; /* 18px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 400;
+}
+
+@utility text-16-bold {
+   font-size: 1rem; /* 16px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 700;
+}
+
+@utility text-16-semibold {
+   font-size: 1rem; /* 16px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 600;
+}
+
+@utility text-16-medium {
+   font-size: 1rem; /* 16px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 500;
+}
+
+@utility text-16-regular {
+   font-size: 1rem; /* 16px */
+   line-height: 1.625rem; /* 26px */
+   font-weight: 400;
+}
+
+@utility text-14-bold {
+   font-size: 0.875rem; /* 14px */
+   line-height: 1.5rem; /* 24px */
+   font-weight: 700;
+}
+
+@utility text-14-semibold {
+   font-size: 0.875rem; /* 14px */
+   line-height: 1.5rem; /* 24px */
+   font-weight: 600;
+}
+
+@utility text-14-medium {
+   font-size: 0.875rem; /* 14px */
+   line-height: 1.5rem; /* 24px */
+   font-weight: 500;
+}
+
+@utility text-14-regular {
+   font-size: 0.875rem; /* 14px */
+   line-height: 1.5rem; /* 24px */
+   font-weight: 400;
+}
+
+@utility text-13-semibold {
+   font-size: 0.8125rem; /* 13px */
+   line-height: 1.375rem; /* 22px */
+   font-weight: 600;
+}
+
+@utility text-13-medium {
+   font-size: 0.8125rem; /* 13px */
+   line-height: 1.375rem; /* 22px */
+   font-weight: 500;
+}
+
+@utility text-12-bold {
+   font-size: 0.75rem; /* 12px */
+   line-height: 1.25rem; /* 20px */
+   font-weight: 700;
+}
+
+@utility text-12-semibold {
+   font-size: 0.75rem; /* 12px */
+   line-height: 1.25rem; /* 20px */
+   font-weight: 600;
+}
+
+@utility text-12-medium {
+   font-size: 0.75rem; /* 12px */
+   line-height: 1.125rem; /* 18px */
+   font-weight: 500;
+}
+
+@utility text-12-regular {
+   font-size: 0.75rem; /* 12px */
+   line-height: 1.125rem; /* 18px */
+   font-weight: 400;
+}
+
+@utility text-10-bold {
+   font-size: 0.625rem; /* 10px */
+   line-height: 1.25rem; /* 20px */
+   font-weight: 700;
+}
+
+@utility text-10-semibold {
+   font-size: 0.625rem; /* 10px */
+   line-height: 1.25rem; /* 20px */
+   font-weight: 600;
+}
+
+@layer utilities {
+   .font-blackHan {
+      font-family: "Black Han Sans", sans-serif;
+   }
+}
+
+@layer utilities {
+   .font-paperlogy {
+      font-family: "Paperlogy-8ExtraBold", sans-serif;
+   }
+}
+
+@layer utilities {
+   @keyframes slow-bounce {
+      0%,
+      100% {
+         transform: translateY(0);
+      }
+      50% {
+         transform: translateY(-15px);
+      }
+   }
+
+   .animate-slow-bounce {
+      animation: slow-bounce 2s infinite ease-in-out;
+   }
+}
+
+@layer utilities {
+   .scrollbar-hide {
+      &::-webkit-scrollbar {
+         display: none;
+      }
+      scrollbar-width: none;
+   }
+
+   .tooltip {
+      @apply text-10-semibold bg-black-400 absolute top-full left-1/2 z-10 mt-2 w-max -translate-x-1/2 scale-95 rounded px-2 py-0.5 text-white opacity-0 transition-all duration-200 ease-out group-hover:scale-100 group-hover:opacity-100;
+   }
+}
+
+html {
+   /* 브라우저 전체 움찔하는 부분 막기 */
+   /* scrollbar-gutter: stable; */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+   color: var(--color-black-400);
+   font-family: "Pretendard", sans-serif;
+}
+
+button {
+   cursor: pointer;
+}
+
+a {
+   cursor: pointer;
+}
+
+img {
+   display: block;
+}
+
+input,
+textarea {
+   outline: none;
+   resize: none;
+}
+
+.shadow-global {
+   box-shadow:
+      rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset,
+      rgba(0, 0, 0, 0.1) 0px 4px 6px,
+      rgba(0, 0, 0, 0.15) 0px 8px 30px;
 }
