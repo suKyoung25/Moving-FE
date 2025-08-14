@@ -45,26 +45,14 @@ const VALID_CHIP_TYPES: ChipType[] = [
 const FavoriteItemSkeleton = memo(function FavoriteItemSkeleton() {
    return (
       <div className="animate-pulse rounded-lg border border-gray-100 bg-white p-3">
-         {/* 칩 영역 스켈레톤 */}
-         <div className="mb-2 flex gap-1">
-            <div className="h-6 w-12 rounded bg-gray-200"></div>
-            <div className="h-6 w-16 rounded bg-gray-200"></div>
-         </div>
-         
-         {/* 설명 텍스트 스켈레톤 */}
          <div className="mb-3 space-y-2">
             <div className="h-4 w-full rounded bg-gray-200"></div>
-            <div className="h-4 w-2/3 rounded bg-gray-200"></div>
          </div>
-         
-         {/* 프로필 영역 스켈레톤 */}
          <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-full bg-gray-200"></div>
             <div className="flex-1 space-y-2">
                <div className="h-4 w-1/2 rounded bg-gray-200"></div>
                <div className="flex gap-4">
-                  <div className="h-3 w-12 rounded bg-gray-200"></div>
-                  <div className="h-3 w-12 rounded bg-gray-200"></div>
                   <div className="h-3 w-12 rounded bg-gray-200"></div>
                </div>
             </div>
@@ -141,7 +129,7 @@ export default memo(function FavoriteDriverList({
          onFavoriteChange?.(moverId, false, result.favoriteCount || 0);
          showSuccess(t("removeSuccess"));
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
          console.error("찜 토글 실패:", error);
          showError(t("toggleError"));
       },
