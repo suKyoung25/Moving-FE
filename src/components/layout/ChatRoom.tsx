@@ -120,7 +120,6 @@ export default function ChatRoom() {
          );
 
          if (unreadMessages.length > 0) {
-            console.log("읽음 처리 실행:", unreadMessages.length, "개 메시지");
             markMessagesAsRead(chatId, user.id);
          }
       }
@@ -141,7 +140,6 @@ export default function ChatRoom() {
    }, [isOtherTyping]);
 
    useEffect(() => {
-      console.log("채팅방 입장");
       setIsInRoom(true);
 
       // ✅ 현재 채팅방 ID 설정 (알림음 방지용)
@@ -150,7 +148,6 @@ export default function ChatRoom() {
       }
 
       return () => {
-         console.log("채팅방 퇴장");
          setIsInRoom(false);
          updateTypingStatus(false);
 
@@ -177,7 +174,6 @@ export default function ChatRoom() {
          );
 
          if (result.success) {
-            console.log("메시지 전송 성공");
          } else {
             setSendError(result.error || "메시지 전송에 실패했습니다.");
 

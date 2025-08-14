@@ -24,12 +24,10 @@ export default function SettingTabPanel() {
    const pathname = usePathname();
    const [isEnabled, setIsEnabled] = useState(true);
    const [showWithdraw, setShowWithdraw] = useState(false);
-   const [currentLang, setCurrentLang] = useState("ko");
+   const [, setCurrentLang] = useState("ko");
    const [open, setOpen] = useState(false);
    const locale = useLocale();
    const wrapperRef = useRef(null);
-
-   console.log(currentLang);
 
    const handleChangeLanguage = (newLocale: string) => {
       setCurrentLang(newLocale);

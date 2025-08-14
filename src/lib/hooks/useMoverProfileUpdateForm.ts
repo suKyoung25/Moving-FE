@@ -126,9 +126,6 @@ function useMoverProfileUpdateForm() {
             const hasNickNameChanged =
                data.nickName && data.nickName !== currentUser.nickName;
 
-            console.log("이미지 변경됨:", hasImageChanged);
-            console.log("닉네임 변경됨:", hasNickNameChanged);
-
             if (hasImageChanged || hasNickNameChanged) {
                // ✅ 수정된 부분: 실제 업데이트할 이미지 URL 결정
                const finalImageUrl = (() => {
@@ -140,8 +137,6 @@ function useMoverProfileUpdateForm() {
                   }
                   return undefined; // 변경사항 없음
                })();
-
-               console.log("Firebase에 업데이트할 이미지 URL:", finalImageUrl);
 
                await updateUserProfileInChats(
                   user!.id,

@@ -19,9 +19,5 @@ export default function DesignatedBadge({
       (mover) => mover.moverId === user.id,
    );
 
-   console.log("designatedRequest", designatedRequest);
-   console.log("user.id", user.id);
-   console.log("isDesignated", isDesignated);
-
    return isDesignated ? <MoveChip type="DESIGNATED" /> : null;
 }

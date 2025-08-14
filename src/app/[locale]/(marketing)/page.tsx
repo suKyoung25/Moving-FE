@@ -14,8 +14,6 @@ import MarketingSection4 from "@/components/domain/marketing/MarketingSection4";
 import MarketingSection5 from "@/components/domain/marketing/MarketingSection5";
 import { useTranslations } from "next-intl";
 
-console.log("마켓팅 페이지 접속 환영!");
-
 gsap.registerPlugin(ScrollToPlugin);
 
 const TOTAL_SECTIONS = 5;

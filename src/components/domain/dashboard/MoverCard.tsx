@@ -65,9 +65,7 @@ export default function MoverCard() {
          setError(null);
          setLoading(true);
 
-         console.log("기사님 프로필 조회 시작...");
          const moverData = await getMoverProfile(locale);
-         console.log("조회된 기사님 데이터:", moverData);
 
          setMover(moverData);
          setRetryCount(0);
