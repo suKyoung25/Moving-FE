@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { FaInstagram, FaFacebookF, FaYoutube, FaTwitter } from "react-icons/fa";
 
 // components/MarketingSection5.tsx
