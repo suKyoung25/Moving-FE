@@ -4,7 +4,7 @@ import React from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "../../common/SolidButton";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import useSignInForm from "@/lib/hooks/useSignInForm";
 import { UserType } from "@/lib/types";
 import { useTranslations } from "next-intl";

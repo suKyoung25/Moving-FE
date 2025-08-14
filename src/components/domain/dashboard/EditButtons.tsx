@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import SolidButton from "@/components/common/SolidButton";
 import OutlinedButton from "@/components/common/OutlinedButton";

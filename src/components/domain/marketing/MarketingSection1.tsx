@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useMemo } from "react";
 import gsap from "gsap";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { useTranslations } from "next-intl";
 
