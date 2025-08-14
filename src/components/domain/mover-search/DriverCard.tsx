@@ -49,20 +49,29 @@ export default memo(function DriverCard({
    const [isPending, startTransition] = useTransition();
 
    // ✅ 계산값들을 메모이제이션 - 한 번에 처리
-   const computedValues = useMemo(() => ({
-      isLoggedInAsMover: user?.userType === "mover",
-      isFavoritePage: pathname.includes("favorite-movers"),
-      validServiceTypes: validateServiceTypes(mover.serviceType!),
-      shouldShowDesignated: !!(
-         mover.hasDesignatedRequest &&
-         mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
-         mover.designatedEstimateStatus !== EstimateStatus.REJECTED
-      ),
-   }), [user?.userType, pathname, mover.serviceType, mover.hasDesignatedRequest, mover.designatedEstimateStatus]);
+   const computedValues = useMemo(
+      () => ({
+         isLoggedInAsMover: user?.userType === "mover",
+         isFavoritePage: pathname.includes("favorite-movers"),
+         validServiceTypes: validateServiceTypes(mover.serviceType!),
+         shouldShowDesignated: !!(
+            mover.hasDesignatedRequest &&
+            mover.designatedEstimateStatus !== EstimateStatus.CONFIRMED &&
+            mover.designatedEstimateStatus !== EstimateStatus.REJECTED
+         ),
+      }),
+      [
+         user?.userType,
+         pathname,
+         mover.serviceType,
+         mover.hasDesignatedRequest,
+         mover.designatedEstimateStatus,
+      ],
+   );
 
    // ✅ 찜 상태 관리 - 간소화
-   const [currentFavoriteState, setCurrentFavoriteState] = useState(() => 
-      computedValues.isFavoritePage ? true : (mover.isFavorite ?? false)
+   const [currentFavoriteState, setCurrentFavoriteState] = useState(() =>
+      computedValues.isFavoritePage ? true : (mover.isFavorite ?? false),
    );
 
    // ✅ mover.isFavorite 변경 시에만 업데이트
@@ -116,9 +125,10 @@ export default memo(function DriverCard({
             );
 
             // 성공 메시지
-            const message = result.action === "added"
-               ? t("toast.addedToFavorites")
-               : t("toast.removedFromFavorites");
+            const message =
+               result.action === "added"
+                  ? t("toast.addedToFavorites")
+                  : t("toast.removedFromFavorites");
 
             showSuccess(message);
          } catch (error) {
@@ -149,36 +159,40 @@ export default memo(function DriverCard({
    );
 
    // ✅ 채팅 클릭 핸들러 - 최적화
-   const handleChatClick = useCallback(async (e: React.MouseEvent) => {
-      e.stopPropagation();
+   const handleChatClick = useCallback(
+      async (e: React.MouseEvent) => {
+         e.stopPropagation();
 
-      if (!user) return;
+         if (!user) return;
 
-      const chatId = `${mover.id}_${user.id}`;
+         const chatId = `${mover.id}_${user.id}`;
 
-      await initializeChatRoom({
-         chatId,
-         moverId: mover.id,
-         moverName: mover.nickName!,
-         moverProfileImage: mover.profileImage || "",
-         clientId: user.id,
-         clientName: user.name!,
-         clientProfileImage: user.profileImage || "",
-         initiatorId: user.id,
-      });
+         await initializeChatRoom({
+            chatId,
+            moverId: mover.id,
+            moverName: mover.nickName!,
+            moverProfileImage: mover.profileImage || "",
+            clientId: user.id,
+            clientName: user.name!,
+            clientProfileImage: user.profileImage || "",
+            initiatorId: user.id,
+         });
 
-      setChatId(chatId);
-      openHub();
-   }, [user, mover.id, mover.nickName, mover.profileImage, setChatId, openHub]);
+         setChatId(chatId);
+         openHub();
+      },
+      [user, mover.id, mover.nickName, mover.profileImage, setChatId, openHub],
+   );
 
    // ✅ 카드 스타일을 메모이제이션
    const cardClassName = useMemo(() => {
-      const baseClass = "px-3.5 lg:px-6 py-4 lg:py-5 overflow-hidden cursor-pointer rounded-2xl items-center justify-center border border-line-100 bg-white";
+      const baseClass =
+         "px-3.5 lg:px-6 py-4 lg:py-5 overflow-hidden cursor-pointer rounded-2xl items-center justify-center border border-line-100 bg-white";
       return isPending ? `${baseClass} opacity-75` : baseClass;
    }, [isPending]);
 
    return (
-      <div className="overflow-hidden rounded-2xl">
+      <div className="overflow-hidden rounded-2xl shadow">
          <div onClick={handleCardClick} className={cardClassName}>
             <div className="flex flex-col gap-3 md:gap-4 lg:gap-5">
                {/* 서비스 타입 칩들 */}

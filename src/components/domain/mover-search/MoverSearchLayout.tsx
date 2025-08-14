@@ -13,12 +13,16 @@ import {
 } from "@/constants/mover.constants";
 import { useTranslations } from "next-intl";
 
-const FavoriteDriverList = lazy(() => import("./FavoriteDriverList").then(module => ({ default: module.default })));
+const FavoriteDriverList = lazy(() =>
+   import("./FavoriteDriverList").then((module) => ({
+      default: module.default,
+   })),
+);
 
 // 스켈레톤 컴포넌트
 const FavoriteListSkeleton = memo(function FavoriteListSkeleton() {
    return (
-      <div className="mt-8 flex animate-pulse flex-col gap-4 rounded-lg">
+      <div className="mt-8 flex animate-pulse flex-col gap-4 rounded-lg shadow">
          <div className="h-6 w-32 rounded bg-gray-200"></div>
          <div className="h-20 rounded-lg bg-gray-100"></div>
          <div className="h-20 rounded-lg bg-gray-100"></div>
@@ -31,20 +35,23 @@ export default memo(function MoverSearchLayout() {
    const t = useTranslations("MoverSearch");
 
    // 번역 옵션을 한 번만 계산하도록 최적화
-   const translatedOptions = useMemo(() => ({
-      area: AREA_OPTIONS.map((option) => ({
-         ...option,
-         label: t(`areas.${option.value}`),
-      })),
-      service: SERVICE_OPTIONS.map((option) => ({
-         ...option,
-         label: t(`services.${option.value}`),
-      })),
-      sort: SORT_OPTIONS.map((option) => ({
-         ...option,
-         label: t(`sorts.${option.value}`),
-      })),
-   }), [t]);
+   const translatedOptions = useMemo(
+      () => ({
+         area: AREA_OPTIONS.map((option) => ({
+            ...option,
+            label: t(`areas.${option.value}`),
+         })),
+         service: SERVICE_OPTIONS.map((option) => ({
+            ...option,
+            label: t(`services.${option.value}`),
+         })),
+         sort: SORT_OPTIONS.map((option) => ({
+            ...option,
+            label: t(`sorts.${option.value}`),
+         })),
+      }),
+      [t],
+   );
 
    const [filters, setFilters] = useState({
       search: "",
@@ -67,16 +74,16 @@ export default memo(function MoverSearchLayout() {
    );
 
    const handleDriverListFavoriteChange = useCallback(() => {
-      setRefreshKeys((prev) => ({ 
-         ...prev, 
-         favorite: prev.favorite + 1 
+      setRefreshKeys((prev) => ({
+         ...prev,
+         favorite: prev.favorite + 1,
       }));
    }, []);
 
    const handleFavoriteListChange = useCallback(() => {
-      setRefreshKeys((prev) => ({ 
-         ...prev, 
-         driverList: prev.driverList + 1 
+      setRefreshKeys((prev) => ({
+         ...prev,
+         driverList: prev.driverList + 1,
       }));
    }, []);
 
@@ -135,9 +142,7 @@ export default memo(function MoverSearchLayout() {
             <div className="flex h-[calc(100vh-13rem)] w-full flex-col gap-6 overflow-hidden">
                <div>
                   <SearchBar
-                     onSearchChange={(search) =>
-                        handleFilterChange({ search })
-                     }
+                     onSearchChange={(search) => handleFilterChange({ search })}
                      initialValue={filters.search}
                   />
                   <SortDropdown
@@ -170,9 +175,7 @@ export default memo(function MoverSearchLayout() {
 
                <div>
                   <SearchBar
-                     onSearchChange={(search) =>
-                        handleFilterChange({ search })
-                     }
+                     onSearchChange={(search) => handleFilterChange({ search })}
                      initialValue={filters.search}
                   />
                   <div className="my-4 flex justify-end">

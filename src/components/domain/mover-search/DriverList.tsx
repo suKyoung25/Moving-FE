@@ -11,6 +11,7 @@ import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
 import { useLocale, useTranslations } from "next-intl";
 import DriverCardSkeleton from "./DriverCardSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
+import MoverSearchSpinner from "./MoverSearchSpinner";
 
 interface DriverListProps {
    filters: {
@@ -46,30 +47,34 @@ export default memo(function DriverList({
    const isLoadingRef = useRef(false);
    const refreshTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-   const buildParams = useCallback((page: number) => {
-      let area = filters.area !== "all" ? filters.area : undefined;
-      if (area && areaMapping[area]) {
-         area = areaMapping[area][0];
-      }
+   const buildParams = useCallback(
+      (page: number) => {
+         let area = filters.area !== "all" ? filters.area : undefined;
+         if (area && areaMapping[area]) {
+            area = areaMapping[area][0];
+         }
 
-      return {
-         page,
-         limit: 10,
-         search: filters.search || undefined,
-         area,
-         serviceType: filters.serviceType !== "all" ? filters.serviceType : undefined,
-         sortBy: filters.sortBy,
-      } as GetMoversParams;
-   }, [filters]);
+         return {
+            page,
+            limit: 10,
+            search: filters.search || undefined,
+            area,
+            serviceType:
+               filters.serviceType !== "all" ? filters.serviceType : undefined,
+            sortBy: filters.sortBy,
+         } as GetMoversParams;
+      },
+      [filters],
+   );
 
    const loadMovers = useCallback(
       async (reset = false) => {
          if (isLoadingRef.current) return;
-         
+
          try {
             isLoadingRef.current = true;
             setError(null);
-            
+
             if (reset) {
                setLoading(true);
                setIsAppending(false);
@@ -166,8 +171,10 @@ export default memo(function DriverList({
                                  ...existingMover,
                                  isFavorite: updatedMover.isFavorite,
                                  favoriteCount: updatedMover.favoriteCount,
-                                 hasDesignatedRequest: updatedMover.hasDesignatedRequest,
-                                 designatedEstimateStatus: updatedMover.designatedEstimateStatus,
+                                 hasDesignatedRequest:
+                                    updatedMover.hasDesignatedRequest,
+                                 designatedEstimateStatus:
+                                    updatedMover.designatedEstimateStatus,
                               };
                            }
                            return existingMover;
@@ -189,7 +196,7 @@ export default memo(function DriverList({
       if (refreshTimeoutRef.current) {
          clearTimeout(refreshTimeoutRef.current);
       }
-      
+
       refreshTimeoutRef.current = setTimeout(() => {
          refreshFavoriteStates();
       }, 300);
@@ -205,12 +212,12 @@ export default memo(function DriverList({
    useEffect(() => {
       setCurrentPage(1);
       setHasMore(true);
-      
+
       // ✅ 디바운스 적용
       const timeoutId = setTimeout(() => {
          // loadMovers를 직접 호출하지 않고 내부 로직 실행
          if (isLoadingRef.current) return;
-         
+
          isLoadingRef.current = true;
          setError(null);
          setLoading(true);
@@ -218,7 +225,7 @@ export default memo(function DriverList({
 
          const params = buildParams(1);
          const hasToken = Boolean(tokenSettings.get());
-         
+
          getMovers(params, hasToken, locale)
             .then((response) => {
                setMovers(response.movers);
@@ -242,7 +249,15 @@ export default memo(function DriverList({
             clearTimeout(refreshTimeoutRef.current);
          }
       };
-   }, [filters.search, filters.area, filters.serviceType, filters.sortBy, buildParams, locale, t]);
+   }, [
+      filters.search,
+      filters.area,
+      filters.serviceType,
+      filters.sortBy,
+      buildParams,
+      locale,
+      t,
+   ]);
 
    // ✅ 컴포넌트 언마운트 시 정리
    useEffect(() => {
@@ -290,7 +305,7 @@ export default memo(function DriverList({
                      />
                   </div>
                ) : isAppending ? (
-                  <span>기사님 정보를 가져오는 중...</span>
+                  <div></div>
                ) : null}
             </div>
          )}
