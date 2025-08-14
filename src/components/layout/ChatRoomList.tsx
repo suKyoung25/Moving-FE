@@ -10,26 +10,32 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
 import "dayjs/locale/ko";
+import "dayjs/locale/en";
+import "dayjs/locale/zh";
 import profileIcon from "@/assets/images/profileIcon.svg";
 import { setCurrentChatId } from "@/lib/utils";
 import { ChatMessage, ChatParticipant, ChatRoomSummary } from "@/lib/types";
+import { useLocale, useTranslations } from "next-intl";
 
-dayjs.locale("ko");
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
 
-function formatLastMessageTime(timestamp: number): string {
+function formatLastMessageTime(
+   timestamp: number,
+   t: ReturnType<typeof useTranslations>,
+   locale: string,
+): string {
    const now = dayjs();
    const time = dayjs(timestamp);
    const diffInMinutes = now.diff(time, "minute");
 
    if (diffInMinutes < 1) {
-      return "방금 전";
+      return t("chatRoomList.justNow");
    }
 
    if (diffInMinutes < 60) {
-      return `${diffInMinutes}분 전`;
+      return t("chatRoomList.minutesAgo", { minutes: diffInMinutes });
    }
 
    if (time.isToday()) {
@@ -37,17 +43,31 @@ function formatLastMessageTime(timestamp: number): string {
    }
 
    if (time.isYesterday()) {
-      return "어제";
+      return t("chatRoomList.yesterday");
    }
 
    if (now.year() === time.year()) {
-      return time.format("MM월 DD일");
+      if (locale === "ko") {
+         return time.format("MM월 DD일");
+      } else if (locale === "en") {
+         return time.format("MMM DD");
+      } else {
+         return time.format("MM月DD日");
+      }
    }
 
-   return time.format("YYYY년 MM월 DD일");
+   if (locale === "ko") {
+      return time.format("YYYY년 MM월 DD일");
+   } else if (locale === "en") {
+      return time.format("MMM DD, YYYY");
+   } else {
+      return time.format("YYYY年MM月DD日");
+   }
 }
 
 export default function ChatRoomList() {
+   const t = useTranslations("SupportHub");
+   const locale = useLocale();
    const { setChatId } = useChat();
    const { user } = useAuth();
    const [rooms, setRooms] = useState<ChatRoomSummary[]>([]);
@@ -157,7 +177,7 @@ export default function ChatRoomList() {
 
                // 활성 상태이거나 읽지 않은 메시지가 있는 경우만 목록에 표시
                if (isActive || hasUnreadMessages) {
-                  let lastMessageText = "아직 메시지가 없습니다";
+                  let lastMessageText = t("chatRoomList.noMessagesYet");
 
                   if (room.hasMessages && room.lastMessage?.text) {
                      const myParticipant = participants[userId];
@@ -166,7 +186,7 @@ export default function ChatRoomList() {
                         myParticipant?.leftAt &&
                         room.lastMessage.createdAt <= myParticipant.leftAt
                      ) {
-                        lastMessageText = "아직 메시지가 없습니다";
+                        lastMessageText = t("chatRoomList.noMessagesYet");
                      } else {
                         lastMessageText = room.lastMessage.text;
                      }
@@ -202,7 +222,7 @@ export default function ChatRoomList() {
       <div className="flex flex-col">
          {rooms.length === 0 ? (
             <div className="p-4 text-center text-gray-500">
-               <div>아직 시작한 대화가 없어요!</div>
+               <div>{t("chatRoomList.noChats")}</div>
             </div>
          ) : (
             <ul className="flex flex-col">
@@ -226,7 +246,7 @@ export default function ChatRoomList() {
                                        ? room.otherProfileImage
                                        : profileIcon.src
                                  }
-                                 alt={`${room.otherName} 프로필`}
+                                 alt={`${room.otherName} ${t("chatRoomList.profile")}`}
                                  className={`h-12 w-12 rounded-full object-cover ${
                                     room.isOtherWithdrawn ? "grayscale" : ""
                                  }`}
@@ -238,7 +258,7 @@ export default function ChatRoomList() {
                               {/* 탈퇴한 사용자 표시 */}
                               {room.isOtherWithdrawn && (
                                  <div className="absolute -right-1 -bottom-1 rounded-full bg-gray-500 px-1 text-xs text-white">
-                                    탈퇴
+                                    {t("chatRoomList.withdrawn")}
                                  </div>
                               )}
                            </div>
@@ -261,13 +281,13 @@ export default function ChatRoomList() {
                                  </span>
                                  {room.isOtherWithdrawn ? (
                                     <span className="text-14-regular ml-1 flex-shrink-0 text-gray-500">
-                                       (탈퇴한 사용자)
+                                       {t("chatRoomList.withdrawnUser")}
                                     </span>
                                  ) : (
                                     <span className="ml-1 flex-shrink-0 text-gray-500">
                                        {user!.userType === "client"
-                                          ? " 기사님"
-                                          : " 고객님"}
+                                          ? t("chatRoomList.driver")
+                                          : t("chatRoomList.customer")}
                                     </span>
                                  )}
                               </div>
@@ -276,6 +296,8 @@ export default function ChatRoomList() {
                                  {room.lastMessage?.createdAt
                                     ? formatLastMessageTime(
                                          room.lastMessage.createdAt,
+                                         t,
+                                         locale,
                                       )
                                     : ""}
                               </span>

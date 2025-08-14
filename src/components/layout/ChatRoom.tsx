@@ -24,10 +24,12 @@ import { FiLogOut } from "react-icons/fi";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 import { ChatMessage, ChatParticipant, ParticipantsMap } from "@/lib/types";
 import MessageText from "../common/MessageText";
+import { useTranslations } from "next-intl";
 
 dayjs.locale("ko");
 
 export default function ChatRoom() {
+   const t = useTranslations("SupportHub");
    const { chatId, setChatId, isInRoom, setIsInRoom } = useChat();
    const { user } = useAuth();
    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -61,7 +63,7 @@ export default function ChatRoom() {
 
    const otherUserName =
       (participants as Record<string, ChatParticipant>)[otherUserId]
-         ?.userName ?? "상대방";
+         ?.userName ?? t("chatRoom.otherUser");
 
    // 참가자 정보 가져오기
    useEffect(() => {
@@ -175,15 +177,15 @@ export default function ChatRoom() {
 
          if (result.success) {
          } else {
-            setSendError(result.error || "메시지 전송에 실패했습니다.");
+            setSendError(result.error || t("chatRoom.sendMessageFailed"));
 
-            if (result.error?.includes("탈퇴한 사용자")) {
+            if (result.error?.includes(t("chatRoom.withdrawnUser"))) {
                setIsOtherWithdrawn(true);
             }
          }
       } catch (error) {
          console.error("메시지 전송 오류:", error);
-         setSendError("메시지 전송에 실패했습니다.");
+         setSendError(t("chatRoom.sendMessageFailed"));
       }
    };
 
@@ -236,7 +238,7 @@ export default function ChatRoom() {
                <div className="flex-shrink-0">
                   <img
                      src={getProfileImage(msg.senderId)}
-                     alt="프로필"
+                     alt={t("chatRoom.profileImage")}
                      className="h-8 w-8 rounded-full object-cover"
                      onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -269,7 +271,7 @@ export default function ChatRoom() {
 
                   {isMine && msg.isRead && (
                      <span className="text-primary-blue-300 text-[0.625rem]">
-                        읽음
+                        {t("chatRoom.read")}
                      </span>
                   )}
                </div>
@@ -298,12 +300,13 @@ export default function ChatRoom() {
                   setChatId("");
                }}
                className="text-sm text-gray-500 hover:underline"
+               aria-label={t("chatRoom.backButton")}
             >
-               BACK
+               {t("chatRoom.back")}
             </button>
             <div className="text-16-medium text-gray-400">
                <span className="!text-primary-blue-200">{otherUserName}</span>
-               님과의 대화방
+               {t("chatRoom.conversationWith")}
             </div>
 
             {/* 채팅방 나가기 드롭다운 */}
@@ -311,6 +314,8 @@ export default function ChatRoom() {
                <button
                   onClick={() => setIsDropdownOpen((prev) => !prev)}
                   className="flex text-gray-500"
+                  aria-label={t("chatRoom.leaveChatRoomButton")}
+                  title={t("chatRoom.leaveChatRoomButton")}
                >
                   <FiLogOut size={24} />
                </button>
@@ -319,9 +324,7 @@ export default function ChatRoom() {
                   <div className="absolute top-full right-0 z-50 mt-2 w-48 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
                      <div className="border-b border-gray-100 p-3">
                         <p className="text-12-regular leading-relaxed text-gray-500">
-                           채팅방을 나가면 대화 내용이
-                           <br />
-                           모두 삭제됩니다
+                           {t("chatRoom.leaveWarning")}
                         </p>
                      </div>
                      <div className="p-3">
@@ -329,13 +332,13 @@ export default function ChatRoom() {
                            onClick={handleLeaveChatRoom}
                            className="text-14-regular hover:bg-hover-100 w-full rounded-md py-1 font-medium text-red-600 transition-colors duration-200"
                         >
-                           나가기
+                           {t("chatRoom.leave")}
                         </button>
                         <button
                            onClick={() => setIsDropdownOpen(false)}
                            className="text-14-regular hover:bg-hover-100 mt-1 w-full rounded-md py-1 text-gray-500 transition-colors duration-200"
                         >
-                           취소
+                           {t("chatRoom.cancel")}
                         </button>
                      </div>
                   </div>
@@ -359,8 +362,7 @@ export default function ChatRoom() {
                      />
                   </svg>
                   <span className="text-14-regular text-yellow-800">
-                     상대방이 서비스를 탈퇴하여 더 이상 메시지를 보낼 수
-                     없습니다.
+                     {t("chatRoom.withdrawnUserWarning")}
                   </span>
                </div>
             </div>
@@ -375,7 +377,7 @@ export default function ChatRoom() {
                <div className="flex items-center space-x-2">
                   <img
                      src={getProfileImage(otherUserId)}
-                     alt="프로필"
+                     alt={t("chatRoom.profileImage")}
                      className="h-8 w-8 rounded-full object-cover"
                      onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -414,8 +416,8 @@ export default function ChatRoom() {
                rows={1}
                placeholder={
                   isOtherWithdrawn
-                     ? "메시지를 보낼 수 없습니다"
-                     : "메시지를 입력하세요"
+                     ? t("chatRoom.cannotSendMessage")
+                     : t("chatRoom.enterMessage")
                }
                disabled={isOtherWithdrawn}
                className={`scrollbar-hide bg-gray-1000 flex-1 resize-none overflow-hidden rounded-md px-3 py-2 text-sm leading-5 ${isOtherWithdrawn ? "cursor-not-allowed bg-gray-100 text-gray-400" : ""}`}

@@ -8,8 +8,10 @@ import { markAllChatsAsRead } from "@/lib/firebase/firebaseChat";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import ReadAllButton from "../common/ReadAllButton";
+import { useTranslations } from "next-intl";
 
 export default function ChatTabPanel() {
+   const t = useTranslations("SupportHub");
    const { chatId } = useChat();
    const { user } = useAuth();
    const [isMarkingRead, setIsMarkingRead] = useState(false);
@@ -45,7 +47,9 @@ export default function ChatTabPanel() {
          >
             <div className="flex h-full flex-col p-4">
                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-18-semibold lg:text-22-semibold">대화</h2>
+                  <h2 className="text-18-semibold lg:text-22-semibold">
+                     {t("chatTitle")}
+                  </h2>
                   <ReadAllButton
                      onClick={handleReadAll}
                      tooltipClass="!-left-5 "

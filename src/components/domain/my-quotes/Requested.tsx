@@ -63,7 +63,7 @@ export default function Requested() {
          queryClient.invalidateQueries({ queryKey: ["requests", sort] });
          queryClient.removeQueries({ queryKey: ["activeRequest"] });
          setCurrentStep(0);
-         showSuccess("견적 요청이 취소되었어요");
+         showSuccess(t("toast.requestCancelled"));
       } catch (error) {
          console.error("견적 요청 취소 실패:", error);
       }

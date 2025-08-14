@@ -312,9 +312,7 @@ export default memo(function DriverList({
 
          {!hasMore && movers.length > 0 && (
             <div className="py-4 text-center">
-               <p className="text-gray-500">
-                  모든 기사님 정보 조회가 완료되었습니다.
-               </p>
+               <p className="text-gray-500">{t("allLoaded")}</p>
             </div>
          )}
       </div>

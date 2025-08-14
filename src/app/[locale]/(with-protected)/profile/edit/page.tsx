@@ -24,8 +24,9 @@ export default function EditProfilePage() {
             >
                {/* screen reader 전용 페이지 제목 */}
                <h1 id="edit-profile-page-title" className="sr-only">
-                  프로필 수정 페이지
+                  {t("editProfilePageTitle")}
                </h1>
+               <p className="sr-only">{t("editProfilePageDescription")}</p>
 
                <div
                   className={
@@ -46,20 +47,38 @@ export default function EditProfilePage() {
    if (user?.userType === "mover") {
       return (
          <>
-            <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
-               <div className="text-18-semibold lg:text-32-semibold leading-8">
-                  {t("moverProfileEditTitle")}
+            <div
+               role="main"
+               aria-labelledby="mover-profile-edit-title"
+               className="min-h-screen"
+            >
+               <h1 id="mover-profile-edit-title" className="sr-only">
+                  {t("moverProfileEditPageTitle")}
+               </h1>
+               <p className="sr-only">{t("moverProfileEditPageDescription")}</p>
+
+               <div className="mb-6 flex flex-col gap-4 lg:mb-12 lg:gap-8">
+                  <div className="text-18-semibold lg:text-32-semibold leading-8">
+                     {t("moverProfileEditTitle")}
+                  </div>
+
+                  <div className="lg:text-20-regular text-12-regular text-black-200 leading-8">
+                     {t("moverProfileEditDescription")}
+                  </div>
                </div>
 
-               <div className="lg:text-20-regular text-12-regular text-black-200 leading-8">
-                  {t("moverProfileEditDescription")}
-               </div>
+               <hr className="border-line-100 m-0 border-t p-0" />
+
+               <MoverProfileUpdateForm />
             </div>
-
-            <hr className="border-line-100 m-0 border-t p-0" />
-
-            <MoverProfileUpdateForm />
          </>
       );
    }
+
+   // 그외 예상치 못한 userType
+   return (
+      <div className="mt-20 text-center text-gray-500">
+         {t("unknownUserType")}
+      </div>
+   );
 }

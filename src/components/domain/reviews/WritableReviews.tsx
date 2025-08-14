@@ -31,7 +31,7 @@ export default function WritableReviews() {
    // 선택된 estimate의 id를 저장
    const [selectedId, setSelectedId] = useState<string | null>(null);
    // 작성 가능한 리뷰 리스트
-   const { data, isLoading, error, refetch, isFetching } = useWritableReviews({
+   const { data, isLoading, error, refetch } = useWritableReviews({
       page: pagination.page,
       limit: pagination.limit,
    });
@@ -62,7 +62,7 @@ export default function WritableReviews() {
       return <div>{t("errorOccurred")}</div>;
    }
 
-   if (isLoading || isFetching) {
+   if (isLoading) {
       return (
          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
             <SkeletonLayout

@@ -42,27 +42,27 @@ export default function EasyLoginForm({ userType }: Prop) {
          </p>
          <div
             role="group"
-            aria-label="SNS 로그인 옵션"
+            aria-label={t("snsLoginOptions")}
             className="flex gap-6 lg:gap-8"
          >
             <figure
                onClick={handleGoogleLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
-               aria-label="구글 계정으로 로그인"
+               aria-label={t("googleLoginAria")}
             >
                <Image src={googleIcon} alt={t("googleAlt")} fill />
             </figure>
             <figure
                onClick={handlekakaoLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
-               aria-label="카카오 계정으로 로그인"
+               aria-label={t("kakaoLoginAria")}
             >
                <Image src={kakaoIcon} alt={t("kakaoAlt")} fill />
             </figure>
             <figure
                onClick={handlenaverLogin}
                className="relative h-13 w-13 cursor-pointer lg:h-18 lg:w-18"
-               aria-label="네이버 계정으로 로그인"
+               aria-label={t("naverLoginAria")}
             >
                <Image src={naverIcon} alt={t("naverAlt")} fill />
             </figure>

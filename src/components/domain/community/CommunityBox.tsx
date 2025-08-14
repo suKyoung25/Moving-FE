@@ -8,10 +8,13 @@ import { useGetAllCommunity } from "@/lib/api/community/query";
 import Pagination from "@/components/common/Pagination";
 import { useEffect, useState } from "react";
 import { CommunityWithDetails } from "@/lib/types/community.types";
+import { useLocale, useTranslations } from "next-intl";
 import CommunitySkeleton from "./CommunitySkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 
 export default function CommunityBox() {
+   const t = useTranslations("Community");
+   const locale = useLocale();
    const router = useRouter();
    const [page, setPage] = useState<number>(1);
    const [search, setSearch] = useState<string>("");
@@ -35,7 +38,7 @@ export default function CommunityBox() {
       data: communityData,
       isLoading,
       isPending,
-   } = useGetAllCommunity(page, debouncedSearch);
+   } = useGetAllCommunity(page, debouncedSearch, locale);
 
    if (isPending)
       return (
@@ -45,11 +48,22 @@ export default function CommunityBox() {
       );
 
    return (
-      <section>
-         <CommunityButton address={"create"} text={"글쓰기"} />
+      <section
+         role="main"
+         aria-labelledby="community-section-title"
+         className="min-h-screen"
+      >
+         <h1 id="community-section-title" className="sr-only">
+            {t("communitySectionTitle")}
+         </h1>
+         <p className="sr-only">{t("communitySectionDescription")}</p>
+
+         <CommunityButton address={"create"} text={t("writePost")} />
          <SearchBox search={search} setSearch={setSearch} />
          {communityData?.data?.communities.length === 0 && (
-            <div className="mt-10 text-center">검색 결과가 없습니다.</div>
+            <div className="mt-10 text-center" role="status" aria-live="polite">
+               {t("noSearchResults")}
+            </div>
          )}
          <div className="mt-6 flex flex-col gap-6 lg:mt-8 lg:gap-8">
             {communityData?.data?.communities.map(
@@ -76,6 +90,7 @@ export default function CommunityBox() {
             page={page}
             totalPages={communityData.data.totalPages}
             onPageChange={setPage}
+            aria-label={t("paginationNav")}
          />
       </section>
    );

@@ -83,7 +83,11 @@ export default function FavoriteMover() {
                   <div className="mb-3.5 flex gap-2 lg:gap-3">
                      {mover.serviceType.map((type) =>
                         isChipType(type) ? (
-                           <MoveChip key={type} type={type} />
+                           <MoveChip
+                              key={type}
+                              type={type}
+                              aria-label={t(`moveType.${type}`)}
+                           />
                         ) : null,
                      )}
                   </div>

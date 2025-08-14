@@ -82,7 +82,7 @@ export default function MoverCard() {
       } finally {
          setLoading(false);
       }
-   }, [t]);
+   }, [t, locale]);
 
    const handleRetry = useCallback(() => {
       if (retryCount < 1) {

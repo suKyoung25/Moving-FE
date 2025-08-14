@@ -42,7 +42,7 @@ export default function MyReviews() {
    const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
 
    // 리뷰 리스트 조회
-   const { data, isLoading, isFetching, error, refetch } = useMyReviews({
+   const { data, isLoading, error, refetch } = useMyReviews({
       page: pagination.page,
       limit: pagination.limit,
       targetLang: locale,
@@ -68,7 +68,7 @@ export default function MyReviews() {
       return <div role="alert">{t("errorOccurred")}</div>;
    }
 
-   if (isLoading || isFetching) {
+   if (isLoading) {
       return (
          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
             <SkeletonLayout count={6} SkeletonComponent={MyReviewsSkeleton} />
@@ -92,10 +92,16 @@ export default function MyReviews() {
                >
                   <div className="mb-3.5 flex gap-2 lg:gap-3">
                      {isChipType(review.moveType) && (
-                        <MoveChip type={review.moveType} />
+                        <MoveChip
+                           type={review.moveType}
+                           aria-label={t(`moveType.${review.moveType}`)}
+                        />
                      )}
                      {review.isDesignatedEstimate && (
-                        <MoveChip type="DESIGNATED" />
+                        <MoveChip
+                           type="DESIGNATED"
+                           aria-label={t("designatedEstimate")}
+                        />
                      )}
                   </div>
                   <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 h-fit gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
@@ -212,7 +218,13 @@ export default function MyReviews() {
                   </div>
 
                   {/* 리뷰 이미지 */}
-                  <ReviewImages images={review.images} className="mt-4" />
+                  <ReviewImages
+                     images={review.images}
+                     className="mt-4"
+                     aria-label={t("reviewImagesAria", {
+                        name: review.moverNickName,
+                     })}
+                  />
                </div>
             ))}
          </div>
