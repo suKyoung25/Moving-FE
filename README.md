@@ -214,7 +214,7 @@ Moving은 사용자가 손쉽게 여러 이사업체의 견적을 비교하고, 
 
 ## 시스템 아키텍처
 
-![프론트엔드 시스템 아키텍처](https://github.com/user-attachments/assets/10130013-1dbe-4e25-a599-44d26a0e57cd)
+<img width="3212" height="2023" alt="fa68b90569ee2253" src="https://github.com/user-attachments/assets/b271e73e-7096-412c-8cfa-a7b8318607f2" />
 
 ---
 
@@ -294,7 +294,7 @@ Moving은 사용자가 손쉽게 여러 이사업체의 견적을 비교하고, 
 | **프로필 수정** | `/profile/edit` | 프로필 정보 수정 | 인증 필요 |
 | **계정 수정** | `/edit-account` | 계정 정보 수정 | 인증 필요 |
 
-## 🚀 시작하기
+## 시작하기
 
 ### 필수 요구사항
 - **Node.js 18.0.0 이상**
@@ -360,7 +360,7 @@ http://localhost:3000
 - `npm run lint` - ESLint로 코드 검사
 
 
-### 🎯 핵심 기능 상세
+### 핵심 기능 상세
 
 ### AI 견적 계산기
 - **OpenAI GPT-4** 기반 지능형 견적 계산
@@ -388,7 +388,7 @@ http://localhost:3000
 - 임시 저장 기능 (로컬/서버)
 - 진행 상황 추적
 
-## 🌐 다국어 지원
+## 다국어 지원
 
 이 프로젝트는 다음 언어를 완전히 지원합니다:
 
@@ -410,7 +410,7 @@ messages/
 └── zh.json    # 중국어 번역
 ```
 
-## 🔒 인증 시스템
+## 인증 시스템
 
 ### 지원하는 로그인 방식
 - **이메일/비밀번호** 로그인
@@ -422,14 +422,14 @@ messages/
 - **Client** - 일반 고객
 - **Mover** - 이사업체
 
-## 📱 반응형 디자인
+## 반응형 디자인
 
 - **모바일 우선** 디자인
 - **Tablet** 및 **Desktop** 최적화
 - **Tailwind CSS** 기반 반응형 레이아웃
 - **접근성** 고려 (ARIA 라벨, 키보드 네비게이션)
 
-## 🚀 성능 최적화
+## 성능 최적화
 
 - **Next.js App Router** 기반 서버 컴포넌트
 - **React Suspense** 및 **lazy loading**
