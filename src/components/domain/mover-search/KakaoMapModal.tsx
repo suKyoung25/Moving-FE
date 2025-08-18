@@ -6,6 +6,7 @@ import { Mover } from "@/lib/types/auth.types";
 import { getMovers } from "@/lib/api/mover/getMover";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import {} from "@/constants/mover.constants";
 
 interface MapModalProps {
    isOpen: boolean;
@@ -20,9 +21,8 @@ declare global {
    }
 }
 
-// 기본 지역 좌표 (검색 실패 시 fallback용)
+// 🔧 유틸리티 함수들을 컴포넌트 상단으로 이동
 const DEFAULT_COORDINATES: Record<string, { lat: number; lng: number }> = {
-   // 한글 지역명
    서울: { lat: 37.5665, lng: 126.978 },
    인천: { lat: 37.4563, lng: 126.7052 },
    대전: { lat: 36.3504, lng: 127.3845 },
@@ -40,24 +40,6 @@ const DEFAULT_COORDINATES: Record<string, { lat: number; lng: number }> = {
    경북: { lat: 36.4919, lng: 128.888 },
    경남: { lat: 35.4606, lng: 128.2132 },
    제주: { lat: 33.4996, lng: 126.5312 },
-   // 영어 코드 (동일한 좌표)
-   seoul: { lat: 37.5665, lng: 126.978 },
-   incheon: { lat: 37.4563, lng: 126.7052 },
-   daejeon: { lat: 36.3504, lng: 127.3845 },
-   daegu: { lat: 35.8714, lng: 128.6014 },
-   gwangju: { lat: 35.1595, lng: 126.8526 },
-   busan: { lat: 35.1796, lng: 129.0756 },
-   ulsan: { lat: 35.5384, lng: 129.3114 },
-   sejong: { lat: 36.48, lng: 127.289 },
-   gyeonggi: { lat: 37.4138, lng: 127.5183 },
-   gangwon: { lat: 37.8228, lng: 128.1555 },
-   chungbuk: { lat: 36.8, lng: 127.7 },
-   chungnam: { lat: 36.5, lng: 126.8 },
-   jeonbuk: { lat: 35.7175, lng: 127.153 },
-   jeonnam: { lat: 34.8679, lng: 126.991 },
-   gyeongbuk: { lat: 36.4919, lng: 128.888 },
-   gyeongnam: { lat: 35.4606, lng: 128.2132 },
-   jeju: { lat: 33.4996, lng: 126.5312 },
 };
 
 const getAreaName = (area: any): string => {
@@ -76,6 +58,156 @@ const getServiceAreaText = (serviceArea: any): string => {
       .join(", ");
 };
 
+const extractAreaFromSearchTerm = (searchTerm: string): string | undefined => {
+   if (!searchTerm) return undefined;
+
+   const normalizedTerm = searchTerm.trim().toLowerCase();
+   const regionMap: Record<string, string> = {
+      서울: "서울",
+      서울시: "서울",
+      서울특별시: "서울",
+      부산: "부산",
+      부산시: "부산",
+      부산광역시: "부산",
+      대구: "대구",
+      대구시: "대구",
+      대구광역시: "대구",
+      인천: "인천",
+      인천시: "인천",
+      인천광역시: "인천",
+      광주: "광주",
+      광주시: "광주",
+      광주광역시: "광주",
+      대전: "대전",
+      대전시: "대전",
+      대전광역시: "대전",
+      울산: "울산",
+      울산시: "울산",
+      울산광역시: "울산",
+      세종: "세종",
+      세종시: "세종",
+      세종특별자치시: "세종",
+      경기: "경기",
+      경기도: "경기",
+      강원: "강원",
+      강원도: "강원",
+      충북: "충북",
+      충청북도: "충북",
+      충남: "충남",
+      충청남도: "충남",
+      전북: "전북",
+      전라북도: "전북",
+      전북특별자치도: "전북",
+      전남: "전남",
+      전라남도: "전남",
+      경북: "경북",
+      경상북도: "경북",
+      경남: "경남",
+      경상남도: "경남",
+      제주: "제주",
+      제주도: "제주",
+      제주특별자치도: "제주",
+      강남구: "서울",
+      서초구: "서울",
+      송파구: "서울",
+      강서구: "서울",
+      마포구: "서울",
+      종로구: "서울",
+      중구: "서울",
+      영등포구: "서울",
+   };
+
+   for (const [key, value] of Object.entries(regionMap)) {
+      if (normalizedTerm.includes(key.toLowerCase())) {
+         return value;
+      }
+   }
+   return undefined;
+};
+
+// 🔧 프로필 마커 생성 함수 (null 체크 추가)
+const createProfileMarkerImage = (
+   profileImage: string | null,
+   nickName: string | null,
+): Promise<any> | any => {
+   const canvas = document.createElement("canvas");
+   const size = 50;
+   canvas.width = size;
+   canvas.height = size;
+   const ctx = canvas.getContext("2d");
+
+   // 🔧 null 체크 추가
+   if (!ctx) {
+      console.error("Canvas context를 생성할 수 없습니다.");
+      return null;
+   }
+
+   const createDefaultAvatar = () => {
+      if (!ctx) return;
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = "bold 20px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const initial = nickName?.charAt(0) || " ";
+      ctx.fillText(initial, size / 2, size / 2);
+   };
+
+   // 원형 배경 그리기
+   ctx.beginPath();
+   ctx.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
+   ctx.fillStyle = "#3B82F6";
+   ctx.fill();
+   ctx.strokeStyle = "#FFFFFF";
+   ctx.lineWidth = 3;
+   ctx.stroke();
+
+   if (profileImage) {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+
+      return new Promise<any>((resolve) => {
+         img.onload = () => {
+            if (!ctx) return;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, size / 2 - 2, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.drawImage(img, 2, 2, size - 4, size - 4);
+            ctx.restore();
+
+            const dataURL = canvas.toDataURL();
+            const markerImage = new window.kakao.maps.MarkerImage(
+               dataURL,
+               new window.kakao.maps.Size(size, size),
+               { offset: new window.kakao.maps.Point(size / 2, size / 2) },
+            );
+            resolve(markerImage);
+         };
+
+         img.onerror = () => {
+            createDefaultAvatar();
+            const dataURL = canvas.toDataURL();
+            const markerImage = new window.kakao.maps.MarkerImage(
+               dataURL,
+               new window.kakao.maps.Size(size, size),
+               { offset: new window.kakao.maps.Point(size / 2, size / 2) },
+            );
+            resolve(markerImage);
+         };
+
+         img.src = profileImage;
+      });
+   } else {
+      createDefaultAvatar();
+      const dataURL = canvas.toDataURL();
+      return new window.kakao.maps.MarkerImage(
+         dataURL,
+         new window.kakao.maps.Size(size, size),
+         { offset: new window.kakao.maps.Point(size / 2, size / 2) },
+      );
+   }
+};
+
 export default function KakaoMapModal({
    isOpen,
    onClose,
@@ -85,12 +217,18 @@ export default function KakaoMapModal({
    const t = useTranslations("MoverSearch.map");
    const router = useRouter();
 
+   // Refs
    const mapRef = useRef<HTMLDivElement>(null);
    const mapInstanceRef = useRef<any>(null);
    const geocoderRef = useRef<any>(null);
    const markersRef = useRef<any[]>([]);
    const infoWindowRef = useRef<any>(null);
+   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+   const lastSearchPositionRef = useRef<{ lat: number; lng: number } | null>(
+      null,
+   );
 
+   // States
    const [selectedMover, setSelectedMover] = useState<Mover | null>(null);
    const [searchQuery, setSearchQuery] = useState("");
    const [movers, setMovers] = useState<Mover[]>([]);
@@ -101,8 +239,43 @@ export default function KakaoMapModal({
    const [mapCenter, setMapCenter] = useState(
       initialLocation || { lat: 37.5665, lng: 126.978 },
    );
+   const [isSearching, setIsSearching] = useState(false);
 
    const KAKAO_API_KEY = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
+
+   // 🔧 함수 선언 순서 수정 - createMarkersForMovers를 먼저 선언
+   const createMarkersForMovers = useCallback(
+      async (moversData: Mover[]) => {
+         if (!mapInstanceRef.current || !window.kakao?.maps) return;
+
+         for (const mover of moversData) {
+            if (mover.latitude && mover.longitude) {
+               const markerPosition = new window.kakao.maps.LatLng(
+                  mover.latitude,
+                  mover.longitude,
+               );
+               const markerImage = await createProfileMarkerImage(
+                  mover.profileImage ?? null,
+                  mover.nickName ?? null,
+               );
+
+               const marker = new window.kakao.maps.Marker({
+                  position: markerPosition,
+                  image: markerImage,
+               });
+
+               window.kakao.maps.event.addListener(marker, "click", () => {
+                  setSelectedMover(mover);
+                  router.push(`/mover-search/${mover.id}`);
+               });
+
+               marker.setMap(mapInstanceRef.current);
+               markersRef.current.push(marker);
+            }
+         }
+      },
+      [router],
+   );
 
    // 카카오맵 스크립트 로드
    const loadKakaoMapScript = useCallback(() => {
@@ -120,6 +293,7 @@ export default function KakaoMapModal({
             return;
          }
 
+         // 기존 스크립트 제거
          const existingScript = document.querySelector(
             'script[src*="dapi.kakao.com"]',
          );
@@ -152,58 +326,16 @@ export default function KakaoMapModal({
       });
    }, [KAKAO_API_KEY]);
 
-   // 지도 초기화
-   const initializeMap = useCallback(async () => {
-      if (!mapRef.current || !window.kakao?.maps) return;
-
-      try {
-         const mapOption = {
-            center: new window.kakao.maps.LatLng(mapCenter.lat, mapCenter.lng),
-            level: 5,
-         };
-
-         const map = new window.kakao.maps.Map(mapRef.current, mapOption);
-         mapInstanceRef.current = map;
-
-         // 주소 검색을 위한 geocoder 초기화
-         geocoderRef.current = new window.kakao.maps.services.Geocoder();
-
-         setMapLoaded(true);
-
-         // 지도 클릭 시 정보창 닫기
-         window.kakao.maps.event.addListener(map, "click", () => {
-            if (infoWindowRef.current) {
-               infoWindowRef.current.close();
-            }
-            setSelectedMover(null);
-         });
-
-         // 지도 중심 변경 시 기사님 목록 업데이트
-         window.kakao.maps.event.addListener(map, "center_changed", () => {
-            const center = map.getCenter();
-            const newCenter = {
-               lat: center.getLat(),
-               lng: center.getLng(),
-            };
-            setMapCenter(newCenter);
-         });
-      } catch (error) {
-         console.error("지도 초기화 실패:", error);
-         setMapError("지도 초기화에 실패했습니다.");
-      }
-   }, [mapCenter]);
-
-   // 위치 기반으로 기사님 목록 로드 (위도, 경도, 반경 기반 검색)
+   // 위치 기반 검색
    const loadMoversForLocation = useCallback(
       async (latitude: number, longitude: number, searchTerm?: string) => {
          setLoading(true);
 
          try {
-            console.log("위치 기반 기사님 검색:", {
-               latitude,
-               longitude,
-               searchTerm,
-            });
+            let areaParam: string | undefined = undefined;
+            if (searchTerm) {
+               areaParam = extractAreaFromSearchTerm(searchTerm);
+            }
 
             const response = await getMovers(
                {
@@ -211,15 +343,14 @@ export default function KakaoMapModal({
                   limit: 100,
                   latitude,
                   longitude,
-                  radius: 10, // 10km 반경
+                  radius: 10,
                   search: searchTerm || undefined,
-                  sortBy: "distance", // 지도 모달에서만 내부적으로 사용 (UI 정렬 옵션에는 노출되지 않음)
+                  area: areaParam,
+                  sortBy: "distance",
                },
                false,
                "ko",
             );
-
-            console.log("API 응답:", response);
 
             if (response && response.movers) {
                setMovers(response.movers);
@@ -227,7 +358,7 @@ export default function KakaoMapModal({
 
                if (mapLoaded && mapInstanceRef.current) {
                   clearMarkers();
-                  createMarkersForMovers(response.movers);
+                  await createMarkersForMovers(response.movers);
                }
             } else {
                setMovers([]);
@@ -241,97 +372,88 @@ export default function KakaoMapModal({
             setLoading(false);
          }
       },
-      [mapLoaded],
+      [mapLoaded, createMarkersForMovers],
    );
 
-   // 마커 생성 (위치 정보가 있는 기사님들만)
-   const createMarkersForMovers = useCallback((moversData: Mover[]) => {
-      if (!mapInstanceRef.current || !window.kakao?.maps) return;
-
-      console.log("마커 생성 시작:", moversData.length, "개");
-
-      moversData.forEach((mover) => {
-         // 백엔드에서 latitude, longitude가 있는 기사님만 표시
-         if (mover.latitude && mover.longitude) {
-            const markerPosition = new window.kakao.maps.LatLng(
-               mover.latitude,
-               mover.longitude,
-            );
-
-            // 커스텀 마커 이미지 생성
-            const imageSrc =
-               "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
-            const imageSize = new window.kakao.maps.Size(64, 69);
-            const imageOption = { offset: new window.kakao.maps.Point(27, 69) };
-            const markerImage = new window.kakao.maps.MarkerImage(
-               imageSrc,
-               imageSize,
-               imageOption,
-            );
-
-            const marker = new window.kakao.maps.Marker({
-               position: markerPosition,
-               image: markerImage,
-            });
-
-            window.kakao.maps.event.addListener(marker, "click", () => {
-               setSelectedMover(mover);
-               showInfoWindow(marker, mover);
-            });
-
-            marker.setMap(mapInstanceRef.current);
-            markersRef.current.push(marker);
+   // 디바운싱된 검색
+   const debouncedLocationSearch = useCallback(
+      async (latitude: number, longitude: number, searchTerm?: string) => {
+         if (searchTimeoutRef.current) {
+            clearTimeout(searchTimeoutRef.current);
          }
-      });
 
-      console.log("마커 생성 완료:", markersRef.current.length, "개");
-   }, []);
+         const lastPos = lastSearchPositionRef.current;
+         if (
+            lastPos &&
+            Math.abs(lastPos.lat - latitude) < 0.001 &&
+            Math.abs(lastPos.lng - longitude) < 0.001
+         ) {
+            return;
+         }
 
-   // 정보창 표시
-   const showInfoWindow = useCallback((marker: any, mover: Mover) => {
-      if (!window.kakao?.maps) return;
+         if (isSearching) return;
 
-      const serviceAreaText = getServiceAreaText(mover.serviceArea);
+         return new Promise<void>((resolve) => {
+            searchTimeoutRef.current = setTimeout(async () => {
+               setIsSearching(true);
+               lastSearchPositionRef.current = {
+                  lat: latitude,
+                  lng: longitude,
+               };
 
-      const content = `
-      <div style="padding: 12px; min-width: 220px; max-width: 300px;">
-        <div style="font-weight: bold; margin-bottom: 6px; font-size: 14px;">${mover.nickName || "기사님"}</div>
-        <div style="color: #666; font-size: 12px; margin-bottom: 6px;">
-          서비스 지역: ${serviceAreaText || " "}
-        </div>
-        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 6px;">
-          <span style="color: #ffb400;">★</span>
-          <span style="font-size: 12px;">${mover.averageReviewRating || 0}</span>
-          <span style="color: #999; font-size: 12px;">(리뷰 ${mover.reviewCount || 0}개)</span>
-        </div>
-        ${mover.distance ? `<div style="font-size: 11px; color: #007bff; margin-bottom: 6px;">거리: ${mover.distance.toFixed(1)}km</div>` : ""}
-        <div style="font-size: 11px; color: #666; line-height: 1.4; margin-bottom: 8px;">
-          ${mover.introduction || " "}
-        </div>
-        <div style="font-size: 10px; color: #888;">
-          경력 ${mover.career || 0}년 | 찜 ${mover.favoriteCount || 0}개
-        </div>
-      </div>
-    `;
+               await loadMoversForLocation(latitude, longitude, searchTerm);
 
-      if (infoWindowRef.current) {
-         infoWindowRef.current.close();
+               setTimeout(() => setIsSearching(false), 1000);
+               resolve();
+            }, 500);
+         });
+      },
+      [isSearching, loadMoversForLocation],
+   );
+
+   // 지도 초기화
+   const initializeMap = useCallback(async () => {
+      if (!mapRef.current || !window.kakao?.maps) return;
+
+      try {
+         const map = new window.kakao.maps.Map(mapRef.current, {
+            center: new window.kakao.maps.LatLng(mapCenter.lat, mapCenter.lng),
+            level: 5,
+         });
+
+         mapInstanceRef.current = map;
+         geocoderRef.current = new window.kakao.maps.services.Geocoder();
+         setMapLoaded(true);
+
+         // 지도 클릭 시 정보창 닫기
+         window.kakao.maps.event.addListener(map, "click", () => {
+            if (infoWindowRef.current) {
+               infoWindowRef.current.close();
+            }
+            setSelectedMover(null);
+         });
+
+         // 지도 중심 변경 이벤트
+         let moveEndTimeout: NodeJS.Timeout;
+         window.kakao.maps.event.addListener(map, "center_changed", () => {
+            clearTimeout(moveEndTimeout);
+            moveEndTimeout = setTimeout(async () => {
+               const center = map.getCenter();
+               const lat = center.getLat();
+               const lng = center.getLng();
+               setMapCenter({ lat, lng });
+               await debouncedLocationSearch(lat, lng);
+            }, 300);
+         });
+      } catch (error) {
+         console.error("지도 초기화 실패:", error);
+         setMapError("지도 초기화에 실패했습니다.");
       }
-
-      const infoWindow = new window.kakao.maps.InfoWindow({
-         content: content,
-         removable: true,
-      });
-
-      infoWindow.open(mapInstanceRef.current, marker);
-      infoWindowRef.current = infoWindow;
-   }, []);
+   }, [mapCenter, debouncedLocationSearch]);
 
    // 마커 제거
    const clearMarkers = useCallback(() => {
-      markersRef.current.forEach((marker) => {
-         marker.setMap(null);
-      });
+      markersRef.current.forEach((marker) => marker.setMap(null));
       markersRef.current = [];
    }, []);
 
@@ -344,13 +466,11 @@ export default function KakaoMapModal({
 
       setLoading(true);
       navigator.geolocation.getCurrentPosition(
-         (position) => {
+         async (position) => {
             const location = {
                lat: position.coords.latitude,
                lng: position.coords.longitude,
             };
-
-            console.log("현재 위치:", location);
             setMapCenter(location);
 
             if (mapInstanceRef.current) {
@@ -361,8 +481,7 @@ export default function KakaoMapModal({
                mapInstanceRef.current.setCenter(moveLatLon);
             }
 
-            // 현재 위치 기반으로 기사님 검색
-            loadMoversForLocation(location.lat, location.lng);
+            await loadMoversForLocation(location.lat, location.lng);
          },
          (error) => {
             console.error("위치 정보를 가져올 수 없습니다:", error);
@@ -371,20 +490,15 @@ export default function KakaoMapModal({
             );
             setLoading(false);
          },
-         {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 300000,
-         },
+         { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 },
       );
    }, [loadMoversForLocation]);
 
-   // 주소 검색 및 지도 이동
+   // 주소 검색
    const searchLocation = useCallback(
-      (searchTerm: string) => {
+      async (searchTerm: string) => {
          if (!geocoderRef.current || !mapInstanceRef.current) return;
 
-         // 먼저 기본 좌표에서 찾기
          const defaultCoord = DEFAULT_COORDINATES[searchTerm];
          if (defaultCoord) {
             const moveLatLon = new window.kakao.maps.LatLng(
@@ -393,7 +507,7 @@ export default function KakaoMapModal({
             );
             mapInstanceRef.current.setCenter(moveLatLon);
             setMapCenter(defaultCoord);
-            loadMoversForLocation(
+            await loadMoversForLocation(
                defaultCoord.lat,
                defaultCoord.lng,
                searchTerm,
@@ -401,54 +515,33 @@ export default function KakaoMapModal({
             return;
          }
 
-         // 카카오맵 주소 검색 API 사용
          geocoderRef.current.addressSearch(
             searchTerm,
-            (result: any, status: any) => {
+            async (result: any, status: any) => {
                if (status === window.kakao.maps.services.Status.OK) {
                   const coords = {
                      lat: parseFloat(result[0].y),
                      lng: parseFloat(result[0].x),
                   };
-
                   const moveLatLon = new window.kakao.maps.LatLng(
                      coords.lat,
                      coords.lng,
                   );
                   mapInstanceRef.current.setCenter(moveLatLon);
                   setMapCenter(coords);
-
-                  // 검색된 위치 기반으로 기사님 검색
-                  loadMoversForLocation(coords.lat, coords.lng, searchTerm);
-
-                  console.log("주소 검색 성공:", searchTerm, coords);
-               } else {
-                  console.log("주소 검색 실패:", searchTerm);
-                  // 검색 실패 시 현재 위치 기반으로 검색
-                  loadMoversForLocation(
-                     mapCenter.lat,
-                     mapCenter.lng,
+                  await loadMoversForLocation(
+                     coords.lat,
+                     coords.lng,
                      searchTerm,
                   );
                }
             },
          );
       },
-      [mapCenter, loadMoversForLocation],
+      [loadMoversForLocation],
    );
 
-   // 검색어 변경 핸들러
-   const handleSearchSubmit = useCallback(
-      (e: React.FormEvent) => {
-         e.preventDefault();
-         if (searchQuery.trim()) {
-            searchLocation(searchQuery.trim());
-         }
-      },
-      [searchQuery, searchLocation],
-   );
-
-   // 검색 필터링 (로컬 필터링)
+   // 검색 필터링
    useEffect(() => {
       if (searchQuery.trim() === "") {
          setFilteredMovers(movers);
@@ -467,22 +560,18 @@ export default function KakaoMapModal({
       }
    }, [searchQuery, movers]);
 
-   // 모달이 열릴 때 지도 초기화
+   // 모달 초기화
    useEffect(() => {
       if (!isOpen) return;
 
       const initMap = async () => {
          try {
-            console.log("지도 로드 시작");
             setMapError(null);
-
             await loadKakaoMapScript();
-
             setTimeout(async () => {
                await initializeMap();
-               setTimeout(() => {
-                  // 초기 위치 기반으로 기사님 로드
-                  loadMoversForLocation(mapCenter.lat, mapCenter.lng);
+               setTimeout(async () => {
+                  await loadMoversForLocation(mapCenter.lat, mapCenter.lng);
                }, 500);
             }, 100);
          } catch (error) {
@@ -498,15 +587,12 @@ export default function KakaoMapModal({
       initMap();
 
       return () => {
-         if (!isOpen) {
-            clearMarkers();
-            if (infoWindowRef.current) {
-               infoWindowRef.current.close();
-            }
-            setMapLoaded(false);
-            mapInstanceRef.current = null;
-            geocoderRef.current = null;
-         }
+         clearMarkers();
+         if (infoWindowRef.current) infoWindowRef.current.close();
+         if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+         setMapLoaded(false);
+         mapInstanceRef.current = null;
+         geocoderRef.current = null;
       };
    }, [
       isOpen,
@@ -516,32 +602,45 @@ export default function KakaoMapModal({
       mapCenter,
    ]);
 
-   // 기사 목록이 변경될 때 마커 업데이트
+   // 마커 업데이트
    useEffect(() => {
-      if (mapLoaded && mapInstanceRef.current) {
-         clearMarkers();
-         createMarkersForMovers(filteredMovers);
-      }
+      const updateMarkers = async () => {
+         if (mapLoaded && mapInstanceRef.current) {
+            clearMarkers();
+            await createMarkersForMovers(filteredMovers);
+         }
+      };
+      updateMarkers();
    }, [filteredMovers, mapLoaded, createMarkersForMovers]);
+
+   // 정리
+   useEffect(() => {
+      return () => {
+         if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+         if (markersRef.current) {
+            markersRef.current.forEach((marker) => marker.setMap(null));
+         }
+         mapInstanceRef.current = null;
+      };
+   }, []);
 
    if (!isOpen) return null;
 
+   const handleSearchSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+         searchLocation(searchQuery.trim());
+      }
+   };
+
    const handleMoverCardClick = (mover: Mover) => {
       setSelectedMover(mover);
-
       if (mover.latitude && mover.longitude && mapInstanceRef.current) {
          const moveLatLon = new window.kakao.maps.LatLng(
             mover.latitude,
             mover.longitude,
          );
          mapInstanceRef.current.setCenter(moveLatLon);
-      }
-   };
-
-   const handleSelectMover = () => {
-      if (selectedMover) {
-         router.push(`/mover-search/${selectedMover.id}`);
-         onClose();
       }
    };
 
@@ -556,14 +655,13 @@ export default function KakaoMapModal({
                <button
                   onClick={onClose}
                   className="rounded-full p-2 hover:bg-gray-100"
-                  aria-label="닫기"
                >
                   <X className="h-6 w-6" />
                </button>
             </div>
 
             <div className="flex h-[calc(100%-80px)]">
-               {/* 왼쪽 사이드바 */}
+               {/* 사이드바 */}
                <div className="w-80 flex-shrink-0 border-r border-gray-200 bg-gray-50">
                   <div className="space-y-4 p-4">
                      {!KAKAO_API_KEY && (
@@ -572,7 +670,6 @@ export default function KakaoMapModal({
                         </div>
                      )}
 
-                     {/* 검색바 - 폼으로 변경하여 엔터키 지원 */}
                      <form onSubmit={handleSearchSubmit} className="relative">
                         <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                         <input
@@ -674,7 +771,7 @@ export default function KakaoMapModal({
                   </div>
                </div>
 
-               {/* 오른쪽 지도 영역 */}
+               {/* 지도 영역 */}
                <div className="relative flex-1">
                   {mapError && (
                      <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-100">
@@ -710,64 +807,6 @@ export default function KakaoMapModal({
                      className="h-full w-full"
                      style={{ background: "#f5f5f5" }}
                   />
-
-                  {selectedMover && mapLoaded && (
-                     <div className="absolute right-4 bottom-4 left-4 rounded-lg border bg-white p-4 shadow-lg">
-                        <div className="flex items-start gap-3">
-                           <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-300">
-                              {selectedMover.profileImage ? (
-                                 <img
-                                    src={selectedMover.profileImage}
-                                    alt={selectedMover.nickName || "기사님"}
-                                    className="h-16 w-16 rounded-full object-cover"
-                                    onError={(e) => {
-                                       const target =
-                                          e.target as HTMLImageElement;
-                                       target.style.display = "none";
-                                    }}
-                                 />
-                              ) : (
-                                 <span className="text-lg font-semibold text-white">
-                                    {selectedMover.nickName?.charAt(0) || "기"}
-                                 </span>
-                              )}
-                           </div>
-                           <div className="min-w-0 flex-1">
-                              <h3 className="mb-1 text-lg font-semibold text-gray-900">
-                                 {selectedMover.nickName || "기사님"}
-                              </h3>
-                              <p className="mb-2 text-sm text-gray-600">
-                                 서비스 지역:{" "}
-                                 {getServiceAreaText(selectedMover.serviceArea)}
-                              </p>
-                              <div className="mb-2 flex items-center gap-4 text-sm">
-                                 <span className="flex items-center gap-1">
-                                    <Star className="h-3 w-3 fill-current text-yellow-500" />
-                                    {selectedMover.averageReviewRating || 0} (
-                                    {selectedMover.reviewCount || 0}건)
-                                 </span>
-                                 {selectedMover.distance && (
-                                    <span className="text-blue-500">
-                                       거리: {selectedMover.distance.toFixed(1)}
-                                       km
-                                    </span>
-                                 )}
-                              </div>
-                              {selectedMover.introduction && (
-                                 <p className="mb-3 text-sm text-gray-600">
-                                    {selectedMover.introduction}
-                                 </p>
-                              )}
-                              <button
-                                 onClick={handleSelectMover}
-                                 className="w-full rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
-                              >
-                                 이 기사님 선택하기
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                  )}
 
                   {mapLoaded && (
                      <div className="absolute top-4 right-4 rounded-lg bg-white p-2 text-sm shadow-md">
