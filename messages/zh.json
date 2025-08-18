@@ -556,6 +556,7 @@
       "defaultProfileAlt": "默认头像",
       "writeReviewFor": "为师傅写评价",
       "paginationNav": "分页导航",
+      "myReviewList": "我的评论列表",
       "editDeleteReviewAria": "编辑或删除{name}的评论",
       "ratingAria": "评分 {rating} 分",
       "unlikeMover": "取消收藏{name}师傅",
@@ -1138,7 +1139,18 @@
       "deleteReply": "删除",
       "deleteReplyAria": "删除{name}的评论",
       "confirmDeleteReplyTitle": "您确定要删除这条评论吗？",
-      "confirmDeleteReplyDescription": "此操作无法撤销"
+      "confirmDeleteReplyDescription": "此操作无法撤销",
+      "createPost": {
+         "title": "社区",
+         "submitButton": "提交",
+         "titlePlaceholder": "请输入标题。",
+         "contentPlaceholder": "请输入您的内容。\n\n搬家时有什么疑问都可以问。\n\n* 不符合主题或违反社区使用政策的帖子将被举报。\n* 如果收到一定数量的举报，您的帖子可能会被隐藏或删除。",
+         "titleRequired": "标题是必需的。",
+         "contentRequired": "内容是必需的。",
+         "successMessage": "帖子已成功创建！",
+         "titleLabel": "标题",
+         "contentLabel": "内容"
+      }
    },
    "Layout": {
       "title": "搬家 - 智能搬家比较平台",

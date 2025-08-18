@@ -1140,7 +1140,18 @@
       "deleteReply": "삭제하기",
       "deleteReplyAria": "{name}님의 댓글 삭제하기",
       "confirmDeleteReplyTitle": "댓글을 삭제하시겠습니까?",
-      "confirmDeleteReplyDescription": "이 작업은 되돌릴 수 없습니다"
+      "confirmDeleteReplyDescription": "이 작업은 되돌릴 수 없습니다",
+      "createPost": {
+         "title": "커뮤니티",
+         "submitButton": "등록",
+         "titlePlaceholder": "제목을 입력해주세요.",
+         "contentPlaceholder": "내용을 입력해 주세요.\n\n이사하면서 궁금했던 모든 것을 물어보세요.\n\n* 주제에 맞지 않는 글이나 커뮤니티 이용정책에 위배되는 글은 신고의 대상이 됩니다.\n* 일정 수 이상의 신고를 받으면 작성한 글이 숨김 및 삭제될 수 있습니다.",
+         "titleRequired": "제목은 필수입니다.",
+         "contentRequired": "내용은 필수입니다.",
+         "successMessage": "글이 성공적으로 작성되었습니다!",
+         "titleLabel": "제목",
+         "contentLabel": "내용"
+      }
    },
    "Layout": {
       "title": "무빙 - 스마트한 이사 비교 플랫폼",
