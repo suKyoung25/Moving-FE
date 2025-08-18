@@ -226,6 +226,23 @@
          "removedFromFavorites": "已从收藏中移除。"
       },
       "goToLogin": "去登录",
+      "map": {
+         "mapSearchTitle": "查找附近搬家师傅",
+         "searchPlaceholder": "请输入地区名称 (例: 江南区, 首尔)",
+         "currentLocationBtn": "移至当前位置",
+         "locationSearching": "正在查找位置...",
+         "mapLoadComplete": "地图加载完成",
+         "mapLoadFailed": "地图加载失败",
+         "mapLoadFailedDesc": "加载地图失败。",
+         "mapLoading": "正在加载地图...",
+         "refreshBtn": "刷新",
+         "noMoversFound": "该地区没有搬家师傅",
+         "searchOtherArea": "请尝试搜索其他地区",
+         "kakaoApiKeyMissing": "未设置Kakao地图API密钥。",
+         "moverDefaultName": "师傅",
+         "reviewCount": "评价",
+         "kmUnit": "公里"
+      },
       "accessibility": {
          "driverCard": "{name}司机卡片",
          "loading": "加载中...",

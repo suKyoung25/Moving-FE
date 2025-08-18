@@ -399,7 +399,7 @@ function LocationInputField<T extends Record<string, any>>({
                                  <p className="mb-1 font-medium text-gray-900">
                                     선택된 사업장 위치
                                  </p>
-                                 <p className="mb-2 text-sm text-gray-600">
+                                 <p className="mb-2 text-sm text-gray-500">
                                     {locationData.address}
                                  </p>
                                  {locationData.latitude &&
@@ -422,86 +422,6 @@ function LocationInputField<T extends Record<string, any>>({
                            </div>
                         </div>
                      )}
-
-                     {/* 수동 입력 필드들 (고급 사용자용) */}
-                     <details className="rounded-lg border">
-                        <summary className="cursor-pointer p-3 text-sm text-gray-600 hover:bg-gray-50">
-                           수동으로 좌표 입력 (고급)
-                        </summary>
-                        <div className="space-y-3 border-t p-4">
-                           <div className="grid grid-cols-2 gap-3">
-                              <div>
-                                 <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    위도
-                                 </label>
-                                 <input
-                                    type="number"
-                                    step="any"
-                                    min="-90"
-                                    max="90"
-                                    placeholder="37.5665"
-                                    className="w-full rounded-lg border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-                                    value={locationData?.latitude || ""}
-                                    onChange={(e) => {
-                                       const latitude = parseFloat(
-                                          e.target.value,
-                                       );
-                                       field.onChange({
-                                          ...locationData,
-                                          latitude: isNaN(latitude)
-                                             ? undefined
-                                             : latitude,
-                                       });
-                                    }}
-                                 />
-                              </div>
-
-                              <div>
-                                 <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    경도
-                                 </label>
-                                 <input
-                                    type="number"
-                                    step="any"
-                                    min="-180"
-                                    max="180"
-                                    placeholder="126.9780"
-                                    className="w-full rounded-lg border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-                                    value={locationData?.longitude || ""}
-                                    onChange={(e) => {
-                                       const longitude = parseFloat(
-                                          e.target.value,
-                                       );
-                                       field.onChange({
-                                          ...locationData,
-                                          longitude: isNaN(longitude)
-                                             ? undefined
-                                             : longitude,
-                                       });
-                                    }}
-                                 />
-                              </div>
-                           </div>
-
-                           <div>
-                              <label className="mb-1 block text-sm font-medium text-gray-700">
-                                 주소
-                              </label>
-                              <input
-                                 type="text"
-                                 placeholder="서울특별시 중구 태평로1가 31"
-                                 className="w-full rounded-lg border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-                                 value={locationData?.address || ""}
-                                 onChange={(e) => {
-                                    field.onChange({
-                                       ...locationData,
-                                       address: e.target.value,
-                                    });
-                                 }}
-                              />
-                           </div>
-                        </div>
-                     </details>
 
                      {/* 주소 검색 모달 */}
                      <AddressSearchModal
