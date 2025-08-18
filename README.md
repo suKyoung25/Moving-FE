@@ -263,71 +263,6 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
 
 ---
 
-## 시작하기
-
-### 필수 요구사항
-- **Node.js 18.0.0 이상**
-- **npm 또는 yarn**
-- **Firebase 프로젝트**
-- **Google Maps API 키**
-- **OpenAI API 키**
-
-### 설치 및 설정
-
-1. **저장소 클론**
-```bash
-git clone https://github.com/az0319h/6th-Moving-4Team-FE.git
-cd 6th-Moving-4Team-FE
-```
-
-2. **의존성 설치**
-```bash
-npm install
-```
-
-3. **환경 변수 설정**
-`.env` 파일을 생성하고 다음 변수들을 설정하세요:
-
-```env
-# Firebase 설정
-NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-NEXT_PUBLIC_FIREBASE_DATABASE_URL=your_firebase_database_url
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_firebase_measurement_id
-
-# Google Maps API
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-
-# OpenAI API (AI 견적 계산기용)
-OPENAI_API_KEY=your_openai_api_key
-
-# Sentry 설정 (모니터링용)
-SENTRY_DSN=your_sentry_dsn
-SENTRY_ORG=your_sentry_org
-SENTRY_PROJECT=your_sentry_project
-```
-
-4. **개발 서버 실행**
-```bash
-npm run dev
-```
-
-5. **브라우저에서 확인**
-```
-http://localhost:3000
-```
-
-## 사용 가능한 스크립트
-
-- `npm run dev` - 개발 서버 실행 (포트 3000)
-- `npm run build` - 프로덕션 빌드
-- `npm run start` - 프로덕션 서버 실행
-- `npm run lint` - ESLint로 코드 검사
-
 
 ## 상세 기능
 
@@ -488,112 +423,112 @@ src/
 │   │   └── (with-protected)/     # 인증 필요 페이지
 │   │       └── dashboard/        # 대시보드 (기사님용)
 │   └── api/                      # API 라우트
-│       ├── auth/                 # 인증 관련 API
-│       ├── google-maps/          # Google Maps API
-│       ├── openai/               # OpenAI API
-│       └── sentry-example-api/   # Sentry 예제 API
+│       ├── auth/                 
+│       ├── google-maps/        
+│       ├── openai/              
+│       └── sentry-example-api/   
 ├── components/                   # 재사용 가능한 컴포넌트
 │   ├── common/                   # 공통 컴포넌트
-│   │   ├── Chatbutton.tsx       # 채팅 버튼
-│   │   ├── ConfirmModal.tsx     # 확인 모달
-│   │   ├── EmptyState.tsx       # 빈 상태 표시
-│   │   ├── Pagination.tsx       # 페이지네이션
-│   │   ├── Spinner.tsx          # 로딩 스피너
-│   │   └── ToastPopup.tsx       # 토스트 팝업
+│   │   ├── Chatbutton.tsx       
+│   │   ├── ConfirmModal.tsx     
+│   │   ├── EmptyState.tsx       
+│   │   ├── Pagination.tsx       
+│   │   ├── Spinner.tsx          
+│   │   └── ToastPopup.tsx       
 │   ├── domain/                   # 도메인별 컴포넌트
-│   │   ├── auth/                # 인증 관련 컴포넌트
-│   │   ├── community/           # 커뮤니티 컴포넌트
-│   │   ├── dashboard/           # 대시보드 컴포넌트
-│   │   ├── estimate-calculator/ # 견적 계산기 컴포넌트
-│   │   ├── favorite-movers/     # 즐겨찾기 컴포넌트
-│   │   ├── marketing/           # 마케팅 컴포넌트
-│   │   ├── mover-search/        # 기사님 검색 컴포넌트
-│   │   ├── my-quotes/           # 내 견적 관리 컴포넌트
-│   │   ├── profile/             # 프로필 컴포넌트
-│   │   ├── received-requests/   # 받은 요청 관리 컴포넌트
-│   │   ├── request/             # 견적 요청 컴포넌트
-│   │   ├── reviews/             # 리뷰 컴포넌트
-│   │   └── support/             # 고객 지원 컴포넌트
+│   │   ├── auth/                
+│   │   ├── community/           
+│   │   ├── dashboard/           
+│   │   ├── estimate-calculator/ 
+│   │   ├── favorite-movers/    
+│   │   ├── marketing/          
+│   │   ├── mover-search/       
+│   │   ├── my-quotes/          
+│   │   ├── profile/            
+│   │   ├── received-requests/  
+│   │   ├── request/             
+│   │   ├── reviews/           
+│   │   └── support/            
 │   ├── effects/                  # 애니메이션 효과
-│   │   ├── PaperPlane.tsx       # 종이비행기 애니메이션
-│   │   └── *.json               # Lottie 애니메이션 파일
+│   │   ├── PaperPlane.tsx      
+│   │   └── *.json               
 │   └── layout/                   # 레이아웃 컴포넌트
-│       ├── ChatRoom.tsx         # 채팅방
-│       ├── ChatRoomList.tsx     # 채팅방 목록
-│       ├── DefaultLayout.tsx    # 기본 레이아웃
-│       ├── Header.tsx           # 헤더
-│       ├── PageTitle.tsx        # 페이지 제목
-│       └── SupportHub.tsx       # 지원 허브
+│       ├── ChatRoom.tsx        
+│       ├── ChatRoomList.tsx    
+│       ├── DefaultLayout.tsx   
+│       ├── Header.tsx        
+│       ├── PageTitle.tsx        
+│       └── SupportHub.tsx      
 ├── lib/                         # 유틸리티 및 설정
 │   ├── actions/                 # 서버 액션
-│   │   ├── favorite.action.ts   # 즐겨찾기 액션
-│   │   ├── request.action.ts    # 견적 요청 액션
-│   │   └── support.action.ts    # 고객 지원 액션
+│   │   ├── favorite.action.ts  
+│   │   ├── request.action.ts   
+│   │   └── support.action.ts   
 │   ├── api/                     # API 관련 함수
-│   │   ├── auth/                # 인증 API
-│   │   ├── community/           # 커뮤니티 API
-│   │   ├── estimate/            # 견적 API
-│   │   ├── estimate-calculator/ # 견적 계산기 API
-│   │   ├── favorite/            # 즐겨찾기 API
-│   │   ├── mover/               # 기사님 API
-│   │   ├── notification/        # 알림 API
-│   │   ├── request/             # 요청 API
-│   │   └── review/              # 리뷰 API
+│   │   ├── auth/               
+│   │   ├── community/          
+│   │   ├── estimate/           
+│   │   ├── estimate-calculator/
+│   │   ├── favorite/           
+│   │   ├── mover/              
+│   │   ├── notification/      
+│   │   ├── request/            
+│   │   └── review/             
 │   ├── firebase/                # Firebase 설정
-│   │   ├── firebase.ts          # Firebase 초기화
-│   │   ├── firebaseChat.ts      # 채팅 기능
-│   │   └── createChatRoomIfNotExists.ts # 채팅방 생성
+│   │   ├── firebase.ts          
+│   │   ├── firebaseChat.ts      
+│   │   └── createChatRoomIfNotExists.ts 
 │   ├── hooks/                   # 커스텀 훅
-│   │   ├── useAuthError.ts      # 인증 에러 처리
-│   │   ├── useClientProfilePostForm.ts # 클라이언트 프로필 폼
-│   │   └── useClientProfileUpdateForm.ts # 프로필 업데이트
+│   │   ├── useAuthError.ts    
+│   │   ├── useClientProfilePostForm.ts
+│   │   └── useClientProfileUpdateForm.ts 
 │   ├── schemas/                 # Zod 스키마
-│   │   ├── auth.schema.ts       # 인증 스키마
-│   │   ├── client.schema.ts     # 클라이언트 스키마
-│   │   ├── dashboard.schema.ts  # 대시보드 스키마
-│   │   └── common/              # 공통 스키마
+│   │   ├── auth.schema.ts      
+│   │   ├── client.schema.ts    
+│   │   ├── dashboard.schema.ts 
+│   │   └── common/             
 │   ├── types/                   # TypeScript 타입 정의
-│   │   ├── auth.types.ts        # 인증 타입
-│   │   ├── client.types.ts      # 클라이언트 타입
-│   │   ├── community.types.ts   # 커뮤니티 타입
-│   │   ├── estimate.types.ts    # 견적 타입
-│   │   ├── firebase.types.ts    # Firebase 타입
-│   │   ├── mover.types.ts       # 기사님 타입
-│   │   ├── notification.types.ts # 알림 타입
-│   │   ├── request.types.ts     # 요청 타입
-│   │   └── review.types.ts      # 리뷰 타입
+│   │   ├── auth.types.ts       
+│   │   ├── client.types.ts     
+│   │   ├── community.types.ts  
+│   │   ├── estimate.types.ts   
+│   │   ├── firebase.types.ts    
+│   │   ├── mover.types.ts       
+│   │   ├── notification.types.ts 
+│   │   ├── request.types.ts     
+│   │   └── review.types.ts     
 │   └── utils/                   # 유틸리티 함수
-│       ├── address.util.ts      # 주소 처리
-│       ├── ai.utils.ts          # AI 관련 유틸리티
-│       ├── auth.util.ts         # 인증 유틸리티
-│       ├── date.util.ts         # 날짜 처리
-│       ├── file.util.ts         # 파일 처리
-│       ├── format.util.ts       # 포맷팅
-│       ├── image.util.ts        # 이미지 처리
-│       ├── notification.util.ts # 알림 유틸리티
-│       ├── price.util.ts        # 가격 처리
-│       ├── query.util.ts        # 쿼리 유틸리티
-│       ├── rating.util.ts       # 평점 처리
-│       ├── search.util.ts       # 검색 유틸리티
-│       └── validation.util.ts   # 유효성 검사
+│       ├── address.util.ts      
+│       ├── ai.utils.ts          
+│       ├── auth.util.ts         
+│       ├── date.util.ts         
+│       ├── file.util.ts         
+│       ├── format.util.ts       
+│       ├── image.util.ts        
+│       ├── notification.util.ts 
+│       ├── price.util.ts        
+│       ├── query.util.ts        
+│       ├── rating.util.ts      
+│       ├── search.util.ts       
+│       └── validation.util.ts  
 ├── context/                     # React Context
-│   ├── AuthContext.tsx          # 인증 컨텍스트
-│   ├── ChatContext.tsx          # 채팅 컨텍스트
-│   ├── FormWizardContext.tsx    # 폼 마법사 컨텍스트
-│   ├── NotificationContext.tsx  # 알림 컨텍스트
-│   ├── SupportHubContext.tsx    # 지원 허브 컨텍스트
-│   └── ToastConText.tsx         # 토스트 컨텍스트
+│   ├── AuthContext.tsx         
+│   ├── ChatContext.tsx         
+│   ├── FormWizardContext.tsx    
+│   ├── NotificationContext.tsx  
+│   ├── SupportHubContext.tsx    
+│   └── ToastConText.tsx         
 ├── constants/                   # 상수 정의
-│   ├── index.ts                 # 공통 상수
-│   ├── mover.constants.ts       # 기사님 관련 상수
-│   ├── profile.constants.ts     # 프로필 관련 상수
-│   └── received-requests.constants.ts # 받은 요청 상수
+│   ├── index.ts                
+│   ├── mover.constants.ts      
+│   ├── profile.constants.ts     
+│   └── received-requests.constants.ts 
 ├── i18n/                       # 국제화 설정
-│   ├── navigation.ts           # 네비게이션 번역
-│   ├── request.ts              # 요청 관련 번역
-│   └── routing.ts              # 라우팅 설정
+│   ├── navigation.ts           
+│   ├── request.ts              
+│   └── routing.ts              
 └── assets/                     # 정적 자산
-    └── images/                 # 이미지 파일들
+    └── images/                 
 ```
 
 ---
