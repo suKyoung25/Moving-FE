@@ -1,3 +1,4 @@
+//frontend client.types.ts
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 // 서비스 종류

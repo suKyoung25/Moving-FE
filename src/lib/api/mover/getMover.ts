@@ -20,6 +20,14 @@ export const getMovers = async (
       queryParams.append("serviceType", params.serviceType);
    if (params.sortBy) queryParams.append("sortBy", params.sortBy);
 
+   // 위치 기반 검색 파라미터 추가
+   if (params.latitude !== undefined)
+      queryParams.append("latitude", String(params.latitude));
+   if (params.longitude !== undefined)
+      queryParams.append("longitude", String(params.longitude));
+   if (params.radius !== undefined)
+      queryParams.append("radius", String(params.radius));
+
    const endpoint = `/movers?targetLang=${targetLang}&${queryParams.toString()}`;
 
    // 인증이 필요한 경우 tokenFetch, 아닌 경우 defaultFetch 사용
@@ -31,8 +39,12 @@ export const getMovers = async (
       ...mover,
       favoriteCount: mover.favoriteCount ?? 0,
       region: mover.serviceArea ?? [],
-      description:
-         mover.description ?? "고객님의 물품을 안전하게 운송해 드립니다.",
+      description: mover.description ?? " ",
+      // 위치 정보 포함
+      latitude: mover.latitude,
+      longitude: mover.longitude,
+      businessAddress: mover.businessAddress,
+      distance: mover.distance, // 거리 정보 포함
    })) as Mover[];
 
    return {

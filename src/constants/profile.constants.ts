@@ -1,3 +1,4 @@
+//profile.constants.ts
 export const regions = [
    "서울",
    "경기",

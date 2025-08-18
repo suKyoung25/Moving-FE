@@ -12,6 +12,5 @@ export default async function updateMoverProfile(
    });
 
    tokenSettings.set(res.accessToken);
-
    return { ...res };
 }

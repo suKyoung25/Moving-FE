@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo, memo, lazy, Suspense } from "react";
+import { MapPin } from "lucide-react";
 import DriverList from "./DriverList";
 import SortDropdown from "./SortDropdown";
 import FilterAreaServiceBox from "./FilterAreaServiceBox";
@@ -12,6 +13,7 @@ import {
    SORT_OPTIONS,
 } from "@/constants/mover.constants";
 import { useTranslations } from "next-intl";
+import OutlinedButton from "@/components/common/OutlinedButton";
 
 const FavoriteDriverList = lazy(() =>
    import("./FavoriteDriverList").then((module) => ({
@@ -19,7 +21,47 @@ const FavoriteDriverList = lazy(() =>
    })),
 );
 
-// 스켈레톤 컴포넌트
+const KakaoMapModal = lazy(() =>
+   import("./KakaoMapModal").then((module) => ({ default: module.default })),
+);
+
+// ✅ 스켈레톤 컴포넌트들을 여기서 정의
+const FavoriteItemSkeleton = memo(function FavoriteItemSkeleton() {
+   return (
+      <div className="animate-pulse rounded-lg border border-gray-100 bg-white p-3">
+         <div className="mb-3 space-y-2">
+            <div className="h-4 w-full rounded bg-gray-200"></div>
+         </div>
+         <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-gray-200"></div>
+            <div className="flex-1 space-y-2">
+               <div className="h-4 w-1/2 rounded bg-gray-200"></div>
+               <div className="flex gap-4">
+                  <div className="h-3 w-12 rounded bg-gray-200"></div>
+               </div>
+            </div>
+            <div className="h-6 w-6 rounded bg-gray-200"></div>
+         </div>
+      </div>
+   );
+});
+
+const FavoriteLoadingSkeleton = memo(function FavoriteLoadingSkeleton() {
+   return (
+      <div className="mt-8 flex flex-col gap-4 rounded-lg">
+         <div className="border-b border-b-gray-100 pb-5">
+            <div className="h-6 w-32 rounded bg-gray-200"></div>
+         </div>
+         <div className="space-y-4">
+            <FavoriteItemSkeleton />
+            <FavoriteItemSkeleton />
+            <FavoriteItemSkeleton />
+         </div>
+      </div>
+   );
+});
+
+// lazy loading용 간단한 스켈레톤
 const FavoriteListSkeleton = memo(function FavoriteListSkeleton() {
    return (
       <div className="mt-8 flex animate-pulse flex-col gap-4 rounded-lg shadow">
@@ -30,7 +72,6 @@ const FavoriteListSkeleton = memo(function FavoriteListSkeleton() {
    );
 });
 
-// ✅ 전역 QueryClient 사용하므로 별도 Provider 불필요
 export default memo(function MoverSearchLayout() {
    const t = useTranslations("MoverSearch");
 
@@ -65,6 +106,9 @@ export default memo(function MoverSearchLayout() {
       favorite: 0,
       driverList: 0,
    });
+
+   // 지도 모달 상태
+   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
    const handleFilterChange = useCallback(
       (newFilters: Partial<typeof filters>) => {
@@ -103,6 +147,14 @@ export default memo(function MoverSearchLayout() {
       [handleFilterChange],
    );
 
+   const handleMapModalOpen = useCallback(() => {
+      setIsMapModalOpen(true);
+   }, []);
+
+   const handleMapModalClose = useCallback(() => {
+      setIsMapModalOpen(false);
+   }, []);
+
    const currentSortOption = useMemo(
       () =>
          translatedOptions.sort.find(
@@ -127,12 +179,24 @@ export default memo(function MoverSearchLayout() {
                      />
                   </div>
 
-                  <div className="scrollbar-hide mt-4 flex-1 overflow-y-auto">
+                  {/* 지도 모달 버튼 - 필터와 찜리스트 사이에 위치 */}
+                  <div className="mt-4 mb-4">
+                     <OutlinedButton
+                        onClick={handleMapModalOpen}
+                        className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium"
+                     >
+                        <MapPin className="h-4 w-4" />
+                        {t("findOnMap", { default: "지도에서 찾기" })}
+                     </OutlinedButton>
+                  </div>
+
+                  <div className="scrollbar-hide flex-1 overflow-y-auto">
                      <Suspense fallback={<FavoriteListSkeleton />}>
                         <FavoriteDriverList
                            key={`desktop-${refreshKeys.favorite}`}
                            refreshKey={refreshKeys.favorite}
                            onFavoriteChange={handleFavoriteListChange}
+                           LoadingSkeleton={FavoriteLoadingSkeleton}
                         />
                      </Suspense>
                   </div>
@@ -173,6 +237,17 @@ export default memo(function MoverSearchLayout() {
                   currentFilters={filters}
                />
 
+               {/* 모바일용 지도 버튼 */}
+               <div className="mb-4">
+                  <OutlinedButton
+                     onClick={handleMapModalOpen}
+                     className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium"
+                  >
+                     <MapPin className="h-4 w-4" />
+                     {t("findOnMap", { default: "지도에서 찾기" })}
+                  </OutlinedButton>
+               </div>
+
                <div>
                   <SearchBar
                      onSearchChange={(search) => handleFilterChange({ search })}
@@ -196,6 +271,14 @@ export default memo(function MoverSearchLayout() {
                />
             </section>
          </div>
+
+         {/* 지도 모달 */}
+         <Suspense fallback={null}>
+            <KakaoMapModal
+               isOpen={isMapModalOpen}
+               onClose={handleMapModalClose}
+            />
+         </Suspense>
       </div>
    );
 });

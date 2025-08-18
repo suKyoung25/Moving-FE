@@ -1,11 +1,22 @@
+//frontend mover.types.ts
 import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
 import { User, Mover } from "./auth.types";
 
 //바로 아래+기사님 프로필 컴포넌트에서 사용
-export type FieldValue = string | string[] | File | undefined;
+export type FieldValue =
+   | string
+   | string[]
+   | File
+   | undefined
+   | {
+        latitude?: number;
+        longitude?: number;
+        address?: string;
+     };
 
 //기사님 프로필 컴포넌트 모음집
-export interface InputFieldProps<T extends Record<string, FieldValue>> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface InputFieldProps<T extends Record<string, any>> {
    name: Path<T>;
    text: string;
    placeholder?: string;
@@ -19,6 +30,7 @@ export interface InputFieldProps<T extends Record<string, FieldValue>> {
    error?: FieldError;
 
    labelId?: string;
+   required?: boolean;
 }
 
 //기사님 프로필 유효성 함수 관련
@@ -56,6 +68,10 @@ export interface GetMoversParams {
    area?: string;
    serviceType?: string;
    sortBy?: string;
+   // 위치 기반 검색 파라미터
+   latitude?: number;
+   longitude?: number;
+   radius?: number; // km 단위
 }
 
 export interface GetMoversResponse {
