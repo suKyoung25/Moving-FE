@@ -20,11 +20,11 @@
 
 ## 프로젝트 소개
 
-Moving은 사용자가 손쉽게 여러 이사업체의 견적을 비교하고, 자신에게 가장 적합한 전문가를 선택할 수 있도록 돕는 스마트 이사 비교 플랫폼입니다.
+Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자신에게 가장 적합한 전문가를 선택할 수 있도록 돕는 스마트 이사 비교 플랫폼입니다.
 
 기존의 복잡하고 불투명했던 이사 견적 과정을 간소화하여, 사용자가 원하는 조건(이사 유형, 지역, 일정 등)에 맞는 전문가를 빠르게 찾을 수 있습니다.
 
-또한 기사님(이사업체) 입장에서도 효율적인 고객 매칭이 가능해, 투명한 거래 환경과 편리한 서비스 경험을 제공합니다.
+또한 기사님 입장에서도 효율적인 고객 매칭이 가능해, 투명한 거래 환경과 편리한 서비스 경험을 제공합니다.
 
 ### 링크
 - **팀 노션**: [바로가기](https://www.notion.so/4Team-Moving-Ops-Board-2153fde0e1948005ad04c1585430e77f)
@@ -36,13 +36,13 @@ Moving은 사용자가 손쉽게 여러 이사업체의 견적을 비교하고, 
 
 ### 고객 기능
 - **AI 견적 계산기**: OpenAI GPT-4 기반의 지능형 견적 계산 시스템
-- **이사업체 검색**: 위치, 서비스 유형, 평점 기반 필터링 및 정렬
+- **기사 검색**: 위치, 서비스 유형, 평점 기반 필터링 및 정렬
 - **견적 요청**: 단계별 마법사 형태의 견적 요청 시스템
 - **견적 관리**: 받은 견적 확인, 승인/거절, 진행 상황 추적
-- **즐겨찾기**: 선호하는 이사업체 저장 및 관리
+- **즐겨찾기**: 선호하는 기사님 저장 및 관리
 - **리뷰 시스템**: 이사 완료 후 리뷰 작성 및 평점 관리
 
-### 이사업체 기능
+### 기사님 기능
 - **견적 응답**: 받은 견적 요청에 대한 상세 견적 제공
 - **프로필 관리**: 업체 정보, 서비스 영역, 경력 정보 관리
 - **받은 요청 관리**: 필터링 및 검색을 통한 요청 관리
@@ -263,37 +263,6 @@ Moving은 사용자가 손쉽게 여러 이사업체의 견적을 비교하고, 
 
 ---
 
-## 상세 기능
-
-### 📄 페이지 구성
-
-| 페이지 | 경로 | 설명 | 접근 권한 |
-|--------|------|------|-----------|
-| **랜딩페이지** | `/` | 초기 접속 시 진입 페이지 (마케팅 섹션) | 공개 |
-| **이사업체 검색** | `/mover-search` | 위치, 서비스 유형, 평점 기반 이사업체 검색 | 공개 |
-| **AI 견적 계산기** | `/estimate-calculator` | OpenAI GPT-4 기반 지능형 견적 계산 | 공개 |
-| **커뮤니티** | `/community` | 사용자 간 소통 및 정보 공유 게시판 | 공개 |
-| **커뮤니티 상세** | `/community/:id` | 커뮤니티 게시글 상세 보기 | 공개 |
-| **커뮤니티 작성** | `/community/create` | 커뮤니티 게시글 작성 | 인증 필요 |
-| **고객 지원** | `/support` | 문의사항 접수 및 파일 업로드 | 공개 |
-| **로그인 (고객)** | `/sign-in/client` | 고객용 로그인 페이지 | 게스트 |
-| **로그인 (이사업체)** | `/sign-in/mover` | 이사업체용 로그인 페이지 | 게스트 |
-| **회원가입 (고객)** | `/sign-up/client` | 고객용 회원가입 페이지 | 게스트 |
-| **회원가입 (이사업체)** | `/sign-up/mover` | 이사업체용 회원가입 페이지 | 게스트 |
-| **대시보드** | `/dashboard` | 이사업체 대시보드 (프로필, 리뷰 관리) | 인증 필요 |
-| **견적 요청** | `/request` | 단계별 마법사 형태의 견적 요청 | 인증 필요 |
-| **내 견적 관리 (고객)** | `/my-quotes/client` | 고객이 요청한 견적 목록 및 관리 | 인증 필요 |
-| **내 견적 관리 (이사업체)** | `/my-quotes/mover` | 이사업체가 받은 견적 목록 및 관리 | 인증 필요 |
-| **견적 상세 (고객)** | `/my-quotes/client/:id` | 고객용 견적 상세 보기 | 인증 필요 |
-| **견적 상세 (이사업체)** | `/my-quotes/mover/:id` | 이사업체용 견적 상세 보기 | 인증 필요 |
-| **즐겨찾기** | `/favorite-movers` | 즐겨찾기한 이사업체 목록 | 인증 필요 |
-| **리뷰 관리** | `/reviews` | 내가 작성한 리뷰 및 받은 리뷰 관리 | 인증 필요 |
-| **받은 요청 관리** | `/received-requests` | 이사업체가 받은 견적 요청 목록 | 인증 필요 |
-| **받은 요청 상세** | `/received-requests/:id` | 받은 견적 요청 상세 보기 | 인증 필요 |
-| **프로필 생성** | `/profile/create` | 프로필 정보 생성 | 인증 필요 |
-| **프로필 수정** | `/profile/edit` | 프로필 정보 수정 | 인증 필요 |
-| **계정 수정** | `/edit-account` | 계정 정보 수정 | 인증 필요 |
-
 ## 시작하기
 
 ### 필수 요구사항
@@ -352,13 +321,15 @@ npm run dev
 http://localhost:3000
 ```
 
-## 📝 사용 가능한 스크립트
+## 사용 가능한 스크립트
 
 - `npm run dev` - 개발 서버 실행 (포트 3000)
 - `npm run build` - 프로덕션 빌드
 - `npm run start` - 프로덕션 서버 실행
 - `npm run lint` - ESLint로 코드 검사
 
+
+## 상세 기능
 
 ### 핵심 기능 상세
 
@@ -375,7 +346,7 @@ http://localhost:3000
 - 채팅방 참여/퇴장 관리
 - 시스템 메시지 지원
 
-### 이사업체 검색
+### 기사님 검색
 - 위치 기반 검색
 - 서비스 유형 필터링 (소형/가정/사무실)
 - 평점, 리뷰 수, 견적 수 기준 정렬
@@ -396,11 +367,7 @@ http://localhost:3000
 - 🇺🇸 **영어 (en)**
 - 🇨🇳 **중국어 (zh)**
 
-### 언어 변경 방법
-URL의 locale 파라미터를 통해 언어를 변경할 수 있습니다:
-- `/ko/` - 한국어
-- `/en/` - 영어  
-- `/zh/` - 중국어
+URL의 locale 파라미터를 오른쪽 밑 허브에 있는 설정을 통해 변경할 수 있습니다
 
 ### 번역 파일 위치
 ```
@@ -420,7 +387,7 @@ messages/
 
 ### 사용자 유형
 - **Client** - 일반 고객
-- **Mover** - 이사업체
+- **Mover** - 기사님
 
 ## 반응형 디자인
 
@@ -501,6 +468,132 @@ const { mutate, isPending } = useMutation({
     openStateModal(err.status || 400, "구매", { grade, name: cardName, count: quantity });
   },
 });
+```
+
+---
+
+## 프로젝트 구조
+
+```
+src/
+├── app/                           # Next.js App Router
+│   ├── [locale]/                 # 다국어 라우팅 (ko, en, zh)
+│   │   ├── (marketing)/          # 마케팅 페이지 (랜딩 페이지)
+│   │   ├── (with-guest)/         # 게스트 전용 페이지 (로그인/회원가입)
+│   │   ├── (with-public)/        # 공개 페이지
+│   │   │   ├── community/        # 커뮤니티
+│   │   │   ├── estimate-calculator/ # AI 견적 계산기
+│   │   │   ├── mover-search/     # 기사님 검색
+│   │   │   └── support/          # 고객 지원
+│   │   └── (with-protected)/     # 인증 필요 페이지
+│   │       └── dashboard/        # 대시보드 (기사님용)
+│   └── api/                      # API 라우트
+│       ├── auth/                 # 인증 관련 API
+│       ├── google-maps/          # Google Maps API
+│       ├── openai/               # OpenAI API
+│       └── sentry-example-api/   # Sentry 예제 API
+├── components/                   # 재사용 가능한 컴포넌트
+│   ├── common/                   # 공통 컴포넌트
+│   │   ├── Chatbutton.tsx       # 채팅 버튼
+│   │   ├── ConfirmModal.tsx     # 확인 모달
+│   │   ├── EmptyState.tsx       # 빈 상태 표시
+│   │   ├── Pagination.tsx       # 페이지네이션
+│   │   ├── Spinner.tsx          # 로딩 스피너
+│   │   └── ToastPopup.tsx       # 토스트 팝업
+│   ├── domain/                   # 도메인별 컴포넌트
+│   │   ├── auth/                # 인증 관련 컴포넌트
+│   │   ├── community/           # 커뮤니티 컴포넌트
+│   │   ├── dashboard/           # 대시보드 컴포넌트
+│   │   ├── estimate-calculator/ # 견적 계산기 컴포넌트
+│   │   ├── favorite-movers/     # 즐겨찾기 컴포넌트
+│   │   ├── marketing/           # 마케팅 컴포넌트
+│   │   ├── mover-search/        # 기사님 검색 컴포넌트
+│   │   ├── my-quotes/           # 내 견적 관리 컴포넌트
+│   │   ├── profile/             # 프로필 컴포넌트
+│   │   ├── received-requests/   # 받은 요청 관리 컴포넌트
+│   │   ├── request/             # 견적 요청 컴포넌트
+│   │   ├── reviews/             # 리뷰 컴포넌트
+│   │   └── support/             # 고객 지원 컴포넌트
+│   ├── effects/                  # 애니메이션 효과
+│   │   ├── PaperPlane.tsx       # 종이비행기 애니메이션
+│   │   └── *.json               # Lottie 애니메이션 파일
+│   └── layout/                   # 레이아웃 컴포넌트
+│       ├── ChatRoom.tsx         # 채팅방
+│       ├── ChatRoomList.tsx     # 채팅방 목록
+│       ├── DefaultLayout.tsx    # 기본 레이아웃
+│       ├── Header.tsx           # 헤더
+│       ├── PageTitle.tsx        # 페이지 제목
+│       └── SupportHub.tsx       # 지원 허브
+├── lib/                         # 유틸리티 및 설정
+│   ├── actions/                 # 서버 액션
+│   │   ├── favorite.action.ts   # 즐겨찾기 액션
+│   │   ├── request.action.ts    # 견적 요청 액션
+│   │   └── support.action.ts    # 고객 지원 액션
+│   ├── api/                     # API 관련 함수
+│   │   ├── auth/                # 인증 API
+│   │   ├── community/           # 커뮤니티 API
+│   │   ├── estimate/            # 견적 API
+│   │   ├── estimate-calculator/ # 견적 계산기 API
+│   │   ├── favorite/            # 즐겨찾기 API
+│   │   ├── mover/               # 기사님 API
+│   │   ├── notification/        # 알림 API
+│   │   ├── request/             # 요청 API
+│   │   └── review/              # 리뷰 API
+│   ├── firebase/                # Firebase 설정
+│   │   ├── firebase.ts          # Firebase 초기화
+│   │   ├── firebaseChat.ts      # 채팅 기능
+│   │   └── createChatRoomIfNotExists.ts # 채팅방 생성
+│   ├── hooks/                   # 커스텀 훅
+│   │   ├── useAuthError.ts      # 인증 에러 처리
+│   │   ├── useClientProfilePostForm.ts # 클라이언트 프로필 폼
+│   │   └── useClientProfileUpdateForm.ts # 프로필 업데이트
+│   ├── schemas/                 # Zod 스키마
+│   │   ├── auth.schema.ts       # 인증 스키마
+│   │   ├── client.schema.ts     # 클라이언트 스키마
+│   │   ├── dashboard.schema.ts  # 대시보드 스키마
+│   │   └── common/              # 공통 스키마
+│   ├── types/                   # TypeScript 타입 정의
+│   │   ├── auth.types.ts        # 인증 타입
+│   │   ├── client.types.ts      # 클라이언트 타입
+│   │   ├── community.types.ts   # 커뮤니티 타입
+│   │   ├── estimate.types.ts    # 견적 타입
+│   │   ├── firebase.types.ts    # Firebase 타입
+│   │   ├── mover.types.ts       # 기사님 타입
+│   │   ├── notification.types.ts # 알림 타입
+│   │   ├── request.types.ts     # 요청 타입
+│   │   └── review.types.ts      # 리뷰 타입
+│   └── utils/                   # 유틸리티 함수
+│       ├── address.util.ts      # 주소 처리
+│       ├── ai.utils.ts          # AI 관련 유틸리티
+│       ├── auth.util.ts         # 인증 유틸리티
+│       ├── date.util.ts         # 날짜 처리
+│       ├── file.util.ts         # 파일 처리
+│       ├── format.util.ts       # 포맷팅
+│       ├── image.util.ts        # 이미지 처리
+│       ├── notification.util.ts # 알림 유틸리티
+│       ├── price.util.ts        # 가격 처리
+│       ├── query.util.ts        # 쿼리 유틸리티
+│       ├── rating.util.ts       # 평점 처리
+│       ├── search.util.ts       # 검색 유틸리티
+│       └── validation.util.ts   # 유효성 검사
+├── context/                     # React Context
+│   ├── AuthContext.tsx          # 인증 컨텍스트
+│   ├── ChatContext.tsx          # 채팅 컨텍스트
+│   ├── FormWizardContext.tsx    # 폼 마법사 컨텍스트
+│   ├── NotificationContext.tsx  # 알림 컨텍스트
+│   ├── SupportHubContext.tsx    # 지원 허브 컨텍스트
+│   └── ToastConText.tsx         # 토스트 컨텍스트
+├── constants/                   # 상수 정의
+│   ├── index.ts                 # 공통 상수
+│   ├── mover.constants.ts       # 기사님 관련 상수
+│   ├── profile.constants.ts     # 프로필 관련 상수
+│   └── received-requests.constants.ts # 받은 요청 상수
+├── i18n/                       # 국제화 설정
+│   ├── navigation.ts           # 네비게이션 번역
+│   ├── request.ts              # 요청 관련 번역
+│   └── routing.ts              # 라우팅 설정
+└── assets/                     # 정적 자산
+    └── images/                 # 이미지 파일들
 ```
 
 ---
