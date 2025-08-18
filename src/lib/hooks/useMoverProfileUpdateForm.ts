@@ -12,7 +12,9 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { base64ToFile, extractRegionNames } from "../utils/profile.util";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
-import updateProfileImage from "../api/auth/requests/updateProfileImage";
+import updateProfileImage, {
+   uploadToCloudinary,
+} from "../api/auth/requests/updateProfileImage";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/context/ToastConText";
 import { updateUserProfileInChats } from "../firebase/firebaseChat";
@@ -87,10 +89,16 @@ function useMoverProfileUpdateForm() {
                setIsLoading(false);
                return;
             }
-            const formData = new FormData();
-            formData.append("image", file);
-            const res = await updateProfileImage(formData);
-            imageUrl = res.url; // 백엔드에서 반환한 s3 URL
+
+            // Cloudinary 직접 업로드
+            const uploadResult = await uploadToCloudinary(file);
+            imageUrl = uploadResult.secure_url;
+
+            // //AWS로 업로드
+            // const formData = new FormData();
+            // formData.append("image", file);
+            // const res = await updateProfileImage(formData);
+            // imageUrl = res.url; // 백엔드에서 반환한 s3 URL
          }
 
          // 이미지 처리 후 나머지 데이터 처리
