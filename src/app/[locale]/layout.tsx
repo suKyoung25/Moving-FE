@@ -1,16 +1,55 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { Providers } from "@/app/providers";
 import SupportHub from "@/components/layout/SupportHub";
 
-export const metadata: Metadata = {
-   title: "무빙 - 스마트한 이사 비교 플랫폼",
-   description:
-      "이사업체 견적을 한눈에 비교하고, 합리적인 선택을 돕는 스마트한 이사 플랫폼 '무빙'",
-};
+export async function generateMetadata(): Promise<Metadata> {
+   const t = await getTranslations("Layout");
+
+   const baseUrl = "https://moving-web.site";
+
+   return {
+      metadataBase: new URL(baseUrl),
+      title: t("title"),
+      description: t("description"),
+      alternates: {
+         canonical: baseUrl,
+      },
+      robots: {
+         index: true,
+         follow: true,
+      },
+      icons: {
+         icon: "/favicon.ico",
+      },
+      openGraph: {
+         title: t("title"),
+         description: t("description"),
+         url: baseUrl,
+         siteName: "Moving",
+         images: [
+            {
+               url: "/seo.png",
+               width: 1200,
+               height: 630,
+               alt: "Moving site preview image",
+            },
+         ],
+         locale: "ko_KR",
+         type: "website",
+      },
+      twitter: {
+         card: "summary_large_image",
+         title: t("title"),
+         description: t("description"),
+         images: ["/seo.png"],
+      },
+   };
+}
 
 export default async function RootLayout({
    children,
@@ -27,7 +66,7 @@ export default async function RootLayout({
    return (
       <html lang={locale}>
          <body className="h-full min-h-screen">
-            <NextIntlClientProvider>
+            <NextIntlClientProvider locale={locale}>
                <Providers>
                   <main>
                      {children}

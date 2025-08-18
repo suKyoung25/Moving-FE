@@ -14,22 +14,21 @@ import {
    IoChevronDown,
 } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { UserWithdrawal } from "../common/UserWithdrawal";
 
 export default function SettingTabPanel() {
+   const t = useTranslations("SupportHub");
    const { user } = useAuth();
    const router = useRouter();
    const pathname = usePathname();
    const [isEnabled, setIsEnabled] = useState(true);
    const [showWithdraw, setShowWithdraw] = useState(false);
-   const [currentLang, setCurrentLang] = useState("ko");
+   const [, setCurrentLang] = useState("ko");
    const [open, setOpen] = useState(false);
    const locale = useLocale();
    const wrapperRef = useRef(null);
-
-   console.log(currentLang);
 
    const handleChangeLanguage = (newLocale: string) => {
       setCurrentLang(newLocale);
@@ -45,15 +44,27 @@ export default function SettingTabPanel() {
    };
 
    const languages = [
-      { label: "한국어", code: "ko", subtitle: "Korean" },
-      { label: "English", code: "en", subtitle: "English" },
-      { label: "中文", code: "zh", subtitle: "Chinese" },
+      {
+         label: t("settings.languages.korean"),
+         code: "ko",
+         subtitle: t("settings.languages.koreanSubtitle"),
+      },
+      {
+         label: t("settings.languages.english"),
+         code: "en",
+         subtitle: t("settings.languages.englishSubtitle"),
+      },
+      {
+         label: t("settings.languages.chinese"),
+         code: "zh",
+         subtitle: t("settings.languages.chineseSubtitle"),
+      },
    ];
 
    const localeMap: Record<string, string> = {
-      ko: "KOREAN",
-      en: "ENGLISH",
-      zh: "CHINESE",
+      ko: t("settings.languages.koreanCode"),
+      en: t("settings.languages.englishCode"),
+      zh: t("settings.languages.chineseCode"),
    };
 
    useEffect(() => {
@@ -79,7 +90,9 @@ export default function SettingTabPanel() {
             className="absolute inset-0 bg-white"
          >
             <div className="scrollbar-hide h-full overflow-y-auto p-4">
-               <h2 className="text-18-semibold lg:text-22-semibold">설정</h2>
+               <h2 className="text-18-semibold lg:text-22-semibold">
+                  {t("settings.title")}
+               </h2>
                <div className="flex flex-col items-center gap-1 py-4">
                   <div className="relative mb-2 size-14 overflow-hidden rounded-full">
                      <Image
@@ -90,26 +103,28 @@ export default function SettingTabPanel() {
                               ? user.profileImage
                               : profileIcon
                         }
-                        alt="profile"
+                        alt={t("settings.profileImage")}
                         fill
                         className="object-cover"
                      />
                   </div>
                   <h2 className="text-16-medium md:text-18-medium">
-                     {user ? user.name : "이름"}
+                     {user ? user.name : t("settings.name")}
                   </h2>
                   <span className="text-14-regular md:text-16-regular text-gray-900">
                      {user && typeof user.phone === "string"
                         ? user.phone
-                        : "연락처 정보"}
+                        : t("settings.contactInfo")}
                   </span>
                   {user && (
                      <button
                         onClick={() => setShowWithdraw(true)}
                         className="bg-gray-1000 text-14-medium md:text-16-medium mt-2 flex items-center gap-1 rounded-md p-1 text-gray-900 lg:mt-3 lg:gap-1.5 lg:p-1.5"
+                        aria-label={t("settings.withdrawAccount")}
+                        title={t("settings.withdrawAccount")}
                      >
-                        <span>계정 탈퇴하기</span>
-                        <TbLogout size={20} />
+                        <span>{t("settings.withdrawAccount")}</span>
+                        <TbLogout size={20} aria-hidden="true" />
                      </button>
                   )}
                </div>
@@ -122,7 +137,9 @@ export default function SettingTabPanel() {
                         ) : (
                            <IoVolumeMuteOutline size={24} />
                         )}
-                        <span className="text-16-regular">대화 알림음</span>
+                        <span className="text-16-regular">
+                           {t("settings.chatNotification")}
+                        </span>
                      </div>
 
                      <button
@@ -130,6 +147,16 @@ export default function SettingTabPanel() {
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                            isEnabled ? "bg-primary-blue-300" : "bg-gray-300"
                         }`}
+                        aria-label={
+                           isEnabled
+                              ? t("settings.disableNotification")
+                              : t("settings.enableNotification")
+                        }
+                        title={
+                           isEnabled
+                              ? t("settings.disableNotification")
+                              : t("settings.enableNotification")
+                        }
                      >
                         <span
                            className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform ${
@@ -144,16 +171,19 @@ export default function SettingTabPanel() {
                      <div className="flex items-center justify-between text-gray-900">
                         <div className="flex items-center gap-2">
                            <IoLanguage size={24} />
-                           <span className="">언어</span>
+                           <span className="">{t("settings.language")}</span>
                         </div>
                         <button
                            onClick={() => setOpen(!open)}
                            className="text-primary-blue-300 text-16-medium flex items-center gap-1.5"
+                           aria-label={t("settings.selectLanguage")}
+                           aria-expanded={open}
                         >
                            {localeMap[locale] || locale}
                            <IoChevronDown
                               size={18}
                               className={` ${open ? "rotate-180" : ""}`}
+                              aria-hidden="true"
                            />
                         </button>
                      </div>

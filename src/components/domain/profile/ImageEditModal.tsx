@@ -244,8 +244,22 @@ export default function ImageEditModal({
    if (!isOpen) return null;
 
    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div
+         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="image-edit-modal-title"
+         aria-describedby="image-edit-modal-description"
+      >
          <div className="flex h-[50%] w-[50%] flex-col rounded-xl bg-white p-4">
+            {/* 모달 제목 (screen reader용) */}
+            <h2 id="image-edit-modal-title" className="sr-only">
+               {t("imageEditModalTitle")}
+            </h2>
+            <p id="image-edit-modal-description" className="sr-only">
+               {t("imageEditDescription")}
+            </p>
+
             <div
                ref={containerRef}
                className="relative h-[90%] w-full overflow-hidden bg-gray-100"
@@ -254,7 +268,7 @@ export default function ImageEditModal({
                <img
                   ref={imageRef}
                   src={imageUrl}
-                  alt="편집할 이미지"
+                  alt={t("editImageAlt")}
                   className="absolute inset-0 h-full w-full object-contain"
                   onLoad={handleImageLoad}
                   draggable={false}
@@ -271,11 +285,49 @@ export default function ImageEditModal({
                      boxShadow: "0 0 0 9999px rgba(0,0,0,0.5)",
                   }}
                   onMouseDown={(e) => startDrag(e, "move")}
+                  role="slider"
+                  aria-label={t("cropAreaLabel")}
+                  aria-valuemin={MIN_RADIUS}
+                  aria-valuemax={MAX_RADIUS}
+                  aria-valuenow={cropCircle.radius}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                     if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                        e.preventDefault();
+                        const newRadius =
+                           e.key === "ArrowUp"
+                              ? Math.min(cropCircle.radius + 5, MAX_RADIUS)
+                              : Math.max(cropCircle.radius - 5, MIN_RADIUS);
+                        setCropCircle((prev) => ({
+                           ...prev,
+                           radius: newRadius,
+                        }));
+                     }
+                  }}
                >
                   {/* 이미지 크롭 원 사이즈 조절 */}
                   <div
                      className="absolute right-0 bottom-0 h-3 w-3 cursor-nwse-resize rounded-full border border-blue-500 bg-white md:h-6 md:w-6"
                      onMouseDown={(e) => startDrag(e, "resize")}
+                     role="slider"
+                     aria-label={t("resizeHandleLabel")}
+                     aria-valuemin={MIN_RADIUS}
+                     aria-valuemax={MAX_RADIUS}
+                     aria-valuenow={cropCircle.radius}
+                     tabIndex={0}
+                     onKeyDown={(e) => {
+                        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                           e.preventDefault();
+                           const newRadius =
+                              e.key === "ArrowUp"
+                                 ? Math.min(cropCircle.radius + 5, MAX_RADIUS)
+                                 : Math.max(cropCircle.radius - 5, MIN_RADIUS);
+                           setCropCircle((prev) => ({
+                              ...prev,
+                              radius: newRadius,
+                           }));
+                        }
+                     }}
                   />
                </div>
             </div>

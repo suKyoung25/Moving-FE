@@ -2,8 +2,9 @@ import Image from "next/image";
 import React from "react";
 import profile from "@/assets/images/profileIcon.svg";
 import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import { zhCN, enUS, ko } from "date-fns/locale";
 import commentIcon from "@/assets/images/commentIcon.svg";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ProfileBoxProps {
    userNickname: string;
@@ -20,11 +21,13 @@ export default function ProfileBox({
    profileImg,
    isreply,
 }: ProfileBoxProps) {
+   const t = useTranslations("Community");
+   const locale = useLocale();
    return (
       <div className="border-line-100 mt-4 flex items-center gap-3 rounded-md border p-2.5 lg:gap-6">
          <div className="h-13 w-13 overflow-hidden rounded-full">
             <Image
-               alt="프로필 이미지"
+               alt={t("profileImageAlt", { name: userNickname })}
                src={profileImg || profile}
                width={200}
                height={200}
@@ -38,15 +41,35 @@ export default function ProfileBox({
             <div>
                {isreply && (
                   <div className="flex items-center justify-end">
-                     <Image alt="댓글 아이콘" src={commentIcon} />
-                     <p>{replyCount}</p>
+                     <Image
+                        alt={t("commentIconAlt")}
+                        src={commentIcon}
+                        width={16}
+                        height={16}
+                     />
+                     <p
+                        aria-label={t("replyCountAria", {
+                           count: replyCount || 0,
+                        })}
+                     >
+                        {replyCount}
+                     </p>
                   </div>
                )}
 
                <p className="text-13-medium mt-1 text-gray-300">
-                  {format(date, "yyyy. MM. dd(eee) aa hh:mm", {
-                     locale: ko,
-                  })}
+                  {format(
+                     date,
+                     locale === "ko"
+                        ? "yyyy. MM. dd(eee) aa hh:mm"
+                        : locale === "en"
+                          ? "MMM dd, yyyy (eee) h:mm a"
+                          : "yyyy年 MM月 dd日 (eee) h:mm a",
+                     {
+                        locale:
+                           locale === "ko" ? ko : locale === "en" ? enUS : zhCN,
+                     },
+                  )}
                </p>
             </div>
          </div>

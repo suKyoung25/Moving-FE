@@ -24,11 +24,6 @@ export default function SortDropdown({
 
    const dropdownRef = useRef<HTMLDivElement>(null);
 
-   // const handleSelect = (option: DropdownOption) => {
-   //   setSelected(option);
-   //   setIsOpen(false);
-   //   console.log("정렬 선택됨:", option);
-   // };
    const handleSelect = (option: DropdownOption) => {
       onSelect(option); // 🔄 외부로 전달
       setIsOpen(false);

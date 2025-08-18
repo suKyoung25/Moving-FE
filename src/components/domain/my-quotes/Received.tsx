@@ -9,6 +9,7 @@ import SkeletonLayout from "@/components/common/SkeletonLayout";
 import { useLocale, useTranslations } from "next-intl";
 import ReceivedSection from "./ReceivedSection";
 import ReceivedSectionSkeleton from "./ReceivedSectionSkeleton";
+import SearchSpinner from "../mover-search/MoverSearchSpinner";
 
 function groupByRequest(data: DataItem[]): GroupedByRequest[] {
    const map = new Map<string, GroupedByRequest>();
@@ -77,7 +78,11 @@ export default function Received() {
                ref={ref}
             />
          ))}
-         {isFetchingNextPage && <div>{t("loadingNextPage")}</div>}
+         {isFetchingNextPage && (
+            <div className="flex items-center justify-center">
+               <SearchSpinner />
+            </div>
+         )}
       </div>
    );
 }

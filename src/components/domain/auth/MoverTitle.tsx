@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import logo from "@/assets/images/logoText.svg";
 import { useTranslations } from "next-intl";
@@ -18,7 +18,7 @@ export default function MoverTitle({ type }: Prop) {
          role="banner"
          aria-labelledby="mover-page-title"
       >
-         <Link href="/mover-search" aria-label="홈으로 이동">
+         <Link href="/mover-search" aria-label={t("homeLinkAria")}>
             <figure className="relative mx-auto h-11 w-22 lg:h-13 lg:w-26">
                <Image src={logo} alt={t("logoAlt")} fill />
             </figure>

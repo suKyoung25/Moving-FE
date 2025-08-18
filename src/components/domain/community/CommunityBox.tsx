@@ -8,8 +8,13 @@ import { useGetAllCommunity } from "@/lib/api/community/query";
 import Pagination from "@/components/common/Pagination";
 import { useEffect, useState } from "react";
 import { CommunityWithDetails } from "@/lib/types/community.types";
+import { useLocale, useTranslations } from "next-intl";
+import CommunitySkeleton from "./CommunitySkeleton";
+import SkeletonLayout from "@/components/common/SkeletonLayout";
 
 export default function CommunityBox() {
+   const t = useTranslations("Community");
+   const locale = useLocale();
    const router = useRouter();
    const [page, setPage] = useState<number>(1);
    const [search, setSearch] = useState<string>("");
@@ -33,42 +38,59 @@ export default function CommunityBox() {
       data: communityData,
       isLoading,
       isPending,
-   } = useGetAllCommunity(page, debouncedSearch);
+   } = useGetAllCommunity(page, debouncedSearch, locale);
 
    if (isPending)
-      return <div className="flex items-center justify-center">로딩중...</div>;
-
-   console.log(communityData);
+      return (
+         <div className="flex flex-col gap-6 lg:gap-8">
+            <SkeletonLayout count={6} SkeletonComponent={CommunitySkeleton} />
+         </div>
+      );
 
    return (
-      <section>
-         <CommunityButton address={"create"} text={"글쓰기"} />
-         <SearchBox search={search} setSearch={setSearch} />
+      <section
+         role="main"
+         aria-labelledby="community-section-title"
+         className="min-h-screen"
+      >
+         <h1 id="community-section-title" className="sr-only">
+            {t("communitySectionTitle")}
+         </h1>
+         <p className="sr-only">{t("communitySectionDescription")}</p>
 
+         <CommunityButton address={"create"} text={t("writePost")} />
+         <SearchBox search={search} setSearch={setSearch} />
          {communityData?.data?.communities.length === 0 && (
-            <div className="mt-10 text-center">검색 결과가 없습니다.</div>
+            <div className="mt-10 text-center" role="status" aria-live="polite">
+               {t("noSearchResults")}
+            </div>
          )}
-         {communityData?.data?.communities.map((data: CommunityWithDetails) => (
-            <span
-               key={data.id}
-               onClick={() => router.push(`/community/${data.id}`)}
-               className={`block ${isSearching || isLoading ? "pointer-events-none opacity-50" : ""}`}
-            >
-               <Community
-                  title={data.title}
-                  userNickname={data.userNickname}
-                  date={data.createdAt}
-                  content={data.content}
-                  replyCount={data.replies.length}
-                  profileImg={data.profileImg}
-               />
-            </span>
-         ))}
+         <div className="mt-6 flex flex-col gap-6 lg:mt-8 lg:gap-8">
+            {communityData?.data?.communities.map(
+               (data: CommunityWithDetails) => (
+                  <div
+                     key={data.id}
+                     onClick={() => router.push(`/community/${data.id}`)}
+                     className={`block ${isSearching || isLoading ? "pointer-events-none opacity-50" : ""}`}
+                  >
+                     <Community
+                        title={data.title}
+                        userNickname={data.userNickname}
+                        date={data.createdAt}
+                        content={data.content}
+                        replyCount={data.replies.length}
+                        profileImg={data.profileImg}
+                     />
+                  </div>
+               ),
+            )}
+         </div>
 
          <Pagination
             page={page}
             totalPages={communityData.data.totalPages}
             onPageChange={setPage}
+            aria-label={t("paginationNav")}
          />
       </section>
    );

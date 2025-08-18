@@ -44,7 +44,6 @@ export function connectSSE(
       try {
          const messageEvent = event as { data: string };
          const data = JSON.parse(messageEvent.data);
-         console.log("SSE 알림 수신:", data.type);
          onMessage(data);
       } catch (e) {
          console.error(

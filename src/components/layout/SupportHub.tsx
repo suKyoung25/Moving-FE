@@ -12,8 +12,10 @@ import { handleUserInteraction, handleNewMessage } from "@/lib/utils";
 import { useSupportHub } from "@/context/SupportHubContext";
 import { ChatMessage } from "@/lib/types";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
+import { useTranslations } from "next-intl";
 
 export default function SupportHub() {
+   const t = useTranslations("SupportHub");
    const { user } = useAuth();
    const { isOpen, toggleHub } = useSupportHub();
    const [totalUnreadCount, setTotalUnreadCount] = useState(0);
@@ -109,16 +111,25 @@ export default function SupportHub() {
             <button
                className="bg-primary-blue-300 shadow-global rounded-3xl p-2"
                onClick={handleButtonClick}
+               aria-label={t("supportHubButton")}
+               title={t("supportHubButton")}
             >
                <Image
                   src={logoMobile}
-                  alt="모바일 로고"
+                  alt={t("mobileLogoAlt")}
                   className="size-10 lg:size-12"
                />
             </button>
 
             {totalUnreadCount > 0 && !isOpen && (
-               <span className="text-primary-blue-300 text-12-semibold shadow-global absolute -top-2 -right-2 z-40 flex size-6 items-center justify-center rounded-full bg-white">
+               <span
+                  className="text-primary-blue-300 text-12-semibold shadow-global absolute -top-2 -right-2 z-40 flex size-6 items-center justify-center rounded-full bg-white"
+                  aria-label={t("unreadMessageCount", {
+                     count: totalUnreadCount,
+                  })}
+                  role="status"
+                  aria-live="polite"
+               >
                   {totalUnreadCount > 99 ? "99+" : totalUnreadCount}
                </span>
             )}

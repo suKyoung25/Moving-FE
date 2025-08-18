@@ -3,6 +3,7 @@
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { useAuth } from "@/context/AuthContext";
 import { deleteCommunity } from "@/lib/api/community/deleteCommunity";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -17,6 +18,7 @@ export default function CommunityTitle({
    authorId,
    communityId,
 }: CommunityTitleProps) {
+   const t = useTranslations("Community");
    const { user } = useAuth();
    const router = useRouter();
    const [isModal, setIsModal] = useState(false);
@@ -28,7 +30,7 @@ export default function CommunityTitle({
          await deleteCommunity(communityId);
          router.push("/community");
       } catch (e) {
-         console.log(e);
+         console.error(e);
       }
    };
 
@@ -37,19 +39,21 @@ export default function CommunityTitle({
          <div className="flex justify-between">
             <p className="text-18-semibold md:text-24-semibold">{title}</p>
             {user?.id === authorId && (
-               <p
+               <button
                   onClick={() => setIsModal(true)}
-                  className="text-12-regular cursor-pointer text-gray-300"
+                  className="text-12-regular cursor-pointer text-gray-300 transition-colors hover:text-gray-500"
+                  aria-label={t("deleteCommunityAria", { title })}
+                  title={t("deleteCommunity")}
                >
-                  삭제하기
-               </p>
+                  {t("deleteCommunity")}
+               </button>
             )}
          </div>
          {isModal && (
             <ConfirmModal
                isOpen={isModal}
-               title="게시글을 삭제하시겠습니까?"
-               description="이 작업은 되돌릴 수 없습니다"
+               title={t("confirmDeleteTitle")}
+               description={t("confirmDeleteDescription")}
                onClose={() => setIsModal(false)}
                onConfirm={handleConfirm}
             />

@@ -5,10 +5,14 @@ import { PostReplyError, PostReplyResponse } from "@/lib/types/community.types";
 import getReplies from "./getReplies";
 import { deleteReply } from "./deleteReply";
 
-export function useGetAllCommunity(offset: number, search?: string) {
+export function useGetAllCommunity(
+   offset: number,
+   search?: string,
+   locale?: string,
+) {
    return useQuery({
-      queryKey: ["AllCommunity", offset, search],
-      queryFn: () => getCommunityAll(offset, search),
+      queryKey: ["AllCommunity", offset, search, locale],
+      queryFn: () => getCommunityAll(offset, search, locale),
       refetchOnWindowFocus: false,
    });
 }
@@ -31,10 +35,10 @@ export function usePostReply() {
    });
 }
 
-export function useGetReplies(communityId: string) {
+export function useGetReplies(communityId: string, locale?: string) {
    return useQuery({
-      queryKey: ["communityReplies", communityId],
-      queryFn: () => getReplies(communityId),
+      queryKey: ["communityReplies", communityId, locale],
+      queryFn: () => getReplies(communityId, locale),
       refetchOnWindowFocus: false,
       placeholderData: (prev) => prev,
    });

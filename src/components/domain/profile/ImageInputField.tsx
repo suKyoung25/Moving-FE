@@ -7,6 +7,7 @@ import profileUploader from "@/assets/images/profileUploaderIcon.svg";
 import Image from "next/image";
 import ImageEditModal from "./ImageEditModal";
 import { ControllerRenderProps, Path } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 function ImageInputField<T extends Record<string, FieldValue>>({
    name,
@@ -14,6 +15,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
    control,
    labelId,
 }: InputFieldProps<T>) {
+   const t = useTranslations("Profile");
    const fileInputRef = useRef<HTMLInputElement | null>(null);
    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
    const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(
@@ -125,7 +127,7 @@ function ImageInputField<T extends Record<string, FieldValue>>({
                         <div className={`relative h-40 w-40`}>
                            <img
                               src={previewUrl}
-                              alt="미리보기"
+                              alt={t("previewImageAlt")}
                               className={`h-40 w-40 rounded-full object-cover`}
                            />
                         </div>
@@ -134,6 +136,8 @@ function ImageInputField<T extends Record<string, FieldValue>>({
                            type="button"
                            onClick={() => handleDelete(field)}
                            className="text-black-400 hover:bg-bg-200 absolute bottom-35 left-35 mt-1 ml-1 h-8 rounded-full bg-gray-100 px-3 py-1 text-sm"
+                           aria-label={t("deleteImageButton")}
+                           title={t("deleteImageButton")}
                         >
                            X
                         </button>
@@ -148,14 +152,25 @@ function ImageInputField<T extends Record<string, FieldValue>>({
                         onDrop={(e) => handleDrop(e, field)}
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={t("dragDropArea")}
+                        onKeyDown={(e) => {
+                           if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              fileInputRef.current?.click();
+                           }
+                        }}
                      >
                         <button
                            type="button"
                            onClick={() => fileInputRef.current?.click()}
+                           aria-label={t("uploadImageButton")}
+                           title={t("uploadImageButton")}
                         >
                            <Image
                               src={profileUploader}
-                              alt="이미지 업로드 버튼"
+                              alt={t("uploadImageIconAlt")}
                               className="overflow-hidden rounded-full"
                            />
                         </button>

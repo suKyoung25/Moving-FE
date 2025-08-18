@@ -4,8 +4,10 @@ import SignUpForm from "@/components/domain/auth/SignUpForm";
 import ClientTitle from "@/components/domain/auth/ClientTitle";
 import EasyLoginForm from "@/components/domain/auth/EasyLoginForm";
 import { useAuthError } from "@/lib/hooks/useAuthError";
+import { useTranslations } from "next-intl";
 
 export default function ClientSignUpPage() {
+   const t = useTranslations("Sign");
    useAuthError();
 
    return (
@@ -18,7 +20,7 @@ export default function ClientSignUpPage() {
       >
          {/* screen reader 전용 페이지 제목 */}
          <h1 id="signup-page-title" className="sr-only">
-            회원가입 페이지
+            {t("signupPageTitle")}
          </h1>
 
          {/* 제목 + 기사 페이지로 링크 이동 */}

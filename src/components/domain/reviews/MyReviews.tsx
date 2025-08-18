@@ -20,6 +20,8 @@ import { useRouter } from "next/navigation";
 import { useMyReviews } from "@/lib/api/review/query";
 import { useToast } from "@/context/ToastConText";
 import { useQueryClient } from "@tanstack/react-query";
+import SkeletonLayout from "@/components/common/SkeletonLayout";
+import MyReviewsSkeleton from "./MyReviewsSkeleton";
 
 export default function MyReviews() {
    const t = useTranslations("Reviews");
@@ -40,7 +42,7 @@ export default function MyReviews() {
    const [selectedReview, setSelectedReview] = useState<MyReview | null>(null);
 
    // 리뷰 리스트 조회
-   const { data, isLoading, isFetching, error, refetch } = useMyReviews({
+   const { data, isLoading, error, refetch } = useMyReviews({
       page: pagination.page,
       limit: pagination.limit,
       targetLang: locale,
@@ -66,15 +68,19 @@ export default function MyReviews() {
       return <div role="alert">{t("errorOccurred")}</div>;
    }
 
-   if (isLoading || isFetching) {
-      return <div>{t("loadingText")}</div>;
+   if (isLoading) {
+      return (
+         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+            <SkeletonLayout count={6} SkeletonComponent={MyReviewsSkeleton} />
+         </div>
+      );
    }
 
    return (
       <div>
          {/* 리뷰 리스트 */}
          <div
-            className="grid grid-cols-1 gap-8 lg:mb-6 lg:grid-cols-2 lg:gap-6"
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8"
             role="list"
             aria-label={t("myReviewList")}
          >
@@ -82,14 +88,20 @@ export default function MyReviews() {
                <div
                   key={review.id}
                   role="listitem"
-                  className="border-line-100 rounded-2xl border bg-white p-4 shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] lg:p-6"
+                  className="border-line-100 rounded-2xl border bg-white p-4 shadow lg:p-6"
                >
                   <div className="mb-3.5 flex gap-2 lg:gap-3">
                      {isChipType(review.moveType) && (
-                        <MoveChip type={review.moveType} />
+                        <MoveChip
+                           type={review.moveType}
+                           aria-label={t(`moveType.${review.moveType}`)}
+                        />
                      )}
                      {review.isDesignatedEstimate && (
-                        <MoveChip type="DESIGNATED" />
+                        <MoveChip
+                           type="DESIGNATED"
+                           aria-label={t("designatedEstimate")}
+                        />
                      )}
                   </div>
                   <div className="text-12-regular lg:text-18-regular absolute right-3.5 bottom-2.5 h-fit gap-1.5 text-gray-300 lg:top-9 lg:right-9 lg:gap-2">
@@ -98,9 +110,9 @@ export default function MyReviews() {
                         {formatIsoToYMD(review.createdAt)}
                      </time>
                   </div>
-                  <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md border-b-1 bg-white pb-2.5 shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
+                  <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md border-b-1 bg-white pb-2.5 md:px-2 lg:mb-8 lg:border lg:px-4.5 lg:py-6">
                      {/* 프로필 이미지 */}
-                     <div className="border-primary-blue-400 relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full border-2 lg:mr-6 lg:h-24 lg:w-24">
+                     <div className="relative mr-3 h-11.5 w-11.5 overflow-hidden rounded-full lg:mr-6 lg:h-24 lg:w-24">
                         <Image
                            src={review.moverProfileImage || profile}
                            alt={
@@ -206,7 +218,13 @@ export default function MyReviews() {
                   </div>
 
                   {/* 리뷰 이미지 */}
-                  <ReviewImages images={review.images} className="mt-4" />
+                  <ReviewImages
+                     images={review.images}
+                     className="mt-4"
+                     aria-label={t("reviewImagesAria", {
+                        name: review.moverNickName,
+                     })}
+                  />
                </div>
             ))}
          </div>
@@ -222,7 +240,7 @@ export default function MyReviews() {
          {/* 리뷰 목록이 없을 때 */}
          {!isLoading && reviews.length === 0 && (
             <div
-               className="mt-46 flex flex-col items-center justify-center"
+               className="flex flex-col items-center justify-center"
                role="status"
                aria-live="polite"
             >

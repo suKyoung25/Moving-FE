@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useRouter } from "next/navigation";
 
 export default function ProfileDropDownMenu() {

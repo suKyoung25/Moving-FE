@@ -3,6 +3,7 @@
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { useAuth } from "@/context/AuthContext";
 import { useDeleteReply } from "@/lib/api/community/query";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 interface ReplyNicknameBoxProps {
@@ -18,6 +19,7 @@ export default function ReplyNicknameBox({
    replyId,
    communityAuthorId,
 }: ReplyNicknameBoxProps) {
+   const t = useTranslations("Community");
    const { user } = useAuth();
    const [isModal, setIsModal] = useState(false);
 
@@ -30,7 +32,7 @@ export default function ReplyNicknameBox({
          await deleteReplyMutation.mutateAsync(replyId);
          setIsModal(false);
       } catch (e) {
-         console.log(e);
+         console.error(e);
       }
    };
 
@@ -41,24 +43,31 @@ export default function ReplyNicknameBox({
                {userNickname}
             </p>
             {authorId === communityAuthorId && (
-               <p className="text-12-medium bg-gray-100 px-1 py-0.5">작성자</p>
+               <p
+                  className="text-12-medium bg-gray-100 px-1 py-0.5"
+                  aria-label={t("authorLabel")}
+               >
+                  {t("author")}
+               </p>
             )}
             {user?.id === authorId && (
                <>
-                  <p
+                  <button
                      onClick={() => setIsModal(true)}
-                     className="text-12-regular cursor-pointer text-gray-300"
+                     className="text-12-regular cursor-pointer text-gray-300 transition-colors hover:text-gray-500"
+                     aria-label={t("deleteReplyAria", { name: userNickname })}
+                     title={t("deleteReply")}
                   >
-                     삭제하기
-                  </p>
+                     {t("deleteReply")}
+                  </button>
                </>
             )}
          </div>
          {isModal && (
             <ConfirmModal
                isOpen={isModal}
-               title="댓글을 삭제하시겠습니까?"
-               description="이 작업은 되돌릴 수 없습니다"
+               title={t("confirmDeleteReplyTitle")}
+               description={t("confirmDeleteReplyDescription")}
                onClose={() => setIsModal(false)}
                onConfirm={handleConfirm}
             />
