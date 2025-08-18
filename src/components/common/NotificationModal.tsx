@@ -30,7 +30,8 @@ export default function NotificationModal({
 }) {
    const t = useTranslations("Notification");
    const locale = useLocale();
-   const { refreshUnreadCount } = useNotification();
+   const { refreshUnreadCount, decreaseUnreadCount, setUnreadCountToZero } =
+      useNotification();
    const { showError } = useToast();
    const router = useRouter();
    const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -57,12 +58,34 @@ export default function NotificationModal({
 
    const handleClick = async (item: Notification) => {
       try {
+         // UI 즉시 업데이트
+         queryClient.setQueryData(["notifications", locale], (oldData: any) => {
+            if (!oldData?.pages) return oldData;
+
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page: any) => ({
+                  ...page,
+                  notifications: page.notifications.map(
+                     (notification: Notification) =>
+                        notification.id === item.id
+                           ? { ...notification, isRead: true }
+                           : notification,
+                  ),
+               })),
+            };
+         });
+
+         if (!item.isRead) {
+            decreaseUnreadCount();
+         }
+
          await readNotification(item.id);
-         queryClient.invalidateQueries({ queryKey: ["notifications", locale] });
-         refreshUnreadCount();
-         if (!item.targetId) {
+
+         if (!item.targetId || !item.targetUrl) {
             return;
          }
+
          if (item.targetUrl?.startsWith("/my-quotes")) {
             const estimate = await getEstimate(item.targetId, locale);
             if (!estimate) {
@@ -76,20 +99,43 @@ export default function NotificationModal({
                return;
             }
          }
-         router.push(item.targetUrl ?? "");
+
+         router.push(item.targetUrl);
          setIsNotiModalOpen(false);
       } catch (err) {
          console.error("알림 읽기 실패", err);
+         queryClient.invalidateQueries({
+            queryKey: ["notifications", locale],
+         });
+         refreshUnreadCount();
       }
    };
 
    const handleReadAll = async () => {
       try {
+         // UI 즉시 업데이트
+         queryClient.setQueryData(["notifications", locale], (oldData: any) => {
+            if (!oldData?.pages) return oldData;
+
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page: any) => ({
+                  ...page,
+                  notifications: page.notifications.map(
+                     (notification: Notification) => ({
+                        ...notification,
+                        isRead: true,
+                     }),
+                  ),
+               })),
+            };
+         });
          await readAllNotifications();
-         queryClient.invalidateQueries({ queryKey: ["notifications", locale] });
-         refreshUnreadCount();
+         setUnreadCountToZero();
       } catch (err) {
          console.error("모든 알림 읽기 실패", err);
+         queryClient.invalidateQueries({ queryKey: ["notifications", locale] });
+         refreshUnreadCount();
       }
    };
 
