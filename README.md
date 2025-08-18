@@ -34,27 +34,27 @@ Moving은 사용자가 손쉽게 여러 이사업체의 견적을 비교하고, 
 
 ## 주요 기능
 
-**요청 관리**  
-고객: 이사 유형, 출발/도착지, 일정 등을 입력해 요청서를 등록할 수 있습니다.
-기사님: 실시간으로 고객 요청을 확인하고 견적을 제출할 수 있습니다.
+### 고객 기능
+- **AI 견적 계산기**: OpenAI GPT-4 기반의 지능형 견적 계산 시스템
+- **이사업체 검색**: 위치, 서비스 유형, 평점 기반 필터링 및 정렬
+- **견적 요청**: 단계별 마법사 형태의 견적 요청 시스템
+- **견적 관리**: 받은 견적 확인, 승인/거절, 진행 상황 추적
+- **즐겨찾기**: 선호하는 이사업체 저장 및 관리
+- **리뷰 시스템**: 이사 완료 후 리뷰 작성 및 평점 관리
 
-**견적 비교**  
-고객은 다수의 기사님이 제시한 견적을 한눈에 비교할 수 있습니다.
-가격뿐만 아니라 리뷰, 평점, 서비스 지역 등을 기준으로 필터링 가능.
+### 이사업체 기능
+- **견적 응답**: 받은 견적 요청에 대한 상세 견적 제공
+- **프로필 관리**: 업체 정보, 서비스 영역, 경력 정보 관리
+- **받은 요청 관리**: 필터링 및 검색을 통한 요청 관리
+- **리뷰 관리**: 받은 리뷰 확인 및 응답
 
-**견적 승인/거절**  
-고객은 원하는 견적을 선택해 승인하거나 거절할 수 있습니다.
-기사님은 받은 요청을 수락/거절하여 효율적으로 작업을 관리합니다.
-
-**실시간 알림**  
-견적 도착, 요청 승인/거절, 메시지 등 주요 이벤트를 실시간으로 전달받습니다.
-
-**프로필 관리**  
-고객과 기사님 모두 프로필(이름, 연락처, 서비스 지역, 소개글 등)을 관리할 수 있습니다.
-기사님은 보유 차량, 팀 인원, 서비스 가능 지역 등을 등록해 신뢰도를 높일 수 있습니다.
-
-**리뷰 & 평점**  
-완료된 이사 이후, 고객은 기사님에 대한 리뷰와 평점을 남겨 다른 사용자들에게 도움이 되도록 합니다.
+### 공통 기능
+- **다국어 지원**: 한국어(기본), 영어, 중국어 완전 지원
+- **실시간 알림**: Firebase 기반 실시간 알림 시스템
+- **커뮤니티**: 사용자 간 소통 및 정보 공유 공간
+- **고객 지원**: 문의사항 접수 및 파일 업로드 지원
+- **소셜 로그인**: Google, Kakao, Naver 소셜 로그인 지원
+- **실시간 채팅**: 고객과 기사의 실시간 소통
 
 ---
 ### 기본 기능
@@ -265,52 +265,177 @@ Moving은 사용자가 손쉽게 여러 이사업체의 견적을 비교하고, 
 
 ## 상세 기능
 
-### 페이지 구성
+### 📄 페이지 구성
 
-| 페이지 | 경로 | 설명 |
-|--------|------|------|
-| **랜딩페이지** | `/` | 초기 접속 시 진입 페이지 |
-| **홈** | `/home` | 판매 등록된 포토카드 목록 |
-| **포토카드 관리** | `/home/:id` | 포토카드 구매, 교환, 수정, 삭제 |
-| **로그인/회원가입** | `/login`, `/signup` | 소셜 로그인 및 간편 회원가입 |
-| **마이갤러리** | `/my-gallery` | 내가 보유한 포토카드 확인 |
-| **업로드** | `/my-gallery/post` | 포토카드 업로드 |
-| **판매 중인 포토카드** | `/for-my-sales` | 사용자의 판매중인 포토카드 내역 |
-| **알림** | `/notification` | 거래 관련 알림 확인 |
+| 페이지 | 경로 | 설명 | 접근 권한 |
+|--------|------|------|-----------|
+| **랜딩페이지** | `/` | 초기 접속 시 진입 페이지 (마케팅 섹션) | 공개 |
+| **이사업체 검색** | `/mover-search` | 위치, 서비스 유형, 평점 기반 이사업체 검색 | 공개 |
+| **AI 견적 계산기** | `/estimate-calculator` | OpenAI GPT-4 기반 지능형 견적 계산 | 공개 |
+| **커뮤니티** | `/community` | 사용자 간 소통 및 정보 공유 게시판 | 공개 |
+| **커뮤니티 상세** | `/community/:id` | 커뮤니티 게시글 상세 보기 | 공개 |
+| **커뮤니티 작성** | `/community/create` | 커뮤니티 게시글 작성 | 인증 필요 |
+| **고객 지원** | `/support` | 문의사항 접수 및 파일 업로드 | 공개 |
+| **로그인 (고객)** | `/sign-in/client` | 고객용 로그인 페이지 | 게스트 |
+| **로그인 (이사업체)** | `/sign-in/mover` | 이사업체용 로그인 페이지 | 게스트 |
+| **회원가입 (고객)** | `/sign-up/client` | 고객용 회원가입 페이지 | 게스트 |
+| **회원가입 (이사업체)** | `/sign-up/mover` | 이사업체용 회원가입 페이지 | 게스트 |
+| **대시보드** | `/dashboard` | 이사업체 대시보드 (프로필, 리뷰 관리) | 인증 필요 |
+| **견적 요청** | `/request` | 단계별 마법사 형태의 견적 요청 | 인증 필요 |
+| **내 견적 관리 (고객)** | `/my-quotes/client` | 고객이 요청한 견적 목록 및 관리 | 인증 필요 |
+| **내 견적 관리 (이사업체)** | `/my-quotes/mover` | 이사업체가 받은 견적 목록 및 관리 | 인증 필요 |
+| **견적 상세 (고객)** | `/my-quotes/client/:id` | 고객용 견적 상세 보기 | 인증 필요 |
+| **견적 상세 (이사업체)** | `/my-quotes/mover/:id` | 이사업체용 견적 상세 보기 | 인증 필요 |
+| **즐겨찾기** | `/favorite-movers` | 즐겨찾기한 이사업체 목록 | 인증 필요 |
+| **리뷰 관리** | `/reviews` | 내가 작성한 리뷰 및 받은 리뷰 관리 | 인증 필요 |
+| **받은 요청 관리** | `/received-requests` | 이사업체가 받은 견적 요청 목록 | 인증 필요 |
+| **받은 요청 상세** | `/received-requests/:id` | 받은 견적 요청 상세 보기 | 인증 필요 |
+| **프로필 생성** | `/profile/create` | 프로필 정보 생성 | 인증 필요 |
+| **프로필 수정** | `/profile/edit` | 프로필 정보 수정 | 인증 필요 |
+| **계정 수정** | `/edit-account` | 계정 정보 수정 | 인증 필요 |
 
-### 핵심 기능 상세
+## 🚀 시작하기
 
-**홈 페이지**
-- 판매 등록된 포토카드 목록 조회
-- 최신순/가격순 정렬 기능
-- 키워드, 장르, 등급, 가격 기준 필터링
-- 무한 스크롤을 통한 효율적 데이터 로딩
+### 필수 요구사항
+- **Node.js 18.0.0 이상**
+- **npm 또는 yarn**
+- **Firebase 프로젝트**
+- **Google Maps API 키**
+- **OpenAI API 키**
 
-**포토카드 상세 관리**
-- 포토카드 상세 정보 확인
-- 구매 요청 및 교환 신청 기능
-- 소유자 전용 수정/삭제 기능
-- 실시간 거래 상태 확인
+### 설치 및 설정
 
-**인증 시스템**
-- 구글 소셜 로그인 연동
-- 최초 로그인 시 자동 회원가입
-- JWT 기반 사용자 인증
+1. **저장소 클론**
+```bash
+git clone https://github.com/az0319h/6th-Moving-4Team-FE.git
+cd 6th-Moving-4Team-FE
+```
 
-**갤러리 및 업로드**
-- Cloudinary를 통한 안정적 이미지 호스팅
-- 등급, 장르, 가격, 설명 포함 상세 업로드
-- 보유 카드 통계 및 관리 기능
+2. **의존성 설치**
+```bash
+npm install
+```
 
-**거래 시스템**
-- 실시간 교환 제안 및 승인/거절
-- 포인트 기반 구매 시스템
-- 거래 히스토리 관리
+3. **환경 변수 설정**
+`.env` 파일을 생성하고 다음 변수들을 설정하세요:
 
-**알림 시스템**
-- 실시간 거래 알림
-- 읽음/안읽음 상태 관리
-- Socket.io를 통한 즉시 알림
+```env
+# Firebase 설정
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+NEXT_PUBLIC_FIREBASE_DATABASE_URL=your_firebase_database_url
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_firebase_measurement_id
+
+# Google Maps API
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+
+# OpenAI API (AI 견적 계산기용)
+OPENAI_API_KEY=your_openai_api_key
+
+# Sentry 설정 (모니터링용)
+SENTRY_DSN=your_sentry_dsn
+SENTRY_ORG=your_sentry_org
+SENTRY_PROJECT=your_sentry_project
+```
+
+4. **개발 서버 실행**
+```bash
+npm run dev
+```
+
+5. **브라우저에서 확인**
+```
+http://localhost:3000
+```
+
+## 📝 사용 가능한 스크립트
+
+- `npm run dev` - 개발 서버 실행 (포트 3000)
+- `npm run build` - 프로덕션 빌드
+- `npm run start` - 프로덕션 서버 실행
+- `npm run lint` - ESLint로 코드 검사
+
+
+### 🎯 핵심 기능 상세
+
+### AI 견적 계산기
+- **OpenAI GPT-4** 기반 지능형 견적 계산
+- 이사 유형, 거리, 날짜, 엘리베이터 유무 등 고려
+- 실시간 기본 견적과 AI 견적 비교 제공
+- 할당량 초과 시 fallback 견적 시스템
+
+### 실시간 채팅
+- **Firebase Realtime Database** 기반
+- 실시간 메시지 동기화
+- 읽지 않은 메시지 알림
+- 채팅방 참여/퇴장 관리
+- 시스템 메시지 지원
+
+### 이사업체 검색
+- 위치 기반 검색
+- 서비스 유형 필터링 (소형/가정/사무실)
+- 평점, 리뷰 수, 견적 수 기준 정렬
+- 즐겨찾기 기능
+- 무한 스크롤 페이지네이션
+
+### 견적 요청 시스템
+- 단계별 마법사 형태
+- 실시간 폼 유효성 검사
+- 임시 저장 기능 (로컬/서버)
+- 진행 상황 추적
+
+## 🌐 다국어 지원
+
+이 프로젝트는 다음 언어를 완전히 지원합니다:
+
+- 🇰🇷 **한국어 (ko)** - 기본 언어
+- 🇺🇸 **영어 (en)**
+- 🇨🇳 **중국어 (zh)**
+
+### 언어 변경 방법
+URL의 locale 파라미터를 통해 언어를 변경할 수 있습니다:
+- `/ko/` - 한국어
+- `/en/` - 영어  
+- `/zh/` - 중국어
+
+### 번역 파일 위치
+```
+messages/
+├── ko.json    # 한국어 번역
+├── en.json    # 영어 번역
+└── zh.json    # 중국어 번역
+```
+
+## 🔒 인증 시스템
+
+### 지원하는 로그인 방식
+- **이메일/비밀번호** 로그인
+- **Google** 소셜 로그인
+- **Kakao** 소셜 로그인
+- **Naver** 소셜 로그인
+
+### 사용자 유형
+- **Client** - 일반 고객
+- **Mover** - 이사업체
+
+## 📱 반응형 디자인
+
+- **모바일 우선** 디자인
+- **Tablet** 및 **Desktop** 최적화
+- **Tailwind CSS** 기반 반응형 레이아웃
+- **접근성** 고려 (ARIA 라벨, 키보드 네비게이션)
+
+## 🚀 성능 최적화
+
+- **Next.js App Router** 기반 서버 컴포넌트
+- **React Suspense** 및 **lazy loading**
+- **TanStack Query** 캐싱 전략
+- **이미지 최적화** (Next.js Image 컴포넌트)
+- **코드 스플리팅** 및 **번들 최적화**
 
 ---
 
@@ -384,12 +509,13 @@ const { mutate, isPending } = useMutation({
 
 | 팀원 | 리포트 링크 |
 |------|------------|
-| **이지수** | [개인 리포트](https://sage-jonquil-a5b.notion.site/1e3ad69e00578093a96ef0f6a83b7589) |
-| **김다은** | [개인 리포트](https://rain-quartz-d59.notion.site/1e733256dfa48011ab33e1dec69374cc?pvs=4) |
-| **장원빈** | [개인 리포트](https://www.notion.so/1e40da7be30d80909678cec4570d1d6b?pvs=4) |
-| **양성경** | [개인 리포트](https://zenith-roast-ebc.notion.site/2-1e488b3cb86180259881ebd7d3c8b7b1?pvs=74) |
-| **김우주** | [개인 리포트](https://www.notion.so/3-1e78a05139c480a69a0df2b4cb820db9?pvs=4) |
-| **홍성훈** | [개인 리포트](https://www.notion.so/1f33fde0e19480d79374c667a5785c10?pvs=4) |
+| **홍성훈** | [개인 리포트](https://pointed-afternoon-24b.notion.site/2173fde0e19480728178dce120cbdabb) |
+| **임정빈** | [개인 리포트](https://www.notion.so/217e8b00d07a8036a583ddb33c62345d) |
+| **심유빈** | [개인 리포트](https://www.notion.so/1c4c0886ab1380968ff8febb837182c7) |
+| **양성경** | [개인 리포트](https://www.notion.so/3-21788b3cb86180698299f89f0ee4ff53) |
+| **김수경** | [개인 리포트](https://www.notion.so/21783b8d694c801db314d01f63cd68c4) |
+| **오하영** | [개인 리포트](https://immediate-conga-b1b.notion.site/217fb120f2ad80ea85b2e44377f62a58) |
+| **신수민** | [개인 리포트](https://www.notion.so/2177a895c9ac8039a81fc7aad5fdbaed) |
 
 ---
 
