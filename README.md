@@ -445,6 +445,12 @@ src/
 │   │   │   └── support/          # 고객 지원
 │   │   └── (with-protected)/     # 인증 필요 페이지
 │   │       └── dashboard/        # 대시보드 (기사님용)
+│   │       └── favorite-movers/  # 즐겨찾기
+│   │       └── my-quotes/        # 내 견적 관리
+│   │       └── profile/          # 프로필 관리
+│   │       └── received-requests/# 받은 요청 관리
+│   │       └── request/          # 견적 요청
+│   │       └── reviews/          # 리뷰 관리
 │   └── api/                      # API 라우트
 │       ├── auth/                 
 │       ├── google-maps/        
