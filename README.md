@@ -3,7 +3,7 @@
 # Moving
 *스마트한 이사 비교 플랫폼*
 
-메인 이미지
+<img width="3212" height="2023" alt="image" src="https://github.com/user-attachments/assets/a3260d6e-ac5c-4918-a846-bb25362c4798" />
 
 ---
 
