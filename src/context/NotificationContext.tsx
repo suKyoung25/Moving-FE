@@ -22,6 +22,8 @@ interface NotificationContextValue {
    realtimeNotifications: Notification[];
    unreadCount: number | null;
    refreshUnreadCount: () => void;
+   decreaseUnreadCount: () => void;
+   setUnreadCountToZero: () => void;
 }
 
 const NotificationContext = createContext<NotificationContextValue | null>(
@@ -47,6 +49,18 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
          setUnreadCount(rawCount > 0 ? rawCount : null);
       });
    }, [user, locale]);
+
+   const decreaseUnreadCount = useCallback(() => {
+      setUnreadCount((prev) => {
+         if (prev === null || prev <= 0) return null;
+         const newCount = prev - 1;
+         return newCount > 0 ? newCount : null;
+      });
+   }, []);
+
+   const setUnreadCountToZero = useCallback(() => {
+      setUnreadCount(null);
+   }, []);
 
    // SSE 연결 해제
    const disconnectSSE = useCallback(() => {
@@ -227,6 +241,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             realtimeNotifications,
             unreadCount,
             refreshUnreadCount,
+            decreaseUnreadCount,
+            setUnreadCountToZero,
          }}
       >
          {children}
