@@ -10,9 +10,44 @@ import SupportHub from "@/components/layout/SupportHub";
 export async function generateMetadata(): Promise<Metadata> {
    const t = await getTranslations("Layout");
 
+   const baseUrl = "https://moving-web.site";
+
    return {
+      metadataBase: new URL(baseUrl),
       title: t("title"),
       description: t("description"),
+      alternates: {
+         canonical: baseUrl,
+      },
+      robots: {
+         index: true,
+         follow: true,
+      },
+      icons: {
+         icon: "/favicon.ico",
+      },
+      openGraph: {
+         title: t("title"),
+         description: t("description"),
+         url: baseUrl,
+         siteName: "Moving",
+         images: [
+            {
+               url: `${baseUrl}/seo.png`,
+               width: 1200,
+               height: 630,
+               alt: "Moving site preview image",
+            },
+         ],
+         locale: "ko_KR",
+         type: "website",
+      },
+      twitter: {
+         card: "summary_large_image",
+         title: t("title"),
+         description: t("description"),
+         images: [`${baseUrl}/seo.png`],
+      },
    };
 }
 
