@@ -57,22 +57,34 @@ export default function NotificationModal({
    const handleClick = async (item: Notification) => {
       try {
          // UI 즉시 업데이트
-         queryClient.setQueryData(["notifications", locale], (oldData: any) => {
-            if (!oldData?.pages) return oldData;
+         queryClient.setQueryData(
+            ["notifications", locale],
+            (oldData: unknown) => {
+               if (
+                  !oldData ||
+                  typeof oldData !== "object" ||
+                  !("pages" in oldData)
+               )
+                  return oldData;
 
-            return {
-               ...oldData,
-               pages: oldData.pages.map((page: any) => ({
-                  ...page,
-                  notifications: page.notifications.map(
-                     (notification: Notification) =>
-                        notification.id === item.id
-                           ? { ...notification, isRead: true }
-                           : notification,
-                  ),
-               })),
-            };
-         });
+               const data = oldData as {
+                  pages: { notifications: Notification[] }[];
+               };
+
+               return {
+                  ...data,
+                  pages: data.pages.map((page) => ({
+                     ...page,
+                     notifications: page.notifications.map(
+                        (notification: Notification) =>
+                           notification.id === item.id
+                              ? { ...notification, isRead: true }
+                              : notification,
+                     ),
+                  })),
+               };
+            },
+         );
 
          if (!item.isRead) {
             decreaseUnreadCount();
@@ -112,22 +124,34 @@ export default function NotificationModal({
    const handleReadAll = async () => {
       try {
          // UI 즉시 업데이트
-         queryClient.setQueryData(["notifications", locale], (oldData: any) => {
-            if (!oldData?.pages) return oldData;
+         queryClient.setQueryData(
+            ["notifications", locale],
+            (oldData: unknown) => {
+               if (
+                  !oldData ||
+                  typeof oldData !== "object" ||
+                  !("pages" in oldData)
+               )
+                  return oldData;
 
-            return {
-               ...oldData,
-               pages: oldData.pages.map((page: any) => ({
-                  ...page,
-                  notifications: page.notifications.map(
-                     (notification: Notification) => ({
-                        ...notification,
-                        isRead: true,
-                     }),
-                  ),
-               })),
-            };
-         });
+               const data = oldData as {
+                  pages: { notifications: Notification[] }[];
+               };
+
+               return {
+                  ...data,
+                  pages: data.pages.map((page) => ({
+                     ...page,
+                     notifications: page.notifications.map(
+                        (notification: Notification) => ({
+                           ...notification,
+                           isRead: true,
+                        }),
+                     ),
+                  })),
+               };
+            },
+         );
          await readAllNotifications();
          setUnreadCountToZero();
       } catch (err) {
