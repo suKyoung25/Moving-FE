@@ -10,9 +10,7 @@ import {
    useMoverProfileSchemas,
 } from "../schemas/profile.schema";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
-import updateProfileImage, {
-   uploadToCloudinary,
-} from "../api/auth/requests/updateProfileImage";
+import { uploadToCloudinary } from "../api/auth/requests/updateProfileImage";
 import { useAuth } from "@/context/AuthContext";
 import { tokenSettings } from "../utils";
 import { useTranslations } from "next-intl";
