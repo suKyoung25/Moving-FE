@@ -15,7 +15,6 @@
 - [상세 기능](#상세-기능)
 - [트러블 슈팅](#트러블-슈팅)
 - [프로젝트 구조](#프로젝트-구조)
-- [개인 개발 리포트](#개인-개발-리포트)
 
 ---
 
@@ -200,12 +199,35 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
           <b>신수민</b>
         </a>
       </td>
- <td align="center">
+      <td align="center">
         <a href="https://github.com/shimyubin">
           <img src="https://github.com/shimyubin.png?size=100" width="100px" alt="심유빈"/>
           <br />
           <b>심유빈</b>
         </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="https://pointed-afternoon-24b.notion.site/2173fde0e19480728178dce120cbdabb" target="_blank">개인 리포트</a>
+      </td>
+      <td align="center">
+        <a href="https://immediate-conga-b1b.notion.site/217fb120f2ad80ea85b2e44377f62a58" target="_blank">개인 리포트</a>
+      </td>
+      <td align="center">
+        <a href="https://www.notion.so/3-21788b3cb86180698299f89f0ee4ff53" target="_blank">개인 리포트</a>
+      </td>
+      <td align="center">
+        <a href="https://www.notion.so/21783b8d694c801db314d01f63cd68c4" target="_blank">개인 리포트</a>
+      </td>
+      <td align="center">
+        <a href="https://www.notion.so/217e8b00d07a8036a583ddb33c62345d" target="_blank">개인 리포트</a>
+      </td>
+      <td align="center">
+        <a href="https://www.notion.so/2177a895c9ac8039a81fc7aad5fdbaed" target="_blank">개인 리포트</a>
+      </td>
+      <td align="center">
+        <a href="https://www.notion.so/1c4c0886ab1380968ff8febb837182c7" target="_blank">개인 리포트</a>
       </td>
     </tr>
   </tbody>
@@ -531,20 +553,6 @@ src/
 └── assets/                     # 정적 자산
     └── images/                 
 ```
-
----
-
-## 개인 개발 리포트
-
-| 팀원 | 리포트 링크 |
-|------|------------|
-| **홍성훈** | [개인 리포트](https://pointed-afternoon-24b.notion.site/2173fde0e19480728178dce120cbdabb) |
-| **임정빈** | [개인 리포트](https://www.notion.so/217e8b00d07a8036a583ddb33c62345d) |
-| **심유빈** | [개인 리포트](https://www.notion.so/1c4c0886ab1380968ff8febb837182c7) |
-| **양성경** | [개인 리포트](https://www.notion.so/3-21788b3cb86180698299f89f0ee4ff53) |
-| **김수경** | [개인 리포트](https://www.notion.so/21783b8d694c801db314d01f63cd68c4) |
-| **오하영** | [개인 리포트](https://immediate-conga-b1b.notion.site/217fb120f2ad80ea85b2e44377f62a58) |
-| **신수민** | [개인 리포트](https://www.notion.so/2177a895c9ac8039a81fc7aad5fdbaed) |
 
 ---
 
