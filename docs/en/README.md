@@ -1,4 +1,4 @@
-[**한국어**](/README.md) | [English](/docs/en/README.md) | [简体字](/docs/zh/README.md)
+[한국어](/README.md) | [**English**](/docs/en/README.md) | [简体字](/docs/zh/README.md)
 
 # Moving
 
@@ -28,6 +28,7 @@ It simplifies the previously complex and opaque moving quote process, allowing u
 Additionally, from the driver's perspective, efficient customer matching is possible, providing a transparent transaction environment and convenient service experience.
 
 ### Links
+
 - **Team Notion**: [Go to](https://www.notion.so/4Team-Moving-Ops-Board-2153fde0e1948005ad04c1585430e77f)
 - **Backend Repository**: [GitHub Repository](https://github.com/az0319h/6th-Moving-4Team-BE)
 
@@ -36,6 +37,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 ## Key Features
 
 ### Customer Features
+
 - **AI Quote Calculator**: OpenAI GPT-4 based intelligent quote calculation system
 - **Driver Search**: Location, service type, and rating-based filtering and sorting
 - **Quote Request**: Step-by-step wizard-style quote request system
@@ -44,12 +46,14 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 - **Review System**: Write reviews and manage ratings after moving completion
 
 ### Driver Features
+
 - **Quote Response**: Provide detailed quotes for received quote requests
 - **Profile Management**: Manage company information, service areas, and career information
 - **Received Request Management**: Request management through filtering and search
 - **Review Management**: Check and respond to received reviews
 
 ### Common Features
+
 - **Multi-language Support**: Complete support for Korean (default), English, and Chinese
 - **Real-time Notifications**: Firebase-based real-time notification system
 - **Community**: User communication and information sharing space
@@ -58,7 +62,9 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 - **Real-time Chat**: Real-time communication between customers and drivers
 
 ---
+
 ### Basic Features
+
 <table>
   <thead>
     <tr>
@@ -87,6 +93,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 </table>
 
 ### Transaction Features
+
 <table>
   <thead>
     <tr>
@@ -115,6 +122,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 </table>
 
 ### Notification and Exchange Features
+
 <table>
   <thead>
     <tr>
@@ -238,53 +246,53 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 <summary><strong>Team Member's Main Work Content</strong></summary>
 <div markdown="1">
 
-- **Hong Seonghun**  
-  - Received quotes page  
-  - Sent quotes list page  
-  - Rejected quotes list page  
-  - Landing page  
-  - Customer support page  
-  - Received quotes and sent quotes detail page writing  
+- **Hong Seonghun**
+   - Received quotes page
+   - Sent quotes list page
+   - Rejected quotes list page
+   - Landing page
+   - Customer support page
+   - Received quotes and sent quotes detail page writing
 
-- **Oh Hayoung**  
-  - Quote request page (moving type/moving date/address)  
-  - Quote request in progress page  
-  - Kakao address API  
-  - Notification feature  
+- **Oh Hayoung**
+   - Quote request page (moving type/moving date/address)
+   - Quote request in progress page
+   - Kakao address API
+   - Notification feature
 
-- **Yang Seongkyung**  
-  - Global state management  
-  - General user/driver login/signup components  
-  - General user login/signup pages  
-  - General user profile registration/edit pages  
-  - Social login feature  
-  - Profile dropdown menu in header  
+- **Yang Seongkyung**
+   - Global state management
+   - General user/driver login/signup components
+   - General user login/signup pages
+   - General user profile registration/edit pages
+   - Social login feature
+   - Profile dropdown menu in header
 
-- **Kim Sukyung**  
-  - General user/driver profile components  
-  - Driver login/signup pages  
-  - Driver profile registration/edit pages  
-  - Driver basic information edit page  
-  - Social login feature  
-  - Account withdrawal feature implementation  
+- **Kim Sukyung**
+   - General user/driver profile components
+   - Driver login/signup pages
+   - Driver profile registration/edit pages
+   - Driver basic information edit page
+   - Social login feature
+   - Account withdrawal feature implementation
 
-- **Lim Jungbin**  
-  - Pending quotes page  
-  - Pending quotes detail page  
-  - Received quotes page  
-  - Received quotes detail page  
+- **Lim Jungbin**
+   - Pending quotes page
+   - Pending quotes detail page
+   - Received quotes page
+   - Received quotes detail page
 
-- **Shin Sumin**  
-  - General user/non-member driver search page  
-  - General user/non-member driver detail page  
-  - Driver my page  
+- **Shin Sumin**
+   - General user/non-member driver search page
+   - General user/non-member driver detail page
+   - Driver my page
 
-- **Shim Yubin**  
-  - Button component implementation  
-  - Favorite drivers page  
-  - Writable reviews page  
-  - My written reviews page  
-  - Multi-language feature  
+- **Shim Yubin**
+   - Button component implementation
+   - Favorite drivers page
+   - Writable reviews page
+   - My written reviews page
+   - Multi-language feature
 
 </div>
 </details>
@@ -300,6 +308,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 ## Technology Stack
 
 ### Frontend
+
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
@@ -310,6 +319,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 
 ### Backend
+
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
@@ -322,6 +332,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 ![Passport.js](https://img.shields.io/badge/Passport.js-34E27A?style=flat-square&logo=passport&logoColor=white)
 
 ### Deployment
+
 ![EC2](https://img.shields.io/badge/AWS_EC2-FF9900?style=flat-square&logo=amazon-ec2&logoColor=white)
 ![RDS](https://img.shields.io/badge/AWS_RDS-527FFF?style=flat-square&logo=amazon-rds&logoColor=white)
 ![S3](https://img.shields.io/badge/AWS_S3-569A31?style=flat-square&logo=amazon-s3&logoColor=white)
@@ -329,6 +340,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white)
 
 ### Etc
+
 ![Sentry](https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=sentry&logoColor=white)
 ![DeepL](https://img.shields.io/badge/DeepL-0F2B46?style=flat-square&logo=deepl&logoColor=white)
 ![Jest](https://img.shields.io/badge/Jest-C21325?style=flat-square&logo=jest&logoColor=white)
@@ -340,12 +352,14 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 ### Core Features Detail
 
 ### AI Quote Calculator
+
 - **OpenAI GPT-4** based intelligent quote calculation
 - Considers moving type, distance, date, elevator availability, etc.
 - Provides real-time basic quote and AI quote comparison
 - Fallback quote system when quota is exceeded
 
 ### Real-time Chat
+
 - **Firebase Realtime Database** based
 - Real-time message synchronization
 - Unread message notifications
@@ -353,6 +367,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 - System message support
 
 ### Driver Search
+
 - Location-based search
 - Service type filtering (small/home/office)
 - Sorting by rating, review count, quote count
@@ -360,6 +375,7 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 - Infinite scroll pagination
 
 ### Quote Request System
+
 - Step-by-step wizard format
 - Real-time form validation
 - Draft save functionality (local/server)
@@ -376,6 +392,7 @@ This project fully supports the following languages:
 You can change the language through the settings in the hub at the bottom right using the locale parameter in the URL.
 
 ### Translation File Location
+
 ```
 messages/
 ├── ko.json    # Korean translation
@@ -386,12 +403,14 @@ messages/
 ## Authentication System
 
 ### Supported Login Methods
+
 - **Email/Password** login
 - **Google** social login
 - **Kakao** social login
 - **Naver** social login
 
 ### User Types
+
 - **Client** - General customers
 - **Mover** - Drivers
 
@@ -416,20 +435,23 @@ messages/
 
 ### 1. Korean Input Chat Duplicate Send Issue (Mac / Safari / macOS Environment)
 
-**Problem Situation**  
-- In Windows environment, chat sends normally with one Enter key press  
-- In Mac / Safari / macOS environment, when pressing Enter key after Korean composition input, the same message is sent twice  
-- Mainly occurs when using composition input (IME, Input Method Editor)  
+**Problem Situation**
 
-**Cause Analysis**  
+- In Windows environment, chat sends normally with one Enter key press
+- In Mac / Safari / macOS environment, when pressing Enter key after Korean composition input, the same message is sent twice
+- Mainly occurs when using composition input (IME, Input Method Editor)
+
+**Cause Analysis**
+
 - In macOS, Korean input event flow is as follows:  
-  `keydown → compositionstart → compositionupdate → compositionend → keydown`  
-- After compositionend, keydown event occurs again, causing Enter event to be called twice  
-- Current message sending logic only detects Enter key events, so Enter is called twice after composition completion, causing duplicate sending  
+  `keydown → compositionstart → compositionupdate → compositionend → keydown`
+- After compositionend, keydown event occurs again, causing Enter event to be called twice
+- Current message sending logic only detects Enter key events, so Enter is called twice after composition completion, causing duplicate sending
 
-**Solution**  
-- Ignore Enter events during Korean input composition (`compositionstart` ~ `compositionend`)  
-- Check `isComposing` state in `onKeyDown` event handler to determine message sending  
+**Solution**
+
+- Ignore Enter events during Korean input composition (`compositionstart` ~ `compositionend`)
+- Check `isComposing` state in `onKeyDown` event handler to determine message sending
 - Tested identical behavior across Windows / Mac / mobile environments
 
 ```typescript
@@ -448,19 +470,22 @@ sendMessage();
 ## 2. Quote Request Form Draft Save and Synchronization Issue
 
 ### Problem Situation
-- When requesting quotes, form intermediate state is automatically saved to server, designed to load server-saved draft initially and update server through `saveDraft` logic when form state updates  
-- However, despite `savedDraft` reflecting the latest state, when querying draft again, previous state is returned, causing latest saved state not to be reflected on refresh or page navigation  
+
+- When requesting quotes, form intermediate state is automatically saved to server, designed to load server-saved draft initially and update server through `saveDraft` logic when form state updates
+- However, despite `savedDraft` reflecting the latest state, when querying draft again, previous state is returned, causing latest saved state not to be reflected on refresh or page navigation
 
 ### Cause Analysis
-- Using `debouncedSave` caused timing issues where latest state wasn't fully reflected to server  
-- React Query application caused previous draft cache to persist, preventing latest data reflection  
-- `currentStep` value wasn't initialized in context and was reset to previous state, causing mismatch between server draft and local state  
+
+- Using `debouncedSave` caused timing issues where latest state wasn't fully reflected to server
+- React Query application caused previous draft cache to persist, preventing latest data reflection
+- `currentStep` value wasn't initialized in context and was reset to previous state, causing mismatch between server draft and local state
 
 ### Solution
-- **Remove debouncedSave**: Eliminate timing issues and change to immediate save  
-- **Apply dual save structure**: Update both `localStorage` and server draft when form state updates → maintain identical state on refresh/page navigation  
-- **Initial loading priority**: Prioritize `localStorage` value if it exists, otherwise load server draft as initial state  
-- **Improve currentStep synchronization**: Initialize based on server draft's `currentStep` and ensure both local/server reflection on client updates  
+
+- **Remove debouncedSave**: Eliminate timing issues and change to immediate save
+- **Apply dual save structure**: Update both `localStorage` and server draft when form state updates → maintain identical state on refresh/page navigation
+- **Initial loading priority**: Prioritize `localStorage` value if it exists, otherwise load server draft as initial state
+- **Improve currentStep synchronization**: Initialize based on server draft's `currentStep` and ensure both local/server reflection on client updates
 
 ---
 
@@ -486,112 +511,112 @@ src/
 │   │       └── request/          # Quote request
 │   │       └── reviews/          # Review management
 │   └── api/                      # API routes
-│       ├── auth/                 
-│       ├── google-maps/        
-│       ├── openai/              
-│       └── sentry-example-api/   
+│       ├── auth/
+│       ├── google-maps/
+│       ├── openai/
+│       └── sentry-example-api/
 ├── components/                   # Reusable components
 │   ├── common/                   # Common components
-│   │   ├── Chatbutton.tsx       
-│   │   ├── ConfirmModal.tsx     
-│   │   ├── EmptyState.tsx       
-│   │   ├── Pagination.tsx       
-│   │   ├── Spinner.tsx          
-│   │   └── ToastPopup.tsx       
+│   │   ├── Chatbutton.tsx
+│   │   ├── ConfirmModal.tsx
+│   │   ├── EmptyState.tsx
+│   │   ├── Pagination.tsx
+│   │   ├── Spinner.tsx
+│   │   └── ToastPopup.tsx
 │   ├── domain/                   # Domain-specific components
-│   │   ├── auth/                
-│   │   ├── community/           
-│   │   ├── dashboard/           
-│   │   ├── estimate-calculator/ 
-│   │   ├── favorite-movers/    
-│   │   ├── marketing/          
-│   │   ├── mover-search/       
-│   │   ├── my-quotes/          
-│   │   ├── profile/            
-│   │   ├── received-requests/  
-│   │   ├── request/             
-│   │   ├── reviews/           
-│   │   └── support/            
+│   │   ├── auth/
+│   │   ├── community/
+│   │   ├── dashboard/
+│   │   ├── estimate-calculator/
+│   │   ├── favorite-movers/
+│   │   ├── marketing/
+│   │   ├── mover-search/
+│   │   ├── my-quotes/
+│   │   ├── profile/
+│   │   ├── received-requests/
+│   │   ├── request/
+│   │   ├── reviews/
+│   │   └── support/
 │   ├── effects/                  # Animation effects
-│   │   ├── PaperPlane.tsx      
-│   │   └── *.json               
+│   │   ├── PaperPlane.tsx
+│   │   └── *.json
 │   └── layout/                   # Layout components
-│       ├── ChatRoom.tsx        
-│       ├── ChatRoomList.tsx    
-│       ├── DefaultLayout.tsx   
-│       ├── Header.tsx        
-│       ├── PageTitle.tsx        
-│       └── SupportHub.tsx      
+│       ├── ChatRoom.tsx
+│       ├── ChatRoomList.tsx
+│       ├── DefaultLayout.tsx
+│       ├── Header.tsx
+│       ├── PageTitle.tsx
+│       └── SupportHub.tsx
 ├── lib/                         # Utilities and configuration
 │   ├── actions/                 # Server actions
-│   │   ├── favorite.action.ts  
-│   │   ├── request.action.ts   
-│   │   └── support.action.ts   
+│   │   ├── favorite.action.ts
+│   │   ├── request.action.ts
+│   │   └── support.action.ts
 │   ├── api/                     # API-related functions
-│   │   ├── auth/               
-│   │   ├── community/          
-│   │   ├── estimate/           
+│   │   ├── auth/
+│   │   ├── community/
+│   │   ├── estimate/
 │   │   ├── estimate-calculator/
-│   │   ├── favorite/           
-│   │   ├── mover/              
-│   │   ├── notification/      
-│   │   ├── request/            
-│   │   └── review/             
+│   │   ├── favorite/
+│   │   ├── mover/
+│   │   ├── notification/
+│   │   ├── request/
+│   │   └── review/
 │   ├── firebase/                # Firebase configuration
-│   │   ├── firebase.ts          
-│   │   ├── firebaseChat.ts      
-│   │   └── createChatRoomIfNotExists.ts 
+│   │   ├── firebase.ts
+│   │   ├── firebaseChat.ts
+│   │   └── createChatRoomIfNotExists.ts
 │   ├── hooks/                   # Custom hooks
-│   │   ├── useAuthError.ts    
+│   │   ├── useAuthError.ts
 │   │   ├── useClientProfilePostForm.ts
-│   │   └── useClientProfileUpdateForm.ts 
+│   │   └── useClientProfileUpdateForm.ts
 │   ├── schemas/                 # Zod schemas
-│   │   ├── auth.schema.ts      
-│   │   ├── client.schema.ts    
-│   │   ├── dashboard.schema.ts 
-│   │   └── common/             
+│   │   ├── auth.schema.ts
+│   │   ├── client.schema.ts
+│   │   ├── dashboard.schema.ts
+│   │   └── common/
 │   ├── types/                   # TypeScript type definitions
-│   │   ├── auth.types.ts       
-│   │   ├── client.types.ts     
-│   │   ├── community.types.ts  
-│   │   ├── estimate.types.ts   
-│   │   ├── firebase.types.ts    
-│   │   ├── mover.types.ts       
-│   │   ├── notification.types.ts 
-│   │   ├── request.types.ts     
-│   │   └── review.types.ts     
+│   │   ├── auth.types.ts
+│   │   ├── client.types.ts
+│   │   ├── community.types.ts
+│   │   ├── estimate.types.ts
+│   │   ├── firebase.types.ts
+│   │   ├── mover.types.ts
+│   │   ├── notification.types.ts
+│   │   ├── request.types.ts
+│   │   └── review.types.ts
 │   └── utils/                   # Utility functions
-│       ├── address.util.ts      
-│       ├── ai.utils.ts          
-│       ├── auth.util.ts         
-│       ├── date.util.ts         
-│       ├── file.util.ts         
-│       ├── format.util.ts       
-│       ├── image.util.ts        
-│       ├── notification.util.ts 
-│       ├── price.util.ts        
-│       ├── query.util.ts        
-│       ├── rating.util.ts      
-│       ├── search.util.ts       
-│       └── validation.util.ts  
+│       ├── address.util.ts
+│       ├── ai.utils.ts
+│       ├── auth.util.ts
+│       ├── date.util.ts
+│       ├── file.util.ts
+│       ├── format.util.ts
+│       ├── image.util.ts
+│       ├── notification.util.ts
+│       ├── price.util.ts
+│       ├── query.util.ts
+│       ├── rating.util.ts
+│       ├── search.util.ts
+│       └── validation.util.ts
 ├── context/                     # React Context
-│   ├── AuthContext.tsx         
-│   ├── ChatContext.tsx         
-│   ├── FormWizardContext.tsx    
-│   ├── NotificationContext.tsx  
-│   ├── SupportHubContext.tsx    
-│   └── ToastConText.tsx         
+│   ├── AuthContext.tsx
+│   ├── ChatContext.tsx
+│   ├── FormWizardContext.tsx
+│   ├── NotificationContext.tsx
+│   ├── SupportHubContext.tsx
+│   └── ToastConText.tsx
 ├── constants/                   # Constant definitions
-│   ├── index.ts                
-│   ├── mover.constants.ts      
-│   ├── profile.constants.ts     
-│   └── received-requests.constants.ts 
+│   ├── index.ts
+│   ├── mover.constants.ts
+│   ├── profile.constants.ts
+│   └── received-requests.constants.ts
 ├── i18n/                       # Internationalization settings
-│   ├── navigation.ts           
-│   ├── request.ts              
-│   └── routing.ts              
+│   ├── navigation.ts
+│   ├── request.ts
+│   └── routing.ts
 └── assets/                     # Static assets
-    └── images/                 
+    └── images/
 ```
 
 ---
