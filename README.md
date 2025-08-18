@@ -62,9 +62,9 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
 - **실시간 채팅**: 고객과 기사의 실시간 소통
 
 ---
-## 기능 구현 영상
+## 기능 구현 영상 (이미지 클릭)
 
-[![시연 영상 (임시)](https://github.com/user-attachments/assets/a3260d6e-ac5c-4918-a846-bb25362c4798)](https://youtu.be/s__25g_tTy0)
+[![시연 영상 (임시)](https://github.com/user-attachments/assets/4d1325db-e4a3-4e2b-a13e-13a9766e232e)](https://youtu.be/s__25g_tTy0)
 
 ---
 
