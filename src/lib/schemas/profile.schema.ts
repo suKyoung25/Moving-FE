@@ -25,9 +25,17 @@ export function useMoverProfileSchemas() {
          .max(100, t("descriptionMax")),
       serviceType: z.array(z.string().min(1)).min(1, t("selectAtLeastOne")),
       serviceArea: z.array(z.string().min(1)).min(1, t("selectAtLeastOne")),
+      // 위치 정보 추가 (선택사항)
+      businessLocation: z
+         .object({
+            latitude: z.number().optional(),
+            longitude: z.number().optional(),
+            address: z.string().optional(),
+         })
+         .optional(),
    });
 
-   // 기사님 프로필 관련 API 전송용 타입 (career가 number)
+   // 기사님 프로필 관련 API 전송용 타입 (career가 number, 위치 정보 평면화)
    const moverProfileRequestSchema = z.object({
       image: z.union([z.string(), z.instanceof(File)]).optional(), // 이미지 타입 string | File
       nickName: z.string(),
@@ -36,6 +44,10 @@ export function useMoverProfileSchemas() {
       description: z.string(),
       serviceType: z.array(z.string()),
       serviceArea: z.array(z.string()),
+      // 위치 정보 평면화 (API 전송용)
+      latitude: z.number().optional(),
+      longitude: z.number().optional(),
+      businessAddress: z.string().optional(),
    });
 
    return {

@@ -163,7 +163,10 @@
       "newPasswordPlaceholder": "새로운 비밀번호를 입력해 주세요.",
       "newPasswordConfirmLabel": "새 비밀번호 확인",
       "newPasswordConfirmPlaceholder": "새로운 비밀번호를 다시 한번 입력해 주세요.",
-      "profileUpdated": "프로필이 수정되었습니다."
+      "profileUpdated": "프로필이 수정되었습니다.",
+      "businessLocationLabel": "사업장 위치",
+      "selectBusinessLocation": "사업장 위치 선택",
+      "confirmSelection": "선택 완료"
    },
    "MoverSearch": {
       "findDriver": "기사님 찾기",
@@ -226,6 +229,10 @@
          "removedFromFavorites": "찜 목록에서 제거되었습니다."
       },
       "goToLogin": "로그인하러 가기",
+      "findOnMap": "지도에서 찾기",
+      "map": {
+         "mapSearchTitle": "내 주변 기사님 찾기"
+      },
       "accessibility": {
          "driverCard": "{name} 기사님 카드",
          "loading": "로딩 중...",

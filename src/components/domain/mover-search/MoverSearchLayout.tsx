@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo, memo, lazy, Suspense } from "react";
+import { MapPin } from "lucide-react";
 import DriverList from "./DriverList";
 import SortDropdown from "./SortDropdown";
 import FilterAreaServiceBox from "./FilterAreaServiceBox";
@@ -12,8 +13,16 @@ import {
    SORT_OPTIONS,
 } from "@/constants/mover.constants";
 import { useTranslations } from "next-intl";
+import OutlinedButton from "@/components/common/OutlinedButton";
 
-const FavoriteDriverList = lazy(() => import("./FavoriteDriverList").then(module => ({ default: module.default })));
+const FavoriteDriverList = lazy(() =>
+   import("./FavoriteDriverList").then((module) => ({
+      default: module.default,
+   })),
+);
+const KakaoMapModal = lazy(() =>
+   import("./KakaoMapModal").then((module) => ({ default: module.default })),
+);
 
 // ✅ 스켈레톤 컴포넌트들을 여기서 정의
 const FavoriteItemSkeleton = memo(function FavoriteItemSkeleton() {
@@ -66,20 +75,23 @@ export default memo(function MoverSearchLayout() {
    const t = useTranslations("MoverSearch");
 
    // 번역 옵션을 한 번만 계산하도록 최적화
-   const translatedOptions = useMemo(() => ({
-      area: AREA_OPTIONS.map((option) => ({
-         ...option,
-         label: t(`areas.${option.value}`),
-      })),
-      service: SERVICE_OPTIONS.map((option) => ({
-         ...option,
-         label: t(`services.${option.value}`),
-      })),
-      sort: SORT_OPTIONS.map((option) => ({
-         ...option,
-         label: t(`sorts.${option.value}`),
-      })),
-   }), [t]);
+   const translatedOptions = useMemo(
+      () => ({
+         area: AREA_OPTIONS.map((option) => ({
+            ...option,
+            label: t(`areas.${option.value}`),
+         })),
+         service: SERVICE_OPTIONS.map((option) => ({
+            ...option,
+            label: t(`services.${option.value}`),
+         })),
+         sort: SORT_OPTIONS.map((option) => ({
+            ...option,
+            label: t(`sorts.${option.value}`),
+         })),
+      }),
+      [t],
+   );
 
    const [filters, setFilters] = useState({
       search: "",
@@ -94,6 +106,9 @@ export default memo(function MoverSearchLayout() {
       driverList: 0,
    });
 
+   // 지도 모달 상태
+   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+
    const handleFilterChange = useCallback(
       (newFilters: Partial<typeof filters>) => {
          setFilters((prev) => ({ ...prev, ...newFilters }));
@@ -102,16 +117,16 @@ export default memo(function MoverSearchLayout() {
    );
 
    const handleDriverListFavoriteChange = useCallback(() => {
-      setRefreshKeys((prev) => ({ 
-         ...prev, 
-         favorite: prev.favorite + 1 
+      setRefreshKeys((prev) => ({
+         ...prev,
+         favorite: prev.favorite + 1,
       }));
    }, []);
 
    const handleFavoriteListChange = useCallback(() => {
-      setRefreshKeys((prev) => ({ 
-         ...prev, 
-         driverList: prev.driverList + 1 
+      setRefreshKeys((prev) => ({
+         ...prev,
+         driverList: prev.driverList + 1,
       }));
    }, []);
 
@@ -130,6 +145,14 @@ export default memo(function MoverSearchLayout() {
       },
       [handleFilterChange],
    );
+
+   const handleMapModalOpen = useCallback(() => {
+      setIsMapModalOpen(true);
+   }, []);
+
+   const handleMapModalClose = useCallback(() => {
+      setIsMapModalOpen(false);
+   }, []);
 
    const currentSortOption = useMemo(
       () =>
@@ -155,7 +178,18 @@ export default memo(function MoverSearchLayout() {
                      />
                   </div>
 
-                  <div className="scrollbar-hide mt-4 flex-1 overflow-y-auto">
+                  {/* 지도 모달 버튼 - 필터와 찜리스트 사이에 위치 */}
+                  <div className="mt-4 mb-4">
+                     <OutlinedButton
+                        onClick={handleMapModalOpen}
+                        className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium"
+                     >
+                        <MapPin className="h-4 w-4" />
+                        {t("findOnMap", { default: "지도에서 찾기" })}
+                     </OutlinedButton>
+                  </div>
+
+                  <div className="scrollbar-hide flex-1 overflow-y-auto">
                      <Suspense fallback={<FavoriteListSkeleton />}>
                         <FavoriteDriverList
                            key={`desktop-${refreshKeys.favorite}`}
@@ -171,9 +205,7 @@ export default memo(function MoverSearchLayout() {
             <div className="flex h-[calc(100vh-13rem)] w-full flex-col gap-6 overflow-hidden">
                <div>
                   <SearchBar
-                     onSearchChange={(search) =>
-                        handleFilterChange({ search })
-                     }
+                     onSearchChange={(search) => handleFilterChange({ search })}
                      initialValue={filters.search}
                   />
                   <SortDropdown
@@ -204,11 +236,20 @@ export default memo(function MoverSearchLayout() {
                   currentFilters={filters}
                />
 
+               {/* 모바일용 지도 버튼 */}
+               <div className="mb-4">
+                  <OutlinedButton
+                     onClick={handleMapModalOpen}
+                     className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium"
+                  >
+                     <MapPin className="h-4 w-4" />
+                     {t("findOnMap", { default: "지도에서 찾기" })}
+                  </OutlinedButton>
+               </div>
+
                <div>
                   <SearchBar
-                     onSearchChange={(search) =>
-                        handleFilterChange({ search })
-                     }
+                     onSearchChange={(search) => handleFilterChange({ search })}
                      initialValue={filters.search}
                   />
                   <div className="my-4 flex justify-end">
@@ -229,6 +270,14 @@ export default memo(function MoverSearchLayout() {
                />
             </section>
          </div>
+
+         {/* 지도 모달 */}
+         <Suspense fallback={null}>
+            <KakaoMapModal
+               isOpen={isMapModalOpen}
+               onClose={handleMapModalClose}
+            />
+         </Suspense>
       </div>
    );
 });

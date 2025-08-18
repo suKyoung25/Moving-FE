@@ -5,10 +5,12 @@ import ImageInputField from "./ImageInputField";
 import GeneralInputField from "./GeneralInputField";
 import TextAreaInputField from "./TextAreaInputField";
 import ButtonInputField from "./ButtonInputField";
+import LocationInputField from "./LocationInputField";
 import SolidButton from "@/components/common/SolidButton";
 import useMoverProfileUpdateForm from "@/lib/hooks/useMoverProfileUpdateForm";
 import OutlinedButton from "@/components/common/OutlinedButton";
 import { useRouter } from "next/navigation";
+import { MoverProfileInput } from "@/lib/schemas/profile.schema";
 import { useTranslations } from "next-intl";
 
 export default function MoverProfileUpdateForm() {
@@ -42,7 +44,7 @@ export default function MoverProfileUpdateForm() {
 
                <hr className="border-line-100 m-0 hidden border-t p-0 lg:block" />
 
-               <GeneralInputField
+               <GeneralInputField<MoverProfileInput>
                   name="nickName"
                   text={t("nickNameLabel")}
                   placeholder={t("nickNamePlaceholder")}
@@ -52,7 +54,7 @@ export default function MoverProfileUpdateForm() {
 
                <hr className="border-line-100 m-0 border-t p-0" />
 
-               <GeneralInputField
+               <GeneralInputField<MoverProfileInput>
                   name="career"
                   text={t("careerLabel")}
                   placeholder={t("careerPlaceholder")}
@@ -62,12 +64,22 @@ export default function MoverProfileUpdateForm() {
 
                <hr className="border-line-100 m-0 border-t p-0" />
 
-               <GeneralInputField
+               <GeneralInputField<MoverProfileInput>
                   name="introduction"
                   text={t("introductionLabel")}
                   placeholder={t("introductionPlaceholder")}
                   register={register}
                   error={errors.introduction}
+               />
+
+               <hr className="border-line-100 m-0 border-t p-0" />
+
+               {/* 사업장 위치 입력 필드 추가 */}
+               <LocationInputField<MoverProfileInput>
+                  name="businessLocation"
+                  text={t("businessLocationLabel", { default: "사업장 위치" })}
+                  control={control}
+                  error={errors.businessLocation}
                />
 
                <hr className="border-line-100 m-0 border-t p-0 lg:hidden" />

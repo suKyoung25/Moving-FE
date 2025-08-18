@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthFetchError, MoveType } from "../types";
 import {
    MoverProfileInput,
+   MoverProfileRequestInput,
    useMoverProfileSchemas,
 } from "../schemas/profile.schema";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
@@ -39,6 +40,9 @@ function useMoverProfilePostForm() {
 
    const onSubmit = async (data: MoverProfileInput) => {
       setIsLoading(true);
+      console.log("=== 폼 제출 디버깅 ===");
+      console.log("1. 원본 폼 데이터:", data);
+      console.log("2. businessLocation:", data.businessLocation);
 
       const MAX_FILE_SIZE = 10 * 1024 * 1024; // 이미지 사이즈 제한 10MB
 
@@ -66,13 +70,26 @@ function useMoverProfilePostForm() {
          }
 
          // 이미지 처리 후 나머지 데이터 처리
-         const processedData = {
-            ...data,
-
-            image: data.image instanceof File ? imageUrl : data.image, // 업로드된 이미지 URL 또는 undefined
-            career: Number(data.career), // string > number로 변환
-            serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
+         const processedData: MoverProfileRequestInput = {
+            nickName: data.nickName,
+            career: Number(data.career),
+            introduction: data.introduction,
+            description: data.description,
+            serviceType: data.serviceType.map((type) => type as MoveType),
+            serviceArea: data.serviceArea,
+            image: data.image instanceof File ? imageUrl : data.image,
+            // 위치 정보 평면화
+            latitude: data.businessLocation?.latitude,
+            longitude: data.businessLocation?.longitude,
+            businessAddress: data.businessLocation?.address,
          };
+
+         console.log("3. 처리된 데이터:", processedData);
+         console.log("4. 위치 정보:", {
+            latitude: processedData.latitude,
+            longitude: processedData.longitude,
+            businessAddress: processedData.businessAddress,
+         });
 
          const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
