@@ -6,13 +6,14 @@ import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { ClientProfilePostValue, useClientProfileSchemas } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import updateProfileImage from "../api/auth/requests/updateProfileImage";
+import { uploadToCloudinary } from "../api/auth/requests/updateProfileImage";
 import { AuthFetchError } from "../types";
 import { ServiceType } from "../types/client.types";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { tokenSettings } from "../utils";
 import { useToast } from "@/context/ToastConText";
 import { useTranslations } from "next-intl";
+import { base64ToFile } from "../utils/profile.util";
 
 export default function useClientProfilePostForm() {
    const t = useTranslations("Profile");
@@ -21,7 +22,7 @@ export default function useClientProfilePostForm() {
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const { refreshUser } = useAuth();
-   const { showSuccess } = useToast();
+   const { showSuccess, showError } = useToast();
    const { clientProfilePostSchema } = useClientProfileSchemas();
 
    // react-hook-form
@@ -63,18 +64,35 @@ export default function useClientProfilePostForm() {
    const onSubmit = async (data: ClientProfilePostValue) => {
       setIsLoading(true);
 
+      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 이미지 사이즈 제한 10MB
+
       try {
          // 1. 이미지가 있으면 먼저 업로드
          let imageUrl: string | undefined;
 
-         if (data.profileImage instanceof File) {
-            const formData = new FormData();
-            formData.append("image", data.profileImage);
+         if (
+            typeof data.profileImage === "string" &&
+            data.profileImage.startsWith("data:image")
+         ) {
+            // Base64 문자열이면 File 객체로 변환 후 업로드
+            const file = base64ToFile(data.profileImage, "cropped.png");
+            if (file.size > MAX_FILE_SIZE) {
+               showError(
+                  "이미지 크기가 10MB를 초과했습니다. 다른 이미지를 사용해 주세요",
+               );
+               setIsLoading(false);
+               return;
+            }
 
-            const res = await updateProfileImage(formData);
-            imageUrl = res.url;
-         } else {
-            imageUrl = data.profileImage; // 타입 = string
+            // Cloudinary 직접 업로드
+            const uploadResult = await uploadToCloudinary(file);
+            imageUrl = uploadResult.secure_url;
+
+            // //AWS s3의 경우
+            // const formData = new FormData();
+            // formData.append("image", data.profileImage);
+            // const res = await updateProfileImage(formData);
+            // imageUrl = res.url;
          }
 
          // 2. 보낼 자료
