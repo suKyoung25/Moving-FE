@@ -1,7 +1,6 @@
 [**한국어**](/README.md) | [English](/docs/en/README.md) | [简体字](/docs/zh/README.md)
 
 # Moving
-*스마트한 이사 비교 플랫폼*
 
 <img width="3212" height="2023" alt="image" src="https://github.com/user-attachments/assets/a3260d6e-ac5c-4918-a846-bb25362c4798" />
 
@@ -423,67 +422,53 @@ messages/
 
 ## 트러블 슈팅
 
-### 1. 이미지 업로드 방식 변경 (Multer → Cloudinary)
+### 1. 한글 입력 시 채팅 중복 전송 문제 (Mac / Safari / macOS 환경)
 
-**문제 상황**
-- Multer를 사용한 서버 로컬 저장 방식
-- Render 재배포 시 이미지 파일 손실 문제
+**문제 상황**  
+- Windows 환경에서는 채팅이 Enter 키 한 번으로 정상 전송됨  
+- Mac / Safari / macOS 환경에서는 한글 조합 입력 후 Enter 키를 누르면 동일 메시지가 2번 전송됨  
+- 주로 조합형 입력(IME, Input Method Editor) 사용 시 발생  
 
-**해결 방법**
-- Cloudinary 외부 호스팅 서비스 도입
-- 프론트엔드에서 직접 업로드 후 URL만 백엔드 전달
-- 재배포와 무관한 안정적 이미지 저장 구현
+**원인 분석**  
+- macOS에서 한글 입력 시 이벤트 흐름이 다음과 같음:  
+  `keydown → compositionstart → compositionupdate → compositionend → keydown`  
+- compositionend 이후 keydown 이벤트가 다시 발생해 Enter 이벤트가 이중으로 호출됨  
+- 현 메시지 전송 로직은 Enter 키 이벤트만 감지하여 실행하므로, 조합 완료 직후 Enter가 두 번 호출되어 중복 전송 발생  
+
+**해결 방법**  
+- 한글 입력 조합 중(`compositionstart` ~ `compositionend`)에는 Enter 이벤트 무시  
+- `onKeyDown` 이벤트 핸들러에서 `isComposing` 상태를 확인해 메시지 전송 여부 결정  
+- Windows / Mac / 모바일 환경 모두 동일 동작 테스트 완료
 
 ```typescript
-export async function upLoadImage(file) {
-  const url = 'https://api.cloudinary.com/v1_1/[yourId]/image/upload';
-  const data = new FormData();
-  data.append('file', file);
-  data.append('upload_preset', 'primary-key');
+const [isComposing, setIsComposing] = useState(false);
 
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      body: data,
-    });
-
-    if (!res.ok) {
-      throw new Error('Image Upload Failed!');
-    }
-
-    const result = await res.json();
-    return result;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+if (e.key === "Enter" && !e.shiftKey && !isComposing) {
+e.preventDefault();
+sendMessage();
 }
+};
+
+ <textarea onCompositionStart={() => setIsComposing(true)} onCompositionEnd={() => setIsComposing(false)} onKeyDown={handleKeyDown} />
 ```
 
-### 2. 구매 후 UI 즉각 반영 (useEffect → React Query useMutation)
+## 2. 견적 요청 폼 draft 저장 및 동기화 문제
 
-**문제 상황**
-- useEffect 기반 상태 업데이트의 지연
-- 구매 직후 잔여 수량이 즉시 반영되지 않는 UX 문제
+### 문제 상황
+- 견적 요청 시 서버에 자동으로 폼의 중간 상태를 저장하도록 구현하여, 초기에 서버에 저장된 draft를 불러오고 폼 상태 업데이트 시 `saveDraft` 로직을 통해 서버에 갱신하도록 설계함  
+- 하지만 `savedDraft`에는 최신 상태가 반영되어 있음에도 불구하고, draft를 다시 조회할 때는 이전 상태가 반환되어 새로고침이나 페이지 이동 시 최신 저장 상태가 반영되지 않는 문제 발생  
 
-**해결 방법**
-- React Query의 `useMutation` 활용
-- 비동기 요청과 로컬 상태 변경을 하나의 플로우로 통합
-- 성공 시 즉시 UI 반영으로 사용자 경험 개선
+### 원인 분석
+- 기존에 `debouncedSave`를 사용하면서 저장 타이밍이 맞지 않아 최신 상태가 서버에 완전히 반영되지 않는 경우 발생  
+- React Query 적용으로 새 요청 시 이전 draft 캐시가 유지되면서 최신 데이터가 반영되지 않는 문제 발생  
+- `currentStep` 값이 컨텍스트에서 초기화되지 않고 이전 상태로 다시 세팅되면서, 서버 draft와 로컬 상태 간 불일치 발생  
 
-```typescript
-const { mutate, isPending } = useMutation({
-  mutationFn: () => storeService.purchaseCard(cardId, quantity),
-  onSuccess: (data) => {
-    setLocalRemaining((prev) => prev - quantity); // 즉시 UI 반영
-    if (onSuccess) onSuccess(data);
-    openStateModal(200, "구매", { grade, name: cardName, count: quantity });
-  },
-  onError: (err) => {
-    openStateModal(err.status || 400, "구매", { grade, name: cardName, count: quantity });
-  },
-});
-```
+### 해결방안
+- **debouncedSave 제거**: 저장 타이밍 문제를 없애고 즉시 저장되도록 변경  
+- **이중 저장 구조 적용**: 폼 상태 업데이트 시 `localStorage`와 서버 draft를 동시에 갱신 → 새로고침/페이지 이동 시에도 동일한 상태 유지  
+- **초기 로딩 우선순위**: `localStorage` 값이 존재하면 이를 우선 반영, 없을 경우 서버 draft를 불러와 초기 상태로 사용  
+- **currentStep 동기화 개선**: 서버 draft의 `currentStep`을 기준으로 초기화하고, 이후에는 클라이언트 업데이트 시 항상 로컬/서버 양쪽에 반영되도록 수정  
 
 ---
 
