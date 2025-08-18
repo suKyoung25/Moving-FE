@@ -11,7 +11,7 @@ import {
    useMoverProfileSchemas,
 } from "../schemas/profile.schema";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
-import updateProfileImage from "../api/auth/requests/updateProfileImage";
+import { uploadToCloudinary } from "../api/auth/requests/updateProfileImage";
 import { useAuth } from "@/context/AuthContext";
 import { tokenSettings } from "../utils";
 import { useTranslations } from "next-intl";
@@ -60,10 +60,16 @@ function useMoverProfilePostForm() {
                setIsLoading(false);
                return;
             }
-            const formData = new FormData();
-            formData.append("image", file);
-            const res = await updateProfileImage(formData);
-            imageUrl = res.url; // 백엔드에서 반환한 s3 URL
+
+            // Cloudinary 직접 업로드
+            const uploadResult = await uploadToCloudinary(file);
+            imageUrl = uploadResult.secure_url;
+
+            // AWS s3의 경우
+            //   const formData = new FormData();
+            // formData.append("image", file);
+            // const res = await updateProfileImage(formData);
+            // imageUrl = res.url; // 백엔드에서 반환한 s3 URL
          }
 
          // 이미지 처리 후 나머지 데이터 처리

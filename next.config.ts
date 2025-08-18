@@ -4,7 +4,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
    images: {
-      domains: ["www.zimssa.com", "i.imgur.com"], // 외부 이미지 호스트 허용
+      domains: ["www.zimssa.com", "i.imgur.com", "res.cloudinary.com"], // 외부 이미지 호스트 허용
       remotePatterns: [
          // next/image가 외부 s3 이미지 url을 허용하도록
          {
