@@ -15,6 +15,7 @@ import { useToast } from "@/context/ToastConText";
 import { useFormWizard } from "@/context/FormWizardContext";
 import QuotationInfoSkeleton from "./QuotationInfoSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
+import SearchSpinner from "../mover-search/MoverSearchSpinner";
 
 // 요청한 견적
 export default function Requested() {
@@ -152,8 +153,8 @@ export default function Requested() {
          </article>
          <div ref={bottomRef} />
          {isFetchingNextPage && (
-            <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
-               {t("loadingMore")}
+            <div className="flex items-center justify-center">
+               <SearchSpinner />
             </div>
          )}
       </section>
