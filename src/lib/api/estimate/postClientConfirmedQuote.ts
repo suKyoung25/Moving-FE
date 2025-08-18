@@ -10,7 +10,7 @@ export async function postClientConfirmedQuote(estimateId: string) {
          },
       });
    } catch (e) {
-      console.log(e);
+      console.error(e);
       throw e;
    }
 }

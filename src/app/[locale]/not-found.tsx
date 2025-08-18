@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import earth from "@/assets/images/earthIcon.png";
 import oopsMover from "@/assets/images/oopsMover.png";
 import oopsTruchMover from "@/assets/images/oopsTruchMoverIcon.png";

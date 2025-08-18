@@ -7,6 +7,7 @@ import { useReceivedRequestsQuery } from "@/lib/api/request/query";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import RequestCardSkeleton from "./RequestCardSkeleton";
 import { useLocale, useTranslations } from "next-intl";
+import SearchSpinner from "../mover-search/MoverSearchSpinner";
 
 export default function ReceivedRequestsList({
    moveType,
@@ -77,7 +78,9 @@ export default function ReceivedRequestsList({
          <div className="py-4">
             <p ref={observerRef} />
             {isFetchingNextPage && (
-               <p className="text-center text-gray-500">{t("loadingMore")}</p>
+               <div className="flex w-full justify-center">
+                  <SearchSpinner />
+               </div>
             )}
             {!hasNextPage && (
                <p className="text-center text-gray-400">

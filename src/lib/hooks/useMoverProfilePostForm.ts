@@ -40,9 +40,6 @@ function useMoverProfilePostForm() {
 
    const onSubmit = async (data: MoverProfileInput) => {
       setIsLoading(true);
-      console.log("=== 폼 제출 디버깅 ===");
-      console.log("1. 원본 폼 데이터:", data);
-      console.log("2. businessLocation:", data.businessLocation);
 
       const MAX_FILE_SIZE = 10 * 1024 * 1024; // 이미지 사이즈 제한 10MB
 
@@ -83,14 +80,6 @@ function useMoverProfilePostForm() {
             longitude: data.businessLocation?.longitude,
             businessAddress: data.businessLocation?.address,
          };
-
-         console.log("3. 처리된 데이터:", processedData);
-         console.log("4. 위치 정보:", {
-            latitude: processedData.latitude,
-            longitude: processedData.longitude,
-            businessAddress: processedData.businessAddress,
-         });
-
          const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
          if (res.isProfileCompleted) {

@@ -20,6 +20,7 @@ const FavoriteDriverList = lazy(() =>
       default: module.default,
    })),
 );
+
 const KakaoMapModal = lazy(() =>
    import("./KakaoMapModal").then((module) => ({ default: module.default })),
 );
@@ -63,7 +64,7 @@ const FavoriteLoadingSkeleton = memo(function FavoriteLoadingSkeleton() {
 // lazy loading용 간단한 스켈레톤
 const FavoriteListSkeleton = memo(function FavoriteListSkeleton() {
    return (
-      <div className="mt-8 flex animate-pulse flex-col gap-4 rounded-lg">
+      <div className="mt-8 flex animate-pulse flex-col gap-4 rounded-lg shadow">
          <div className="h-6 w-32 rounded bg-gray-200"></div>
          <div className="h-20 rounded-lg bg-gray-100"></div>
          <div className="h-20 rounded-lg bg-gray-100"></div>

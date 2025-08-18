@@ -4,7 +4,7 @@ import React from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import SolidButton from "@/components/common/SolidButton";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import useSignUpForm from "@/lib/hooks/useSignUpForm";
 import { UserType } from "@/lib/types";
 import { SignUpFormValues } from "@/lib/schemas";
@@ -27,7 +27,7 @@ export default function SignUpForm({ userType }: Prop) {
          aria-labelledby="signup-form-heading"
       >
          <h2 id="signup-form-heading" className="sr-only">
-            회원가입 입력 폼
+            {t("signupFormHeading")}
          </h2>
 
          <AuthInput<SignUpFormValues>
@@ -76,7 +76,7 @@ export default function SignUpForm({ userType }: Prop) {
             <div
                className="mt-4 flex items-center justify-center gap-1 lg:mt-8 lg:gap-2"
                role="group"
-               aria-label="이미 가입한 사용자 안내"
+               aria-label={t("alreadyMemberGroupAria")}
             >
                <p className="text-black-100 text-12-regular lg:text-20-regular">
                   {t("alreadyMemberText")}
@@ -84,7 +84,7 @@ export default function SignUpForm({ userType }: Prop) {
                <Link
                   href={`/sign-in/${userType}`}
                   className="text-primary-blue-300 text-12-semibold lg:text-20-semibold underline"
-                  aria-label="로그인 페이지로 이동"
+                  aria-label={t("loginPageAria")}
                >
                   {t("loginLinkText")}
                </Link>

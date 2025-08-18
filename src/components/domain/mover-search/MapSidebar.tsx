@@ -128,7 +128,7 @@ export default function MapSidebar({
                            />
                         ) : (
                            <span className="font-semibold text-white">
-                              {mover.nickName?.charAt(0) || "기"}
+                              {mover.nickName?.charAt(0) || " "}
                            </span>
                         )}
                      </div>
@@ -136,12 +136,14 @@ export default function MapSidebar({
                         <h3 className="truncate font-semibold text-gray-900">
                            {mover.nickName || t("moverDefaultName")}
                         </h3>
-                        <p className="mb-1 text-sm text-gray-600">
+                        <p className="mb-1 text-sm text-gray-500">
                            {getServiceAreaText(mover.serviceArea)}
                         </p>
                         <div className="flex items-center gap-2 text-sm">
                            <Star className="h-3 w-3 fill-current text-yellow-500" />
-                           <span>{mover.averageReviewRating || 0}</span>
+                           <span>
+                              {(mover.averageReviewRating || 0).toFixed(1)}
+                           </span>
                            <span className="text-gray-400">
                               ({mover.reviewCount || 0} {t("reviewCount")})
                            </span>

@@ -7,7 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import logo from "@/assets/images/logo.svg";
 import logoMobile from "@/assets/images/logoMobile.svg";
 import hamburgerMenu from "@/assets/images/menuGrayIcon.svg";

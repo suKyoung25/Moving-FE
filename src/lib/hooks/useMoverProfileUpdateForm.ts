@@ -79,9 +79,6 @@ function useMoverProfileUpdateForm() {
 
    const onSubmit = async (data: MoverProfileInput) => {
       setIsLoading(true);
-      console.log("=== 폼 제출 디버깅 ===");
-      console.log("1. 원본 폼 데이터:", data);
-      console.log("2. businessLocation:", data.businessLocation);
 
       const MAX_FILE_SIZE = 10 * 1024 * 1024; // 이미지 사이즈 제한 10MB
 
@@ -122,12 +119,6 @@ function useMoverProfileUpdateForm() {
             longitude: data.businessLocation?.longitude,
             businessAddress: data.businessLocation?.address,
          };
-         console.log("3. 처리된 데이터:", processedData);
-         console.log("4. 위치 정보:", {
-            latitude: processedData.latitude,
-            longitude: processedData.longitude,
-            businessAddress: processedData.businessAddress,
-         });
 
          const res = await updateMoverProfile(processedData);
 
@@ -154,9 +145,6 @@ function useMoverProfileUpdateForm() {
             const hasNickNameChanged =
                data.nickName && data.nickName !== currentUser.nickName;
 
-            console.log("이미지 변경됨:", hasImageChanged);
-            console.log("닉네임 변경됨:", hasNickNameChanged);
-
             if (hasImageChanged || hasNickNameChanged) {
                // ✅ 수정된 부분: 실제 업데이트할 이미지 URL 결정
                const finalImageUrl = (() => {
@@ -168,8 +156,6 @@ function useMoverProfileUpdateForm() {
                   }
                   return undefined; // 변경사항 없음
                })();
-
-               console.log("Firebase에 업데이트할 이미지 URL:", finalImageUrl);
 
                await updateUserProfileInChats(
                   user!.id,

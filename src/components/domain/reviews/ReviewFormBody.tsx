@@ -46,9 +46,17 @@ export function ReviewFormBody<T extends FieldValues = FieldValues>({
          {/* 카드 정보 */}
          <div className="mb-3.5 flex gap-2 lg:gap-3">
             {isChipType(estimate.moveType) && (
-               <MoveChip type={estimate.moveType} />
+               <MoveChip
+                  type={estimate.moveType}
+                  aria-label={t(`moveType.${estimate.moveType}`)}
+               />
             )}
-            {estimate.isDesignatedEstimate && <MoveChip type="DESIGNATED" />}
+            {estimate.isDesignatedEstimate && (
+               <MoveChip
+                  type="DESIGNATED"
+                  aria-label={t("designatedEstimate")}
+               />
+            )}
          </div>
          <div className="border-line-100 mb-3.5 flex w-full items-center rounded-md bg-white shadow-[4px_4px_16px_0px_rgba(233,233,233,0.10)] md:px-2 lg:mb-6 lg:border lg:px-4.5 lg:py-6">
             {/* 프로필 이미지 */}
@@ -137,7 +145,11 @@ export function ReviewFormBody<T extends FieldValues = FieldValues>({
                                  ? yellowStar
                                  : grayStar
                            }
-                           alt=""
+                           alt={
+                              star <= (hovered ?? rating)
+                                 ? t("yellowStarAlt")
+                                 : t("grayStarAlt")
+                           }
                            aria-hidden="true"
                            width={48}
                            height={48}

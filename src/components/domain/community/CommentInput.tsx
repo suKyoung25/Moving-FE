@@ -6,6 +6,7 @@ import { useState } from "react";
 import LoginRequiredModal from "../mover-search/LoginRequiredModal";
 import Image from "next/image";
 import commentIcon from "@/assets/images/commentIcon.svg";
+import { useTranslations } from "next-intl";
 
 export default function CommentInput({
    id,
@@ -14,6 +15,7 @@ export default function CommentInput({
    id: string;
    count: number;
 }) {
+   const t = useTranslations("Community");
    const [content, setContent] = useState("");
    const [isLogin, setIsLogin] = useState<boolean>(false);
    const { mutate: postReply, isPending, isError } = usePostReply();
@@ -48,22 +50,36 @@ export default function CommentInput({
    return (
       <>
          <div className="mt-10 flex items-center gap-1">
-            <Image alt="댓글아이콘" src={commentIcon} />
-            <p>{actualCount}</p>
+            <Image
+               alt={t("commentIconAlt")}
+               src={commentIcon}
+               width={16}
+               height={16}
+            />
+            <p aria-label={t("replyCountAria", { count: actualCount })}>
+               {actualCount}
+            </p>
          </div>
          <form onSubmit={handleSubmit} className="mt-5">
             <input
                value={content}
                onChange={(e) => setContent(e.target.value)}
                type="text"
-               placeholder="댓글을 작성해 보세요."
+               placeholder={t("commentPlaceholder")}
                onClick={handleInputclick}
                disabled={isPending}
                className="bg-bg-200 h-14 w-full rounded-2xl px-4"
+               aria-label={t("commentInputAria")}
+               aria-describedby={isError ? "comment-error" : undefined}
             />
             {isError && (
-               <p className="text-14-semibold text-secondary-red-200">
-                  댓글 등록에 실패했습니다
+               <p
+                  id="comment-error"
+                  className="text-14-semibold text-secondary-red-200"
+                  role="alert"
+                  aria-live="assertive"
+               >
+                  {t("commentPostFailed")}
                </p>
             )}
          </form>

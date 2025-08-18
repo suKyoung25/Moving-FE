@@ -18,7 +18,7 @@ export default function Community({
    profileImg,
 }: CommunityProps) {
    return (
-      <div className="mt-7.5 cursor-pointer rounded-2xl px-3.5 py-4 shadow-[0_-2px_10px_rgba(220,220,220,0.2),_0_2px_10px_rgba(220,220,220,0.14)]">
+      <div className="cursor-pointer rounded-2xl px-3.5 py-4 shadow lg:px-6 lg:py-5">
          <p className="text-14-semibold md:text-18-semibold">{title}</p>
          <p className="text-14-regular lg:text-18-regular line-clamp-2 whitespace-pre-wrap">
             {content}

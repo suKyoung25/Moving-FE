@@ -20,8 +20,6 @@ import { useToast } from "@/context/ToastConText";
 import { getRequest } from "@/lib/api/estimate/requests/getClientRequest";
 import { getEstimate } from "@/lib/api/estimate/getClientQuoteDetail";
 import ReadAllButton from "./ReadAllButton";
-import SkeletonLayout from "./SkeletonLayout";
-import NotificationSkeleton from "./NotificationSkeleton";
 
 export default function NotificationModal({
    setIsNotiModalOpen,
@@ -66,13 +64,13 @@ export default function NotificationModal({
          if (item.targetUrl?.startsWith("/my-quotes")) {
             const estimate = await getEstimate(item.targetId, locale);
             if (!estimate) {
-               showError("취소된 견적입니다.");
+               showError(t("cancelledEstimate"));
                return;
             }
          } else {
             const { data: request } = await getRequest(item.targetId);
             if (!request) {
-               showError("취소된 견적 요청입니다.");
+               showError(t("cancelledRequest"));
                return;
             }
          }
@@ -131,16 +129,16 @@ export default function NotificationModal({
          </div>
          <ul className="scrollbar-hide h-full overflow-auto">
             {isLoading ? (
-               <SkeletonLayout
-                  count={6}
-                  SkeletonComponent={NotificationSkeleton}
-               />
-            ) : notifications.length > 0 ? (
+               // TODO: skeleton 넣어주세요
+               <div className="text-16-medium max-lg:text-12-medium py-4 text-center text-gray-400">
+                  {t("loading")}
+               </div>
+            ) : !isLoading && notifications.length > 0 ? (
                notifications.map((item, idx) => (
                   <button
                      key={idx}
                      onClick={() => handleClick(item)}
-                     className={`hover:bg-hover-100 border-b-line-200 text-16-medium max-lg:text-12-medium flex w-full flex-col items-baseline gap-1 rounded-lg px-4 py-3 text-left lg:px-6 lg:py-4 ${idx === notifications.length - 1 ? "" : "border-b-1"}`}
+                     className={`hover:bg-bg-200 border-b-line-200 text-16-medium max-lg:text-12-medium flex w-full flex-col items-baseline gap-1 rounded-lg px-4 py-3 text-left lg:px-6 lg:py-4 ${idx === notifications.length - 1 ? "" : "border-b-1"}`}
                   >
                      <div className={item.isRead ? "text-gray-300" : ""}>
                         {item.isRead

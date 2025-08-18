@@ -3,8 +3,10 @@ import Image from "next/image";
 import admin from "@/assets/images/admin.png";
 import { IoIosSend } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function HomeTabPanel() {
+   const t = useTranslations("SupportHub");
    const router = useRouter();
 
    return (
@@ -12,17 +14,18 @@ export default function HomeTabPanel() {
          <div className="flex gap-2">
             <Image
                src={admin}
-               alt="관리자"
+               alt={t("adminAlt")}
                width={36}
                height={36}
                priority
                className="h-9 w-9 rounded-lg"
             />
             <div>
-               <h3 className="text-16-medium lg:text-18-medium">무빙 관리자</h3>
+               <h3 className="text-16-medium lg:text-18-medium">
+                  {t("adminTitle")}
+               </h3>
                <p className="text-14-regular lg:text-16-regular">
-                  무빙을 사랑해주시는 모든 분들께 진심으로 감사드립니다. 오늘도
-                  무빙과 함께 즐겁고 보람찬 하루 되시길 바랍니다.
+                  {t("adminMessage")}
                </p>
             </div>
          </div>
@@ -30,12 +33,17 @@ export default function HomeTabPanel() {
             <button
                onClick={() => router.push("/support")}
                className="bg-black-400 text-16-semibold hover:bg-black-500 flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-white transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-md"
+               aria-label={t("contactUsButton")}
+               title={t("contactUsButton")}
             >
-               문의하기
-               <IoIosSend className="size-5" />
+               {t("contactUs")}
+               <IoIosSend className="size-5" aria-hidden="true" />
             </button>
-            <span className="text-12-regular mt-2 text-center text-gray-900 lg:mt-2.5">
-               24시간 내 답변 받으실 수 있어요.
+            <span
+               className="text-12-regular mt-2 text-center text-gray-900 lg:mt-2.5"
+               aria-label={t("responseTimeInfo")}
+            >
+               {t("responseTime")}
             </span>
          </div>
       </div>

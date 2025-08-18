@@ -43,12 +43,14 @@ const ReviewSectionSkeleton = memo(function ReviewSectionSkeleton() {
    );
 });
 
-const ErrorDisplay = memo(function ErrorDisplay({ 
-   error, 
-   onRetry 
-}: { 
+const ErrorDisplay = memo(function ErrorDisplay({
+   error,
+   onRetry,
+   retryText,
+}: {
    error: string;
    onRetry: () => void;
+   retryText: string;
 }) {
    return (
       <div className="flex min-h-screen items-center justify-center">
@@ -58,7 +60,7 @@ const ErrorDisplay = memo(function ErrorDisplay({
                onClick={onRetry}
                className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
-               다시 시도
+               {retryText}
             </button>
          </div>
       </div>
@@ -89,10 +91,13 @@ export default memo(function MoverDetail() {
    const moverId = useMemo(() => params.id as string, [params.id]);
 
    // ✅ 인증 상태를 메모이제이션
-   const authState = useMemo(() => ({
-      hasToken: Boolean(tokenSettings.get()),
-      isLoggedIn: Boolean(user),
-   }), [user]);
+   const authState = useMemo(
+      () => ({
+         hasToken: Boolean(tokenSettings.get()),
+         isLoggedIn: Boolean(user),
+      }),
+      [user],
+   );
 
    // ✅ API 호출 함수를 메모이제이션
    const fetchMover = useCallback(async () => {
@@ -101,9 +106,10 @@ export default memo(function MoverDetail() {
       try {
          setState((prev) => ({ ...prev, loading: true, error: null }));
 
-         const moverData = authState.hasToken && authState.isLoggedIn
-            ? await getMoverByIdWithAuth(moverId, locale)
-            : await getMoverByIdWithoutAuth(moverId, locale);
+         const moverData =
+            authState.hasToken && authState.isLoggedIn
+               ? await getMoverByIdWithAuth(moverId, locale)
+               : await getMoverByIdWithoutAuth(moverId, locale);
 
          setState({
             loading: false,
@@ -170,9 +176,10 @@ export default memo(function MoverDetail() {
    // 에러 상태
    if (state.error || !state.mover) {
       return (
-         <ErrorDisplay 
+         <ErrorDisplay
             error={state.error || t("error.notFound")}
             onRetry={handleRetry}
+            retryText={t("retry")}
          />
       );
    }
@@ -183,18 +190,15 @@ export default memo(function MoverDetail() {
       <div className="flex w-full flex-col gap-4 lg:gap-6">
          {/* ✅ 모바일 레이아웃만 사용 (데스크탑 레이아웃 주석 처리됨) */}
          <div className="flex flex-col gap-4">
-            <DriverCard 
-               mover={mover} 
-               onFavoriteChange={handleFavoriteChange} 
-            />
-            
+            <DriverCard mover={mover} onFavoriteChange={handleFavoriteChange} />
+
             <div className="p-4">
                <SocialShareGroup text={shareText} />
                <div className="pt-5 lg:hidden">
                   <LineDivider />
                </div>
             </div>
-            
+
             <DetailSections mover={mover} />
             <LineDivider />
 
