@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
          siteName: "Moving",
          images: [
             {
-               url: `${baseUrl}/seo.png`,
+               url: "/seo.png",
                width: 1200,
                height: 630,
                alt: "Moving site preview image",
@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
          card: "summary_large_image",
          title: t("title"),
          description: t("description"),
-         images: [`${baseUrl}/seo.png`],
+         images: ["/seo.png"],
       },
    };
 }
