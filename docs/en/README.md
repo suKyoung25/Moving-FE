@@ -63,92 +63,9 @@ Additionally, from the driver's perspective, efficient customer matching is poss
 
 ---
 
-### Basic Features
+## Feature implementation video (click image)
 
-<table>
-  <thead>
-    <tr>
-      <th align="center">Login & Logout</th>
-      <th align="center">Random Points</th>
-      <th align="center">Photo Card Creation</th>
-      <th align="center">Filter, Infinite Scroll</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/0fd8cbad-fcb1-4ef8-80c3-1f1890872548" alt="Login and Logout" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/0fd51b67-6e94-4edc-8a4b-78f71a0319c4" alt="Random Points" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/c69f5edc-e626-4c41-9c80-c4669cd7f5df" alt="Photo Card Creation" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/eb7fb19e-308b-49d4-9848-e54a34c9e9f4" alt="Filter Infinite Scroll" width="200">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### Transaction Features
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Photo Card Sales</th>
-      <th align="center">Photo Card Edit</th>
-      <th align="center">Photo Card Sales Removal</th>
-      <th align="center">Photo Card Purchase</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/7746a772-e58f-4ae6-9935-2e3312ae3647" alt="Photo Card Sales" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/5dbc3427-2def-4205-b05a-c6230767d6fa" alt="Photo Card Edit" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/dd3f1d2e-54f2-4765-9a42-d72c9672908c" alt="Photo Card Sales Removal" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/392dda2b-aa79-4715-a9e7-e4ebc360dc10" alt="Photo Card Purchase" width="200">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### Notification and Exchange Features
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Notification Check</th>
-      <th align="center">Exchange Request</th>
-      <th align="center">Buyer's Exchange Request Cancel</th>
-      <th align="center">Seller's Exchange Approval & Cancel</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/741a866e-f4cc-4fc3-9eba-54d511b05117" alt="Notification Check" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/67c8d1a3-545f-4d07-86c7-cd688d03678f" alt="Exchange Request" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/f51510c9-ad11-451b-89f4-ea125f667d5a" alt="Buyer's Exchange Request Cancel" width="200">
-      </td>
-      <td align="center">
-        <img src="https://github.com/user-attachments/assets/1ae2e3f3-a830-46c5-8ea9-b1737db5f74f" alt="Seller's Exchange Approval & Cancel" width="200">
-      </td>
-    </tr>
-  </tbody>
-</table>
+[![시연 영상 (임시)](https://github.com/user-attachments/assets/4d1325db-e4a3-4e2b-a13e-13a9766e232e)](https://youtu.be/s__25g_tTy0)
 
 ---
 
@@ -626,3 +543,4 @@ src/
 **Trusted, Expert Matching Service (Moving)**
 
 </div>
+
