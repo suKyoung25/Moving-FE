@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigation, Search, MapPin, Star } from "lucide-react";
-import { Mover } from "@/lib/types/auth.types";
+import Image from "next/image";
+import { Mover, Region } from "@/lib/types/auth.types";
 import { useTranslations } from "next-intl";
 
 interface MapSidebarProps {
@@ -18,15 +19,11 @@ interface MapSidebarProps {
    hasApiKey: boolean;
 }
 
-const getAreaName = (area: any): string => {
-   if (typeof area === "string") return area;
-   if (area && typeof area === "object" && area.regionName)
-      return area.regionName;
-   if (area && typeof area === "object" && area.id) return area.id;
-   return "";
+const getAreaName = (area: Region): string => {
+   return area.regionName || area.id || "";
 };
 
-const getServiceAreaText = (serviceArea: any): string => {
+const getServiceAreaText = (serviceArea: Region[]): string => {
    if (!serviceArea || !Array.isArray(serviceArea)) return "";
    return serviceArea
       .map((area) => getAreaName(area))
@@ -117,9 +114,11 @@ export default function MapSidebar({
                   <div className="flex items-start gap-3">
                      <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-300">
                         {mover.profileImage ? (
-                           <img
+                           <Image
                               src={mover.profileImage}
                               alt={mover.nickName || t("moverDefaultName")}
+                              width={48}
+                              height={48}
                               className="h-12 w-12 rounded-full object-cover"
                               onError={(e) => {
                                  const target = e.target as HTMLImageElement;

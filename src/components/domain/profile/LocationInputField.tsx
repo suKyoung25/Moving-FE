@@ -2,7 +2,13 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Controller, Control, FieldError, Path } from "react-hook-form";
+import {
+   Controller,
+   Control,
+   FieldError,
+   Path,
+   FieldValues,
+} from "react-hook-form";
 import { MapPin, Navigation, Search } from "lucide-react";
 import Image from "next/image";
 import closeIcon from "@/assets/images/xIcon.svg";
@@ -13,7 +19,7 @@ import OutlinedButton from "@/components/common/OutlinedButton";
 import ErrorText from "../auth/ErrorText";
 import { useTranslations } from "next-intl";
 
-// 카카오맵 타입 선언
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
    interface Window {
       kakao: any;
@@ -35,12 +41,11 @@ interface DaumPostcodeData {
 }
 
 // 새로운 유연한 인터페이스
-interface LocationInputFieldProps<T extends Record<string, any>> {
+interface LocationInputFieldProps<T extends FieldValues> {
    name: Path<T>;
    text: string;
    control: Control<T>;
    error?: FieldError | { message?: string };
-   labelId?: string;
    required?: boolean;
 }
 
@@ -72,19 +77,23 @@ function AddressSearchModal({
          if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
             const geocoder = new window.kakao.maps.services.Geocoder();
 
-            geocoder.addressSearch(address, (result: any, status: any) => {
-               if (
-                  status === window.kakao.maps.services.Status.OK &&
-                  result.length > 0
-               ) {
-                  resolve({
-                     lat: parseFloat(result[0].y),
-                     lng: parseFloat(result[0].x),
-                  });
-               } else {
-                  resolve(null);
-               }
-            });
+            geocoder.addressSearch(
+               address,
+               (result: unknown[], status: string) => {
+                  if (
+                     status === window.kakao.maps.services.Status.OK &&
+                     result.length > 0
+                  ) {
+                     const firstResult = result[0] as { y: string; x: string };
+                     resolve({
+                        lat: parseFloat(firstResult.y),
+                        lng: parseFloat(firstResult.x),
+                     });
+                  } else {
+                     resolve(null);
+                  }
+               },
+            );
          } else {
             resolve(null);
          }
@@ -236,25 +245,27 @@ function AddressSearchModal({
 }
 
 // 메인 위치 입력 컴포넌트
-function LocationInputField<T extends Record<string, any>>({
+function LocationInputField<T extends FieldValues>({
    name,
    text,
    control,
    error,
-   labelId,
    required = false,
 }: LocationInputFieldProps<T>) {
-   const t = useTranslations("Profile");
    const [isModalOpen, setIsModalOpen] = useState(false);
 
    // 오류 메시지 추출 함수
-   const getErrorMessage = (error: any): string | undefined => {
-      if (!error) return undefined;
-      if (typeof error === "string") return error;
-      if (error.message) return error.message;
+   const getErrorMessage = (
+      errorObj: FieldError | { message?: string } | undefined,
+   ): string | undefined => {
+      if (!errorObj) return undefined;
+      if (typeof errorObj === "string") return errorObj;
+      if ("message" in errorObj && typeof errorObj.message === "string") {
+         return errorObj.message;
+      }
       // 중첩된 오류 객체에서 첫 번째 메시지 찾기
-      if (typeof error === "object") {
-         const values = Object.values(error);
+      if (typeof errorObj === "object" && errorObj !== null) {
+         const values = Object.values(errorObj);
          const firstMessage = values.find(
             (v) =>
                typeof v === "string" ||
@@ -264,9 +275,10 @@ function LocationInputField<T extends Record<string, any>>({
          if (
             firstMessage &&
             typeof firstMessage === "object" &&
-            "message" in firstMessage
+            "message" in firstMessage &&
+            typeof (firstMessage as { message: string }).message === "string"
          ) {
-            return String(firstMessage.message);
+            return (firstMessage as { message: string }).message;
          }
       }
       return undefined;
@@ -301,12 +313,15 @@ function LocationInputField<T extends Record<string, any>>({
                   geocoder.coord2Address(
                      longitude,
                      latitude,
-                     (result: any, status: any) => {
+                     (result: unknown[], status: string) => {
                         if (
                            status === window.kakao.maps.services.Status.OK &&
                            result.length > 0
                         ) {
-                           const address = result[0].address.address_name;
+                           const firstResult = result[0] as {
+                              address: { address_name: string };
+                           };
+                           const address = firstResult.address.address_name;
                            resolve({ latitude, longitude, address });
                         } else {
                            resolve({
@@ -325,7 +340,7 @@ function LocationInputField<T extends Record<string, any>>({
                   });
                }
             },
-            (error) => {
+            () => {
                reject(
                   new Error(
                      "위치 정보를 가져올 수 없습니다. 브라우저 설정을 확인해주세요.",
@@ -375,10 +390,10 @@ function LocationInputField<T extends Record<string, any>>({
                                     longitude: location.longitude,
                                     address: location.address,
                                  });
-                              } catch (error) {
+                              } catch (locationError) {
                                  alert(
-                                    error instanceof Error
-                                       ? error.message
+                                    locationError instanceof Error
+                                       ? locationError.message
                                        : "위치를 가져올 수 없습니다.",
                                  );
                               }

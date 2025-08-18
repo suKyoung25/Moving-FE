@@ -83,9 +83,8 @@ export default function MoverProfilePostForm() {
 
                {/* 사업장 위치 입력 필드 추가 */}
                <LocationInputField<MoverProfileInput>
-                  labelId="business-location-label"
                   name="businessLocation"
-                  text={t("businessLocationLabel", { default: "사업장 위치" })}
+                  text={t("businessLocationLabel")}
                   control={control}
                   error={errors.businessLocation}
                />

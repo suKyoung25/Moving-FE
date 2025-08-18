@@ -5,6 +5,13 @@ import { Mover } from "@/lib/types/auth.types";
 import { getMovers } from "@/lib/api/mover/getMover";
 import { DEFAULT_COORDINATES, REGION_MAP } from "@/constants/mover.constants";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare global {
+   interface Window {
+      kakao: any;
+   }
+}
+
 // 유틸리티 함수들
 const extractAreaFromSearchTerm = (searchTerm: string): string | undefined => {
    if (!searchTerm) return undefined;
@@ -409,7 +416,7 @@ export const useKakaoMap = (
                      coords.lat,
                      coords.lng,
                   );
-                  mapInstanceRef.current.setCenter(moveLatLon);
+                  mapInstanceRef.current?.setCenter(moveLatLon);
                   setMapCenter(coords);
                   await loadMoversForLocation(
                      coords.lat,

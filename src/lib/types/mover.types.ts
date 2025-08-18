@@ -15,6 +15,7 @@ export type FieldValue =
      };
 
 //기사님 프로필 컴포넌트 모음집
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface InputFieldProps<T extends Record<string, any>> {
    name: Path<T>;
    text: string;
