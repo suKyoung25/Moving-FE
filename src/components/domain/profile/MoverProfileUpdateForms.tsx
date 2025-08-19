@@ -13,7 +13,6 @@ import { useTranslations } from "next-intl";
 
 export default function MoverProfileUpdateForm() {
    const t = useTranslations("Profile");
-
    const router = useRouter();
 
    const {
@@ -40,7 +39,8 @@ export default function MoverProfileUpdateForm() {
                   error={errors.image}
                />
 
-               <hr className="border-line-100 m-0 hidden border-t p-0 lg:block" />
+               {/* 통일된 hr: lg에서만 보이도록 */}
+               <hr className="border-line-100 my-6 hidden w-full shrink-0 border-0 border-t lg:block" />
 
                <GeneralInputField
                   name="nickName"
@@ -50,7 +50,7 @@ export default function MoverProfileUpdateForm() {
                   error={errors.nickName}
                />
 
-               <hr className="border-line-100 m-0 border-t p-0" />
+               <hr className="border-line-100 my-6 w-full shrink-0 border-0 border-t" />
 
                <GeneralInputField
                   name="career"
@@ -60,7 +60,7 @@ export default function MoverProfileUpdateForm() {
                   error={errors.career}
                />
 
-               <hr className="border-line-100 m-0 border-t p-0" />
+               <hr className="border-line-100 my-6 w-full shrink-0 border-0 border-t" />
 
                <GeneralInputField
                   name="introduction"
@@ -70,7 +70,8 @@ export default function MoverProfileUpdateForm() {
                   error={errors.introduction}
                />
 
-               <hr className="border-line-100 m-0 border-t p-0 lg:hidden" />
+               {/* 통일된 hr: lg에서 숨김 */}
+               <hr className="border-line-100 my-6 w-full shrink-0 border-0 border-t lg:hidden" />
             </div>
 
             <div className="flex-1">
@@ -82,7 +83,7 @@ export default function MoverProfileUpdateForm() {
                   error={errors.description}
                />
 
-               <hr className="border-line-100 m-0 border-t p-0" />
+               <hr className="border-line-100 my-6 w-full shrink-0 border-0 border-t" />
 
                <ButtonInputField
                   name="serviceType"
@@ -96,7 +97,8 @@ export default function MoverProfileUpdateForm() {
                   }
                />
 
-               <hr className="border-line-100 m-0 mt-8 border-t p-0" />
+               {/* 기존 mt-8 대신 간격 통일 */}
+               <hr className="border-line-100 my-6 w-full shrink-0 border-0 border-t" />
 
                <ButtonInputField
                   name="serviceArea"
@@ -112,7 +114,7 @@ export default function MoverProfileUpdateForm() {
             </div>
          </div>
 
-         <div className="mt-17 flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse lg:gap-8">
+         <div className="mt-17 flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse lg:gap-18">
             <SolidButton disabled={!isValid || isLoading} type="submit">
                {isLoading ? t("updatingText") : t("updateButton")}
             </SolidButton>

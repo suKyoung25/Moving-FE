@@ -100,13 +100,13 @@ export default function BasicInfoForms() {
                         error={errors.newPasswordConfirmation?.message}
                      />
 
-                     <hr className="p-o border-line-100 my-8 border-t lg:hidden" />
+                     <hr className="my-4 border-t opacity-0 lg:hidden" />
                   </div>
                </>
             )}
          </div>
 
-         <div className="flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse lg:gap-8">
+         <div className="flex flex-col gap-2 lg:mt-16 lg:flex-row-reverse lg:gap-18">
             <SolidButton disabled={!isValid || isLoading} type="submit">
                {isLoading ? t("updating") : t("update")}
             </SolidButton>

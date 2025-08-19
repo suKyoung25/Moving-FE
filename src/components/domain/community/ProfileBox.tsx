@@ -7,16 +7,16 @@ import commentIcon from "@/assets/images/commentIcon.svg";
 import { useLocale, useTranslations } from "next-intl";
 
 interface ProfileBoxProps {
-   userNickname: string;
    date: Date;
+   userNickname: string;
    replyCount?: number;
    profileImg: string | null;
    isreply: boolean;
 }
 
 export default function ProfileBox({
-   userNickname,
    date,
+   userNickname,
    replyCount,
    profileImg,
    isreply,
@@ -36,7 +36,7 @@ export default function ProfileBox({
          </div>
          <div className="flex w-full items-center justify-between">
             <p className="text-14-semibold lg:text-18-semibold">
-               {userNickname}
+               {userNickname}님
             </p>
             <div>
                {isreply && (
