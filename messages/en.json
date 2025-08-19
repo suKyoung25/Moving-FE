@@ -275,23 +275,6 @@
          "removedFromFavorites": "Removed from favorites."
       },
       "goToLogin": "Go to Login",
-      "map": {
-         "mapSearchTitle": "Find Movers Near Me",
-         "searchPlaceholder": "Enter region name (e.g. Gangnam-gu, Seoul)",
-         "currentLocationBtn": "Go to Current Location",
-         "locationSearching": "Finding location...",
-         "mapLoadComplete": "Map loaded successfully",
-         "mapLoadFailed": "Map load failed",
-         "mapLoadFailedDesc": "Failed to load the map.",
-         "mapLoading": "Loading map...",
-         "refreshBtn": "Refresh",
-         "noMoversFound": "No movers found in this area",
-         "searchOtherArea": "Try searching other areas",
-         "kakaoApiKeyMissing": "Kakao Map API key is not configured.",
-         "moverDefaultName": "Mover",
-         "reviewCount": "reviews",
-         "kmUnit": "km"
-      },
       "accessibility": {
          "driverCard": "{name} driver card",
          "loading": "Loading...",

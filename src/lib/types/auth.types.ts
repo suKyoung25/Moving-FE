@@ -1,4 +1,3 @@
-//frontend auth.types.ts
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 // ✅ userType
@@ -45,11 +44,6 @@ export interface Mover extends BaseUser {
    isFavorite?: boolean;
    hasDesignatedRequest?: boolean;
    designatedEstimateStatus?: EstimateStatus | null;
-   // 위치 정보 추가
-   latitude?: number;
-   longitude?: number;
-   businessAddress?: string;
-   distance?: number; // 검색 위치로부터의 거리(km)
 }
 
 export type User = Client | Mover;

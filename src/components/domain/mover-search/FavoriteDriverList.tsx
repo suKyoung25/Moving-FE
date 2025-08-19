@@ -1,12 +1,6 @@
 "use client";
 
-import {
-   useCallback,
-   memo,
-   useMemo,
-   useTransition,
-   ComponentType,
-} from "react";
+import { useCallback, memo, useMemo, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MoverProfile from "@/components/common/MoverProfile";
@@ -27,7 +21,6 @@ interface FavoriteDriverListProps {
       favoriteCount: number,
    ) => void;
    refreshKey?: number;
-   LoadingSkeleton: ComponentType; // ✅ 스켈레톤 컴포넌트를 props로 받음
 }
 
 // 컴포넌트 외부로 이동
@@ -48,10 +41,45 @@ const VALID_CHIP_TYPES: ChipType[] = [
    "CONFIRMED",
 ];
 
+// ✅ 스켈레톤 컴포넌트 추가
+const FavoriteItemSkeleton = memo(function FavoriteItemSkeleton() {
+   return (
+      <div className="animate-pulse rounded-lg border border-gray-100 bg-white p-3 shadow">
+         <div className="mb-3 space-y-2">
+            <div className="bg-primary-blue-200 h-4 w-full rounded"></div>
+         </div>
+         <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-gray-200"></div>
+            <div className="flex-1 space-y-2">
+               <div className="h-4 w-1/2 rounded bg-gray-200"></div>
+               <div className="flex gap-4">
+                  <div className="h-3 w-12 rounded bg-gray-200"></div>
+               </div>
+            </div>
+            <div className="h-6 w-6 rounded bg-gray-200"></div>
+         </div>
+      </div>
+   );
+});
+
+const FavoriteLoadingSkeleton = memo(function FavoriteLoadingSkeleton() {
+   return (
+      <div className="mt-8 flex flex-col gap-4 rounded-lg">
+         <div className="border-b border-b-gray-100 pb-5">
+            <div className="h-6 w-32 rounded bg-gray-200"></div>
+         </div>
+         <div className="space-y-4">
+            <FavoriteItemSkeleton />
+            <FavoriteItemSkeleton />
+            <FavoriteItemSkeleton />
+         </div>
+      </div>
+   );
+});
+
 export default memo(function FavoriteDriverList({
    onFavoriteChange,
    refreshKey = 0,
-   LoadingSkeleton, // ✅ 부모에서 전달받은 스켈레톤 컴포넌트
 }: FavoriteDriverListProps) {
    const t = useTranslations("FavoriteMovers");
    const router = useRouter();
@@ -130,9 +158,9 @@ export default memo(function FavoriteDriverList({
    // ✅ 조건부 렌더링
    if (!shouldFetch) return null;
 
-   // ✅ 로딩 상태 - 부모에서 전달받은 스켈레톤 사용
+   // ✅ 로딩 상태 - 스켈레톤 사용
    if (isLoading) {
-      return <LoadingSkeleton />;
+      return <FavoriteLoadingSkeleton />;
    }
 
    if (isError) {
