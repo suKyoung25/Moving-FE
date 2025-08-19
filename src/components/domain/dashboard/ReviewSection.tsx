@@ -61,14 +61,18 @@ export default function DashboardReviewSection({
 
          let response;
          if (moverId) {
+            // 특정 기사님의 리뷰 조회 (공개용)
             response = await getMoverReviews(1, 20, moverId, locale);
          } else if (user?.userType === "mover") {
-            response = await getMoverReviews(1, 20, locale);
+            // 기사님 본인에게 달린 리뷰 조회 (moverId 없이 호출)
+            response = await getMoverReviews(1, 20, undefined, locale);
          } else if (user?.userType === "client") {
+            // 고객이 작성한 리뷰 조회
             response = await getMyReviews(1, 20, locale);
          }
 
          const reviewsData = response?.data?.reviews || response?.reviews || [];
+
          setReviews(reviewsData);
       } catch (err) {
          setError(err instanceof Error ? err.message : t("unknownError"));

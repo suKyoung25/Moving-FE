@@ -78,7 +78,7 @@ export default function FavoriteButton({
          <button
             onClick={handleClick}
             disabled={isLoading}
-            className={`flex w-13 items-center justify-center gap-2 rounded-lg border bg-gray-50 px-4 py-3 font-medium transition-colors lg:w-full ${
+            className={`border-line-100 flex w-13 items-center justify-center gap-2 rounded-lg border px-4 py-3 font-medium transition-colors lg:w-full ${
                isLoading
                   ? "cursor-not-allowed bg-gray-50 text-gray-400"
                   : "border-line-200 text-gray-700 hover:bg-gray-100"
@@ -91,7 +91,7 @@ export default function FavoriteButton({
                   className="h-6 w-8"
                />
             </span>
-            <span className="hidden lg:block">
+            <span className="text-16-bold hidden lg:block">
                {isLoading
                   ? t("loading")
                   : isFavorite

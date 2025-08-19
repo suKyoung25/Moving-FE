@@ -188,26 +188,49 @@ export default memo(function MoverDetail() {
 
    return (
       <div className="flex w-full flex-col gap-4 lg:gap-6">
-         {/* ✅ 모바일 레이아웃만 사용 (데스크탑 레이아웃 주석 처리됨) */}
-         <div className="flex flex-col gap-4">
-            <DriverCard mover={mover} onFavoriteChange={handleFavoriteChange} />
+         {/* PC: 메인 컨텐츠와 사이드바를 나란히 배치 */}
+         <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
+            {/* 메인 컨텐츠 */}
+            <div className="flex flex-col gap-4 lg:flex-1">
+               <DriverCard
+                  mover={mover}
+                  onFavoriteChange={handleFavoriteChange}
+               />
 
-            <div className="p-4">
-               <SocialShareGroup text={shareText} />
-               <div className="pt-5 lg:hidden">
-                  <LineDivider />
+               {/* 모바일에서만 SocialShareGroup 표시 */}
+               <div className="p-4 lg:hidden">
+                  <SocialShareGroup text={shareText} />
+                  <div className="pt-5">
+                     <LineDivider />
+                  </div>
+               </div>
+
+               <DetailSections mover={mover} />
+               <LineDivider />
+
+               <div className="p-4">
+                  <Suspense fallback={<ReviewSectionSkeleton />}>
+                     <DashboardReviewSection moverId={mover.id} />
+                  </Suspense>
                </div>
             </div>
 
-            <DetailSections mover={mover} />
-            <LineDivider />
-
-            <div className="p-4">
-               <Suspense fallback={<ReviewSectionSkeleton />}>
-                  <DashboardReviewSection moverId={mover.id} />
-               </Suspense>
+            {/* PC에서만 사이드바 표시 */}
+            <div className="hidden lg:block lg:w-90 lg:flex-shrink-0">
+               <div className="sticky top-8">
+                  <ActionButtons
+                     mover={mover}
+                     onDesignatedEstimateSuccess={
+                        handleDesignatedEstimateSuccess
+                     }
+                     onFavoriteChange={handleFavoriteChange}
+                  />
+               </div>
             </div>
+         </div>
 
+         {/* 모바일에서만 ActionButtons 표시 */}
+         <div className="lg:hidden">
             <ActionButtons
                mover={mover}
                onDesignatedEstimateSuccess={handleDesignatedEstimateSuccess}
