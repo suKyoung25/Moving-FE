@@ -49,7 +49,6 @@ export default function DashboardReviewSection({
    }, [reviews, moverId, user?.userType, t]);
 
    // 리뷰 데이터 페칭 최적화
-   // DashboardReviewSection 컴포넌트의 fetchReviews 함수 수정
    const fetchReviews = useCallback(async () => {
       if (!moverId && !user?.userType) {
          setLoading(false);
@@ -64,24 +63,14 @@ export default function DashboardReviewSection({
          if (moverId) {
             response = await getMoverReviews(1, 20, moverId, locale);
          } else if (user?.userType === "mover") {
-            response = await getMoverReviews(1, 20, undefined, locale);
+            response = await getMoverReviews(1, 20, locale);
          } else if (user?.userType === "client") {
             response = await getMyReviews(1, 20, locale);
          }
 
-         // 응답 구조 확인 및 데이터 추출
-         let reviewsData = [];
-         if (response?.data?.reviews) {
-            reviewsData = response.data.reviews;
-         } else if (response?.reviews) {
-            reviewsData = response.reviews;
-         } else if (Array.isArray(response)) {
-            reviewsData = response;
-         }
-
+         const reviewsData = response?.data?.reviews || response?.reviews || [];
          setReviews(reviewsData);
       } catch (err) {
-         console.error("fetchReviews Error:", err);
          setError(err instanceof Error ? err.message : t("unknownError"));
       } finally {
          setLoading(false);

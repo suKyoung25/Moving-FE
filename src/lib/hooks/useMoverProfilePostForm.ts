@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthFetchError, MoveType } from "../types";
 import {
    MoverProfileInput,
-   MoverProfileRequestInput,
    useMoverProfileSchemas,
 } from "../schemas/profile.schema";
 import updateMoverProfile from "../api/auth/requests/updateMoverProfile";
@@ -73,19 +72,14 @@ function useMoverProfilePostForm() {
          }
 
          // 이미지 처리 후 나머지 데이터 처리
-         const processedData: MoverProfileRequestInput = {
-            nickName: data.nickName,
-            career: Number(data.career),
-            introduction: data.introduction,
-            description: data.description,
-            serviceType: data.serviceType.map((type) => type as MoveType),
-            serviceArea: data.serviceArea,
-            image: data.image instanceof File ? imageUrl : data.image,
-            // 위치 정보 평면화
-            latitude: data.businessLocation?.latitude,
-            longitude: data.businessLocation?.longitude,
-            businessAddress: data.businessLocation?.address,
+         const processedData = {
+            ...data,
+
+            image: data.image instanceof File ? imageUrl : data.image, // 업로드된 이미지 URL 또는 undefined
+            career: Number(data.career), // string > number로 변환
+            serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
          };
+
          const res = await updateMoverProfile(processedData); //  프로필 생성과 수정 로직 하나로 통일 함
 
          if (res.isProfileCompleted) {

@@ -15,24 +15,13 @@ export async function getMoverReviews(
    let endpoint: string;
    let fetchFunction: typeof tokenFetch | typeof defaultFetch;
 
-   // 쿼리 파라미터 구성
-   const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-   });
-
-   // targetLang이 있을 때만 추가
-   if (targetLang) {
-      params.append("targetLang", targetLang);
-   }
-
    if (moverId) {
-      // 특정 기사의 리뷰 조회 (공개 API)
-      endpoint = `/reviews/mover/${moverId}?${params.toString()}`;
+      // 특정 기사의 리뷰 조회 (공개 API - 인증 불필요)
+      endpoint = `/reviews/mover/${moverId}?targetLang=${targetLang}&page=${page}&limit=${limit}`;
       fetchFunction = defaultFetch;
    } else {
-      // 본인의 리뷰 조회 (인증 API)
-      endpoint = `/reviews/mover?${params.toString()}`;
+      // 본인의 리뷰 조회 (인증 API - 인증 필요)
+      endpoint = `/reviews/mover?targetLang=${targetLang}&page=${page}&limit=${limit}`;
       fetchFunction = tokenFetch;
    }
 

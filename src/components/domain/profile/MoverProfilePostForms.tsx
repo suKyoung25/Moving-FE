@@ -6,7 +6,6 @@ import ImageInputField from "./ImageInputField";
 import GeneralInputField from "./GeneralInputField";
 import TextAreaInputField from "./TextAreaInputField";
 import ButtonInputField from "./ButtonInputField";
-import LocationInputField from "./LocationInputField";
 import SolidButton from "@/components/common/SolidButton";
 import { MoverProfileInput } from "@/lib/schemas/profile.schema";
 import { useTranslations } from "next-intl";
@@ -77,16 +76,6 @@ export default function MoverProfilePostForm() {
                   placeholder={t("introductionPlaceholder")}
                   register={register}
                   error={errors.introduction}
-               />
-
-               <hr className="border-line-100 m-0 border-t p-0" />
-
-               {/* 사업장 위치 입력 필드 추가 */}
-               <LocationInputField<MoverProfileInput>
-                  name="businessLocation"
-                  text={t("businessLocationLabel")}
-                  control={control}
-                  error={errors.businessLocation}
                />
 
                <hr className="border-line-100 m-0 border-t p-0 lg:hidden" />

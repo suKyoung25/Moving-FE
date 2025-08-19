@@ -8,7 +8,6 @@ import { AuthFetchError, Mover, MoveType } from "../types";
 import {
    MoverProfileInput,
    useMoverProfileSchemas,
-   MoverProfileRequestInput,
 } from "../schemas/profile.schema";
 import { useAuth } from "@/context/AuthContext";
 import { base64ToFile, extractRegionNames } from "../utils/profile.util";
@@ -44,11 +43,6 @@ function useMoverProfileUpdateForm() {
          description: "",
          serviceType: [],
          serviceArea: [],
-         businessLocation: {
-            latitude: undefined,
-            longitude: undefined,
-            address: "",
-         },
       },
    });
 
@@ -65,12 +59,6 @@ function useMoverProfileUpdateForm() {
             description: mover.description ?? "",
             serviceType: mover.serviceType ?? [],
             serviceArea: extractRegionNames(mover.serviceArea),
-            // 위치 정보 추가
-            businessLocation: {
-               latitude: mover.latitude,
-               longitude: mover.longitude,
-               address: mover.businessAddress || "",
-            },
          };
 
          reset(defaultValues);
@@ -112,18 +100,11 @@ function useMoverProfileUpdateForm() {
          }
 
          // 이미지 처리 후 나머지 데이터 처리
-         const processedData: MoverProfileRequestInput = {
-            nickName: data.nickName,
-            career: Number(data.career),
-            introduction: data.introduction,
-            description: data.description,
-            serviceType: data.serviceType.map((type) => type as MoveType),
-            serviceArea: data.serviceArea,
-            image: data.image instanceof File ? imageUrl : data.image,
-            // 위치 정보 평면화
-            latitude: data.businessLocation?.latitude,
-            longitude: data.businessLocation?.longitude,
-            businessAddress: data.businessLocation?.address,
+         const processedData = {
+            ...data,
+            image: data.image instanceof File ? imageUrl : data.image, // 업로드된 이미지 URL 또는 undefined
+            career: Number(data.career), // string > number로 변환
+            serviceType: data.serviceType.map((type) => type as MoveType), //string[] > MoveType[]
          };
 
          const res = await updateMoverProfile(processedData);
