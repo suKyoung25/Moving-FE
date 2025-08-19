@@ -19,6 +19,7 @@ export default async function page({
 
    const authorId = data.clientId || data.moverId;
 
+   console.log(data.userNickname);
    return (
       <div
          role="main"

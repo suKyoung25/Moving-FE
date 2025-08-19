@@ -17,6 +17,7 @@ export default function Community({
    replyCount,
    profileImg,
 }: CommunityProps) {
+   console.log(userNickname);
    return (
       <div className="cursor-pointer rounded-2xl px-3.5 py-4 shadow lg:px-6 lg:py-5">
          <p className="text-14-semibold md:text-18-semibold">{title}</p>

@@ -26,7 +26,7 @@ export default function MoverProfilePostForm() {
    return (
       <form
          onSubmit={handleSubmit(onSubmit)}
-         className="mt-6 flex w-full flex-col lg:mt-12"
+         className="mt-6 flex w-full flex-col lg:mt-12 [&_hr]:my-4"
          aria-labelledby="profile-form-title"
       >
          <h2 id="profile-form-title" className="sr-only">
@@ -35,8 +35,6 @@ export default function MoverProfilePostForm() {
 
          <div className="flex flex-col lg:flex-row lg:gap-18">
             <div className="flex flex-1 flex-col">
-               <hr className="border-line-100 m-0 border-t p-0" />
-
                <ImageInputField
                   labelId="image-label"
                   name="image"
@@ -106,7 +104,7 @@ export default function MoverProfilePostForm() {
                   }
                />
 
-               <hr className="border-line-100 mt-8 border-t p-0" />
+               <hr className="border-line-100 !my-6 border-t p-0 lg:!my-8" />
 
                <ButtonInputField
                   labelId="service-area-label"
