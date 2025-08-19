@@ -2,7 +2,7 @@
 
 # Moving
 
-<img width="3212" height="2023" alt="image" src="https://github.com/user-attachments/assets/a3260d6e-ac5c-4918-a846-bb25362c4798" />
+<img width="3212" height="2023" alt="image" src="https://github.com/user-attachments/assets/7515348e-4e38-42c9-a7c3-96c45524a490" />
 
 ---
 
@@ -62,9 +62,61 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
 - **실시간 채팅**: 고객과 기사의 실시간 소통
 
 ---
-## 기능 구현 영상 (이미지 클릭)
 
-[![시연 영상 (임시)](https://github.com/user-attachments/assets/4d1325db-e4a3-4e2b-a13e-13a9766e232e)](https://youtu.be/s__25g_tTy0)
+## 주요 기능
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">랜딩 및 문의하기</th>
+      <th align="center">기사님 찾기</th>
+      <th align="center">프로필 등록</th>
+      <th align="center">견적 요청</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/a7dc306f-fd4a-49a5-a78c-88b7523cf19b" alt="랜딩 및 문의하기" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/77e85b0f-6da1-4ffb-8e18-e5e86ca4c0b1" alt="기사님 찾기" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/6ff5b0ac-916e-4657-b865-1cf31c72daaf" alt="프로필 등록" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/6ae0fa3a-43b6-4fd5-b5f0-4363d3be046b" alt="견적 요청" width="200">
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+    <tr>
+      <th align="center">리뷰 작성</th>
+      <th align="center">견적 계산기</th>
+      <th align="center">실시간 채팅</th>
+      <th align="center">커뮤니티</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/07c810ea-87c8-4b07-a80a-e16b3fcfd602" alt="리뷰 작성" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/97374679-cf21-487b-ac21-29191689936a" alt="견적 계산기" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/c3a96807-55bf-4328-9b05-549f6e6f2f39" alt="실시간 채팅" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/8ff7abca-d4e5-4fca-8a39-5431a0587e2a" alt="커뮤니티" width="200">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 

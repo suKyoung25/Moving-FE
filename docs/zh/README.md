@@ -2,7 +2,7 @@
 
 # Moving
 
-<img width="3212" height="2023" alt="image" src="https://github.com/user-attachments/assets/a3260d6e-ac5c-4918-a846-bb25362c4798" />
+<img width="3212" height="2023" alt="image" src="https://github.com/user-attachments/assets/7515348e-4e38-42c9-a7c3-96c45524a490" />
 
 ---
 
@@ -27,10 +27,62 @@ Moving是一个智能搬家比较平台，帮助用户轻松比较多个司机�
 
 此外，从司机的角度来看，可以实现高效的客户匹配，提供透明的交易环境和便捷的服务体验。
 
-### 链接
+---
 
-- **团队Notion**: [前往](https://www.notion.so/4Team-Moving-Ops-Board-2153fde0e1948005ad04c1585430e77f)
-- **后端仓库**: [GitHub Repository](https://github.com/az0319h/6th-Moving-4Team-BE)
+## 주요 기능
+
+<table>
+  <thead>
+    <tr>
+      <th align="center">落地页及咨询</th>
+      <th align="center">寻找搬家公司</th>
+      <th align="center">资料注册</th>
+      <th align="center">报价请求</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/a7dc306f-fd4a-49a5-a78c-88b7523cf19b" alt="랜딩 및 문의하기" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/77e85b0f-6da1-4ffb-8e18-e5e86ca4c0b1" alt="기사님 찾기" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/6ff5b0ac-916e-4657-b865-1cf31c72daaf" alt="프로필 등록" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/6ae0fa3a-43b6-4fd5-b5f0-4363d3be046b" alt="견적 요청" width="200">
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+    <tr>
+      <th align="center">撰写评价</th>
+      <th align="center">报价计算器</th>
+      <th align="center">实时聊天</th>
+      <th align="center">社区</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/07c810ea-87c8-4b07-a80a-e16b3fcfd602" alt="리뷰 작성" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/97374679-cf21-487b-ac21-29191689936a" alt="견적 계산기" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/c3a96807-55bf-4328-9b05-549f6e6f2f39" alt="실시간 채팅" width="200">
+      </td>
+      <td align="center">
+        <img src="https://github.com/user-attachments/assets/8ff7abca-d4e5-4fca-8a39-5431a0587e2a" alt="커뮤니티" width="200">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
