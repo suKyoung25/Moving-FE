@@ -461,130 +461,68 @@ sendMessage();
 
 ```
 src/
-├── app/                           # Next.js App Router
-│   ├── [locale]/                 # 다국어 라우팅 (ko, en, zh)
-│   │   ├── (marketing)/          # 마케팅 페이지 (랜딩 페이지)
-│   │   ├── (with-guest)/         # 게스트 전용 페이지 (로그인/회원가입)
-│   │   ├── (with-public)/        # 공개 페이지
-│   │   │   ├── community/        # 커뮤니티
-│   │   │   ├── estimate-calculator/ # AI 견적 계산기
-│   │   │   ├── mover-search/     # 기사님 검색
-│   │   │   └── support/          # 고객 지원
-│   │   └── (with-protected)/     # 인증 필요 페이지
-│   │       └── dashboard/        # 대시보드 (기사님용)
-│   │       └── favorite-movers/  # 즐겨찾기
-│   │       └── my-quotes/        # 내 견적 관리
-│   │       └── profile/          # 프로필 관리
-│   │       └── received-requests/# 받은 요청 관리
-│   │       └── request/          # 견적 요청
-│   │       └── reviews/          # 리뷰 관리
-│   └── api/                      # API 라우트
-│       ├── auth/
-│       ├── google-maps/
-│       ├── openai/
-│       └── sentry-example-api/
-├── components/                   # 재사용 가능한 컴포넌트
-│   ├── common/                   # 공통 컴포넌트
-│   │   ├── Chatbutton.tsx
-│   │   ├── ConfirmModal.tsx
-│   │   ├── EmptyState.tsx
-│   │   ├── Pagination.tsx
-│   │   ├── Spinner.tsx
-│   │   └── ToastPopup.tsx
-│   ├── domain/                   # 도메인별 컴포넌트
-│   │   ├── auth/
-│   │   ├── community/
-│   │   ├── dashboard/
-│   │   ├── estimate-calculator/
-│   │   ├── favorite-movers/
-│   │   ├── marketing/
-│   │   ├── mover-search/
-│   │   ├── my-quotes/
-│   │   ├── profile/
-│   │   ├── received-requests/
-│   │   ├── request/
-│   │   ├── reviews/
-│   │   └── support/
-│   ├── effects/                  # 애니메이션 효과
-│   │   ├── PaperPlane.tsx
-│   │   └── *.json
-│   └── layout/                   # 레이아웃 컴포넌트
-│       ├── ChatRoom.tsx
-│       ├── ChatRoomList.tsx
-│       ├── DefaultLayout.tsx
-│       ├── Header.tsx
-│       ├── PageTitle.tsx
-│       └── SupportHub.tsx
-├── lib/                         # 유틸리티 및 설정
-│   ├── actions/                 # 서버 액션
-│   │   ├── favorite.action.ts
-│   │   ├── request.action.ts
-│   │   └── support.action.ts
-│   ├── api/                     # API 관련 함수
-│   │   ├── auth/
-│   │   ├── community/
-│   │   ├── estimate/
-│   │   ├── estimate-calculator/
-│   │   ├── favorite/
-│   │   ├── mover/
-│   │   ├── notification/
-│   │   ├── request/
-│   │   └── review/
-│   ├── firebase/                # Firebase 설정
-│   │   ├── firebase.ts
-│   │   ├── firebaseChat.ts
-│   │   └── createChatRoomIfNotExists.ts
-│   ├── hooks/                   # 커스텀 훅
-│   │   ├── useAuthError.ts
-│   │   ├── useClientProfilePostForm.ts
-│   │   └── useClientProfileUpdateForm.ts
-│   ├── schemas/                 # Zod 스키마
-│   │   ├── auth.schema.ts
-│   │   ├── client.schema.ts
-│   │   ├── dashboard.schema.ts
-│   │   └── common/
-│   ├── types/                   # TypeScript 타입 정의
-│   │   ├── auth.types.ts
-│   │   ├── client.types.ts
-│   │   ├── community.types.ts
-│   │   ├── estimate.types.ts
-│   │   ├── firebase.types.ts
-│   │   ├── mover.types.ts
-│   │   ├── notification.types.ts
-│   │   ├── request.types.ts
-│   │   └── review.types.ts
-│   └── utils/                   # 유틸리티 함수
-│       ├── address.util.ts
-│       ├── ai.utils.ts
-│       ├── auth.util.ts
-│       ├── date.util.ts
-│       ├── file.util.ts
-│       ├── format.util.ts
-│       ├── image.util.ts
-│       ├── notification.util.ts
-│       ├── price.util.ts
-│       ├── query.util.ts
-│       ├── rating.util.ts
-│       ├── search.util.ts
-│       └── validation.util.ts
-├── context/                     # React Context
-│   ├── AuthContext.tsx
-│   ├── ChatContext.tsx
-│   ├── FormWizardContext.tsx
-│   ├── NotificationContext.tsx
-│   ├── SupportHubContext.tsx
-│   └── ToastConText.tsx
-├── constants/                   # 상수 정의
-│   ├── index.ts
-│   ├── mover.constants.ts
-│   ├── profile.constants.ts
-│   └── received-requests.constants.ts
-├── i18n/                       # 국제화 설정
-│   ├── navigation.ts
-│   ├── request.ts
-│   └── routing.ts
-└── assets/                     # 정적 자산
-    └── images/
+├─ app/
+│  ├─ [locale]/                       # 다국어 라우트 루트 (ko, en 등)
+│  │  ├─ (marketing)/                 # 퍼블릭/마케팅 페이지 그룹
+│  │  ├─ (with-guest)/                # 비로그인 전용 페이지 그룹
+│  │  ├─ (with-protected)/            # 로그인 보호 페이지 그룹
+│  │  ├─ (with-public)/               # 로그인 여부 무관 공용 페이지 그룹
+│  │  ├─ [...rest]/                   # 기타/와일드카드 라우팅
+│  │  ├─ layout.tsx                   # locale 범위 레이아웃
+│  │  └─ not-found.tsx                # locale 범위 404
+│  ├─ api/                            # Next.js App Router API Routes
+│  ├─ sentry-example-page/            # 센트리 예제 페이지(데모/테스트)
+│  ├─ global-error.tsx                # 전역 에러 바운더리
+│  ├─ globals.css                     # 전역 스타일
+│  ├─ layout.tsx                      # 앱 루트 레이아웃
+│  └─ providers.tsx                   # 전역 Provider 등록 (i18n, Query, Auth 등)
+│
+├─ assets/
+│  └─ images/                         # 정적 이미지 리소스
+│
+├─ components/
+│  ├─ common/                         # 공용 UI 컴포넌트(버튼, 모달, 스켈레톤 등)
+│  ├─ layout/                         # 레이아웃/헤더/탭 등 페이지 공통 레이아웃 요소
+│  └─ domain/                         # 도메인별 컴포넌트
+│     ├─ community/
+│     ├─ dashboard/
+│     ├─ estimate-calculator/
+│     ├─ mover-search/
+│     ├─ my-quotes/
+│     ├─ profile/
+│     ├─ received-requests/
+│     └─ reviews/
+│
+├─ constants/                         # 상수, enum, 맵핑(예: areaMapping)
+│
+├─ context/                           # React Context (AuthContext, NotificationContext 등)
+│
+├─ i18n/                              # 다국어 메시지/설정(next-intl)
+│
+├─ lib/
+│  ├─ actions/                        # (남아있다면) 서버 액션/이전 레거시 액션
+│  ├─ api/                            # API 호출 모듈
+│  │  ├─ auth/
+│  │  │  └─ requests/                 # auth 도메인 요청 함수들 (createSignIn 등)
+│  │  ├─ community/
+│  │  │  └─ requests/
+│  │  ├─ estimate/
+│  │  │  └─ requests/
+│  │  ├─ favorite/
+│  │  │  └─ requests/
+│  │  ├─ mover/
+│  │  │  └─ requests/
+│  │  ├─ notification/
+│  │  │  └─ requests/
+│  │  └─ review/
+│  │     └─ requests/
+│  │  # 각 도메인에 query.ts / mutation.ts 가 있으면 훅/쿼리 키 정리
+│  ├─ firebase/                       # Firebase 초기화 및 관련 유틸
+│  ├─ globals/                        # 전역 타입 선언(.d.ts) 등
+│  ├─ hooks/                          # 커스텀 훅(useXXXForm, useInfiniteScroll 등)
+│  ├─ schemas/                        # Zod 등 스키마(예: client.schema.ts ...)
+│  ├─ types/                          # 타입 정의 (auth.type.ts, mover.type.ts ...)
+│  └─ utils/                          # 유틸 함수 (address.util.ts, fetchClient.util.ts ...)
 ```
 
 ---
