@@ -5,11 +5,11 @@ import profile from "@/assets/images/profileIcon.svg";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useGetReplies } from "@/lib/api/community/query";
-import { ReplyWithDetails } from "@/lib/types/community.types";
 import ReplyNicknameBox from "./ReplyNicknameBox";
 import { useLocale, useTranslations } from "next-intl";
 import { enUS } from "date-fns/locale";
 import { zhCN } from "date-fns/locale";
+import { ReplyWithDetails } from "@/lib/types";
 
 export default function ReplyBox({
    community,

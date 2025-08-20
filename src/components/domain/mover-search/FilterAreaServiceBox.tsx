@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Dropdown from "./Dropdown";
-import { DropdownOption } from "@/lib/types/mover.types";
+import { DropdownOption } from "@/lib/types";
 
 interface FilterAreaServiceBoxProps {
    areaOptions: DropdownOption[];

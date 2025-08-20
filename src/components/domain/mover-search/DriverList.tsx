@@ -2,10 +2,9 @@
 
 import { useState, useEffect, useCallback, memo, useRef } from "react";
 import DriverCard from "./DriverCard";
-import { GetMoversParams } from "@/lib/types/mover.types";
 import { areaMapping } from "@/constants/mover.constants";
 import { tokenSettings } from "@/lib/utils/auth.util";
-import type { Mover } from "@/lib/types";
+import type { GetMoversParams, Mover } from "@/lib/types";
 import { useInfiniteScroll } from "@/lib/hooks/useInfiniteScroll";
 import { useLocale, useTranslations } from "next-intl";
 import DriverCardSkeleton from "./DriverCardSkeleton";

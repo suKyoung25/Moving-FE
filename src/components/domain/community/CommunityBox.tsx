@@ -7,10 +7,10 @@ import SearchBox from "./SearchBox";
 import { useGetAllCommunity } from "@/lib/api/community/query";
 import Pagination from "@/components/common/Pagination";
 import { useEffect, useState } from "react";
-import { CommunityWithDetails } from "@/lib/types/community.types";
 import { useLocale, useTranslations } from "next-intl";
 import CommunitySkeleton from "./CommunitySkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
+import { CommunityWithDetails } from "@/lib/types";
 
 export default function CommunityBox() {
    const t = useTranslations("Community");

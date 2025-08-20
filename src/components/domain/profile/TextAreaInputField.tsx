@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { FieldValue, InputFieldProps } from "@/lib/types/mover.types";
 import ErrorText from "../auth/ErrorText";
+import { FieldValue, InputFieldProps } from "@/lib/types";
 
 //상세 설명 (textArea) input인 경우
 function TextAreaInputField<T extends Record<string, FieldValue>>({

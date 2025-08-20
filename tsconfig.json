@@ -29,7 +29,8 @@
       "**/*.tsx",
       ".next/types/**/*.ts",
       "src/app/[locale]/(with-guest)/login/client-login",
-      "src/lib/globals"
+      "src/lib/globals",
+      "src/lib/types/fefef"
    ],
    "exclude": ["node_modules"]
 }

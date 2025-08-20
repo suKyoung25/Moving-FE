@@ -2,7 +2,6 @@
 
 // import AuthSpinner from "@/components/spinner/AuthSpinner";
 import authApi from "@/lib/api/auth/requests/getMe";
-import { User } from "@/lib/types/auth.types";
 import { hasToken, tokenSettings } from "@/lib/utils/auth.util";
 import isFetchError from "@/lib/utils/fetch-error.util";
 import {
@@ -15,6 +14,7 @@ import {
 } from "react";
 import { delay } from "../../delay";
 import Spinner from "@/components/common/Spinner";
+import { User } from "@/lib/types";
 
 interface AuthContextType {
    user: User | null;

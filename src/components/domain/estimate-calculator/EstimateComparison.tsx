@@ -1,13 +1,10 @@
 import React from "react";
-import {
-   PriceBreakdown,
-   AIEstimateType,
-} from "@/lib/types/estimate-calculator.types";
 import { formatPrice } from "@/lib/utils/price.utils";
 import { FaEquals } from "react-icons/fa6";
 import { IoCaretDown, IoCaretUp } from "react-icons/io5";
 import LineDivider from "@/components/common/LineDivider";
 import { useTranslations } from "next-intl";
+import { AIEstimateType, PriceBreakdown } from "@/lib/types";
 
 interface EstimateComparisonProps {
    basicEstimate: PriceBreakdown;

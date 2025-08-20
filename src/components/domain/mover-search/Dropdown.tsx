@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState, memo, useCallback, useMemo } from "react";
 import chevronDownBlackIcon from "@/assets/images/chevronDownBlackIcon.svg";
 import chevronDownBlueIcon from "@/assets/images/chevronDownBlueIcon.svg";
-import { DropdownOption } from "@/lib/types/mover.types";
+import { DropdownOption } from "@/lib/types";
 
 interface DropdownProps {
    label: string;
