@@ -1,4 +1,4 @@
-import { UpdateReviewDto } from "@/lib/schemas/reviews.schema";
+import { UpdateReviewDto } from "@/lib/schemas";
 import { tokenFetch } from "@/lib/utils";
 
 export async function updateReview({

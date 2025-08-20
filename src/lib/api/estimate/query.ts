@@ -1,9 +1,9 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getRejectedEstimates } from "./requests/getRejectedEstimates";
 import { getSentEstimates } from "./requests/getSentEstimates";
-import { fetchClientPendingQuotes } from "./getClientPendingQuote";
-import { fetchClientReceivedQuotes } from "./getClientReceivedQuote";
 import { getRequests } from "./requests/getClientRequest";
+import { fetchClientPendingQuotes } from "./requests/getClientPendingQuote";
+import { fetchClientReceivedQuotes } from "./requests/getClientReceivedQuote";
 
 export function useRejectedEstimates(page: number, targetLang: string) {
    return useQuery({

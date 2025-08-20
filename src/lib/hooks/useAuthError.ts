@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 

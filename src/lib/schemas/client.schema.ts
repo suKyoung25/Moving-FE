@@ -1,6 +1,6 @@
 import z from "zod";
-import { useAuthSchemas } from "./auth.schema";
 import { useTranslations } from "next-intl";
+import { useAuthSchemas } from "./auth.schema";
 
 export function useClientProfileSchemas() {
    const t = useTranslations("Validations");

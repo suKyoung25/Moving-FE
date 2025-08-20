@@ -10,13 +10,13 @@ import React, {
    useRef,
 } from "react";
 import { Notification } from "@/lib/types/notification.types";
-import {
-   connectSSE,
-   getNotifications,
-} from "@/lib/api/notification/notification";
 import { useAuth } from "./AuthContext";
 import { useLocale } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+   connectSSE,
+   getNotifications,
+} from "@/lib/api/notification/requests/notification";
 
 interface NotificationContextValue {
    realtimeNotifications: Notification[];

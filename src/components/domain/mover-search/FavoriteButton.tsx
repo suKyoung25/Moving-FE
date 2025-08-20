@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 import { Mover } from "@/lib/types";
 import heart from "@/assets/images/likeFilledIcon.svg";
 import inActiveHeart from "@/assets/images/likeOutlineIcon.svg";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { useTranslations } from "next-intl";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import LoginRequiredModal from "./LoginRequiredModal";
+import { toggleFavoriteMover } from "@/lib/api/mover/requests/favoriteMover";
 
 interface FavoriteButtonProps {
    mover: Mover;

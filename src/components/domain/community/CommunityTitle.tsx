@@ -1,8 +1,9 @@
+
 "use client";
 
 import ConfirmModal from "@/components/common/ConfirmModal";
 import { useAuth } from "@/context/AuthContext";
-import { deleteCommunity } from "@/lib/api/community/deleteCommunity";
+import { deleteCommunity } from "@/lib/api/community/requests/deleteCommunity";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

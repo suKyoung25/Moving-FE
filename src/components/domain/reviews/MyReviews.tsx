@@ -18,7 +18,7 @@ import { formatIsoToYMD } from "@/lib/utils";
 import { MyReview } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMyReviews } from "@/lib/api/review/query";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { useQueryClient } from "@tanstack/react-query";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import MyReviewsSkeleton from "./MyReviewsSkeleton";

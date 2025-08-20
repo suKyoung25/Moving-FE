@@ -2,8 +2,7 @@
 
 import { cookies } from "next/headers";
 import { CreateRequestDto } from "../types";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+import { BASE_URL } from "../utils";
 
 export async function createRequestAction(requestData: CreateRequestDto) {
    try {

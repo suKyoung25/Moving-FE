@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { MyReviewsResponse, WritableReviewsResponse } from "@/lib/types";
-import { getWritableReviews } from "./reviews/getWritableReviews";
-import { getMyReviews } from "./reviews/getMyReviews";
+import { getWritableReviews } from "./requests/getWritableReviews";
+import { getMyReviews } from "./requests/getMyReviews";
 
 interface UseReviewsParams {
    page: number;

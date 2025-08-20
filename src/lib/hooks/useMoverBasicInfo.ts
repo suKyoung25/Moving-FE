@@ -11,7 +11,7 @@ import {
    useMoverBasicInfoSchema,
 } from "../schemas/dashboard.schema";
 import updateMoverBasicInfo from "../api/auth/requests/updateMoverInfo";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 
 function useMoverBasicInfo() {
    const { user, refreshUser } = useAuth();

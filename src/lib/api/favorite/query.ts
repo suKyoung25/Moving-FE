@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { FavoriteMoversResponse } from "@/lib/types";
-import { getFavoriteMovers } from "./favorites/getFavoriteMovers";
+import { getFavoriteMovers } from "./requests/getFavoriteMovers";
 
 interface UseFavoriteMoversParams {
    page: number;

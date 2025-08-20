@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, memo, useRef } from "react";
 import DriverCard from "./DriverCard";
-import { getMovers } from "@/lib/api/mover/getMover";
 import { GetMoversParams } from "@/lib/types/mover.types";
 import { areaMapping } from "@/constants/mover.constants";
 import { tokenSettings } from "@/lib/utils/auth.util";
@@ -12,6 +11,7 @@ import { useLocale, useTranslations } from "next-intl";
 import DriverCardSkeleton from "./DriverCardSkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
 import SearchSpinner from "./MoverSearchSpinner";
+import { getMovers } from "@/lib/api/mover/requests/getMover";
 
 interface DriverListProps {
    filters: {

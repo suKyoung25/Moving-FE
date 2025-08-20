@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getNotifications } from "./notification";
+import { getNotifications } from "./requests/notification";
 
 export function useNotificationsQuery(targetLang: string) {
    return useInfiniteQuery({

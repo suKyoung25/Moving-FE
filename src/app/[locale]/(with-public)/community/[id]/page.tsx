@@ -2,9 +2,9 @@ import PageTitle from "@/components/layout/PageTitle";
 import CommentInput from "@/components/domain/community/CommentInput";
 import ProfileBox from "@/components/domain/community/ProfileBox";
 import ReplyBox from "@/components/domain/community/ReplyBox";
-import getCommunity from "@/lib/api/community/getCommunity";
 import CommunityTitle from "@/components/domain/community/CommunityTitle";
 import { getTranslations } from "next-intl/server";
+import getCommunity from "@/lib/api/community/requests/getCommunity";
 
 export default async function CommunityDetailPage({
    params,

@@ -11,7 +11,7 @@ import { AuthFetchError } from "../types";
 import { ServiceType } from "../types/client.types";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { tokenSettings } from "../utils";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { useTranslations } from "next-intl";
 import { base64ToFile } from "../utils/profile.util";
 

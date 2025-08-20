@@ -7,7 +7,7 @@ import { NotificationProvider } from "@/context/NotificationContext";
 import RouterGuardLayout from "@/components/layout/RouterGuardLayout";
 import { FormWizardProvider } from "@/context/FormWizardContext";
 import ToastContainer from "@/components/common/ToastContainer";
-import { ToastProvider } from "@/context/ToastConText";
+import { ToastProvider } from "@/context/ToastContext";
 import { ChatProvider } from "@/context/ChatContext";
 import { SupportHubProvider } from "@/context/SupportHubContext";
 

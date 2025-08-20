@@ -5,7 +5,7 @@ import { useState } from "react";
 import deleteUserInfo from "../api/auth/requests/deleteUserInfo";
 import { AuthFetchError, UserType } from "../types";
 import { useAuth } from "@/context/AuthContext";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { updateUserStatusOnWithdraw } from "../firebase/firebaseChat";
 
 export function useUserWithdrawForm(onSuccess: () => void) {

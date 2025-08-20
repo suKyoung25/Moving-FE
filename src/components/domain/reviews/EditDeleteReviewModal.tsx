@@ -5,10 +5,6 @@ import { ReviewFormBody } from "./ReviewFormBody";
 import { WritableReview, MyReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
 import { useForm } from "react-hook-form";
-import {
-   UpdateReviewDto,
-   useReviewSchemas,
-} from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { extractErrorMessage } from "@/lib/utils";
 import { useTranslations } from "next-intl";
@@ -16,6 +12,7 @@ import { useUpdateReview, useDeleteReview } from "@/lib/api/review/mutation";
 import SolidButton from "@/components/common/SolidButton";
 import ConfirmModal from "@/components/common/ConfirmModal";
 import updateProfileImage from "@/lib/api/auth/requests/updateProfileImage";
+import { UpdateReviewDto, useReviewSchemas } from "@/lib/schemas";
 
 interface EditDeleteReviewModalProps {
    isOpen: boolean;

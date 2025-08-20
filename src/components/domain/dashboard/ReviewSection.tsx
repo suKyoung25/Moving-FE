@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { getMyReviews } from "@/lib/api/review/reviews/getMyReviews";
-import { getMoverReviews } from "@/lib/api/review/reviews/getMoverReviews";
+import { getMyReviews } from "@/lib/api/review/requests/getMyReviews";
+import { getMoverReviews } from "@/lib/api/review/requests/getMoverReviews";
 import { useAuth } from "@/context/AuthContext";
 import ReviewBreakdown from "./ReviewBreakdown";
 import ReviewStar from "./ReviewStar";

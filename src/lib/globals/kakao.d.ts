@@ -1,5 +1,3 @@
-export {};
-
 declare global {
    interface Window {
       Kakao: {
@@ -29,3 +27,5 @@ declare global {
       };
    }
 }
+
+export {};

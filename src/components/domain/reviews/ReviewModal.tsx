@@ -5,12 +5,12 @@ import { ReviewFormBody } from "./ReviewFormBody";
 import { WritableReview } from "@/lib/types";
 import InputModal from "@/components/common/InputModal";
 import { useForm } from "react-hook-form";
-import { useReviewSchemas } from "@/lib/schemas/reviews.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { extractErrorMessage } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useCreateReview } from "@/lib/api/review/mutation";
 import updateProfileImage from "@/lib/api/auth/requests/updateProfileImage";
+import { useReviewSchemas } from "@/lib/schemas";
 
 interface ReviewModalProps {
    isOpen: boolean;
