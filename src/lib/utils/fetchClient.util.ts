@@ -7,7 +7,7 @@
  */
 
 import { tokenSettings } from "./auth.util";
-import isFetchError from "./fetch-error.util";
+import isFetchError from "./fetchError.util";
 
 // ✅ 기본 url : 환경 변수 설정해서 쓰세요.
 export const BASE_URL =

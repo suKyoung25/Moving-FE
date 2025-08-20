@@ -1,9 +1,9 @@
-import { BASE_URL } from "./fetch-client";
+import { BASE_URL } from "./fetchClient.util";
 import {
    clearServerToken,
    getServerToken,
    setServerToken,
-} from "./server-token.util";
+} from "./serverToken.util";
 
 // 종합 토큰 설정
 export const tokenSettings = {

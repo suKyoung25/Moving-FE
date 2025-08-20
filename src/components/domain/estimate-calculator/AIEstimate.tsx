@@ -1,13 +1,13 @@
 import React from "react";
 import { HiSparkles } from "react-icons/hi";
 import { AIEstimateType } from "@/lib/types";
-import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import starIcon from "@/assets/images/starFilledIcon.svg";
 import { IoRefresh } from "react-icons/io5";
 import LineDivider from "@/components/common/LineDivider";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useTranslations } from "next-intl";
+import { formatPrice } from "@/lib/utils/price.util";
 
 interface AIEstimateProps {
    aiQuote: AIEstimateType | null;

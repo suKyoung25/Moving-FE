@@ -4,7 +4,6 @@ import React, { useState, useCallback } from "react";
 import { HiCalculator } from "react-icons/hi";
 import { FormData, AIEstimateType } from "@/lib/types";
 import { generateAIEstimate } from "@/lib/api/estimate-calculator/requests/generateAIEstimate";
-import { calculateBasicEstimate } from "@/lib/utils";
 import MoveTypeSelector from "./MoveTypeSelector";
 import AddressInput from "./AddressInput";
 import AdditionalInfo from "./AdditionalInfo";
@@ -17,6 +16,7 @@ import Image from "next/image";
 import LineDivider from "@/components/common/LineDivider";
 import { useToast } from "@/context/ToastContext";
 import { useTranslations } from "next-intl";
+import { calculateBasicEstimate } from "@/lib/utils/price.util";
 
 export default function Calculator() {
    const t = useTranslations("Calculator");

@@ -1,4 +1,4 @@
-import { tokenFetch } from "@/lib/utils/fetch-client";
+import { tokenFetch } from "@/lib/utils";
 import { delay } from "../../../../../delay";
 interface PageParms {
    cursor?: string;

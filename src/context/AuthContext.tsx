@@ -3,7 +3,6 @@
 // import AuthSpinner from "@/components/spinner/AuthSpinner";
 import authApi from "@/lib/api/auth/requests/getMe";
 import { hasToken, tokenSettings } from "@/lib/utils/auth.util";
-import isFetchError from "@/lib/utils/fetch-error.util";
 import {
    createContext,
    useCallback,
@@ -15,6 +14,7 @@ import {
 import { delay } from "../../delay";
 import Spinner from "@/components/common/Spinner";
 import { User } from "@/lib/types";
+import isFetchError from "@/lib/utils/fetchError.util";
 
 interface AuthContextType {
    user: User | null;
