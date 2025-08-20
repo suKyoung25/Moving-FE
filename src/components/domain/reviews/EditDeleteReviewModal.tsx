@@ -229,7 +229,7 @@ export default function EditDeleteReviewModal({
             )}
             <SolidButton
                type="button"
-               className="mt-2 w-full bg-red-500"
+               className="mt-6 w-full bg-red-500 hover:bg-red-600"
                disabled={loading}
                onClick={openDeleteConfirmModal}
                aria-label={t("deleteReview")}
