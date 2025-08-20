@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import SentQuotesList from "@/components/domain/my-quotes/SentQuotesList";
 import RejectedRequestsList from "@/components/domain/my-quotes/RejectedRequestsList";
 
-export default function Page() {
+export default function MoverEstimatesPage() {
    const { user } = useAuth();
    const router = useRouter();
    const searchParams = useSearchParams();

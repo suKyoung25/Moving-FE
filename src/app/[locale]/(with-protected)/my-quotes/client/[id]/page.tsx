@@ -11,7 +11,7 @@ import ConfirmedButton from "@/components/domain/my-quotes/ConfirmedButton";
 import { useTranslations } from "next-intl";
 import Spinner from "@/components/common/Spinner";
 
-export default function MyQuotesDetailPage({
+export default function ClientEstimatesDetailPage({
    params,
 }: {
    params: Promise<{ id: string; locale: string }>;

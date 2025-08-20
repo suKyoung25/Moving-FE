@@ -8,7 +8,7 @@ type PageProps = {
 };
 
 // 내 견적 관리
-export default async function Page({ searchParams }: PageProps) {
+export default async function ClientEstimatesPage({ searchParams }: PageProps) {
    const { tab } = await searchParams;
    const activeTab = tab === "3" ? "3" : tab === "2" ? "2" : "1";
 

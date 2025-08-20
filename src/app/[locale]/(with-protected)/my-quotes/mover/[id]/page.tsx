@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import SentQuoteDetail from "@/components/domain/my-quotes/SentQuoteDetail";
 
-export default async function Page({
+export default async function MoverEstimatesDetailPage({
    params,
 }: {
    params: Promise<{ locale: string; id: string }>;
