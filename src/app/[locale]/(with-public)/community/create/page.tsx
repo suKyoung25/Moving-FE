@@ -18,7 +18,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function CreateCommunity() {
+export default function CreateCommunityPage() {
    const t = useTranslations("Community.createPost");
    const router = useRouter();
    const { user } = useAuth();

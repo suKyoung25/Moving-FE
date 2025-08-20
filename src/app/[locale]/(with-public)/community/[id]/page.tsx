@@ -6,7 +6,7 @@ import getCommunity from "@/lib/api/community/getCommunity";
 import CommunityTitle from "@/components/domain/community/CommunityTitle";
 import { getTranslations } from "next-intl/server";
 
-export default async function page({
+export default async function CommunityDetailPage({
    params,
 }: {
    params: Promise<{ id: string; locale: string }>;

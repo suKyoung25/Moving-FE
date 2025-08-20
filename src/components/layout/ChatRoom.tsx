@@ -144,7 +144,7 @@ export default function ChatRoom() {
    useEffect(() => {
       setIsInRoom(true);
 
-      // ✅ 현재 채팅방 ID 설정 (알림음 방지용)
+      // 현재 채팅방 ID 설정 (알림음 방지용)
       if (chatId) {
          setCurrentChatId(chatId);
       }

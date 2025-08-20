@@ -79,25 +79,6 @@ export default function SupportHub() {
       return () => unsubscribe();
    }, [user?.id]);
 
-   // const handleAudioAllow = async () => {
-   //    const success = await initializeAudioContext();
-   //    if (success) {
-   //       localStorage.setItem("audioPermissionAsked", "true");
-   //       localStorage.setItem("audioPermissionGranted", "true");
-   //    }
-   //    setShowAudioModal(false);
-   // };
-
-   // const handleAudioDeny = () => {
-   //    localStorage.setItem("audioPermissionAsked", "true");
-   //    localStorage.setItem("audioPermissionGranted", "false");
-   //    setShowAudioModal(false);
-   // };
-
-   // const handleAudioLater = () => {
-   //    setShowAudioModal(false);
-   // };
-
    // 버튼 클릭 시 오디오 초기화 + 패널 토글
    const handleButtonClick = async () => {
       await handleUserInteraction();

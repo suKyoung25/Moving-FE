@@ -1,7 +1,7 @@
 import ReceivedRequestDetail from "@/components/domain/received-requests/ReceivedRequestDetail";
 import { notFound } from "next/navigation";
 
-export default async function Page({
+export default async function ReceivedRequestDetailPage({
    params,
 }: {
    params: Promise<{ id: string; locale: string }>;
