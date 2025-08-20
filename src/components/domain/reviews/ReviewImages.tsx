@@ -166,9 +166,10 @@ export default function ReviewImages({
                         <RiCloseLargeLine size={40} />
                      </button>
                   )} */}
+
                   {/* 메인 이미지 */}
-                  <div className="flex h-full items-center justify-center px-16">
-                     <div className="relative max-h-[80vh] max-w-full">
+                  <div className="flex h-full items-center justify-center px-4 py-20 md:px-16">
+                     <div className="relative max-h-full max-w-full">
                         <Image
                            src={images[currentIndex]}
                            alt={t("enlargedReviewImage")}
@@ -179,6 +180,7 @@ export default function ReviewImages({
                         />
                      </div>
                   </div>
+
                   {/* 이전/다음 버튼 (이미지가 1개보다 많을 때만 표시) */}
                   {images.length > 1 && (
                      <>
