@@ -1,4 +1,4 @@
-import { tokenFetch } from "@/lib/utils/fetch-client";
+import { tokenFetch } from "@/lib/utils";
 
 const authApi = {
    // 사용자 호출

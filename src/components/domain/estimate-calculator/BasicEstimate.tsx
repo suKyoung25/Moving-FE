@@ -1,8 +1,8 @@
 import React from "react";
 import { PriceBreakdown } from "@/lib/types";
-import { formatPrice } from "@/lib/utils";
 import LineDivider from "@/components/common/LineDivider";
 import { useTranslations } from "next-intl";
+import { formatPrice } from "@/lib/utils/price.util";
 
 interface BasicEstimateProps {
    breakdown: PriceBreakdown;

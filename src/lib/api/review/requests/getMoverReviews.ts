@@ -1,4 +1,4 @@
-import { tokenFetch, defaultFetch } from "@/lib/utils/fetch-client";
+import { defaultFetch, tokenFetch } from "@/lib/utils";
 
 /**
  * 기사님에게 달린 리뷰 목록을 조회합니다.

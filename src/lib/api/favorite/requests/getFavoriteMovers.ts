@@ -1,4 +1,4 @@
-import { tokenFetch } from "@/lib/utils/fetch-client";
+import { tokenFetch } from "@/lib/utils";
 import { delay } from "../../../../../delay";
 
 export async function getFavoriteMovers(page = 1, limit = 6) {

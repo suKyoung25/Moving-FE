@@ -1,6 +1,6 @@
-import { defaultFetch } from "@/lib/utils/fetch-client";
 import { UserType } from "@/lib/types";
 import { SignUpFormValues } from "@/lib/schemas";
+import { defaultFetch } from "@/lib/utils";
 
 export default async function createSignUp(
    type: UserType,

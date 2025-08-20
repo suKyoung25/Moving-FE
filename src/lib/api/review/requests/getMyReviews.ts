@@ -1,4 +1,4 @@
-import { tokenFetch } from "@/lib/utils/fetch-client";
+import { tokenFetch } from "@/lib/utils";
 
 export async function getMyReviews(page = 1, limit = 6, targetLang?: string) {
    return await tokenFetch(

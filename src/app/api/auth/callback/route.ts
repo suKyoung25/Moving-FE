@@ -1,4 +1,4 @@
-import { setServerToken } from "@/lib/utils/server-token.util";
+import { setServerToken } from "@/lib/utils/serverToken.util";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
