@@ -1,6 +1,6 @@
 // mover.constants.ts
 
-import { DropdownOption } from "@/lib/types/mover.types";
+import { DropdownOption } from "@/lib/types";
 
 export const AREA_OPTIONS: DropdownOption[] = [
    { label: "전체", value: "all" },
@@ -37,24 +37,23 @@ export const SORT_OPTIONS: DropdownOption[] = [
    { label: "확정 많은순", value: "mostBooked" },
 ];
 
-
 // 지역 코드 → 실제 이름 매핑
 export const areaMapping: { [key: string]: string[] } = {
-  seoul: ["서울"],
-  incheon: ["인천"],
-  daejeon: ["대전"],
-  daegu: ["대구"],
-  gwangju: ["광주"],
-  busan: ["부산"],
-  ulsan: ["울산"],
-  sejong: ["세종"],
-  gyeonggi: ["경기"],
-  gangwon: ["강원"],
-  chungbuk: ["충북"],
-  chungnam: ["충남"],
-  jeonbuk: ["전북"],
-  jeonnam: ["전남"],
-  gyeongbuk: ["경북"],
-  gyeongnam: ["경남"],
-  jeju: ["제주"],
+   seoul: ["서울"],
+   incheon: ["인천"],
+   daejeon: ["대전"],
+   daegu: ["대구"],
+   gwangju: ["광주"],
+   busan: ["부산"],
+   ulsan: ["울산"],
+   sejong: ["세종"],
+   gyeonggi: ["경기"],
+   gangwon: ["강원"],
+   chungbuk: ["충북"],
+   chungnam: ["충남"],
+   jeonbuk: ["전북"],
+   jeonnam: ["전남"],
+   gyeongbuk: ["경북"],
+   gyeongnam: ["경남"],
+   jeju: ["제주"],
 };

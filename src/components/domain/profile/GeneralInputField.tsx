@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef } from "react";
-import { FieldValue, InputFieldProps } from "@/lib/types/mover.types";
 import ErrorText from "../auth/ErrorText";
 import { useTranslations } from "next-intl";
+import { FieldValue, InputFieldProps } from "@/lib/types";
 
 //일반적인 (별명, 경력, 한 줄 소개) input인 경우
 function GeneralInputField<T extends Record<string, FieldValue>>({

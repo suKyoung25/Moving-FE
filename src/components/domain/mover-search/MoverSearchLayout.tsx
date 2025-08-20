@@ -5,13 +5,13 @@ import DriverList from "./DriverList";
 import SortDropdown from "./SortDropdown";
 import FilterAreaServiceBox from "./FilterAreaServiceBox";
 import SearchBar from "./SearchBar";
-import { DropdownOption } from "@/lib/types/mover.types";
 import {
    AREA_OPTIONS,
    SERVICE_OPTIONS,
    SORT_OPTIONS,
 } from "@/constants/mover.constants";
 import { useTranslations } from "next-intl";
+import { DropdownOption } from "@/lib/types";
 
 const FavoriteDriverList = lazy(() =>
    import("./FavoriteDriverList").then((module) => ({

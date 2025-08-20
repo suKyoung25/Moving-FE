@@ -10,7 +10,6 @@ import React, {
    Suspense,
 } from "react";
 import { useParams } from "next/navigation";
-import { Mover } from "@/lib/types/auth.types";
 import { useAuth } from "@/context/AuthContext";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import ActionButtons from "./ActionButtons";
@@ -20,7 +19,11 @@ import DriverCard from "./DriverCard";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
 import { useLocale, useTranslations } from "next-intl";
 import Spinner from "@/components/common/Spinner";
-import { getMoverByIdWithAuth, getMoverByIdWithoutAuth } from "@/lib/api/mover/requests/getMover";
+import {
+   getMoverByIdWithAuth,
+   getMoverByIdWithoutAuth,
+} from "@/lib/api/mover/requests/getMover";
+import { Mover } from "@/lib/types";
 
 const DashboardReviewSection = lazy(
    () => import("@/components/domain/dashboard/ReviewSection"),

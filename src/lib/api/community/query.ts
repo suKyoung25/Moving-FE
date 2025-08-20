@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { PostReplyError, PostReplyResponse } from "@/lib/types/community.types";
 import getCommunityAll from "./requests/getCommunityAll";
 import { postReply } from "./requests/postReply";
 import getReplies from "./requests/getReplies";
 import { deleteReply } from "./requests/deleteReply";
+import { PostReplyError, PostReplyResponse } from "@/lib/types";
 
 export function useGetAllCommunity(
    offset: number,

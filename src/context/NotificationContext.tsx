@@ -9,7 +9,7 @@ import React, {
    useCallback,
    useRef,
 } from "react";
-import { Notification } from "@/lib/types/notification.types";
+import { Notification } from "@/lib/types";
 import { useAuth } from "./AuthContext";
 import { useLocale } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";

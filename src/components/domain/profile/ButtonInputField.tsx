@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { FieldValue, InputFieldProps } from "@/lib/types/mover.types";
 import { regions } from "@/constants";
 import { Controller, Path } from "react-hook-form";
 import ErrorText from "../auth/ErrorText";
 import { useTranslations } from "next-intl";
+import { FieldValue, InputFieldProps } from "@/lib/types";
 
 //주석: serviceType인지 serviceArea인지 boolean으로 분기처리
 function ButtonInputField<T extends Record<string, FieldValue>>({

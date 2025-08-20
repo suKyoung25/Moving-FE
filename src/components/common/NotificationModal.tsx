@@ -6,7 +6,6 @@ import Image from "next/image";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import { formatDateDiff } from "@/lib/utils";
-import { Notification } from "@/lib/types/notification.types";
 import { useRouter } from "next/navigation";
 import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
@@ -20,6 +19,7 @@ import {
    readNotification,
 } from "@/lib/api/notification/requests/notification";
 import { getEstimate } from "@/lib/api/estimate/requests/getClientQuoteDetail";
+import { Notification } from "@/lib/types";
 
 export default function NotificationModal({
    setIsNotiModalOpen,

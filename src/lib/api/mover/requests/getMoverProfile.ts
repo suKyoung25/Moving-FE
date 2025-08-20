@@ -1,6 +1,6 @@
 // lib/api/mover/getMoverProfile.ts
+import { Mover } from "@/lib/types";
 import { tokenFetch } from "@/lib/utils/fetch-client";
-import { Mover } from "@/lib/types/auth.types";
 
 /**
  * 현재 로그인한 기사님의 프로필 정보를 가져옵니다.
