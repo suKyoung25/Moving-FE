@@ -14,7 +14,7 @@ import { uploadToCloudinary } from "../api/auth/requests/updateProfileImage";
 import { useAuth } from "@/context/AuthContext";
 import { tokenSettings } from "../utils";
 import { useTranslations } from "next-intl";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { base64ToFile } from "../utils/profile.util";
 
 function useMoverProfilePostForm() {

@@ -3,7 +3,7 @@
 import ToastPopup from "@/components/common/ToastPopup";
 import PageTitle from "@/components/layout/PageTitle";
 import { useAuth } from "@/context/AuthContext";
-import { postCommunity } from "@/lib/api/community/postCommunity";
+import { postCommunity } from "@/lib/api/community/requests/postCommunity";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -91,6 +91,7 @@ export default function CreateCommunityPage() {
                      *{t("titleRequired")}
                   </p>
                )}
+
                <textarea
                   {...register("content")}
                   placeholder={t("contentPlaceholder")}

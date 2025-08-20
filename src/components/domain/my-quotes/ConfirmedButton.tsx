@@ -1,8 +1,8 @@
 "use client";
 
 import SolidButton from "@/components/common/SolidButton";
-import { useToast } from "@/context/ToastConText";
-import { postClientConfirmedQuote } from "@/lib/api/estimate/postClientConfirmedQuote";
+import { useToast } from "@/context/ToastContext";
+import { postClientConfirmedQuote } from "@/lib/api/estimate/requests/postClientConfirmedQuote";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 

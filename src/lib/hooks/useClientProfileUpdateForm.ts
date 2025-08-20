@@ -10,7 +10,7 @@ import { ClientProfileUpdateValue, useClientProfileSchemas } from "../schemas";
 import clientProfile from "../api/auth/requests/updateClientProfile";
 import { ServiceType } from "../types/client.types";
 import { uploadToCloudinary } from "../api/auth/requests/updateProfileImage";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { useTranslations } from "next-intl";
 import { updateUserProfileInChats } from "../firebase/firebaseChat";
 import { base64ToFile } from "../utils/profile.util";

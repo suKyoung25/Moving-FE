@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MoverProfile from "@/components/common/MoverProfile";
 import MoveChip, { ChipType } from "@/components/common/MoveChip";
-import { getFavoriteMovers } from "@/lib/api/favorite/favorites/getFavoriteMovers";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
+import { getFavoriteMovers } from "@/lib/api/favorite/requests/getFavoriteMovers";
 import { Mover } from "@/lib/types/auth.types";
 import { tokenSettings } from "@/lib/utils/auth.util";
 import { useAuth } from "@/context/AuthContext";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { EstimateStatus } from "@/lib/types";
 import { useTranslations } from "next-intl";
+import { toggleFavoriteMover } from "@/lib/api/mover/requests/favoriteMover";
 
 interface FavoriteDriverListProps {
    onFavoriteChange?: (

@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpFormValues, useAuthSchemas } from "../schemas/auth.schema";
 import { AuthFetchError, UserType } from "../types";
 import createSignUp from "../api/auth/requests/createSignUp";
+import { SignUpFormValues, useAuthSchemas } from "../schemas";
 
 export default function useSignUpForm() {
    // ✅ 상태 모음

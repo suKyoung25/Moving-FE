@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toggleFavoriteMover } from "@/lib/api/mover/favoriteMover";
 import { FavoriteMoversResponse, FavoriteMoverState } from "@/lib/types";
 import { useTranslations } from "next-intl";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
+import { toggleFavoriteMover } from "../mover/requests/favoriteMover";
 
 interface UseToggleFavoriteMoverParams {
    page: number;

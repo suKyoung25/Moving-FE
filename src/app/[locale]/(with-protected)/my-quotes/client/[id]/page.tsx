@@ -5,11 +5,11 @@ import { notFound } from "next/navigation";
 import PageTitle from "@/components/layout/PageTitle";
 import MoverProfileclient from "@/components/domain/my-quotes/MoverProfileClient";
 import QuotationInfo from "@/components/domain/my-quotes/QuotationInfo";
-import { fetchClientQuoteDetail } from "@/lib/api/estimate/getClientQuoteDetail";
 import SocialShareGroup from "@/components/common/SocialShareGroup";
 import ConfirmedButton from "@/components/domain/my-quotes/ConfirmedButton";
 import { useTranslations } from "next-intl";
 import Spinner from "@/components/common/Spinner";
+import { fetchClientQuoteDetail } from "@/lib/api/estimate/requests/getClientQuoteDetail";
 
 export default function ClientEstimatesDetailPage({
    params,
@@ -32,7 +32,6 @@ export default function ClientEstimatesDetailPage({
             const res = await fetchClientQuoteDetail(id, locale);
             if (!res?.data) {
                notFound();
-               return;
             }
             setData(res.data);
          } catch (err) {

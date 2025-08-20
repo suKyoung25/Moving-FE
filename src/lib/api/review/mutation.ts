@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createReview } from "@/lib/api/review/reviews/createReview";
-import { CreateReviewDto, UpdateReviewDto } from "@/lib/schemas/reviews.schema";
-import { updateReview } from "./reviews/updateReview";
-import { deleteReview } from "./reviews/deleteReview";
+import { createReview } from "@/lib/api/review/requests/createReview";
+import { updateReview } from "./requests/updateReview";
+import { deleteReview } from "./requests/deleteReview";
+import { CreateReviewDto, UpdateReviewDto } from "@/lib/schemas";
 
 interface UseReviewParams {
    onSuccess?: () => void;

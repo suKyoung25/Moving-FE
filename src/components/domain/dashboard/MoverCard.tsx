@@ -5,9 +5,9 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import avatar from "@/assets/images/avatarIcon.svg";
 import EditButtons from "./EditButtons";
 import MoverInfo from "./MoverInfo";
-import { getMoverProfile } from "@/lib/api/mover/getMoverProfile";
 import { Mover } from "@/lib/types/auth.types";
 import { useLocale, useTranslations } from "next-intl";
+import { getMoverProfile } from "@/lib/api/mover/requests/getMoverProfile";
 
 // 🔧 Fixed: Replace any with specific type
 interface MoverCardErrorBoundaryProps {

@@ -15,7 +15,7 @@ import InfoFooter from "./InfoFooter";
 import gptIcon from "@/assets/images/gptIcon.svg";
 import Image from "next/image";
 import LineDivider from "@/components/common/LineDivider";
-import { useToast } from "@/context/ToastConText";
+import { useToast } from "@/context/ToastContext";
 import { useTranslations } from "next-intl";
 
 export default function Calculator() {
