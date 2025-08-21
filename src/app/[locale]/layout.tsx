@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { Providers } from "@/app/providers";
 import SupportHub from "@/components/layout/SupportHub";
+import { pretendard } from "../fonts/fonts";
 
 export async function generateMetadata(): Promise<Metadata> {
    const t = await getTranslations("Layout");
@@ -65,7 +66,7 @@ export default async function RootLayout({
 
    return (
       <html lang={locale}>
-         <body className="h-full min-h-screen">
+         <body className={`h-full min-h-screen ${pretendard.className}`}>
             <NextIntlClientProvider locale={locale}>
                <Providers>
                   <main>

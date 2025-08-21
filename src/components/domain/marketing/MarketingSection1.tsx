@@ -5,6 +5,8 @@ import gsap from "gsap";
 import { Link } from "@/i18n/navigation";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { useTranslations } from "next-intl";
+import { paperlogyExtraBold } from "@/app/fonts/fonts";
+// fonts/fonts.ts 에서 export 했다고 가정
 
 export default function MarketingSection1() {
    const t = useTranslations("Landing");
@@ -13,7 +15,6 @@ export default function MarketingSection1() {
    // bannerNumber는 useMemo로 관리 (랜덤 한번 생성)
    const bannerNumber = useMemo(() => Math.floor(Math.random() * 3) + 1, []);
 
-   // 다국어 문자열 조합 함수 (bannerNumber에 따라 다르게 처리)
    const getTitleText = () => {
       switch (bannerNumber) {
          case 1:
@@ -80,14 +81,14 @@ export default function MarketingSection1() {
 
          <div className="mx-auto max-w-350">
             {/* 설명 영역 */}
-            <div className="font-inherit absolute z-10 flex flex-col gap-5 px-5 pt-30 md:top-1/2 md:-translate-y-1/2 md:gap-6 md:px-10 md:pt-0 lg:gap-7">
+            <div className="absolute z-10 flex flex-col gap-5 px-5 pt-30 md:top-1/2 md:-translate-y-1/2 md:gap-6 md:px-10 md:pt-0 lg:gap-7">
                <h2
                   dangerouslySetInnerHTML={{ __html: titleText }}
-                  className="font-paperlogy text-5xl leading-tight font-semibold text-white md:text-6xl lg:text-7xl"
+                  className={`${paperlogyExtraBold.className} text-5xl leading-tight font-semibold text-white md:text-6xl lg:text-7xl`}
                />
                <p
                   dangerouslySetInnerHTML={{ __html: subtitleText }}
-                  className="font-paperlogy text-3xl leading-8 text-white md:text-4xl md:leading-10 lg:text-5xl lg:leading-14"
+                  className={`${paperlogyExtraBold.className} text-3xl leading-8 text-white md:text-4xl md:leading-10 lg:text-5xl lg:leading-14`}
                />
                <Link
                   href={"/mover-search"}
