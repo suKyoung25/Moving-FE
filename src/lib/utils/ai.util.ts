@@ -144,7 +144,7 @@ export function parseAIResponse(
       }
 
       // AI 응답에서 "원" 문자와 콤마 제거
-      let cleanedContent = content
+      const cleanedContent = content
          .replace(/(\d+),(\d+)/g, "$1$2") // 숫자 사이 콤마 제거
          .replace(/(\d+)원/g, "$1") // "원" 문자 제거
          .replace(/,\s*}/g, "}") // 마지막 콤마 제거
