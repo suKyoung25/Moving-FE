@@ -7,6 +7,7 @@ import ReviewStar from "./ReviewStar";
 import LineDivider from "@/components/common/LineDivider";
 import Pagination from "@/components/common/Pagination";
 import { useTranslations } from "next-intl";
+import ReviewImages from "../reviews/ReviewImages";
 
 interface ReviewListProps {
    reviews: Review[] | MoverReview[];
@@ -49,7 +50,17 @@ const ReviewItem = React.memo(
                </div>
                <ReviewStar rating={review.rating} size="w-5 h-5" />
             </div>
-            <div className="leading-normal">{review.content}</div>
+
+            <div className="flex items-center justify-between gap-8 leading-normal">
+               {review.content}
+
+               {/* Review 타입일 때만 이미지 출력 */}
+               {"images" in review &&
+                  review.images &&
+                  review.images.length > 0 && (
+                     <ReviewImages images={review.images} />
+                  )}
+            </div>
 
             {isMoverView && (
                <div className="flex gap-2 text-xs text-gray-400">
