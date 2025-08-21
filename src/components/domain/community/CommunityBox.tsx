@@ -5,7 +5,7 @@ import SearchBox from "./SearchBox";
 import Pagination from "@/components/common/Pagination";
 import CommunitySkeleton from "./CommunitySkeleton";
 import SkeletonLayout from "@/components/common/SkeletonLayout";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useGetAllCommunity } from "@/lib/api/community/query";
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";

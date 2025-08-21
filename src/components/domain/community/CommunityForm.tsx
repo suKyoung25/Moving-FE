@@ -76,7 +76,7 @@ export default function CommunityForm({
          if (isEditMode && communityId) {
             // 수정 모드
             await updateCommunity(communityId, data.title, data.content);
-            showSuccess("게시글이 수정되었습니다.");
+            showSuccess(t("successEditMessage"));
          } else {
             // 등록 모드
             await postCommunity(data.title, data.content);
@@ -102,9 +102,8 @@ export default function CommunityForm({
                   isEditMode ? (
                      <div className="flex items-center gap-2">
                         <button
-                           onClick={() =>
-                              router.push(`/community/${communityId}`)
-                           }
+                           type="button"
+                           onClick={() => router.back()}
                            className="hover:text-gray-500"
                         >
                            {t("communityDetail")}
@@ -126,11 +125,7 @@ export default function CommunityForm({
                      : "!cursor-not-allowed !bg-gray-300"
                }`}
             >
-               {isSubmitting
-                  ? "처리 중..."
-                  : isEditMode
-                    ? "수정하기"
-                    : t("submitButton")}
+               {isEditMode ? t("editButton") : t("submitButton")}
             </button>
          </div>
          <div className="flex flex-col">

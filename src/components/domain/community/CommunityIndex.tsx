@@ -16,6 +16,7 @@ export default function CommunityIndex({
    return (
       <div className="text-14-medium flex items-center gap-2 text-gray-300">
          <button
+            type="button"
             onClick={() => router.push("/community")}
             className="hover:text-gray-500"
          >
