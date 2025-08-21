@@ -22,7 +22,11 @@ export default function CommunityIndex({
             {t("title")}
          </button>
          <IoIosArrowForward />
-         <p className="text-14-medium">{index}</p>
+         {typeof index === "string" ? (
+            <p className="text-14-medium">{index}</p>
+         ) : (
+            index
+         )}
       </div>
    );
 }
