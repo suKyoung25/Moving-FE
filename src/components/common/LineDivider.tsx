@@ -1,6 +1,6 @@
 import React from "react";
 
-const verticalClass = "mx-[9.5px] flex h-[14px] w-0.5 flex-col";
+const verticalClass = "mx-[9.5px] flex h-[14px] w-[1.5px] flex-col";
 
 export default function LineDivider({
    className,
