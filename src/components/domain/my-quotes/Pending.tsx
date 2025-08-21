@@ -49,7 +49,7 @@ export default function Pending() {
                      <MoverProfileclient
                         moveType={request.moveType as ChipType}
                         isDesignated={estimate.isDesignated}
-                        moverName={estimate.moverName}
+                        moverName={estimate.moverNickName}
                         profileImage={estimate.profileImage || profile}
                         isFavorited={!!estimate.isFavorited}
                         moverId={estimate.moverId}

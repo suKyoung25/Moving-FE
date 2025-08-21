@@ -22,6 +22,7 @@ import { routing } from "@/i18n/routing"; // locales 배열 접근용
 import { useLocale, useTranslations } from "next-intl";
 import { useNotification } from "@/context/NotificationContext";
 import { useNotificationsQuery } from "@/lib/api/notification/query";
+import { Mover } from "@/lib/types";
 
 function getPathnameWithoutLocale(
    pathname: string,
@@ -270,7 +271,10 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                         {isProfileDropDownOpen && <ProfileDropDownMenu />}
                      </div>
                      <span className="text-18-medium hidden lg:block">
-                        {user.name}
+                        {user.userType === "client"
+                           ? user.name
+                           : (user as Mover).nickName?.trim() ||
+                             t("loginMover")}
                         {t("honorific")}
                      </span>
                   </div>

@@ -58,7 +58,7 @@ export default function ClientEstimatesDetailPage({
                   <MoverProfileclient
                      moveType={data.request.moveType}
                      isDesignated={false}
-                     moverName={data.mover.name}
+                     moverName={data.mover.nickName}
                      profileImage={data.mover.profileImage}
                      isFavorited={data.isFavorite}
                      averageReviewRating={data.mover.averageReviewRating}
