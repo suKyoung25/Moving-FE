@@ -34,7 +34,7 @@ export default function ReceivedCard({
             isDesignated={designated.some(
                (d) => d.moverId === estimate.moverId,
             )}
-            moverName={estimate.moverName}
+            moverName={estimate.moverNickName}
             profileImage={estimate.profileImage}
             isFavorited={!!estimate.isFavorited}
             averageReviewRating={estimate.reviewRating}

@@ -182,7 +182,10 @@ export default function MoverCard() {
                <div className="block lg:hidden">{profileImage}</div>
                <div className="flex-1 lg:space-y-2">
                   <p className="font-semibold lg:text-2xl">
-                     {mover.nickName || mover.name || ""}
+                     {mover.name}
+                     <span className="text-12-medium lg:text-14-medium text-gray-400">
+                        ({mover.nickName})
+                     </span>
                   </p>
                   <p className="text-sm font-normal text-gray-400 lg:text-xl">
                      {mover.introduction || t("noIntro")}
