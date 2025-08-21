@@ -1,22 +1,20 @@
-import PageTitle from "@/components/layout/PageTitle";
 import CommentInput from "@/components/domain/community/CommentInput";
 import ProfileBox from "@/components/domain/community/ProfileBox";
 import ReplyBox from "@/components/domain/community/ReplyBox";
 import CommunityTitle from "@/components/domain/community/CommunityTitle";
-import { getTranslations } from "next-intl/server";
+import CommunityIndex from "@/components/domain/community/CommunityIndex";
 import getCommunity from "@/lib/api/community/requests/getCommunity";
+import { getTranslations } from "next-intl/server";
+import LineDivider from "@/components/common/LineDivider";
 
 export default async function CommunityDetailPage({
    params,
 }: {
    params: Promise<{ id: string; locale: string }>;
 }) {
-   const { id, locale } = await params;
-
    const t = await getTranslations("Community");
-
+   const { id, locale } = await params;
    const { data } = await getCommunity(id, locale);
-
    const authorId = data.clientId || data.moverId;
 
    return (
@@ -25,20 +23,8 @@ export default async function CommunityDetailPage({
          aria-labelledby="community-detail-title"
          className="min-h-screen"
       >
-         <h1 id="community-detail-title" className="sr-only">
-            {t("communityDetailTitle")}
-         </h1>
-         <p className="sr-only">{t("communityDetailDescription")}</p>
-
-         <PageTitle title={t("communityDetail")} />
-         <section
-            className="mt-5 rounded-2xl px-3.5 py-4 shadow lg:px-6 lg:py-5"
-            aria-labelledby="community-content-title"
-         >
-            <h2 id="community-content-title" className="sr-only">
-               {t("communityContentTitle")}
-            </h2>
-
+         <CommunityIndex index={t("communityDetail")} />
+         <section className="mt-6" aria-labelledby="community-content-title">
             <CommunityTitle
                title={data.title}
                authorId={authorId}
@@ -48,10 +34,11 @@ export default async function CommunityDetailPage({
                userNickname={data.userNickname}
                date={data.createdAt}
                profileImg={data.profileImg}
-               isreply={false}
+               isDetail={true}
             />
+            <LineDivider className="mt-4 mb-6" />
             <p
-               className="text-14-medium md:text-16-medium mt-5 whitespace-pre-wrap"
+               className="text-14-medium md:text-16-medium mb-15 whitespace-pre-wrap"
                aria-label={t("communityContentAria", { title: data.title })}
             >
                {data.content}

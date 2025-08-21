@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LoginRequiredModal from "../mover-search/LoginRequiredModal";
+import { PiPencilSimpleLineBold } from "react-icons/pi";
 
 interface CommunityButtonProps {
    text: string;
@@ -32,9 +33,10 @@ export default function CommunityButton({
          <div className="flex items-center justify-end">
             <button
                onClick={handleClick}
-               className="bg-primary-blue-300 text-18-semibold h-11 w-29 rounded-2xl text-white"
+               className="bg-primary-blue-300 hover:bg-primary-blue-200 text-16-semibold flex h-11 items-center justify-center gap-2 rounded-2xl px-6 text-white"
             >
                {text}
+               <PiPencilSimpleLineBold />
             </button>
          </div>
          {isLogin && (
