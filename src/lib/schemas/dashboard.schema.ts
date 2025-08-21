@@ -11,26 +11,13 @@ type ExtendedRefinementCtx = RefinementCtx & {
    };
 };
 
-const allowedDomains = ["gmail.com", "naver.com", "daum.net"];
-
 export function useMoverBasicInfoSchema() {
    const t = useTranslations("Validations");
 
    //기사님 기본정보 수정 시 사용
    const rawMoverBasicInfoSchema = {
       name: z.string().min(2, t("nameMin")).max(4, t("nameMax")),
-      email: z
-         .string()
-         .email(t("invalidEmail"))
-         .refine(
-            (email) => {
-               const domain = email.split("@")[1];
-               return allowedDomains.includes(domain);
-            },
-            {
-               message: t("allowedEmailDomains"),
-            },
-         ),
+      email: z.string().email(t("invalidEmail")),
       phone: z
          .string()
          .min(9, t("phoneMin"))
