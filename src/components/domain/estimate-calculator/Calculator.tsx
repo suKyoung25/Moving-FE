@@ -58,10 +58,19 @@ export default function Calculator() {
       if (!formData.moveType || !distance) return;
 
       setIsGeneratingAI(true);
+      const start = performance.now();
+
       try {
          const estimate = await generateAIEstimate(formData, distance);
          setAiEstimate(estimate);
+
+         const end = performance.now();
+         const responseTime = (end - start) / 1000; // ms를 초로 변환
+         console.log(`gpt-3.5-turbo 응답시간: ${responseTime.toFixed(3)}초`);
       } catch {
+         const end = performance.now();
+         const responseTime = (end - start) / 1000;
+         console.log(`gpt-3.5-turbo 응답시간: ${responseTime.toFixed(3)}초`);
          showError(t("estimate.error"));
       } finally {
          setIsGeneratingAI(false);

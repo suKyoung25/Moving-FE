@@ -42,7 +42,7 @@ export function createOpenAIRequest(prompt: string, apiKey: string) {
          Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-         model: "gpt-4",
+         model: "gpt-3.5-turbo",
          messages: [
             {
                role: "system",
@@ -92,7 +92,7 @@ export function buildPrompt(formData: FormData, distance: number): string {
          floorMultiplier,
    );
 
-   return `이사 견적을 계산해주세요. 다음 정보를 바탕으로 현실적이고 합리적인 견적을 제시해주세요.
+   return `이사 견적을 계산해주세요.
 
 이사 정보:
 - 이사 유형: ${labels.moveType[formData.moveType as keyof typeof labels.moveType]}
@@ -102,43 +102,29 @@ export function buildPrompt(formData: FormData, distance: number): string {
 - 짐의 양: ${labels.itemAmount[formData.itemAmount]}
 - 층수: ${labels.floorLevel[formData.floorLevel]}
 
-참고 견적: ${estimatedBasePrice.toLocaleString()}원 (기본 계산 기준)
-허용 오차범위: ${Math.round(estimatedBasePrice * 0.8).toLocaleString()}원 ~ ${Math.round(estimatedBasePrice * 1.2).toLocaleString()}원 (±20%)
+기본 견적: ${estimatedBasePrice.toLocaleString()}원
 
-견적 설정 규칙:
-1. 견적은 반드시 허용 오차범위 내에 있어야 합니다
-2. 같은 입력값에 대해서는 항상 동일한 견적을 생성해야 합니다
-3. 각 요인별 영향도를 고려하여 견적을 조정하세요:
-   - 거리: ${distance > 30 ? "30km 초과 시 +10~15%" : "적정 거리 시 ±0%"}
-   - 주말: ${formData.isWeekend ? "할증 +15~20%" : "평일 ±0%"}
-   - 엘리베이터: ${!formData.hasElevator ? "계단 이용 +10~15%" : "엘리베이터 -5~10%"}
-   - 짐의 양: ${formData.itemAmount === "many" ? "많은 짐 +15~20%" : formData.itemAmount === "few" ? "적은 짐 -10~15%" : "일반적인 양 ±0%"}
-   - 층수: ${formData.floorLevel === "8+" ? "8층 이상 +15~20%" : formData.floorLevel === "4-7" ? "4-7층 +5~10%" : "1-3층 ±0%"}
+⚠️ 중요: 기본 견적에 이미 모든 할증/할인이 포함되어 있습니다.
 
-문체 및 설명 스타일:
-- 모든 설명은 "~니다", "~습니다" 등의 정중한 종결어를 사용하세요
-- 견적 근거를 명확하고 이해하기 쉽게 설명하세요
-- 각 요인별로 구체적인 영향도를 제시하세요
+규칙:
+1. 최종 견적은 기본 견적의 90%~110% 범위 내에 있어야 합니다
+2. 추가 할증/할인 금지
+3. 각 요인별로 구체적이고 상세한 설명 제공
 
 응답 형식:
 {
-  "price": 견적 금액 (숫자, 콤마 없이),
-  "explanation": 견적 근거 설명 (한국어),
-  "confidence": 신뢰도 (60-95 사이 숫자),
+  "price": 견적 금액 (${Math.round(estimatedBasePrice * 0.9).toLocaleString()}원 ~ ${Math.round(estimatedBasePrice * 1.1).toLocaleString()}원 범위),
+  "explanation": 견적 근거 설명 (상세한 한국어 설명),
+  "confidence": 신뢰도 (60-95),
   "factors": [
-    {
-      "factor": "요인명",
-      "impact": "영향 설명"
-    }
+    {"factor": "이사유형", "impact": "구체적인 영향 설명"},
+    {"factor": "거리", "impact": "구체적인 영향 설명"},
+    {"factor": "날짜", "impact": "구체적인 영향 설명"},
+    {"factor": "엘리베이터", "impact": "구체적인 영향 설명"},
+    {"factor": "짐양", "impact": "구체적인 영향 설명"},
+    {"factor": "층수", "impact": "구체적인 영향 설명"}
   ]
-}
-
-주의: 
-1. price는 반드시 숫자로만 작성하고 콤마(,)를 사용하지 마세요.
-2. price는 반드시 허용 오차범위 내에 있어야 합니다.
-3. 같은 입력값에 대해 일관된 견적을 생성해야 합니다.
-4. 각 요인별 영향도를 합리적으로 적용하여 견적을 계산하세요.
-5. 모든 설명은 정중하고 이해하기 쉬운 문체로 작성하세요.`;
+}`;
 }
 
 // AI 응답 JSON 파싱 및 AIEstimateType 변환
@@ -157,8 +143,32 @@ export function parseAIResponse(
          return generateFallbackEstimate(formData, distance);
       }
 
-      const cleanedContent = content.replace(/(\d+),(\d+)/g, "$1$2");
-      const parsed = JSON.parse(cleanedContent);
+      // AI 응답에서 "원" 문자와 콤마 제거
+      let cleanedContent = content
+         .replace(/(\d+),(\d+)/g, "$1$2") // 숫자 사이 콤마 제거
+         .replace(/(\d+)원/g, "$1") // "원" 문자 제거
+         .replace(/,\s*}/g, "}") // 마지막 콤마 제거
+         .replace(/,\s*]/g, "]"); // 배열 마지막 콤마 제거
+
+      // JSON 파싱 시도
+      let parsed;
+      try {
+         parsed = JSON.parse(cleanedContent);
+      } catch (parseError) {
+         console.warn("JSON 파싱 실패, 복구 시도 중...", parseError);
+
+         // JSON 복구 시도
+         const recoveredContent = recoverIncompleteJSON(cleanedContent);
+         try {
+            parsed = JSON.parse(recoveredContent);
+            console.log("JSON 복구 성공!");
+         } catch (recoveryError) {
+            console.error("JSON 복구 실패:", recoveryError);
+            console.error("원본 콘텐츠:", content);
+            console.error("복구 시도 콘텐츠:", recoveredContent);
+            return generateFallbackEstimate(formData, distance);
+         }
+      }
 
       return {
          price: parsed.price || 0,
@@ -172,6 +182,83 @@ export function parseAIResponse(
       console.error("콘텐츠 타입:", typeof content);
       return generateFallbackEstimate(formData, distance);
    }
+}
+
+// 불완전한 JSON 응답 복구 함수
+function recoverIncompleteJSON(content: string): string {
+   let recovered = content.trim();
+
+   // factors 배열이 불완전한 경우 복구
+   if (recovered.includes('"factors": [') && !recovered.endsWith("]")) {
+      // factors 배열 닫기
+      if (!recovered.includes("]")) {
+         recovered += "]";
+      }
+
+      // JSON 객체 닫기
+      if (!recovered.endsWith("}")) {
+         recovered += "}";
+      }
+   }
+
+   // 불완전한 문자열 값 복구
+   const incompleteStringRegex = /"([^"]*)$/;
+   if (incompleteStringRegex.test(recovered)) {
+      // 불완전한 문자열을 빈 문자열로 완성
+      recovered = recovered.replace(/"([^"]*)$/, '""');
+   }
+
+   // 불완전한 숫자 값 복구
+   const incompleteNumberRegex = /(\d+)$/;
+   if (incompleteNumberRegex.test(recovered)) {
+      // 불완전한 숫자를 0으로 완성
+      recovered = recovered.replace(/(\d+)$/, "0");
+   }
+
+   // 불완전한 객체나 배열 복구
+   if (recovered.includes('"factors": [') && !recovered.includes("]")) {
+      // factors 배열이 불완전한 경우 기본 factors 추가
+      const factorsEndIndex = recovered.indexOf('"factors": [') + 12;
+      const remainingContent = recovered.substring(factorsEndIndex);
+
+      if (!remainingContent.includes("]")) {
+         // 기본 factors 배열 완성
+         const defaultFactors = `{
+            "factor": "이사유형",
+            "impact": "기본 견적에 반영된 요인"
+          },
+          {
+            "factor": "거리",
+            "impact": "기본 견적에 반영된 요인"
+          },
+          {
+            "factor": "날짜",
+            "impact": "기본 견적에 반영된 요인"
+          },
+          {
+            "factor": "엘리베이터",
+            "impact": "기본 견적에 반영된 요인"
+          },
+          {
+            "factor": "짐양",
+            "impact": "기본 견적에 반영된 요인"
+          },
+          {
+            "factor": "층수",
+            "impact": "기본 견적에 반영된 요인"
+          }]}`;
+
+         recovered = recovered.substring(0, factorsEndIndex) + defaultFactors;
+      }
+   }
+
+   // 최종 JSON 객체 닫기
+   if (!recovered.endsWith("}")) {
+      recovered += "}";
+   }
+
+   console.log("JSON 복구 결과:", recovered);
+   return recovered;
 }
 
 // AI 분석 실패 시 기본 견적 계산
