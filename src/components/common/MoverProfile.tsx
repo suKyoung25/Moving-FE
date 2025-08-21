@@ -39,8 +39,6 @@ export default function MoverProfile({
 }: MoverProfileProps) {
    const t = useTranslations("Reviews");
 
-   console.log(nickName);
-
    const isBig = big && !forceMobileStyle;
 
    const containerClass = [
