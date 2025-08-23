@@ -1151,12 +1151,14 @@
          "title": "Create Post",
          "communityDetail": "Post Detail",
          "editPost": "Edit Post",
+         "editButton": "Edit",
          "submitButton": "Submit",
          "titlePlaceholder": "Please enter a title.",
          "contentPlaceholder": "Please enter your content.\n\nAsk anything you're curious about while moving.\n\n* Posts that don't match the topic or violate community usage policies are subject to reporting.\n* If you receive a certain number of reports, your post may be hidden or deleted.",
          "titleRequired": "Title is required.",
          "contentRequired": "Content is required.",
-         "successMessage": "Post has been successfully created!",
+         "successEditMessage": "Post has been successfully edited.",
+         "successMessage": "Post has been successfully created.",
          "titleLabel": "Title",
          "contentLabel": "Content"
       }

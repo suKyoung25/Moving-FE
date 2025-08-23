@@ -112,7 +112,7 @@ export default function ReplyNicknameBox({
                      }}
                      className="border-line-100 h-9 w-full rounded-tl-lg rounded-tr-lg border bg-white hover:bg-gray-50 lg:h-10"
                   >
-                     수정하기
+                     {t("editReply")}
                   </button>
                   <button
                      type="button"

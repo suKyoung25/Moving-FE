@@ -1152,12 +1152,14 @@
          "title": "创建帖子",
          "communityDetail": "帖子详情",
          "editPost": "编辑帖子",
+         "editButton": "编辑",
          "submitButton": "提交",
          "titlePlaceholder": "请输入标题。",
          "contentPlaceholder": "请输入您的内容。\n\n搬家时有什么疑问都可以问。\n\n* 不符合主题或违反社区使用政策的帖子将被举报。\n* 如果收到一定数量的举报，您的帖子可能会被隐藏或删除。",
          "titleRequired": "标题是必需的。",
          "contentRequired": "内容是必需的。",
-         "successMessage": "帖子已成功创建！",
+         "successEditMessage": "帖子已成功编辑。",
+         "successMessage": "帖子已成功创建。",
          "titleLabel": "标题",
          "contentLabel": "内容"
       }
