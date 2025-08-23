@@ -1,4 +1,5 @@
 import { FormData, PriceBreakdown } from "@/lib/types";
+import { calculateEstimate } from "./ai.util";
 
 export const formatPrice = (price: number): string => {
    return price.toLocaleString("ko-KR");
@@ -8,54 +9,33 @@ export const calculateBasicEstimate = (
    formData: FormData,
    distance: number,
 ): PriceBreakdown => {
-   // 기본 요금
-   const basePrices = { SMALL: 40000, HOME: 80000, OFFICE: 100000 };
-   const basePrice = basePrices[formData.moveType as keyof typeof basePrices];
+   // calculateEstimate 함수 사용으로 통일
+   const estimate = calculateEstimate(formData, distance);
 
-   // 거리 비용 (1km당 1,000원)
-   const distanceFee = Math.max(distance, 1) * 1000;
-
-   // 주말 할증 (20%)
-   const weekendSurcharge = formData.isWeekend
-      ? (basePrice + distanceFee) * 0.2
-      : 0;
-
-   // 엘리베이터 조정 (계단 이용 시 15% 추가)
-   const elevatorAdjustment = formData.hasElevator
-      ? 0
-      : (basePrice + distanceFee) * 0.15;
-
-   // 짐의 양 조정
-   let itemAdjustment = 0;
-   if (formData.itemAmount === "many") {
-      itemAdjustment = (basePrice + distanceFee) * 0.3; // 많은 짐 +30%
-   } else if (formData.itemAmount === "few") {
-      itemAdjustment = -(basePrice + distanceFee) * 0.2; // 적은 짐 -20%
-   }
-
-   // 층수 조정
-   let floorAdjustment = 0;
-   if (formData.floorLevel === "4-7") {
-      floorAdjustment = (basePrice + distanceFee) * 0.1; // 4-7층 +10%
-   } else if (formData.floorLevel === "8+") {
-      floorAdjustment = (basePrice + distanceFee) * 0.2; // 8층 이상 +20%
-   }
-
-   const total =
-      basePrice +
-      distanceFee +
-      weekendSurcharge +
-      elevatorAdjustment +
-      itemAdjustment +
-      floorAdjustment;
+   // 할증/할인 금액 계산
+   const baseTotal = estimate.basePrice + estimate.distanceFee;
+   const weekendSurcharge = formData.isWeekend ? baseTotal * 0.2 : 0;
+   const elevatorAdjustment = formData.hasElevator ? 0 : baseTotal * 0.15;
+   const itemAdjustment =
+      formData.itemAmount === "many"
+         ? baseTotal * 0.3
+         : formData.itemAmount === "few"
+           ? -baseTotal * 0.2
+           : 0;
+   const floorAdjustment =
+      formData.floorLevel === "4-7"
+         ? baseTotal * 0.1
+         : formData.floorLevel === "8+"
+           ? baseTotal * 0.2
+           : 0;
 
    return {
-      basePrice,
-      distanceFee,
+      basePrice: estimate.basePrice,
+      distanceFee: estimate.distanceFee,
       weekendSurcharge: Math.round(weekendSurcharge),
       elevatorAdjustment: Math.round(elevatorAdjustment),
       itemAdjustment: Math.round(itemAdjustment),
       floorAdjustment: Math.round(floorAdjustment),
-      total: Math.round(total),
+      total: estimate.estimatedPrice, // calculateEstimate의 결과 사용
    };
 };
