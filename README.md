@@ -36,35 +36,6 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
 
 ## 주요 기능
 
-### 고객 기능
-
-- **AI 견적 계산기**: OpenAI GPT-4 기반의 지능형 견적 계산 시스템
-- **기사 검색**: 위치, 서비스 유형, 평점 기반 필터링 및 정렬
-- **견적 요청**: 단계별 마법사 형태의 견적 요청 시스템
-- **견적 관리**: 받은 견적 확인, 승인/거절, 진행 상황 추적
-- **즐겨찾기**: 선호하는 기사님 저장 및 관리
-- **리뷰 시스템**: 이사 완료 후 리뷰 작성 및 평점 관리
-
-### 기사님 기능
-
-- **견적 응답**: 받은 견적 요청에 대한 상세 견적 제공
-- **프로필 관리**: 업체 정보, 서비스 영역, 경력 정보 관리
-- **받은 요청 관리**: 필터링 및 검색을 통한 요청 관리
-- **리뷰 관리**: 받은 리뷰 확인 및 응답
-
-### 공통 기능
-
-- **다국어 지원**: 한국어(기본), 영어, 중국어 완전 지원
-- **실시간 알림**: Firebase 기반 실시간 알림 시스템
-- **커뮤니티**: 사용자 간 소통 및 정보 공유 공간
-- **고객 지원**: 문의사항 접수 및 파일 업로드 지원
-- **소셜 로그인**: Google, Kakao, Naver 소셜 로그인 지원
-- **실시간 채팅**: 고객과 기사의 실시간 소통
-
----
-
-## 주요 기능
-
 <table>
   <thead>
     <tr>
@@ -117,6 +88,31 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
     </tr>
   </tbody>
 </table>
+
+### 고객 기능
+
+- **AI 견적 계산기**: OpenAI GPT-4 기반의 지능형 견적 계산 시스템
+- **기사 검색**: 위치, 서비스 유형, 평점 기반 필터링 및 정렬
+- **견적 요청**: 단계별 마법사 형태의 견적 요청 시스템
+- **견적 관리**: 받은 견적 확인, 승인/거절, 진행 상황 추적
+- **즐겨찾기**: 선호하는 기사님 저장 및 관리
+- **리뷰 시스템**: 이사 완료 후 리뷰 작성 및 평점 관리
+
+### 기사님 기능
+
+- **견적 응답**: 받은 견적 요청에 대한 상세 견적 제공
+- **프로필 관리**: 업체 정보, 서비스 영역, 경력 정보 관리
+- **받은 요청 관리**: 필터링 및 검색을 통한 요청 관리
+- **리뷰 관리**: 받은 리뷰 확인 및 응답
+
+### 공통 기능
+
+- **다국어 지원**: 한국어(기본), 영어, 중국어 완전 지원
+- **실시간 알림**: Firebase 기반 실시간 알림 시스템
+- **커뮤니티**: 사용자 간 소통 및 정보 공유 공간
+- **고객 지원**: 문의사항 접수 및 파일 업로드 지원
+- **소셜 로그인**: Google, Kakao, Naver 소셜 로그인 지원
+- **실시간 채팅**: 고객과 기사의 실시간 소통
 
 ---
 
@@ -236,14 +232,6 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
    - 소셜 로그인 기능
    - 헤더에서 프로필 드롭다운 메뉴
 
-- **김수경**
-   - 일반유저/기사님 프로필 컴포넌트
-   - 기사님 로그인/회원가입 페이지
-   - 기사님 프로필 등록/수정 페이지
-   - 기사님 기본정보 수정 페이지
-   - 소셜 로그인 기능
-   - 회원 탈퇴 기능 구현
-
 - **임정빈**
    - 대기 중인 견적 페이지
    - 대기 중인 견적 상세 페이지
@@ -264,6 +252,17 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
 
 </div>
 </details>
+
+<div>
+<strong>나의 주요 작업 내용</strong><br/>
+   - 기사님 로그인/회원가입 페이지 및 api <br/>
+   - 일반유저/기사님 회원 탈퇴 컴포넌트 및 api <br/>
+   - 기사님 소셜 로그인 api <br/>
+   - 일반유저/기사님 프로필 페이지 공통 컴포넌트 <br/>
+   - 기사님 프로필 등록/수정 페이지 및 api <br/>
+   - 일반유저/기사님 프로필 이미지 수정 컴포넌트 <br/>
+   - 기사님 기본정보 수정 페이지 및 api <br/>
+   </div>
 
 ---
 
@@ -401,6 +400,82 @@ messages/
 
 ## 트러블 슈팅
 
+### 1. useActionState 기반 실시간 유효성 검사
+
+- **문제 상황**
+  - 기존 `ProfileForm`은 모든 입력값(`formData`)과 오류(`errors`)를 상위 컴포넌트에서 상태로 관리
+  - 문제점:
+    - 입력 필드가 많아질수록 상태 관리와 로직 복잡
+    - 실시간 유효성 검사(onChange) 구현 어려움
+    - 버튼 활성화 조건 계산이 길고 유지보수 어려움
+
+```tsx
+// 기존 ProfileForm.tsx
+const [formData, setFormData] = useState({ name: "", career: "", ... });
+const [errors, setErrors] = useState<Record<string, string>>({});
+
+const handleFormChange = (name, value) => {
+  setFormData(prev => ({ ...prev, [name]: value }));
+  const error = validateField(name, value);
+  setErrors(prev => ({ ...prev, [name]: error }));
+};
+```
+
+- **원인 분석**  
+  - 상위에서 모든 상태를 관리 → **반복 코드 증가**  
+  - 버튼 활성화 조건 계산이 여러 필드와 오류를 동시에 체크 → **유지보수 어려움** 
+  - 필드별 유효성 검사(zod.partial())를 상위에서 수행 → **로직 복잡**
+
+```tsx
+const isDisabled = isPending || Object.values(errors).some(err) || !requiredFieldsFilled;
+```
+
+- **해결 방법**  
+  - InputField가 자기 상태 관리
+    - `value`와 `error`를 내부 `useState`로 관리
+    - `onChange` 시 `validator` 함수 실행
+  - ProfileForm에서는 상태 최소화
+    - `useActionState`로 제출 상태만 관리
+    - 버튼 활성화는 `fieldValidity` 확인
+  - 유효성 검사 함수 단위 분리
+    - 클라이언트: 필드별 validator
+    - 서버: 전체 스키마(`moverProfileSchema`)로 검사
+```tsx
+// ButtonInputField.tsx
+const [value, setValue] = useState<string[]>([]);
+const [error, setError] = useState("");
+
+const handleToggle = (type: string) => {
+  const updated = value.includes(type) ? value.filter(i => i !== type) : [...value, type];
+  setValue(updated);
+
+  if (validator) {
+    const result = validator(updated);
+    setError(result.success ? "" : result.message);
+    onValidChange?.(name, result.success);
+  }
+};
+```
+
+```tsx
+// ProfileForm.tsx
+const [fieldValidity, setFieldValidity] = useState({ name: false, career: false, ... });
+const handleValidityChange = (name: string, isValid: boolean) => {
+  setFieldValidity(prev => ({ ...prev, [name]: isValid }));
+};
+const isDisabled = isPending || !Object.values(fieldValidity).every(v => v);
+```
+
+```tsx
+// create-moverProfile.action.ts
+const parsed = moverProfileSchema.safeParse(profileInputData);
+if (!parsed.success) {
+  const errors = parsed.error.flatten().fieldErrors;
+  return { status: false, error: JSON.stringify(errors) };
+}
+```
+
+---
 ### 1. 한글 입력 시 채팅 중복 전송 문제 (Mac / Safari / macOS 환경)
 
 **문제 상황**
