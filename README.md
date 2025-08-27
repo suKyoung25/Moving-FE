@@ -266,7 +266,7 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
 
 ## 트러블 슈팅
 
-### 1. 소셜 인증 사용자의 경우 비밀번호 필수 관련 문제
+## 1. 소셜 인증 사용자의 경우 비밀번호 필수 관련 문제
 
 - **문제 상황**
   - 기본정보 수정 페이지에는 **비밀번호 관련 input**이 존재
@@ -300,7 +300,7 @@ Moving은 사용자가 손쉽게 여러 기사님의 견적을 비교하고, 자
     }
     ```
 
-### 2. useActionState 기반 실시간 유효성 검사 관련 문제
+## 2. useActionState 기반 실시간 유효성 검사 관련 문제
 
 - **문제 상황**
   - `useActionState` 훅과 `moverProfileSchema`를 활용해 프로필 작성 폼을 구현
@@ -326,7 +326,7 @@ const isDisabled = isPending || Object.values(errors).some(err) || !requiredFiel
     - 서버에서는 최종 폼 유효성을 단일 스키마로 검증 → 코드 중복 최소화
     - useActionState의 경우 서버 액션과는 다르게 결과값을 리턴하는데 이 때문에 에러를 띄워줄 때 불필요한 **형식맞춤**이 필요했음 (객체 형식) 그러나 `react-hook-form`을 사용함으로써 그런 것들이 사라짐
 
-### 3. 소셜 로그인에 따른 기본정보(이름/폰) 누락 처리 및 UI 분기
+## 3. 소셜 로그인에 따른 기본정보(이름/폰) 누락 처리 및 UI 분기
 
 - **문제 상황 및 원인 분석**
   - 각 OAuth 제공자별 (provider별) 제공하는 사용자 정보가 다름. 때문에 ERD에서 name, phone을 nullable로 변경. 이로 인해 화면/서버 흐름에서 여전히 해당 값을 필수로 가정하면 런타임 에러 또는 UX 붕괴 발생.
@@ -339,7 +339,7 @@ const isDisabled = isPending || Object.values(errors).some(err) || !requiredFiel
   - 현재 비밀번호 input을 숨김(사회 로그인 사용자이므로 비밀번호 요구 x)
   - 비밀번호 변경 시 현재 비밀번호 입력 요구(로컬 계정일 때만)
 
-### 4. 한글 입력 시 채팅 중복 전송 문제 (Mac / Safari / macOS 환경)
+## 4. 한글 입력 시 채팅 중복 전송 문제 (Mac / Safari / macOS 환경)
 
 - **문제 상황**
 
@@ -373,7 +373,7 @@ sendMessage();
  <textarea onCompositionStart={() => setIsComposing(true)} onCompositionEnd={() => setIsComposing(false)} onKeyDown={handleKeyDown} />
 ```
 
-### 5. 견적 요청 폼 draft 저장 및 동기화 문제
+## 5. 견적 요청 폼 draft 저장 및 동기화 문제
 
 - **문제 상황**
 
